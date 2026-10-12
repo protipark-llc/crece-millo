@@ -2,7 +2,7 @@ import "server-only";
 import { z } from "zod";
 import { withUser, type Tx } from "@/lib/db/client";
 import { getCurrentUser } from "./session";
-import { translateDbError, UserFacingError } from "./services/errors";
+import { INFRASTRUCTURE_MESSAGE, isInfrastructureError, translateDbError, UserFacingError } from "./services/errors";
 import { formToObject, zodFieldErrors, type FieldErrors } from "./validation";
 import { todayIn } from "@/lib/finance/dates";
 import { getSettings } from "./services/settings";
@@ -50,7 +50,7 @@ export async function runAction<S extends z.ZodTypeAny>(
     const translated = translateDbError(err);
     if (translated) return { ok: false, error: translated.message };
     console.error("[action]", err);
-    return { ok: false, error: "No pudimos completar la operación. Inténtalo de nuevo." };
+    return { ok: false, error: isInfrastructureError(err) ? INFRASTRUCTURE_MESSAGE : "No pudimos completar la operación. Inténtalo de nuevo." };
   }
 }
 

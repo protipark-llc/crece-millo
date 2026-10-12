@@ -83,6 +83,8 @@ Vercel → **Settings → Domains** → agrega tu dominio y crea los registros D
 
 ## Solución de problemas
 
+Primero abre **`https://<tu-proyecto>.vercel.app/api/salud`**. Devuelve, sin datos sensibles, si hay conexión con la base, cuántas migraciones están aplicadas frente a las esperadas, si existe la cuenta inicial y, en `problem`, la causa y qué hacer.
+
 | Síntoma | Causa probable |
 |---|---|
 | `self-signed certificate in certificate chain` | El registro del build muestra una línea `>>>` con la causa exacta: falta `DATABASE_CA_CERT` en ese entorno, el texto pegado no es un certificado, o no es el certificado de tu proyecto. El certificado puede pegarse con o sin saltos de línea. Último recurso temporal: `DATABASE_SSL_NO_VERIFY=true` (cifra pero no verifica el servidor). |
