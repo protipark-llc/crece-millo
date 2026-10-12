@@ -1,7 +1,7 @@
 import "server-only";
 import { sql } from "drizzle-orm";
 import { getDb } from "@/lib/db/client";
-import { connectionHint, poolConfig } from "@/lib/db/ssl";
+import { connectionHint, hostKind, poolConfig, type HostKind } from "@/lib/db/ssl";
 import journal from "../../drizzle/meta/_journal.json";
 
 export interface HealthReport {
@@ -9,6 +9,8 @@ export interface HealthReport {
   environment: string;
   database: "ok" | "error";
   tls: string | null;
+  /** Tipo de host y puerto (sin el host real) y código del último error de conexión. */
+  connection: { host: HostKind | null; port: string | null; errorCode: string | null };
   migrations: { applied: number | null; expected: number };
   initialAccount: "exists" | "missing" | "not_configured" | "unknown";
   problem: string | null;
@@ -26,6 +28,7 @@ export async function healthReport(): Promise<HealthReport> {
     environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "unknown",
     database: "error",
     tls: null,
+    connection: { host: null, port: null, errorCode: null },
     migrations: { applied: null, expected },
     initialAccount: process.env.BOOTSTRAP_USER_EMAIL ? "unknown" : "not_configured",
     problem: null,
@@ -34,7 +37,15 @@ export async function healthReport(): Promise<HealthReport> {
     report.problem = "DATABASE_URL no está definida en este entorno.";
     return report;
   }
-  const summary = poolConfig(url).summary;
+  let summary;
+  try {
+    summary = poolConfig(url).summary;
+  } catch {
+    report.problem = "DATABASE_URL no es una URL válida: copia de nuevo la cadena de conexión de Supabase (y reemplaza [YOUR-PASSWORD]).";
+    return report;
+  }
+  report.connection.host = hostKind(summary.host);
+  report.connection.port = summary.port;
   report.tls = summary.mode === "verify-ca" ? "verificado con certificado" : summary.mode === "no-verify" ? "cifrado sin verificar" : `según la URL (sslmode=${summary.sslmodeInUrl ?? "no definido"})`;
   try {
     const db = getDb();
@@ -59,6 +70,8 @@ export async function healthReport(): Promise<HealthReport> {
       }
     }
   } catch (err) {
+    const e = err as { code?: string; cause?: { code?: string } };
+    report.connection.errorCode = e?.code ?? e?.cause?.code ?? null;
     report.problem =
       connectionHint(err, summary, process.env.DATABASE_CA_CERT) ??
       `No se pudo consultar la base de datos (código ${(err as { code?: string })?.code ?? "desconocido"}).`;

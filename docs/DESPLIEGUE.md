@@ -83,11 +83,12 @@ Vercel → **Settings → Domains** → agrega tu dominio y crea los registros D
 
 ## Solución de problemas
 
-Primero abre **`https://<tu-proyecto>.vercel.app/api/salud`**. Devuelve, sin datos sensibles, si hay conexión con la base, cuántas migraciones están aplicadas frente a las esperadas, si existe la cuenta inicial y, en `problem`, la causa y qué hacer.
+Primero abre **`https://<tu-proyecto>.vercel.app/api/salud`**. Devuelve, sin datos sensibles, si hay conexión con la base, cuántas migraciones están aplicadas frente a las esperadas, si existe la cuenta inicial, el tipo de host (`connection.host`: `supabase-pooler`, `supabase-direct`…), el puerto y el código de error, y en `problem` la causa y qué hacer.
 
 | Síntoma | Causa probable |
 |---|---|
 | `self-signed certificate in certificate chain` | El registro del build muestra una línea `>>>` con la causa exacta: falta `DATABASE_CA_CERT` en ese entorno, el texto pegado no es un certificado, o no es el certificado de tu proyecto. El certificado puede pegarse con o sin saltos de línea. Último recurso temporal: `DATABASE_SSL_NO_VERIFY=true` (cifra pero no verifica el servidor). |
+| `No se pudo alcanzar el servidor` / `ENOTFOUND` / `ETIMEDOUT` | Si `connection.host` es `supabase-direct`, la URL usa `db.<ref>.supabase.co` (solo IPv6): cámbiala por la del *Transaction pooler* (puerto 6543). Si es `supabase-pooler`, revisa que el proyecto no esté pausado y que la URL esté copiada completa. |
 | `password authentication failed` | Contraseña sin reemplazar en la cadena, o usuario sin el sufijo `.<project-ref>` en el pooler. |
 | `Migraciones omitidas en este build` | `MIGRATE_ON_BUILD` no está en `true` para ese entorno (esperado en vistas previas). |
 | El build falla en «Cuenta inicial» | Las variables `BOOTSTRAP_*` están en un entorno sin base de datos (p. ej. Preview). Déjalas solo en Production. |

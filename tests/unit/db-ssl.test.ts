@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { connectionHint, normalizePem, poolConfig } from "@/lib/db/ssl";
+import { connectionHint, hostKind, normalizePem, poolConfig } from "@/lib/db/ssl";
 
 const BODY = "MIIBszCCAVmgAwIBAgIUaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa==";
 const PEM = `-----BEGIN CERTIFICATE-----\n${BODY.match(/.{1,64}/g)!.join("\n")}\n-----END CERTIFICATE-----`;
@@ -36,5 +36,17 @@ describe("certificado de la base de datos", () => {
     expect(connectionHint(err, poolConfig(url, { DATABASE_CA_CERT: "basura" }).summary, "basura")).toMatch(/no contiene un certificado/);
     expect(connectionHint(err, poolConfig(url, { DATABASE_CA_CERT: PEM }).summary, PEM)).toMatch(/no corresponde al servidor/);
     expect(connectionHint({ code: "28P01" }, poolConfig(url, {}).summary, undefined)).toMatch(/contraseña/);
+  });
+
+  it("distingue el tipo de host cuando no se alcanza el servidor", () => {
+    const hint = (url: string, code = "ENOTFOUND") => connectionHint({ code }, poolConfig(url, {}).summary, undefined);
+    expect(hostKind("db.abcdefgh.supabase.co")).toBe("supabase-direct");
+    expect(hostKind("aws-0-us-east-1.pooler.supabase.com")).toBe("supabase-pooler");
+    expect(hostKind("localhost")).toBe("local");
+    expect(hint("postgres://postgres:p@db.abcdefgh.supabase.co:5432/postgres")).toMatch(/solo funciona por IPv6/);
+    expect(hint("postgres://u.ref:p@aws-0-us-east-1.pooler.supabase.com:6543/postgres")).toMatch(/host del pooler no existe/);
+    expect(hint("postgres://u.ref:p@aws-0-us-east-1.pooler.supabase.com:6543/postgres", "ETIMEDOUT")).toMatch(/pausado/);
+    expect(hint("postgres://u:p@your-host:5432/postgres")).toMatch(/texto de ejemplo/);
+    expect(hint("postgres://u:p@10.0.0.5:5432/postgres", "ECONNREFUSED")).toMatch(/host y el puerto/);
   });
 });

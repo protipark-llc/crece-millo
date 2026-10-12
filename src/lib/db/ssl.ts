@@ -79,6 +79,27 @@ export function connectionHint(err: unknown, s: SslSummary, rawCa: string | unde
     return "Falta DATABASE_CA_CERT en este entorno de Vercel (y la URL pide TLS verificado). Agrégala con el certificado de Supabase o quita ?sslmode=require de la URL.";
   }
   if (code === "28P01") return "Usuario o contraseña incorrectos: revisa que reemplazaste [YOUR-PASSWORD] y que el usuario del pooler incluye el sufijo .<project-ref>.";
-  if (code === "ENOTFOUND" || code === "ECONNREFUSED" || code === "ETIMEDOUT") return "No se pudo alcanzar el servidor: revisa el host y el puerto (pooler de transacción 6543, de sesión 5432).";
+  if (code === "ENOTFOUND" || code === "EAI_AGAIN" || code === "ECONNREFUSED" || code === "ETIMEDOUT" || code === "ENETUNREACH" || code === "EHOSTUNREACH") {
+    const kind = hostKind(s.host);
+    if (kind === "placeholder") return "La URL todavía tiene un texto de ejemplo en lugar del host real: copia de nuevo la cadena de conexión de Supabase.";
+    if (kind === "supabase-direct") {
+      return "DATABASE_URL usa la conexión directa de Supabase (db.<ref>.supabase.co), que solo funciona por IPv6 y Vercel no la alcanza. Usa la del pooler: Supabase → Connect → Transaction pooler (host aws-…pooler.supabase.com, puerto 6543).";
+    }
+    if (kind === "supabase-pooler" && code === "ENOTFOUND") return "El host del pooler no existe: copia la URL exacta desde Supabase → Connect (la región del host debe coincidir con la del proyecto).";
+    if (kind === "supabase-pooler") return "El pooler de Supabase no respondió: comprueba que el proyecto no esté pausado (Supabase lo pausa tras días sin uso) y que el puerto sea 6543 o 5432.";
+    return "No se pudo alcanzar el servidor: revisa el host y el puerto (pooler de transacción 6543, de sesión 5432).";
+  }
   return null;
+}
+
+export type HostKind = "supabase-pooler" | "supabase-direct" | "placeholder" | "local" | "other";
+
+/** Clasifica el host sin exponerlo: suficiente para diagnosticar la configuración. */
+export function hostKind(host: string): HostKind {
+  const h = host.toLowerCase();
+  if (h === "localhost" || h === "127.0.0.1" || h === "[::1]") return "local";
+  if (!h || /[<>]|your|xxx|ejemplo|example/.test(h)) return "placeholder";
+  if (h.endsWith(".pooler.supabase.com")) return "supabase-pooler";
+  if (h.endsWith(".supabase.co")) return "supabase-direct";
+  return "other";
 }
