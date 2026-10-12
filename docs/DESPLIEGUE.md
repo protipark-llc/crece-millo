@@ -41,7 +41,7 @@ Revisa los precios vigentes en cada sitio antes de pasar a producción.
    |---|---|
    | `DATABASE_URL` | cadena del *Transaction pooler* (6543) |
    | `MIGRATION_DATABASE_URL` | cadena del *Session pooler* (5432) |
-   | `DATABASE_CA_CERT` | contenido completo del certificado `.crt` |
+   | `DATABASE_CA_CERT` | contenido completo del certificado `.crt` (da igual si se pierden los saltos de línea al pegar) |
    | `MIGRATE_ON_BUILD` | `true` |
    | `BOOTSTRAP_USER_EMAIL` | correo de la cuenta inicial, p. ej. `ceo@protipark.com` |
    | `BOOTSTRAP_USER_PASSWORD` | contraseña **temporal** de esa cuenta |
@@ -57,7 +57,7 @@ Revisa los precios vigentes en cada sitio antes de pasar a producción.
 
 ### Despliegues de vista previa (PR)
 
-Con la configuración anterior, las vistas previas compilan pero no tienen base de datos (las variables son solo de Production) y `MIGRATE_ON_BUILD` no está activo, así que **nunca modifican la base de producción**. Si quieres vistas previas funcionales, crea un segundo proyecto de Supabase (staging) y asigna sus cadenas a las variables del entorno **Preview** (con `MIGRATE_ON_BUILD=true` solo ahí si quieres migrar staging automáticamente).
+Las migraciones y la cuenta inicial **solo se ejecutan en el entorno Production de Vercel**, aunque las variables estén asignadas también a Preview: una vista previa nunca modifica la base de producción. Si dejaste las variables de base de datos en Preview, la vista previa funcionará contra la base de producción (solo lectura y escritura normal de la app); para aislarla, quítalas de Preview o usa un proyecto de staging. Si quieres vistas previas funcionales, crea un segundo proyecto de Supabase (staging) y asigna sus cadenas a las variables del entorno **Preview** (con `MIGRATE_ON_BUILD=true` solo ahí si quieres migrar staging automáticamente).
 
 ## 3. Datos de demostración (opcional, solo en staging)
 
@@ -85,7 +85,7 @@ Vercel → **Settings → Domains** → agrega tu dominio y crea los registros D
 
 | Síntoma | Causa probable |
 |---|---|
-| `self-signed certificate in certificate chain` | Falta `DATABASE_CA_CERT` o está incompleto; o la URL trae `sslmode=require` sin certificado. |
+| `self-signed certificate in certificate chain` | El registro del build muestra una línea `>>>` con la causa exacta: falta `DATABASE_CA_CERT` en ese entorno, el texto pegado no es un certificado, o no es el certificado de tu proyecto. El certificado puede pegarse con o sin saltos de línea. Último recurso temporal: `DATABASE_SSL_NO_VERIFY=true` (cifra pero no verifica el servidor). |
 | `password authentication failed` | Contraseña sin reemplazar en la cadena, o usuario sin el sufijo `.<project-ref>` en el pooler. |
 | `Migraciones omitidas en este build` | `MIGRATE_ON_BUILD` no está en `true` para ese entorno (esperado en vistas previas). |
 | El build falla en «Cuenta inicial» | Las variables `BOOTSTRAP_*` están en un entorno sin base de datos (p. ej. Preview). Déjalas solo en Production. |
