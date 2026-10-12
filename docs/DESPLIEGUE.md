@@ -5,7 +5,7 @@ La aplicación queda en **Vercel** (Next.js) y la base de datos en **Supabase** 
 | Archivo | Para qué |
 |---|---|
 | `vercel.json` | Usa `npm run vercel-build` y la región `iad1` (Washington D. C., EE. UU.) |
-| `npm run vercel-build` | Aplica las migraciones (solo si `MIGRATE_ON_BUILD=true`) y compila |
+| `npm run vercel-build` | Aplica las migraciones (solo si `MIGRATE_ON_BUILD=true`), crea la cuenta inicial si se definió y compila |
 | `drizzle/0002_supabase_hardening.sql` | Cierra la API pública de Supabase (`anon`/`authenticated`) sobre las tablas de la app |
 | `src/lib/db/client.ts` | Pool pequeño en Vercel y TLS verificado con el certificado de Supabase |
 | `scripts/supabase-app-role.sql` | (Opcional) rol de ejecución sin privilegio para saltarse RLS |
@@ -43,11 +43,17 @@ Revisa los precios vigentes en cada sitio antes de pasar a producción.
    | `MIGRATION_DATABASE_URL` | cadena del *Session pooler* (5432) |
    | `DATABASE_CA_CERT` | contenido completo del certificado `.crt` |
    | `MIGRATE_ON_BUILD` | `true` |
+   | `BOOTSTRAP_USER_EMAIL` | correo de la cuenta inicial, p. ej. `ceo@protipark.com` |
+   | `BOOTSTRAP_USER_PASSWORD` | contraseña **temporal** de esa cuenta |
+   | `BOOTSTRAP_USER_NAME` | nombre visible (opcional), p. ej. `CEO Protipark` |
 
    No hace falta `SESSION_COOKIE_SECURE`: en Vercel la cookie de sesión es `Secure` automáticamente.
+   La cuenta inicial se crea una sola vez; en despliegues posteriores no se modifica.
 4. **Settings → Git → Production Branch**: `main`.
 5. Fusiona el PR #1 en `main` (o pulsa **Deploy**). El build aplica las migraciones en Supabase y publica la app en `https://<proyecto>.vercel.app`.
-6. Abre la URL, crea tu cuenta en **/registro** y recorre los pasos de prueba del README.
+6. Abre la URL, entra en **/ingresar** con la cuenta inicial y recorre los pasos de prueba del README.
+7. **Cambia la contraseña temporal** en **Configuración → Seguridad** (mínimo 10 caracteres, con letras y números).
+8. En Vercel, **borra** `BOOTSTRAP_USER_PASSWORD` (y si quieres las otras `BOOTSTRAP_*`). Ya no se necesitan y no conviene dejar una contraseña guardada.
 
 ### Despliegues de vista previa (PR)
 
@@ -82,4 +88,5 @@ Vercel → **Settings → Domains** → agrega tu dominio y crea los registros D
 | `self-signed certificate in certificate chain` | Falta `DATABASE_CA_CERT` o está incompleto; o la URL trae `sslmode=require` sin certificado. |
 | `password authentication failed` | Contraseña sin reemplazar en la cadena, o usuario sin el sufijo `.<project-ref>` en el pooler. |
 | `Migraciones omitidas en este build` | `MIGRATE_ON_BUILD` no está en `true` para ese entorno (esperado en vistas previas). |
+| El build falla en «Cuenta inicial» | Las variables `BOOTSTRAP_*` están en un entorno sin base de datos (p. ej. Preview). Déjalas solo en Production. |
 | Errores 500 justo después de crear el proyecto | El proyecto de Supabase estaba en pausa o aún iniciando; reintenta en un minuto. |

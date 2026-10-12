@@ -224,14 +224,17 @@ export const settingsInput = z.object({
   businessExpensesEnabled: checkbox,
 });
 
+/** Regla de contraseñas para registro y cambio de contraseña. */
+export const passwordRule = z
+  .string()
+  .min(10, "La contraseña debe tener al menos 10 caracteres")
+  .max(200)
+  .refine((p) => /[A-Za-z]/.test(p) && /\d/.test(p), "Incluye letras y números");
+
 export const registerInput = z.object({
   name: z.string().trim().min(2, "Escribe tu nombre").max(80),
   email: z.string().trim().toLowerCase().email("Correo inválido").max(200),
-  password: z
-    .string()
-    .min(10, "La contraseña debe tener al menos 10 caracteres")
-    .max(200)
-    .refine((p) => /[A-Za-z]/.test(p) && /\d/.test(p), "Incluye letras y números"),
+  password: passwordRule,
   acceptPrivacy: z.literal("on", { message: "Debes aceptar el tratamiento de datos para continuar" }),
 });
 

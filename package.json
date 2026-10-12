@@ -15,7 +15,8 @@
     "test:unit": "vitest run --project unit",
     "test:integration": "vitest run --project integration",
     "test:e2e": "next build && playwright test",
-    "vercel-build": "tsx scripts/migrate.ts --on-build && next build"
+    "vercel-build": "tsx scripts/migrate.ts --on-build && tsx scripts/bootstrap-user.ts && next build",
+    "user:bootstrap": "tsx --env-file=.env scripts/bootstrap-user.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.4",

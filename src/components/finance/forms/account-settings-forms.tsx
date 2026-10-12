@@ -2,7 +2,7 @@
 
 import { ActionForm, SelectField, SubmitButton, TextField } from "@/components/ui/form";
 import { CURRENCIES } from "@/lib/money/currency";
-import { addRateAction, deleteAccountDataAction } from "@/app/(app)/configuracion/actions";
+import { addRateAction, changePasswordAction, deleteAccountDataAction } from "@/app/(app)/configuracion/actions";
 
 export function RateForm({ base, today }: { base: string; today: string }) {
   const codes = Object.keys(CURRENCIES);
@@ -39,6 +39,19 @@ export function DeleteAccountForm() {
     <ActionForm action={deleteAccountDataAction} className="flex flex-wrap items-end gap-3">
       <TextField label="Confirma con tu contraseña" name="password" type="password" autoComplete="current-password" className="min-w-60" />
       <SubmitButton variant="danger">Eliminar mi cuenta y todos mis datos</SubmitButton>
+    </ActionForm>
+  );
+}
+
+export function ChangePasswordForm() {
+  return (
+    <ActionForm action={changePasswordAction} resetOnSuccess className="grid gap-4 sm:grid-cols-3 sm:items-start">
+      <TextField label="Contraseña actual" name="currentPassword" type="password" autoComplete="current-password" />
+      <TextField label="Nueva contraseña" name="newPassword" type="password" autoComplete="new-password" hint="Mínimo 10 caracteres, con letras y números." />
+      <TextField label="Confirmar nueva contraseña" name="confirmPassword" type="password" autoComplete="new-password" />
+      <div className="sm:col-span-3">
+        <SubmitButton variant="secondary">Cambiar contraseña</SubmitButton>
+      </div>
     </ActionForm>
   );
 }

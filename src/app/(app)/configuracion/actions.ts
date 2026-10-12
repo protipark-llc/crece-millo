@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { runAction, type ActionState } from "@/server/action-utils";
 import { addRate, setDiagnosticStep, updateSettings } from "@/server/services/settings";
-import { currency, isoDate, settingsInput } from "@/server/validation";
-import { getCurrentUser, destroySession } from "@/server/session";
-import { deleteUserAndData } from "@/server/services/users";
+import { currency, formToObject, isoDate, passwordRule, settingsInput, zodFieldErrors } from "@/server/validation";
+import { getCurrentUser, destroySession, createSession } from "@/server/session";
+import { changePassword, deleteUserAndData } from "@/server/services/users";
 import { UserFacingError } from "@/server/services/errors";
 import { COUNTRIES } from "@/lib/money/currency";
 
@@ -55,4 +55,25 @@ export async function deleteAccountDataAction(_: ActionState, fd: FormData): Pro
   }
   await destroySession();
   redirect("/");
+}
+
+const changePasswordInput = z
+  .object({ currentPassword: z.string().min(1, "Escribe tu contraseña actual").max(200), newPassword: passwordRule, confirmPassword: z.string() })
+  .refine((v) => v.newPassword === v.confirmPassword, { path: ["confirmPassword"], message: "Las contraseñas no coinciden" });
+
+/** Cambia la contraseña, cierra las demás sesiones y mantiene abierta la actual. */
+export async function changePasswordAction(_: ActionState, fd: FormData): Promise<ActionState> {
+  const user = await getCurrentUser();
+  if (!user) return { ok: false, error: "Sesión no válida." };
+  const parsed = changePasswordInput.safeParse(formToObject(fd));
+  if (!parsed.success) return { ok: false, error: "Revisa los campos marcados.", fieldErrors: zodFieldErrors(parsed.error) };
+  try {
+    await changePassword(user.id, parsed.data.currentPassword, parsed.data.newPassword);
+    await createSession(user.id);
+  } catch (e) {
+    if (e instanceof UserFacingError) return { ok: false, error: e.message, fieldErrors: e.field ? { [e.field]: e.message } : undefined };
+    console.error("[change-password]", e);
+    return { ok: false, error: "No pudimos cambiar la contraseña." };
+  }
+  return { ok: true, nonce: Date.now(), message: "Contraseña actualizada. Se cerraron las sesiones en otros dispositivos." };
 }

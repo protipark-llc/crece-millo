@@ -7,7 +7,7 @@ import { settingsDefaults } from "@/server/settings-defaults";
 import { getCurrentUser } from "@/server/session";
 import { Card, CardHeader, PageHeader, buttonClass } from "@/components/ui/primitives";
 import { SettingsForm } from "@/components/finance/forms/settings-form";
-import { DeleteAccountForm, RateForm } from "@/components/finance/forms/account-settings-forms";
+import { ChangePasswordForm, DeleteAccountForm, RateForm } from "@/components/finance/forms/account-settings-forms";
 
 export const metadata: Metadata = { title: "Configuración" };
 
@@ -45,6 +45,12 @@ export default async function SettingsPage() {
           )}
           <div className="p-5">
             <RateForm base={settings.currency} today={today} />
+          </div>
+        </Card>
+        <Card>
+          <CardHeader title="Seguridad" description="Cambiar la contraseña cierra la sesión en tus otros dispositivos." />
+          <div className="p-5">
+            <ChangePasswordForm />
           </div>
         </Card>
         <Card>

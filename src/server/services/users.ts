@@ -1,6 +1,6 @@
 import { and, eq, gt, sql } from "drizzle-orm";
 import { getDb } from "@/lib/db/client";
-import { loginAttempts, userSettings, users } from "@/lib/db/schema";
+import { loginAttempts, sessions, userSettings, users } from "@/lib/db/schema";
 import { COUNTRIES } from "@/lib/money/currency";
 import { hashPassword, verifyPassword } from "../password";
 import { seedDefaultCategories } from "./categories";
@@ -59,4 +59,39 @@ export async function deleteUserAndData(userId: string, password: string) {
   }
   // ON DELETE CASCADE elimina sesiones, preferencias y todos los datos financieros.
   await db.delete(users).where(eq(users.id, userId));
+}
+
+/**
+ * Cambia la contraseña verificando la actual. Cierra todas las sesiones de la persona;
+ * quien llama debe crear una sesión nueva para el dispositivo actual.
+ */
+export async function changePassword(userId: string, current: string, next: string) {
+  const db = getDb();
+  const [user] = await db.select().from(users).where(eq(users.id, userId));
+  if (!user || !(await verifyPassword(current, user.passwordHash))) {
+    throw new UserFacingError("La contraseña actual no es correcta.", "currentPassword");
+  }
+  if (current === next) throw new UserFacingError("La nueva contraseña debe ser distinta de la actual.", "newPassword");
+  const passwordHash = await hashPassword(next);
+  await db.transaction(async (tx) => {
+    await tx.update(users).set({ passwordHash }).where(eq(users.id, userId));
+    await tx.delete(sessions).where(eq(sessions.userId, userId));
+  });
+}
+
+/**
+ * Crea una cuenta inicial si no existe (usado por scripts/bootstrap-user.ts al desplegar).
+ * No aplica la regla de longitud del registro: es una vía administrativa y la contraseña
+ * debe cambiarse en Configuración después del primer ingreso. Si la cuenta ya existe, no
+ * modifica nada (no se reescribe la contraseña en cada despliegue).
+ */
+export async function ensureBootstrapUser(input: { email: string; name: string; password: string; country?: string }) {
+  const email = input.email.trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error("Correo de la cuenta inicial inválido");
+  if (input.password.length < 6) throw new Error("La contraseña inicial debe tener al menos 6 caracteres");
+  const db = getDb();
+  const [existing] = await db.select({ id: users.id }).from(users).where(eq(users.email, email));
+  if (existing) return { created: false as const, id: existing.id };
+  const user = await registerUser({ name: input.name, email, password: input.password, country: input.country });
+  return { created: true as const, id: user.id };
 }

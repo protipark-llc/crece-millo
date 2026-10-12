@@ -43,6 +43,7 @@ Usuario de demostración (tras `db:seed-demo`): `demo@crece.test` / `Demo-clave-
 | `E2E_DATABASE_URL` | Base aislada para Playwright (se borra y recrea) |
 | `SESSION_COOKIE_SECURE` | `true` en producción con HTTPS (en Vercel se activa sola) |
 | `MIGRATION_DATABASE_URL`, `DATABASE_CA_CERT`, `DATABASE_POOL_MAX`, `MIGRATE_ON_BUILD` | Producción en Vercel + Supabase (ver `docs/DESPLIEGUE.md`) |
+| `BOOTSTRAP_USER_EMAIL`, `BOOTSTRAP_USER_PASSWORD`, `BOOTSTRAP_USER_NAME` | Cuenta inicial creada al desplegar (`npm run user:bootstrap` en local) |
 
 No hay secretos en el código ni claves de servicios externos: la versión actual no se conecta a bancos, tasas de cambio en línea ni modelos de IA.
 
@@ -60,11 +61,12 @@ Edita `src/lib/db/schema.ts`, genera la migración con `npm run db:generate` y a
 | `npm run test:unit` / `test:integration` | Por separado |
 | `npm run test:e2e` | Compila y ejecuta Playwright (escritorio y móvil) |
 | `npm run db:migrate` / `db:generate` / `db:seed-demo` | Base de datos |
+| `npm run user:bootstrap` | Crea la cuenta inicial definida en `BOOTSTRAP_USER_*` si no existe |
 
 ## Pruebas
 
 - **Unitarias** (`tests/unit`, 48): dinero y redondeo, fechas y bisiestos, recurrencias, saldos y flujo de caja (caso de referencia COP 1.000.000 + 3.000.000 − 2.200.000 = 1.800.000, tasa de ahorro 26,67 %), transferencias, monedas sin tasa, presupuesto, conversión de tasas, amortización, avalancha / bola de nieve, objetivos, patrimonio, escenarios, indicadores sin divisiones por cero y recomendaciones.
-- **Integración** (`tests/integration`, 11): persistencia real, transferencias, idempotencia de formularios, recurrencias sin duplicados, presupuesto y reasignación, pagos de deuda transaccionales, objetivos, validación de entradas, restricciones de BD, **aislamiento entre usuarios (servicios, FK compuestas y RLS)** y simulaciones que no modifican datos.
+- **Integración** (`tests/integration`, 14): persistencia real, transferencias, idempotencia de formularios, recurrencias sin duplicados, presupuesto y reasignación, pagos de deuda transaccionales, objetivos, validación de entradas, restricciones de BD, **aislamiento entre usuarios (servicios, FK compuestas y RLS)** simulaciones que no modifican datos, cuenta inicial idempotente y cambio de contraseña.
 - **E2E** (`tests/e2e`, 8): rutas protegidas, flujo completo ingreso → gasto → transferencia con recarga, validaciones, recurrencias + presupuesto, simulador, pago de deuda, lección con cuestionario y versión móvil sin desplazamiento horizontal.
 
 ## Cómo probar manualmente
@@ -94,7 +96,7 @@ Edita `src/lib/db/schema.ts`, genera la migración con `npm run db:generate` y a
 - Sin integraciones bancarias, Open Banking ni tasas de cambio automáticas (por diseño en esta versión).
 - Tarjetas de crédito se modelan como deudas (no como cuentas con cupo); las compras con tarjeta se registran como gasto y el pago como pago de deuda.
 - Las cuotas de deuda proyectadas se asumen desde las cuentas líquidas en conjunto (no por cuenta).
-- Sin recuperación de contraseña ni verificación de correo; ver `docs/SEGURIDAD.md`.
+- Sin recuperación de contraseña por correo ni verificación de correo (sí hay cambio de contraseña en Configuración); ver `docs/SEGURIDAD.md`.
 - Todos los datos de una persona se cargan por página: adecuado para volúmenes personales; para miles de movimientos por año conviene paginar/agregar en SQL.
 - Los aspectos tributarios (renta, seguridad social de independientes) solo se categorizan; requieren validación profesional local.
 

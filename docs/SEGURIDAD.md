@@ -5,6 +5,8 @@
 | Área | Control |
 |---|---|
 | Contraseñas | scrypt (N=16384, r=8, p=1, sal aleatoria de 16 bytes), comparación en tiempo constante. Mínimo 10 caracteres con letras y números. |
+| Cuenta inicial | `scripts/bootstrap-user.ts` crea una cuenta desde variables de entorno solo si no existe; no imprime la contraseña ni la guarda en el repositorio. Su contraseña temporal debe cambiarse en Configuración → Seguridad. |
+| Cambio de contraseña | Exige la contraseña actual, aplica la regla de registro y cierra las sesiones de otros dispositivos. |
 | Sesiones | Token aleatorio de 32 bytes en cookie `httpOnly`, `SameSite=Lax`, `Secure` en producción (`SESSION_COOKIE_SECURE=true`). En BD solo se guarda el SHA-256 del token. Vigencia 30 días con renovación deslizante; cierre de sesión elimina la sesión. |
 | Fuerza bruta | Máximo 5 intentos fallidos por correo en 15 minutos; mensaje genérico (no revela si el correo existe). |
 | Autorización | Cada página y acción verifica la sesión en el servidor (`requireUser` / `runAction`). El middleware solo redirige (no es barrera). |
@@ -25,7 +27,7 @@
 
 ## Riesgos y tareas pendientes
 
-- No hay verificación de correo, recuperación de contraseña ni segundo factor.
+- No hay verificación de correo, recuperación de contraseña por correo ni segundo factor.
 - El límite de intentos es por correo; falta límite por IP / a nivel de proxy.
 - No hay Content-Security-Policy estricta (requiere nonces para los scripts de Next.js).
 - El rol de base de datos de la aplicación es dueño de las tablas; en Supabase el rol `postgres` puede saltarse RLS. Para producción, usar el rol `crece_app` de `scripts/supabase-app-role.sql` (solo DML, sin BYPASSRLS).
