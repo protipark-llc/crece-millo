@@ -24,7 +24,8 @@ export async function createSession(userId: string) {
   jar.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.SESSION_COOKIE_SECURE === "true",
+    // En Vercel siempre hay HTTPS; en local se controla con SESSION_COOKIE_SECURE.
+    secure: process.env.SESSION_COOKIE_SECURE === "true" || (process.env.VERCEL === "1" && process.env.SESSION_COOKIE_SECURE !== "false"),
     path: "/",
     expires: expiresAt,
   });

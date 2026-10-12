@@ -8,6 +8,7 @@ Plataforma de crecimiento integral. Esta primera versión entrega la **Universid
 - Fórmulas y criterios de cálculo: [`docs/FORMULAS.md`](docs/FORMULAS.md)
 - Seguridad y privacidad: [`docs/SEGURIDAD.md`](docs/SEGURIDAD.md)
 - Auditoría inicial y material de referencia: [`docs/AUDITORIA.md`](docs/AUDITORIA.md)
+- Despliegue en Vercel + Supabase: [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md)
 
 ## Requisitos
 
@@ -26,7 +27,7 @@ psql -c "CREATE DATABASE crece_dev OWNER crece;"
 psql -c "CREATE DATABASE crece_test OWNER crece;"   # pruebas de integración
 psql -c "CREATE DATABASE crece_e2e OWNER crece;"    # pruebas E2E
 
-npm run db:migrate              # aplica drizzle/0000_init.sql y drizzle/0001_rls.sql
+npm run db:migrate              # aplica las migraciones de drizzle/ (esquema, RLS y blindaje)
 npm run db:seed-demo            # opcional: usuario demo con datos FICTICIOS
 npm run dev                     # http://localhost:3000
 ```
@@ -40,7 +41,8 @@ Usuario de demostración (tras `db:seed-demo`): `demo@crece.test` / `Demo-clave-
 | `DATABASE_URL` | PostgreSQL de la aplicación |
 | `TEST_DATABASE_URL` | Base aislada para pruebas de integración (se borra y recrea) |
 | `E2E_DATABASE_URL` | Base aislada para Playwright (se borra y recrea) |
-| `SESSION_COOKIE_SECURE` | `true` en producción (HTTPS) |
+| `SESSION_COOKIE_SECURE` | `true` en producción con HTTPS (en Vercel se activa sola) |
+| `MIGRATION_DATABASE_URL`, `DATABASE_CA_CERT`, `DATABASE_POOL_MAX`, `MIGRATE_ON_BUILD` | Producción en Vercel + Supabase (ver `docs/DESPLIEGUE.md`) |
 
 No hay secretos en el código ni claves de servicios externos: la versión actual no se conecta a bancos, tasas de cambio en línea ni modelos de IA.
 

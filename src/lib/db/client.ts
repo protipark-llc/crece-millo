@@ -8,10 +8,24 @@ export type Tx = Parameters<Parameters<DB["transaction"]>[0]>[0];
 
 const globalForDb = globalThis as unknown as { __crecePool?: Pool; __creceDb?: DB };
 
-function createPool(): Pool {
-  const url = process.env.DATABASE_URL;
+/**
+ * Crea el pool de conexiones.
+ * - DATABASE_POOL_MAX: conexiones máximas (por defecto 10; en Vercel 3, porque cada
+ *   función serverless tiene su propio pool y Supabase usa un pooler compartido).
+ * - DATABASE_CA_CERT: certificado raíz (PEM) del proveedor. Si existe, la conexión exige
+ *   TLS verificado y se ignora cualquier `sslmode` de la URL (en node-postgres, los valores
+ *   de la URL prevalecen sobre las opciones explícitas).
+ */
+export function createPool(url = process.env.DATABASE_URL): Pool {
   if (!url) throw new Error("DATABASE_URL no está configurada. Copia .env.example a .env.");
-  return new Pool({ connectionString: url, max: 10 });
+  const max = Number(process.env.DATABASE_POOL_MAX) || (process.env.VERCEL ? 3 : 10);
+  const ca = process.env.DATABASE_CA_CERT?.replace(/\\n/g, "\n");
+  if (ca) {
+    const u = new URL(url);
+    for (const k of ["sslmode", "sslcert", "sslkey", "sslrootcert", "uselibpqcompat"]) u.searchParams.delete(k);
+    return new Pool({ connectionString: u.toString(), max, ssl: { ca, rejectUnauthorized: true } });
+  }
+  return new Pool({ connectionString: url, max });
 }
 
 export function getDb(): DB {
