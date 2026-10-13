@@ -1,0 +1,244 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+[data-theme="light"]{--bg:#f5f2ec;--surface:#fff;--surface-2:#efebe4;--surface-3:#e5e0d7;--border:rgb(28 28 33/.12);--border-strong:rgb(28 28 33/.22);--control-border:#8a8690;--ink:#1c1c21;--ink-2:#45434a;--muted:#625f66;--brand:#1c1c21;--brand-hover:#000;--brand-soft:#ece8e1;--brand-ink:#fff;--accent:#d1401f;--accent-ink:#fff;--nav-bg:#1c1c21;--nav-ink:#e6e2db;--nav-active-bg:rgb(224 72 45/.24);--nav-label:#a6a29b;--pos:#106a1e;--pos-soft:#e6f2e7;--neg:#b42318;--neg-soft:#fbe9e7;--warn:#8a5a00;--warn-soft:#fbf1dc;--info:#1c5cab;--info-soft:#e6eef8;--focus:#2a78d6;--chart-1:#c63e22;--chart-grid:#e7e2da;--chart-axis:#94908a;--chart-mark:#e0482d;--shadow-sm:0 1px 2px rgb(28 28 33/.06);color-scheme:light}
+[data-theme="dark"]{--bg:#111114;--surface:#1a1a1f;--surface-2:#222228;--surface-3:#2b2b32;--border:rgb(255 255 255/.10);--border-strong:rgb(255 255 255/.18);--control-border:#6e6a72;--ink:#f2efea;--ink-2:#c9c5bf;--muted:#9c988f;--brand:#f2efea;--brand-hover:#fff;--brand-soft:#2a2826;--brand-ink:#111114;--accent:#ff6b4a;--accent-ink:#111114;--nav-bg:#0b0b0d;--nav-ink:#c9c5bf;--nav-active-bg:rgb(255 107 74/.18);--nav-label:#8e8a84;--pos:#3fbf4a;--pos-soft:#12301a;--neg:#f08080;--neg-soft:#3a1a1a;--warn:#f2c14e;--warn-soft:#33280f;--info:#7fb1ef;--info-soft:#142a45;--focus:#7fb1ef;--chart-1:#ff7a5c;--chart-grid:#2a2a30;--chart-axis:#5e5b62;--chart-mark:#ff6b4a;--shadow-sm:0 1px 2px rgb(0 0 0/.4);color-scheme:dark}
+.app{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);transition:background-color 180ms cubic-bezier(.2,0,0,1),color 180ms}
+.ttl{font-family:Outfit,system-ui,sans-serif}
+.n{font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.ov{font-size:11px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.hlp{font-size:12px;line-height:16px;color:var(--muted)}
+.lnk{font-size:13px;font-weight:600;color:var(--brand);text-decoration:none}
+.lnk:hover{text-decoration:underline}
+.btn{height:44px;padding:0 16px;border-radius:8px;font:600 14px/1 'IBM Plex Sans',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:background-color 120ms cubic-bezier(.2,0,0,1)}
+.b-pri{background:var(--brand);color:var(--brand-ink)}.b-pri:hover{background:var(--brand-hover)}
+.b-sec{background:var(--surface);color:var(--brand);border-color:var(--control-border)}.b-sec:hover{background:var(--brand-soft)}
+.bdg{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:600}
+.nv{height:36px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:8px;color:var(--nav-ink);text-decoration:none;font-size:14px}
+.nv:hover{background:rgb(255 255 255/.07)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.tbl{border-collapse:collapse;width:100%;font-size:13px}
+.tbl th{font-weight:500;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--border-strong)}
+.tbl td{padding:6px 8px;border-bottom:1px solid var(--border)}
+@media (prefers-reduced-motion:reduce){.app,.btn{transition:none}}
+</style>
+</head><body>
+<div class="app" data-theme="light" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<nav aria-label="Navegación principal" style="flex: 1 1 240px; max-width: 100%; background: var(--nav-bg); padding: 20px 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+<a href="#" style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 10px; text-decoration: none; color: #ffffff"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#ffffff"></rect><path d="M6 12.5Q24 17.5 42 12.5" fill="none" stroke="#1c1c21" stroke-width="4" stroke-linecap="round"></path><path d="M11 20H37M15 14.5V41M33 14.5V41" fill="none" stroke="#1c1c21" stroke-width="3.6" stroke-linecap="round"></path><path transform="translate(24 31) scale(0.4) translate(-24 -23)" d="M24 6C31 13 36 20 36 28A12 12 0 0 1 12 28C12 21.5 15.5 17 19 13C20 18 22 20.5 25 21.5C26.5 16 26 11 24 6Z" fill="#e0482d"></path></svg><span class="ttl" style="font-size: 16px; letter-spacing: 0.06em"><b style="font-weight: 600">CRECE</b> MILLO</span></a>
+
+<div style="display: flex; flex-direction: column; gap: 1px">
+<span style="padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nav-label)">Universidad</span>
+<a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Inicio</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Mi progreso</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Rutas de aprendizaje</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Biblioteca de módulos</a>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 1px">
+<span style="padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nav-label)">Finanzas personales</span>
+<a href="#" class="nv" aria-current="page" style="background: var(--nav-active-bg); color: #ffffff; font-weight: 600">Panel</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Diagnóstico</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Movimientos</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Ingresos</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Gastos</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Cuentas</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Presupuesto</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Flujo de caja</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Deudas</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Ahorro y objetivos</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Patrimonio neto</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Simulador</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Informes</a>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 1px">
+<span style="padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nav-label)">Comunidad</span>
+<a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Muro</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">En vivo</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Emprendedores</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Co-Piloto de Negocio</a>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 1px">
+<span style="padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nav-label)">Cuenta</span>
+<a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Configuración</a>
+</div>
+
+<div style="margin-top: auto; padding: 12px 10px 0; border-top: 1px solid rgb(255 255 255 / 0.14); display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; color: #ffffff; font-weight: 600">Laura Gómez</span><span style="font-size: 12px; color: var(--nav-label)">laura@ejemplo.co</span></div>
+</nav>
+
+<main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<span class="ov">Finanzas personales · Panel</span>
+<div role="radiogroup" aria-label="Tema" style="display: flex; padding: 3px; gap: 2px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border)">
+<button type="button" role="radio" aria-checked="true" aria-label="Tema claro" title="Tema claro" onClick="" style="width: 40px; height: 36px; border: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: var(--surface); color: var(--ink); box-shadow: var(--shadow-sm)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></button><button type="button" role="radio" aria-checked="false" aria-label="Tema oscuro" title="Tema oscuro" onClick="" style="width: 40px; height: 36px; border: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button><button type="button" role="radio" aria-checked="false" aria-label="Tema del sistema" title="Tema del sistema" onClick="" style="width: 40px; height: 36px; border: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v11H4zM8 21h8M12 15v6"></path></svg></button>
+</div>
+</div>
+
+
+
+<section aria-labelledby="h-mes" class="card" style="padding: 28px; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: flex-start">
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 640px">
+<span class="ov" style="color: var(--brand)">Octubre 2026 · día 12 de 31</span>
+<h1 id="h-mes" class="ttl" style="margin: 0; font-size: 32px; line-height: 38px; font-weight: 500; letter-spacing: -0.02em">Vas bien: tu caja cubre el mes. <span style="color: var(--warn)">Ojo con Mercado,</span> que ya va en 83 %.</h1>
+<p style="margin: 0; font-size: 15px; line-height: 24px; color: var(--ink-2)">Llevas el 50,5 % del presupuesto con el 39 % del mes, pero buena parte es el arriendo, que ya pagaste. Lo variable que más se mueve es el mercado.</p>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<a href="#" class="btn b-pri"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M17 7H9M17 7v8"></path></svg>Gasto</a>
+<a href="#" class="btn b-sec"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M17 7 7 17M7 17h8M7 17V9"></path></svg>Ingreso</a>
+<a href="#" class="btn b-sec"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16M16 4l4 4-4 4M20 16H4M8 12l-4 4 4 4"></path></svg>Transferencia</a>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+
+<div style="background: var(--surface); padding: 16px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px">Saldo de caja<button type="button" aria-label="Suma de tus cuentas de caja. Las de inversión no cuentan." title="Suma de tus cuentas de caja. Las de inversión no cuentan." style="width: 20px; height: 20px; padding: 0; border-radius: 50%; border: 1px solid var(--control-border); background: transparent; color: var(--muted); font: 600 11px 'IBM Plex Sans', sans-serif; cursor: help">i</button></span>
+<span class="n" style="font-size: 22px; line-height: 28px; font-weight: 600; color: var(--ink)">$ 5.930.000</span>
+<span class="hlp">Hoy, en cuentas disponibles</span>
+</div>
+
+<div style="background: var(--surface); padding: 16px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px">Ingresos netos<button type="button" aria-label="Ingresos realizados del mes, después de descuentos." title="Ingresos realizados del mes, después de descuentos." style="width: 20px; height: 20px; padding: 0; border-radius: 50%; border: 1px solid var(--control-border); background: transparent; color: var(--muted); font: 600 11px 'IBM Plex Sans', sans-serif; cursor: help">i</button></span>
+<span class="n" style="font-size: 22px; line-height: 28px; font-weight: 600; color: var(--pos)">+$ 4.200.000</span>
+<span class="hlp">Octubre 2026, hasta hoy</span>
+</div>
+
+<div style="background: var(--surface); padding: 16px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px">Gastos efectivos<button type="button" aria-label="Gastos ya pagados en el mes. No incluye transferencias." title="Gastos ya pagados en el mes. No incluye transferencias." style="width: 20px; height: 20px; padding: 0; border-radius: 50%; border: 1px solid var(--control-border); background: transparent; color: var(--muted); font: 600 11px 'IBM Plex Sans', sans-serif; cursor: help">i</button></span>
+<span class="n" style="font-size: 22px; line-height: 28px; font-weight: 600; color: var(--neg)">−$ 2.610.000</span>
+<span class="hlp">Octubre 2026, hasta hoy</span>
+</div>
+
+<div style="background: var(--surface); padding: 16px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px">Tasa de ahorro<button type="button" aria-label="(Ingresos − gastos) ÷ ingresos del periodo." title="(Ingresos − gastos) ÷ ingresos del periodo." style="width: 20px; height: 20px; padding: 0; border-radius: 50%; border: 1px solid var(--control-border); background: transparent; color: var(--muted); font: 600 11px 'IBM Plex Sans', sans-serif; cursor: help">i</button></span>
+<span class="n" style="font-size: 22px; line-height: 28px; font-weight: 600; color: var(--ink)">37,9 %</span>
+<span class="hlp">Lo que no gastaste de lo que entró</span>
+</div>
+
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div role="img" aria-label="Presupuesto usado 50,5 por ciento; mes transcurrido 39 por ciento" style="position: relative; height: 10px; border-radius: 99px; background: var(--surface-3)"><div style="width: 50.5%; height: 10px; border-radius: 99px; background: var(--brand)"></div><div style="position: absolute; left: 39%; top: -5px; width: 2px; height: 20px; background: var(--ink)"></div></div>
+<div class="n" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--muted)"><span>Presupuesto usado: $ 2.610.000 de $ 5.168.333 (50,5 %)</span><span>Línea negra: hoy, 39 % del mes</span></div>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 14px 18px; border-radius: 12px; background: var(--brand-soft)">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"></path><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"></path></svg>
+<span style="flex: 1 1 320px; font-size: 14px; line-height: 20px"><strong>Diagnóstico: 6 de 8 pasos.</strong> Con los dos que faltan (deudas y objetivos) podemos calcular tu cobertura y tu plan con más fiabilidad.</span>
+<a href="#" class="btn b-pri" style="height: 40px">Continuar diagnóstico</a>
+</div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 20px; align-items: start">
+<section aria-labelledby="h-caja" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+<div style="display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap"><h2 id="h-caja" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Tu caja en los próximos 90 días</h2><a href="#" class="lnk">Ver flujo de caja</a></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-2)">El punto más bajo llega el <strong>7 dic 2026</strong>, con <strong class="n">$ 3.820.000</strong>, porque ese mes coinciden el arriendo y la prima anual del seguro. No hay déficit previsto.</p>
+<div style="display: flex; gap: 14px; font-size: 12px; color: var(--muted)"><span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; border-top: 2.5px solid var(--chart-1)"></span>Real</span><span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; border-top: 2.5px dashed var(--chart-1)"></span>Proyectado</span></div>
+<svg role="img" aria-label="Saldo real hasta hoy y proyectado a 90 días. Hoy 5.930.000; punto más bajo 3.820.000 el 7 de diciembre; 10 de enero 5.820.000." viewBox="0 0 680 210" style="width: 100%; height: auto">
+<line x1="56" x2="680" y1="20" y2="20" stroke="var(--chart-grid)"></line><line x1="56" x2="680" y1="80" y2="80" stroke="var(--chart-grid)"></line><line x1="56" x2="680" y1="140" y2="140" stroke="var(--chart-grid)"></line><line x1="56" x2="680" y1="185" y2="185" stroke="var(--chart-axis)"></line>
+<text x="48" y="24" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">$ 7 M</text><text x="48" y="84" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">$ 5 M</text><text x="48" y="144" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">$ 3 M</text>
+<polyline points="56,62 92,58 128,66 164,52" fill="none" stroke="var(--chart-1)" stroke-width="2.5" stroke-linejoin="round"></polyline>
+<polyline points="164,52 206,60 248,48 290,96 332,58 374,70 416,74 458,92 500,104 542,124 584,84 626,92 680,82" fill="none" stroke="var(--chart-1)" stroke-width="2.5" stroke-dasharray="7 5" stroke-linejoin="round"></polyline>
+<line x1="164" x2="164" y1="12" y2="185" stroke="var(--chart-axis)" stroke-dasharray="2 4"></line><text x="170" y="14" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">hoy</text>
+<circle cx="542" cy="124" r="7" fill="var(--chart-mark)" stroke="var(--chart-1)" stroke-width="3"></circle>
+<text x="542" y="160" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)" font-family="IBM Plex Sans">$ 3.820.000</text>
+<text x="56" y="203" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">12 sep</text><text x="164" y="203" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">12 oct</text><text x="542" y="203" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">7 dic</text><text x="680" y="203" text-anchor="end" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">10 ene</text>
+</svg>
+<button type="button" onClick="" aria-expanded="false" class="lnk" style="align-self: flex-start; background: none; border: 0; padding: 4px 0; cursor: pointer; min-height: 32px">Ver datos en tabla</button>
+
+</section>
+
+<section aria-labelledby="h-rec" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 4px"><h2 id="h-rec" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Qué puedes hacer</h2><span class="hlp">Reglas transparentes sobre tus datos, no un modelo de IA.</span></div>
+
+<article style="display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: 10px; background: var(--surface-2)">
+<span class="bdg" style="align-self: flex-start; background: var(--warn-soft); color: var(--warn)">! Atención</span>
+<span style="font-size: 15px; line-height: 22px; font-weight: 600">Fortalece tu fondo de emergencia</span>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-2)">Cubre 0,8 meses de gastos esenciales y tu meta es 5. Un aporte fijo quincenal lo hace crecer sin pensarlo.</span>
+<a href="#" class="lnk">Ver objetivos</a>
+</article>
+
+<article style="display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: 10px; background: var(--surface-2)">
+<span class="bdg" style="align-self: flex-start; background: var(--warn-soft); color: var(--warn)">! Atención</span>
+<span style="font-size: 15px; line-height: 22px; font-weight: 600">Tienes una deuda con tasa alta</span>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-2)">Una deuda supera el 25 % efectivo anual. Mira cuánto ahorras pagándola primero.</span>
+<a href="#" class="lnk">Comparar estrategias</a>
+</article>
+
+<article style="display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: 10px; background: var(--surface-2)">
+<span class="bdg" style="align-self: flex-start; background: var(--info-soft); color: var(--info)">i Dato</span>
+<span style="font-size: 15px; line-height: 22px; font-weight: 600">Una parte alta de tu ingreso va a deudas</span>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-2)">Tus cuotas mínimas equivalen al 36 % de tu ingreso mensual de referencia.</span>
+<a href="#" class="lnk">Ver deudas</a>
+</article>
+
+</section>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start">
+<section aria-labelledby="h-prox" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><h2 id="h-prox" style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 600">Próximos 14 días</h2><a href="#" class="lnk">Movimientos</a></div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border)">
+<span style="font-size: 14px; font-weight: 500">Plataformas de streaming</span><span class="n" style="font-size: 14px; font-weight: 600; color: var(--neg); text-align: right">−$ 45.000</span>
+<span class="hlp">15 oct 2026 · Suscripciones</span><span class="bdg" style="justify-self: end; background: var(--warn-soft); color: var(--warn)">! Por confirmar</span>
+</div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border)">
+<span style="font-size: 14px; font-weight: 500">Salario quincena</span><span class="n" style="font-size: 14px; font-weight: 600; color: var(--pos); text-align: right">+$ 2.600.000</span>
+<span class="hlp">15 oct 2026 · Salario</span><span class="bdg" style="justify-self: end; background: var(--info-soft); color: var(--info)">◷ Previsto</span>
+</div>
+
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border)">
+<span style="font-size: 14px; font-weight: 500">Seguro del carro</span><span class="n" style="font-size: 14px; font-weight: 600; color: var(--neg); text-align: right">−$ 180.000</span>
+<span class="hlp">22 oct 2026 · Transporte</span><span class="bdg" style="justify-self: end; background: var(--info-soft); color: var(--info)">◷ Previsto</span>
+</div>
+
+</section>
+
+<section aria-labelledby="h-pre" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><h2 id="h-pre" style="margin: 0; font-size: 16px; line-height: 22px; font-weight: 600">Presupuesto del mes</h2><a href="#" class="lnk">Ver detalle</a></div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Vivienda › Arriendo</span><span class="n" style="white-space: nowrap">$ 1.600.000 / $ 1.600.000</span></div>
+<div style="height: 6px; border-radius: 99px; background: var(--surface-3)"><div style="width: 100%; height: 6px; border-radius: 99px; background: var(--brand)"></div></div>
+<span style="font-size: 12px; font-weight: 600; color: var(--pos)">✓ Pagado completo</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Servicios › Internet y TV</span><span class="n" style="white-space: nowrap">$ 95.000 / $ 95.000</span></div>
+<div style="height: 6px; border-radius: 99px; background: var(--surface-3)"><div style="width: 100%; height: 6px; border-radius: 99px; background: var(--brand)"></div></div>
+<span style="font-size: 12px; font-weight: 600; color: var(--pos)">✓ Pagado completo</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Cuidado personal › Gimnasio</span><span class="n" style="white-space: nowrap">$ 110.000 / $ 110.000</span></div>
+<div style="height: 6px; border-radius: 99px; background: var(--surface-3)"><div style="width: 100%; height: 6px; border-radius: 99px; background: var(--brand)"></div></div>
+<span style="font-size: 12px; font-weight: 600; color: var(--pos)">✓ Pagado completo</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Servicios › Energía</span><span class="n" style="white-space: nowrap">$ 185.000 / $ 200.000</span></div>
+<div style="height: 6px; border-radius: 99px; background: var(--surface-3)"><div style="width: 92.5%; height: 6px; border-radius: 99px; background: var(--brand)"></div></div>
+<span style="font-size: 12px; font-weight: 600; color: var(--pos)">✓ Quedan $ 15.000</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Alimentación › Mercado</span><span class="n" style="white-space: nowrap">$ 620.000 / $ 750.000</span></div>
+<div style="height: 6px; border-radius: 99px; background: var(--surface-3)"><div style="width: 82.7%; height: 6px; border-radius: 99px; background: var(--warn)"></div></div>
+<span style="font-size: 12px; font-weight: 600; color: var(--warn)">! 83 % usado con el 39 % del mes</span>
+</div>
+
+</section>
+
+<section aria-labelledby="h-lec" style="border-radius: 12px; background: var(--nav-bg); color: #ffffff; padding: 22px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent)">Tu siguiente lección</span>
+<h2 id="h-lec" class="ttl" style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">Entender las tasas: E.A., N.A.M.V. y mensual</h2>
+<span style="font-size: 14px; line-height: 20px; color: #c9dde3">Te la recomendamos porque tienes una deuda por encima del 25 % E.A. Termina con un reto: revisar la tasa de tu tarjeta.</span>
+<div style="height: 6px; border-radius: 99px; background: rgb(255 255 255 / 0.18)"><div style="width: 40%; height: 6px; border-radius: 99px; background: var(--accent)"></div></div>
+<span style="font-size: 12px; color: #c9dde3">40 % · 12 min en total</span>
+<a href="#" class="btn" style="align-self: flex-start; background: var(--accent); color: var(--accent-ink); margin-top: 4px">Retomar donde quedaste</a>
+</section>
+</div>
+
+<section aria-labelledby="h-mas" class="card" style="padding: 8px 22px">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; min-height: 52px; display: flex; justify-content: space-between; align-items: center; border: 0; background: transparent; color: var(--ink); cursor: pointer; padding: 0"><span id="h-mas" style="font-size: 16px; font-weight: 600">Más indicadores <span style="font-weight: 400; color: var(--muted); font-size: 14px">· 11</span></span><span aria-hidden="true" style="color: var(--muted); font-size: 18px">+</span></button>
+
+</section>
+
+
+
+
+
+<footer class="hlp" style="padding-top: 12px; border-top: 1px solid var(--border); line-height: 18px">Herramienta educativa. Los cálculos son estimaciones basadas en los datos que registras y en supuestos explícitos; no constituyen asesoría financiera, tributaria, legal ni de inversión. Para decisiones tributarias o contractuales, consulta a un profesional de tu país. Datos ficticios.</footer>
+</main>
+</div>
+</body></html>

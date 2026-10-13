@@ -18,7 +18,7 @@
  *   día y cuotas mínimas de deudas en su día de pago. Se reportan aparte de lo programado.
  */
 import { add, sum, type Minor } from "@/lib/money/money";
-import { addDays, daysInMonth, monthEnd, monthStart, parts, weekStart, type ISODate } from "./dates";
+import { addDays, daysInMonth, formatDate, formatMonth, monthEnd, monthStart, parts, weekStart, type ISODate } from "./dates";
 import { convert } from "./fx";
 import { virtualOccurrences } from "./recurrence";
 import { effectiveDate, type EngineAccount, type EngineRule, type EngineTx, type ExchangeRate } from "./types";
@@ -420,7 +420,7 @@ export function cashflowAlerts(result: CashflowResult, granularity: Granularity,
       kind: "negative_balance",
       severity: "critical",
       date: result.firstNegativeDate,
-      message: `Tu caja podría quedar en negativo a partir del ${new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(result.firstNegativeDate))}.`,
+      message: `Tu caja podría quedar en negativo a partir del ${formatDate(result.firstNegativeDate, locale)}.`,
     });
   }
   for (const b of result.buckets) {
@@ -431,7 +431,10 @@ export function cashflowAlerts(result: CashflowResult, granularity: Granularity,
         kind: "deficit_period",
         severity: "attention",
         date: b.start,
-        message: `Déficit previsto en el ${unit} que inicia el ${b.start}: salen más recursos de los que entran.`,
+        message:
+          granularity === "month"
+            ? `Déficit previsto en ${formatMonth(b.start, locale)}: sale más dinero del que entra.`
+            : `Déficit previsto en la ${unit} del ${formatDate(b.start, locale)}: sale más dinero del que entra.`,
       });
     }
     if (b.overdueCount > 0) {
@@ -454,7 +457,7 @@ export function cashflowAlerts(result: CashflowResult, granularity: Granularity,
           kind: "payment_concentration",
           severity: "attention",
           date: b.start,
-          message: `Semana del ${b.start}: concentra pagos por encima de 1,75 veces el promedio semanal previsto.`,
+          message: `Semana del ${formatDate(b.start, locale)}: concentra pagos por encima de 1,75 veces el promedio semanal previsto.`,
         });
       }
     }

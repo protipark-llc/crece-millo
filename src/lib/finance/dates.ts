@@ -119,12 +119,14 @@ export function todayIn(timeZone: string, now: Date = new Date()): ISODate {
 }
 
 export function formatDate(date: ISODate, locale = "es-CO", style: "short" | "medium" | "long" = "medium"): string {
+  if (style === "medium") {
+    // «12 oct 2026»: mes abreviado sin punto ni «de» (guía de contenido).
+    const parts = new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).formatToParts(new Date(toUTC(date)));
+    const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
+    return `${get("day")} ${get("month").replace(/\.$/, "")} ${get("year")}`;
+  }
   const opts: Intl.DateTimeFormatOptions =
-    style === "short"
-      ? { day: "2-digit", month: "2-digit", year: "numeric" }
-      : style === "medium"
-        ? { day: "numeric", month: "short", year: "numeric" }
-        : { weekday: "long", day: "numeric", month: "long", year: "numeric" };
+    style === "short" ? { day: "2-digit", month: "2-digit", year: "numeric" } : { weekday: "long", day: "numeric", month: "long", year: "numeric" };
   return new Intl.DateTimeFormat(locale, { ...opts, timeZone: "UTC" }).format(new Date(toUTC(date)));
 }
 

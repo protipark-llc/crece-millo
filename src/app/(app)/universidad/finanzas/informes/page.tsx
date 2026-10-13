@@ -70,8 +70,8 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
             title="Ingresos y gastos realizados por mes"
             labels={rows.map((r) => f.axisMonth(r.month))}
             series={[
-              { key: "in", label: "Ingresos", color: "var(--series-1)", values: rows.map((r) => r.income) },
-              { key: "out", label: "Gastos", color: "var(--series-2)", values: rows.map((r) => r.expense) },
+              { key: "in", label: "Ingresos", color: "var(--chart-1)", values: rows.map((r) => r.income) },
+              { key: "out", label: "Gastos", color: "var(--chart-2)", values: rows.map((r) => r.expense) },
             ]}
             currency={d.base}
             locale={d.locale}

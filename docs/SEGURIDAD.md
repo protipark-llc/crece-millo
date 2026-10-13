@@ -10,7 +10,7 @@
 | Sesiones | Token aleatorio de 32 bytes en cookie `httpOnly`, `SameSite=Lax`, `Secure` en producción (`SESSION_COOKIE_SECURE=true`). En BD solo se guarda el SHA-256 del token. Vigencia 30 días con renovación deslizante; cierre de sesión elimina la sesión. |
 | Fuerza bruta | Máximo 5 intentos fallidos por correo en 15 minutos; mensaje genérico (no revela si el correo existe). |
 | Autorización | Cada página y acción verifica la sesión en el servidor (`requireUser` / `runAction`). El middleware solo redirige (no es barrera). |
-| Aislamiento entre usuarios | 1) Toda consulta filtra por `user_id`; 2) claves foráneas compuestas `(id, user_id)`; 3) **Row Level Security** forzada en las 18 tablas con datos personales, activada por `app.user_id` dentro de cada transacción (`withUser`). Sin contexto, las tablas aparecen vacías. Probado en `tests/integration/finance.test.ts`. |
+| Aislamiento entre usuarios | 1) Toda consulta filtra por `user_id`; 2) claves foráneas compuestas `(id, user_id)`; 3) **Row Level Security** forzada en las 22 tablas con datos personales, activada por `app.user_id` dentro de cada transacción (`withUser`). Sin contexto, las tablas aparecen vacías. Probado en `tests/integration/finance.test.ts` y `tests/integration/copilot.test.ts`. |
 | Validación | Zod en el servidor para todas las entradas; reglas de negocio en los servicios; restricciones `CHECK`/`UNIQUE` en la BD como última barrera. |
 | CSRF | Server Actions de Next.js verifican el origen; cookies `SameSite=Lax`. |
 | XSS | React escapa todo el contenido; no se usa `dangerouslySetInnerHTML`. |

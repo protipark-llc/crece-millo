@@ -1,0 +1,123 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+[data-theme="light"]{--bg:#f5f2ec;--surface:#fff;--surface-2:#efebe4;--surface-3:#e5e0d7;--border:rgb(28 28 33/.12);--border-strong:rgb(28 28 33/.22);--control-border:#8a8690;--ink:#1c1c21;--ink-2:#45434a;--muted:#625f66;--brand:#1c1c21;--brand-soft:#ece8e1;--brand-ink:#fff;--accent:#d1401f;--nav-bg:#1c1c21;--pos:#106a1e;--pos-soft:#e6f2e7;--neg:#b42318;--warn:#8a5a00;--warn-soft:#fbf1dc;--info:#1c5cab;--info-soft:#e6eef8;--focus:#2a78d6;--shadow-md:0 4px 12px rgb(28 28 33/.08);color-scheme:light}
+[data-theme="dark"]{--bg:#111114;--surface:#1a1a1f;--surface-2:#222228;--surface-3:#2b2b32;--border:rgb(255 255 255/.10);--border-strong:rgb(255 255 255/.18);--control-border:#6e6a72;--ink:#f2efea;--ink-2:#c9c5bf;--muted:#9c988f;--brand:#f2efea;--brand-soft:#2a2826;--brand-ink:#111114;--accent:#ff6b4a;--nav-bg:#0b0b0d;--pos:#3fbf4a;--pos-soft:#12301a;--neg:#f08080;--warn:#f2c14e;--warn-soft:#33280f;--info:#7fb1ef;--info-soft:#142a45;--focus:#7fb1ef;--shadow-md:0 4px 12px rgb(0 0 0/.45);color-scheme:dark}
+.app{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.ttl{font-family:Outfit,system-ui,sans-serif}
+.n{font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.ov{font-size:11px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.hlp{font-size:12px;line-height:16px;color:var(--muted)}
+.btn{height:48px;padding:0 14px;border-radius:8px;font:600 15px/1 'IBM Plex Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;cursor:pointer;text-decoration:none;box-sizing:border-box}
+.b-pri{background:var(--brand);color:var(--brand-ink)}
+.b-sec{background:var(--surface);color:var(--brand);border-color:var(--control-border)}
+.bdg{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:600}
+button:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+</style>
+</head><body>
+<div class="app" data-theme="light" style="width: 390px; min-height: 100%; display: flex; flex-direction: column">
+
+<header style="position: sticky; top: 0; z-index: 2; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 8px 0 16px; height: 56px; display: flex; align-items: center; gap: 4px">
+<h1 class="ttl" style="margin: 0; font-size: 22px; font-weight: 500; flex: 1">Presupuesto</h1>
+<button type="button" aria-label="Mes anterior" style="width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+<span style="font-size: 14px; font-weight: 600">oct 2026</span>
+<button type="button" aria-label="Mes siguiente" style="width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"></path></svg></button>
+</header>
+
+<main style="padding: 14px 16px 112px; display: flex; flex-direction: column; gap: 12px">
+
+<section aria-label="Resumen" class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span class="bdg" style="background: var(--surface-3); color: var(--ink-2)">Borrador</span><button type="button" style="height: 36px; border: 0; background: transparent; color: var(--brand); font: 600 13px 'IBM Plex Sans', sans-serif">Aprobar</button></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span class="hlp">Sin asignar</span><span class="n" style="font-size: 28px; font-weight: 600; color: var(--warn)">−$ 268.333</span><span style="font-size: 13px; line-height: 19px; color: var(--ink-2)">! Planeas más de lo que esperas recibir. Baja una línea discrecional o reasigna.</span></div>
+<div class="n" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding-top: 10px; border-top: 1px solid var(--border)">
+<div style="display: flex; flex-direction: column; gap: 2px"><span class="hlp">Ingreso</span><span style="font-size: 14px; font-weight: 600">$ 5.200.000</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span class="hlp">Plan gastos</span><span style="font-size: 14px; font-weight: 600">$ 5.168.333</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span class="hlp">Ahorro</span><span style="font-size: 14px; font-weight: 600">$ 300.000</span></div>
+</div>
+</section>
+
+<div style="display: flex; gap: 8px"><button type="button" class="btn b-sec" style="flex: 1">Reasignar</button><button type="button" class="btn b-sec" style="flex: 1">+ Agregar línea</button></div>
+
+
+<div class="card" style="overflow: hidden">
+<button type="button" onClick="" aria-expanded="true" style="width: 100%; padding: 14px; border: 0; background: transparent; color: var(--ink); text-align: left; display: flex; flex-direction: column; gap: 8px; cursor: pointer; font-family: inherit">
+<span style="display: flex; justify-content: space-between; gap: 10px; width: 100%"><span style="font-size: 15px; font-weight: 600">Mercado</span><span class="n" style="font-size: 14px; white-space: nowrap">$ 620.000 <span style="color: var(--muted)">/ $ 750.000</span></span></span>
+<span style="position: relative; display: block; height: 8px; border-radius: 99px; background: var(--surface-3); width: 100%"><span style="position: absolute; left: 0; top: 0; height: 8px; border-radius: 99px; width: 82.7%; background: var(--warn)"></span><span style="position: absolute; left: 82.7%; top: 0; height: 8px; width: 0.0%; background: repeating-linear-gradient(45deg, var(--warn) 0 2px, transparent 2px 5px)"></span></span>
+<span style="font-size: 12px; font-weight: 600; color: var(--warn)">! Al cierre te pasarías $ 378.710</span>
+</button>
+
+<div style="padding: 0 14px 14px; display: flex; flex-direction: column; gap: 10px">
+<div class="n" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; font-size: 13px; padding: 10px; border-radius: 8px; background: var(--surface-2)">
+<span class="hlp">Comprometido</span><span style="text-align: right">$ 0</span>
+<span class="hlp">Saldo</span><span style="text-align: right">$ 130.000</span>
+<span class="hlp">Al cierre (proyección)</span><span style="text-align: right; font-weight: 600; color: var(--warn)">$ 1.128.710</span>
+</div>
+<div style="display: flex; gap: 8px"><button type="button" class="btn b-sec" style="flex: 1; height: 44px; font-size: 14px">Editar plan</button><button type="button" class="btn b-sec" style="flex: 1; height: 44px; font-size: 14px">Mover dinero</button></div>
+</div>
+
+</div>
+
+<div class="card" style="overflow: hidden">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; padding: 14px; border: 0; background: transparent; color: var(--ink); text-align: left; display: flex; flex-direction: column; gap: 8px; cursor: pointer; font-family: inherit">
+<span style="display: flex; justify-content: space-between; gap: 10px; width: 100%"><span style="font-size: 15px; font-weight: 600">Arriendo</span><span class="n" style="font-size: 14px; white-space: nowrap">$ 1.600.000 <span style="color: var(--muted)">/ $ 1.600.000</span></span></span>
+<span style="position: relative; display: block; height: 8px; border-radius: 99px; background: var(--surface-3); width: 100%"><span style="position: absolute; left: 0; top: 0; height: 8px; border-radius: 99px; width: 100.0%; background: var(--brand)"></span><span style="position: absolute; left: 100.0%; top: 0; height: 8px; width: 0.0%; background: repeating-linear-gradient(45deg, var(--brand) 0 2px, transparent 2px 5px)"></span></span>
+<span style="font-size: 12px; font-weight: 600; color: var(--pos)">✓ Pagado completo</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; padding: 14px; border: 0; background: transparent; color: var(--ink); text-align: left; display: flex; flex-direction: column; gap: 8px; cursor: pointer; font-family: inherit">
+<span style="display: flex; justify-content: space-between; gap: 10px; width: 100%"><span style="font-size: 15px; font-weight: 600">Cuotas de deudas</span><span class="n" style="font-size: 14px; white-space: nowrap">$ 0 <span style="color: var(--muted)">/ $ 1.870.000</span></span></span>
+<span style="position: relative; display: block; height: 8px; border-radius: 99px; background: var(--surface-3); width: 100%"><span style="position: absolute; left: 0; top: 0; height: 8px; border-radius: 99px; width: 0.0%; background: var(--brand)"></span><span style="position: absolute; left: 0.0%; top: 0; height: 8px; width: 100.0%; background: repeating-linear-gradient(45deg, var(--brand) 0 2px, transparent 2px 5px)"></span></span>
+<span style="font-size: 12px; font-weight: 600; color: var(--info)">◷ Comprometido, falta pagar</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; padding: 14px; border: 0; background: transparent; color: var(--ink); text-align: left; display: flex; flex-direction: column; gap: 8px; cursor: pointer; font-family: inherit">
+<span style="display: flex; justify-content: space-between; gap: 10px; width: 100%"><span style="font-size: 15px; font-weight: 600">Energía</span><span class="n" style="font-size: 14px; white-space: nowrap">$ 185.000 <span style="color: var(--muted)">/ $ 200.000</span></span></span>
+<span style="position: relative; display: block; height: 8px; border-radius: 99px; background: var(--surface-3); width: 100%"><span style="position: absolute; left: 0; top: 0; height: 8px; border-radius: 99px; width: 92.5%; background: var(--brand)"></span><span style="position: absolute; left: 92.5%; top: 0; height: 8px; width: 0.0%; background: repeating-linear-gradient(45deg, var(--brand) 0 2px, transparent 2px 5px)"></span></span>
+<span style="font-size: 12px; font-weight: 600; color: var(--muted)">✓ Quedan $ 15.000</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; padding: 14px; border: 0; background: transparent; color: var(--ink); text-align: left; display: flex; flex-direction: column; gap: 8px; cursor: pointer; font-family: inherit">
+<span style="display: flex; justify-content: space-between; gap: 10px; width: 100%"><span style="font-size: 15px; font-weight: 600">Transporte público</span><span class="n" style="font-size: 14px; white-space: nowrap">$ 0 <span style="color: var(--muted)">/ $ 180.000</span></span></span>
+<span style="position: relative; display: block; height: 8px; border-radius: 99px; background: var(--surface-3); width: 100%"><span style="position: absolute; left: 0; top: 0; height: 8px; border-radius: 99px; width: 0.0%; background: var(--brand)"></span><span style="position: absolute; left: 0.0%; top: 0; height: 8px; width: 0.0%; background: repeating-linear-gradient(45deg, var(--brand) 0 2px, transparent 2px 5px)"></span></span>
+<span style="font-size: 12px; font-weight: 600; color: var(--muted)">Sin movimientos aún</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; padding: 14px; border: 0; background: transparent; color: var(--ink); text-align: left; display: flex; flex-direction: column; gap: 8px; cursor: pointer; font-family: inherit">
+<span style="display: flex; justify-content: space-between; gap: 10px; width: 100%"><span style="font-size: 15px; font-weight: 600">Streaming y música</span><span class="n" style="font-size: 14px; white-space: nowrap">$ 0 <span style="color: var(--muted)">/ $ 45.000</span></span></span>
+<span style="position: relative; display: block; height: 8px; border-radius: 99px; background: var(--surface-3); width: 100%"><span style="position: absolute; left: 0; top: 0; height: 8px; border-radius: 99px; width: 0.0%; background: var(--brand)"></span><span style="position: absolute; left: 0.0%; top: 0; height: 8px; width: 100.0%; background: repeating-linear-gradient(45deg, var(--brand) 0 2px, transparent 2px 5px)"></span></span>
+<span style="font-size: 12px; font-weight: 600; color: var(--info)">◷ Comprometido, falta pagar</span>
+</button>
+
+</div>
+
+<a href="#" class="card" style="padding: 14px; display: flex; justify-content: space-between; align-items: center; min-height: 52px; color: var(--ink); text-decoration: none"><span style="font-size: 15px; font-weight: 600">5 categorías más · ver todas</span><span aria-hidden="true" style="color: var(--muted)">›</span></a>
+<a href="#" class="card" style="padding: 14px; display: flex; justify-content: space-between; align-items: center; min-height: 52px; color: var(--ink); text-decoration: none"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Distribución y 50/30/20</span><span class="hlp">Esenciales 94 % · Discrecionales 5 % · Ahorro 6 %</span></span><span aria-hidden="true" style="color: var(--muted)">›</span></a>
+
+
+
+</main>
+
+<nav aria-label="Navegación inferior" style="position: sticky; bottom: 0; margin-top: auto; height: 72px; border-top: 1px solid var(--border); background: var(--surface); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center">
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; color: var(--muted); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>Panel</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; color: var(--muted); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg>Movimientos</a>
+<button type="button" aria-label="Registrar movimiento" style="justify-self: center; width: 56px; height: 56px; margin-top: -28px; border-radius: 50%; border: 4px solid var(--bg); background: var(--brand); color: var(--brand-ink); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md)"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+<a href="#" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; font-weight: 600; color: var(--brand); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9v9z"></path></svg>Presupuesto</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; color: var(--muted); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle></svg>Más</a>
+</nav>
+</div>
+</body></html>

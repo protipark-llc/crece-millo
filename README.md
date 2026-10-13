@@ -65,9 +65,9 @@ Edita `src/lib/db/schema.ts`, genera la migración con `npm run db:generate` y a
 
 ## Pruebas
 
-- **Unitarias** (`tests/unit`, 48): dinero y redondeo, fechas y bisiestos, recurrencias, saldos y flujo de caja (caso de referencia COP 1.000.000 + 3.000.000 − 2.200.000 = 1.800.000, tasa de ahorro 26,67 %), transferencias, monedas sin tasa, presupuesto, conversión de tasas, amortización, avalancha / bola de nieve, objetivos, patrimonio, escenarios, indicadores sin divisiones por cero y recomendaciones.
-- **Integración** (`tests/integration`, 14): persistencia real, transferencias, idempotencia de formularios, recurrencias sin duplicados, presupuesto y reasignación, pagos de deuda transaccionales, objetivos, validación de entradas, restricciones de BD, **aislamiento entre usuarios (servicios, FK compuestas y RLS)** simulaciones que no modifican datos, cuenta inicial idempotente y cambio de contraseña.
-- **E2E** (`tests/e2e`, 8): rutas protegidas, flujo completo ingreso → gasto → transferencia con recarga, validaciones, recurrencias + presupuesto, simulador, pago de deuda, lección con cuestionario y versión móvil sin desplazamiento horizontal.
+- **Unitarias** (`tests/unit`, 74): dinero y redondeo, fechas y bisiestos, recurrencias, saldos y flujo de caja (caso de referencia COP 1.000.000 + 3.000.000 − 2.200.000 = 1.800.000, tasa de ahorro 26,67 %), transferencias, monedas sin tasa, presupuesto, conversión de tasas, amortización, avalancha / bola de nieve, objetivos, patrimonio, escenarios, indicadores sin divisiones por cero, recomendaciones, motor del Co-Piloto (precio, CPA, veredicto, capital) y vistas/secciones.
+- **Integración** (`tests/integration`, 19): persistencia real, transferencias, idempotencia de formularios, recurrencias sin duplicados, presupuesto y reasignación, pagos de deuda transaccionales, objetivos, validación de entradas, restricciones de BD, **aislamiento entre usuarios (servicios, FK compuestas y RLS)** simulaciones que no modifican datos, cuenta inicial idempotente, cambio de contraseña y Co-Piloto (productos, tests, plan, ruta, RLS y vistas).
+- **E2E** (`tests/e2e`, 10): rutas protegidas, flujo completo ingreso → gasto → transferencia con recarga, validaciones, recurrencias + presupuesto, simulador, pago de deuda, lección con cuestionario, vista Esencial/Personalizada, Co-Piloto con veredicto y ruta, y versión móvil sin desplazamiento horizontal.
 
 ## Cómo probar manualmente
 
@@ -89,6 +89,36 @@ Edita `src/lib/db/schema.ts`, genera la migración con `npm run db:generate` y a
 16. **Universidad**: abre una lección, responde el cuestionario y márcala como completada; mira "Mi progreso".
 17. **Aislamiento**: crea un segundo usuario en otra ventana privada: no ve los datos del primero.
 18. **Móvil**: abre el sitio con ancho de 390 px; usa el menú ☰.
+19. **Vistas**: en Configuración → Tu vista elige Esencial: el menú muestra solo Panel, Movimientos, Cuentas, Flujo de caja, Emprendedores y Co-Piloto. Marca Diagnóstico: pasa a Personalizada y aparece en el menú.
+20. **Co-Piloto**: Comunidad → Emprendedores → Co-Piloto → Nuevo producto: costo 85.000, envío 16.000, devoluciones 20 %, CPA esperado 35.000 → precio recomendado y CPA máximo en vivo. Registra un test (4 días, 171.200 de anuncios, 4 ventas) y lee el veredicto; guarda un plan de capital y marca pasos en la Ruta.
+
+## Diseño y marca
+
+La interfaz sigue la entrega de diseño v1 (marca «Umbral»): `docs/diseno/crece-millo-v1/`
+(especificación, tokens, activos y capturas de cada pantalla). Los tokens viven en
+`src/app/tokens.css` y los componentes usan solo roles (`bg-surface`, `text-ink`, `bg-accent`…).
+El tema claro, oscuro o del sistema se elige en la barra superior o en Configuración.
+Los íconos de cada sección se conservan (`docs/ICONOS.md`).
+
+## Vistas y secciones
+
+En **Configuración → Tu vista** cada persona elige qué ve (`src/lib/sections.ts`):
+
+- **Esencial**: Panel, Movimientos, Cuentas, Flujo de caja, Emprendedores y Co-Piloto. Lo justo
+  para llevar el flujo de caja mensual de ingresos y gastos y el negocio de dropshipping.
+- **Pro**: todas las secciones (es la vista por defecto).
+- **Personalizada**: marca o desmarca cada sección. Ocultar una sección no borra sus datos;
+  Configuración siempre queda visible.
+
+La navegación (barra lateral, menú «Más» y barra inferior en móvil) y el Panel se ajustan a la
+vista. La página de inicio lleva a la primera sección visible.
+
+## Comunidad › Emprendedores
+
+El **Co-Piloto de Negocio** y la **Ruta de dropshipping** funcionan con datos reales: precio
+recomendado y rango, CPA máximo, veredicto de cada test (seguir, optimizar o parar) y plan de
+capital. El muro y los en vivo siguen siendo una vista previa con datos de ejemplo; su modelo de
+datos propuesto está en `docs/COMUNIDAD.md`.
 
 ## Limitaciones conocidas
 

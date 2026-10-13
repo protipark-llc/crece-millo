@@ -120,7 +120,7 @@ export function parseAmount(input: string, currency: string): Minor {
   const { exponent } = currencyInfo(currency);
   let s = input.trim().replace(/\s|\$/g, "").replace(new RegExp(currency, "i"), "");
   if (s === "") throw new MoneyError("Ingresa un importe");
-  if (s.startsWith("-")) throw new MoneyError("El importe no puede ser negativo");
+  if (s.startsWith("-") || s.startsWith("\u2212")) throw new MoneyError("El importe no puede ser negativo");
   if (!/^[0-9.,]+$/.test(s)) throw new MoneyError("El importe solo puede contener números, puntos y comas");
   let intPart: string;
   let fracPart = "";
@@ -188,14 +188,13 @@ export function formatMoney(
     });
     formatterCache.set(key, fmt);
   }
-  return fmt.format(toMajor(minor, currency));
+  // Signo menos tipográfico (−, U+2212): la guía de contenido lo pide en lugar del guion.
+  return fmt.format(toMajor(minor, currency)).replace(/^-/, "\u2212");
 }
 
+/** Porcentaje en estilo es-CO de la guía: «26,67 %» (espacio duro antes del signo, menos real). */
 export function formatPercent(value: number | null, locale = "es-CO", digits = 1): string {
   if (value === null || !Number.isFinite(value)) return "—";
-  return new Intl.NumberFormat(locale, {
-    style: "percent",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: digits,
-  }).format(value);
+  const n = new Intl.NumberFormat(locale, { minimumFractionDigits: 0, maximumFractionDigits: digits }).format(value * 100);
+  return `${n.replace(/^-/, "\u2212")}\u00a0%`;
 }

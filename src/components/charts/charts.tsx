@@ -6,7 +6,7 @@ import { formatMoney } from "@/lib/money/money";
 export interface Series {
   key: string;
   label: string;
-  /** Rol de color: var(--series-1) … var(--series-3). */
+  /** Rol de color: var(--chart-1) … var(--chart-3). */
   color: string;
   values: (number | null)[];
 }
@@ -72,7 +72,7 @@ function Legend({ series, projected }: { series: Series[]; projected: boolean })
       {series.length >= 2 &&
         series.map((s) => (
           <li key={s.key} className="flex items-center gap-1.5">
-            <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: s.color }} />
+            <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-xs" style={{ background: s.color }} />
             {s.label}
           </li>
         ))}
@@ -91,7 +91,7 @@ function Legend({ series, projected }: { series: Series[]; projected: boolean })
 function DataTable({ labels, series, currency, locale, caption, projectedFrom }: { labels: string[]; series: Series[]; currency: string; locale: string; caption: string; projectedFrom?: number | null }) {
   return (
     <details className="mt-2 text-sm">
-      <summary className="cursor-pointer text-xs font-medium text-muted hover:text-ink">Ver datos en tabla</summary>
+      <summary className="inline-flex min-h-9 cursor-pointer items-center text-sm font-semibold text-ink hover:underline">Ver datos en tabla</summary>
       <div className="relative mt-2 max-h-72 overflow-auto">
         <table className="w-full text-xs">
           <caption className="sr-only">{caption}</caption>
@@ -150,12 +150,12 @@ function visibleTicks(labels: string[], step: number): Set<number> {
 function Tooltip({ x, width, label, rows }: { x: number; width: number; label: string; rows: { color: string; label: string; value: string }[] }) {
   const left = Math.min(Math.max(x + 12, 0), width - 200);
   return (
-    <div className="pointer-events-none absolute top-2 z-10 w-[188px] rounded-lg border border-border bg-surface px-3 py-2 text-xs shadow-lg" style={{ left }}>
+    <div className="pointer-events-none absolute top-2 z-10 w-[188px] rounded-md border border-border bg-surface px-3 py-2 text-xs shadow-lg" style={{ left }}>
       <p className="mb-1 font-medium text-ink">{label}</p>
       {rows.map((r) => (
         <p key={r.label} className="flex items-center justify-between gap-2 text-ink-2">
           <span className="flex items-center gap-1.5">
-            <span aria-hidden className="inline-block h-2 w-2 rounded-sm" style={{ background: r.color }} />
+            <span aria-hidden className="inline-block h-2 w-2 rounded-xs" style={{ background: r.color }} />
             {r.label}
           </span>
           <span className="tabular text-ink">{r.value}</span>
@@ -177,10 +177,32 @@ function useHover(n: number) {
   return { idx, setIdx, onKey };
 }
 
-export function LineChart({ labels, series, currency, locale, height = 240, projectedFrom = null, title, tableCaption, zeroLine = true }: Common & { zeroLine?: boolean }) {
+export function LineChart({
+  labels,
+  series,
+  currency,
+  locale,
+  height = 240,
+  projectedFrom = null,
+  title,
+  tableCaption,
+  zeroLine = true,
+  mark,
+  todayIndex,
+}: Common & {
+  zeroLine?: boolean;
+  /** Punto destacado (p. ej. el saldo más bajo) en chart-mark, con su etiqueta escrita. `value` sobrescribe el valor de la serie. */
+  mark?: { index: number; label: string; value?: number } | null;
+  /** Índice de «hoy»: línea vertical punteada con la palabra «hoy». */
+  todayIndex?: number | null;
+}) {
   const { ref, width } = useWidth();
   const { idx, setIdx, onKey } = useHover(labels.length);
-  const { lo, hi, ticks } = useMemo(() => scaleY(series, zeroLine), [series, zeroLine]);
+  const markValue = mark ? (mark.value ?? series[0]?.values[mark.index] ?? null) : null;
+  const { lo, hi, ticks } = useMemo(
+    () => scaleY(markValue !== null && markValue !== undefined ? [...series, { key: "__mark", label: "", color: "", values: [markValue] }] : series, zeroLine),
+    [series, zeroLine, markValue],
+  );
   const iw = width - PAD.left - PAD.right;
   const ih = height - PAD.top - PAD.bottom;
   const x = (i: number) => PAD.left + (labels.length <= 1 ? iw / 2 : (i / (labels.length - 1)) * iw);
@@ -227,7 +249,7 @@ export function LineChart({ labels, series, currency, locale, height = 240, proj
         >
           {ticks.map((t) => (
             <g key={t}>
-              <line x1={PAD.left} x2={width - PAD.right} y1={y(t)} y2={y(t)} stroke={t === 0 && zeroLine ? "var(--axis)" : "var(--grid)"} strokeWidth={1} />
+              <line x1={PAD.left} x2={width - PAD.right} y1={y(t)} y2={y(t)} stroke={t === 0 && zeroLine ? "var(--chart-axis)" : "var(--chart-grid)"} strokeWidth={1} />
               <text x={PAD.left - 8} y={y(t)} dy="0.32em" textAnchor="end" fontSize="11" fill="var(--muted)" className="tabular">
                 {formatMoney(t, currency, locale, { compact: true })}
               </text>
@@ -247,16 +269,40 @@ export function LineChart({ labels, series, currency, locale, height = 240, proj
                 <path d={path(s.values, Math.max(0, split), labels.length - 1)} fill="none" stroke={s.color} strokeWidth={2} strokeDasharray="5 4" strokeLinecap="round" />
               )}
               {s.values.length > 0 && s.values[s.values.length - 1] !== null && (
-                <circle cx={x(s.values.length - 1)} cy={y(s.values[s.values.length - 1]!)} r={4} fill={s.color} stroke="var(--chart-surface)" strokeWidth={2} />
+                <circle cx={x(s.values.length - 1)} cy={y(s.values[s.values.length - 1]!)} r={4} fill={s.color} stroke="var(--surface)" strokeWidth={2} />
               )}
             </g>
           ))}
+          {todayIndex !== null && todayIndex !== undefined && todayIndex >= 0 && todayIndex < labels.length && (
+            <g aria-hidden>
+              <line x1={x(todayIndex)} x2={x(todayIndex)} y1={PAD.top} y2={PAD.top + ih} stroke="var(--chart-axis)" strokeWidth={1} strokeDasharray="2 3" />
+              <text x={x(todayIndex) + 4} y={PAD.top + 10} fontSize="11" fill="var(--muted)">
+                hoy
+              </text>
+            </g>
+          )}
+          {mark && markValue !== null && markValue !== undefined && (
+            <g aria-hidden>
+              <circle cx={x(mark.index)} cy={y(markValue)} r={6} fill="var(--chart-mark)" stroke="var(--surface)" strokeWidth={2} />
+              <text
+                x={x(mark.index)}
+                y={Math.min(PAD.top + ih - 4, y(markValue) + 22)}
+                textAnchor={mark.index > labels.length * 0.75 ? "end" : mark.index < labels.length * 0.25 ? "start" : "middle"}
+                fontSize="12"
+                fontWeight="600"
+                fill="var(--ink)"
+                className="tabular"
+              >
+                {mark.label}
+              </text>
+            </g>
+          )}
           {idx !== null && (
             <g>
-              <line x1={x(idx)} x2={x(idx)} y1={PAD.top} y2={PAD.top + ih} stroke="var(--axis)" strokeWidth={1} />
+              <line x1={x(idx)} x2={x(idx)} y1={PAD.top} y2={PAD.top + ih} stroke="var(--chart-axis)" strokeWidth={1} />
               {series.map((s) =>
                 s.values[idx] !== null && s.values[idx] !== undefined ? (
-                  <circle key={s.key} cx={x(idx)} cy={y(s.values[idx]!)} r={4.5} fill={s.color} stroke="var(--chart-surface)" strokeWidth={2} />
+                  <circle key={s.key} cx={x(idx)} cy={y(s.values[idx]!)} r={4.5} fill={s.color} stroke="var(--surface)" strokeWidth={2} />
                 ) : null,
               )}
             </g>
@@ -318,7 +364,7 @@ export function ColumnChart({ labels, series, currency, locale, height = 240, pr
         <svg width={width} height={height} role="img" aria-label={`${title}. Usa las flechas para recorrer los valores.`} tabIndex={0} onKeyDown={onKey} onPointerMove={onMove} onPointerLeave={() => setIdx(null)} onBlur={() => setIdx(null)} className="touch-pan-y select-none">
           {ticks.map((t) => (
             <g key={t}>
-              <line x1={PAD.left} x2={width - PAD.right} y1={y(t)} y2={y(t)} stroke={t === 0 ? "var(--axis)" : "var(--grid)"} strokeWidth={1} />
+              <line x1={PAD.left} x2={width - PAD.right} y1={y(t)} y2={y(t)} stroke={t === 0 ? "var(--chart-axis)" : "var(--chart-grid)"} strokeWidth={1} />
               <text x={PAD.left - 8} y={y(t)} dy="0.32em" textAnchor="end" fontSize="11" fill="var(--muted)" className="tabular">
                 {formatMoney(t, currency, locale, { compact: true })}
               </text>
@@ -378,7 +424,7 @@ export function BarList({ items, currency, locale, title, total }: { items: { la
               </span>
             </div>
             <div className="h-2 w-full rounded-full bg-surface-2">
-              <div className="h-2 rounded-r-full" style={{ width: `${(i.value / max) * 100}%`, background: "var(--series-1)" }} />
+              <div className="h-2 rounded-r-full" style={{ width: `${(i.value / max) * 100}%`, background: "var(--chart-1)" }} />
             </div>
           </li>
         ))}

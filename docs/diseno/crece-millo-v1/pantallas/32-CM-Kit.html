@@ -1,0 +1,327 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+[data-theme="light"]{--bg:#f5f2ec;--surface:#fff;--surface-2:#efebe4;--surface-3:#e5e0d7;--overlay:rgb(28 28 33/.48);--border:rgb(28 28 33/.12);--border-strong:rgb(28 28 33/.22);--control-border:#8a8690;--ink:#1c1c21;--ink-2:#45434a;--muted:#625f66;--brand:#1c1c21;--brand-hover:#000;--brand-pressed:#072e3a;--brand-soft:#ece8e1;--brand-ink:#fff;--accent:#d1401f;--accent-ink:#fff;--nav-bg:#1c1c21;--nav-ink:#e6e2db;--nav-active-bg:rgb(224 72 45/.24);--nav-label:#a6a29b;--pos:#106a1e;--pos-soft:#e6f2e7;--neg:#b42318;--neg-soft:#fbe9e7;--warn:#8a5a00;--warn-soft:#fbf1dc;--info:#1c5cab;--info-soft:#e6eef8;--focus:#2a78d6;--chart-1:#c63e22;--chart-2:#4a4850;--chart-3:#2a78d6;--chart-grid:#e7e2da;--chart-axis:#94908a;--chart-mark:#e0482d;--shadow-sm:0 1px 2px rgb(28 28 33/.06);--shadow-md:0 4px 12px rgb(28 28 33/.08);--shadow-lg:0 16px 40px rgb(28 28 33/.18);color-scheme:light}
+[data-theme="dark"]{--bg:#111114;--surface:#1a1a1f;--surface-2:#222228;--surface-3:#2b2b32;--overlay:rgb(0 0 0/.6);--border:rgb(255 255 255/.10);--border-strong:rgb(255 255 255/.18);--control-border:#6e6a72;--ink:#f2efea;--ink-2:#c9c5bf;--muted:#9c988f;--brand:#f2efea;--brand-hover:#fff;--brand-pressed:#c2e4ec;--brand-soft:#2a2826;--brand-ink:#111114;--accent:#ff6b4a;--accent-ink:#111114;--nav-bg:#0b0b0d;--nav-ink:#c9c5bf;--nav-active-bg:rgb(255 107 74/.18);--nav-label:#8e8a84;--pos:#3fbf4a;--pos-soft:#12301a;--neg:#f08080;--neg-soft:#3a1a1a;--warn:#f2c14e;--warn-soft:#33280f;--info:#7fb1ef;--info-soft:#142a45;--focus:#7fb1ef;--chart-1:#ff7a5c;--chart-2:#b9b5ae;--chart-3:#7fb1ef;--chart-grid:#2a2a30;--chart-axis:#5e5b62;--chart-mark:#ff6b4a;--shadow-sm:0 1px 2px rgb(0 0 0/.4);--shadow-md:0 4px 12px rgb(0 0 0/.45);--shadow-lg:0 16px 40px rgb(0 0 0/.6);color-scheme:dark}
+.kit{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);transition:background-color 180ms cubic-bezier(.2,0,0,1),color 180ms}
+.ttl{font-family:Outfit,system-ui,sans-serif}
+.n{font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.ov{font-size:11px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.btn{height:44px;padding:0 16px;border-radius:8px;font:600 14px/1 'IBM Plex Sans',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;cursor:pointer;transition:background-color 120ms cubic-bezier(.2,0,0,1)}
+.b-pri{background:var(--brand);color:var(--brand-ink)}.b-pri:hover,.b-pri.h{background:var(--brand-hover)}.b-pri.p{background:var(--brand-pressed)}
+.b-sec{background:var(--surface);color:var(--brand);border-color:var(--control-border)}.b-sec:hover,.b-sec.h{background:var(--brand-soft)}.b-sec.p{background:var(--surface-3)}
+.b-gho{background:transparent;color:var(--brand)}.b-gho:hover,.b-gho.h{background:var(--brand-soft)}.b-gho.p{background:var(--surface-3)}
+.b-dan{background:var(--neg);color:var(--surface)}.b-dan:hover,.b-dan.h{filter:brightness(.92)}.b-dan.p{filter:brightness(.85)}
+.btn.f,.fld.f,.btn:focus-visible,button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.btn:disabled,.btn.d{background:var(--surface-3);color:var(--muted);border-color:transparent;cursor:not-allowed;filter:none}
+.fld{height:44px;border:1px solid var(--control-border);border-radius:8px;background:var(--surface);display:flex;align-items:center;gap:6px;padding:0 12px;font-size:15px;color:var(--ink)}
+.fld.e{border:2px solid var(--neg)}.fld.d{background:var(--surface-2);color:var(--muted);border-color:var(--border)}
+.lbl{font-size:13px;font-weight:600;color:var(--ink)}
+.hlp{font-size:12px;line-height:16px;color:var(--muted)}
+.bdg{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:600}
+.alr{display:flex;gap:10px;padding:12px 14px;border-radius:12px;font-size:14px;line-height:20px;border:1px solid}
+.sk{background:var(--surface-3);border-radius:6px;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.5}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .9s linear infinite}
+@media (prefers-reduced-motion:reduce){.sk,.spin{animation:none}.kit,.btn{transition:none}}
+.tbl{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+.tbl th{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--border-strong)}
+.tbl td{padding:12px;border-bottom:1px solid var(--border)}
+.key{height:52px;border-radius:8px;border:0;background:var(--surface-2);color:var(--ink);font:500 22px/1 'IBM Plex Sans',sans-serif;cursor:pointer}
+.key:active{background:var(--surface-3)}
+</style>
+</head><body>
+<div class="kit" data-theme="light" style="min-height: 100vh; padding: 48px 56px 64px; box-sizing: border-box; display: flex; flex-direction: column; gap: 40px">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; align-items: flex-end">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 720px">
+<span class="ov">Crece Millo · Marca Umbral · v1.0</span>
+<h1 class="ttl" style="margin: 0; font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.02em">Sistema de diseño</h1>
+<p style="margin: 0; font-size: 15px; line-height: 24px; color: var(--ink-2)">Todo lo que ves usa los roles de tokens.css. Cambia el tema para revisar claro y oscuro con los mismos componentes.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="lbl" id="tema-lbl">Tema</span>
+<div role="radiogroup" aria-labelledby="tema-lbl" style="display: flex; padding: 4px; gap: 4px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border)">
+
+<button type="button" role="radio" aria-checked="true" onClick="" style="height: 40px; padding: 0 14px; border: 0; border-radius: 8px; display: flex; align-items: center; gap: 6px; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer; background: var(--surface); color: var(--ink); box-shadow: var(--shadow-sm)">Claro</button>
+
+<button type="button" role="radio" aria-checked="false" onClick="" style="height: 40px; padding: 0 14px; border: 0; border-radius: 8px; display: flex; align-items: center; gap: 6px; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none">Oscuro</button>
+
+<button type="button" role="radio" aria-checked="false" onClick="" style="height: 40px; padding: 0 14px; border: 0; border-radius: 8px; display: flex; align-items: center; gap: 6px; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none">Sistema</button>
+
+</div>
+<span class="hlp">Se guarda por persona. «Sistema» sigue al teléfono o computador.</span>
+</div>
+</header>
+
+<section aria-labelledby="s-color" style="display: flex; flex-direction: column; gap: 16px">
+<h2 id="s-color" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Color por rol</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px">
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--bg); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--bg</span><span class="hlp">Fondo de página</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--surface); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--surface</span><span class="hlp">Tarjetas</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--surface-2); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--surface-2</span><span class="hlp">Filas alternas</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--surface-3); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--surface-3</span><span class="hlp">Controles, pistas</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--ink); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--ink</span><span class="hlp">Texto principal</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--ink-2); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--ink-2</span><span class="hlp">Texto secundario</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--muted); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--muted</span><span class="hlp">Ayuda</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--control-border); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--control-border</span><span class="hlp">Borde de campos</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--brand); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--brand</span><span class="hlp">Acción, enlaces</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--brand-soft); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--brand-soft</span><span class="hlp">Fondos suaves</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--accent); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--accent</span><span class="hlp">Decoración, logros</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--nav-bg); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--nav-bg</span><span class="hlp">Barra lateral</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--pos); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--pos</span><span class="hlp">Ingreso, bien</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--neg); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--neg</span><span class="hlp">Gasto, peligro</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--warn); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--warn</span><span class="hlp">Atención</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--info); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--info</span><span class="hlp">Información</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--focus); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--focus</span><span class="hlp">Anillo de foco</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--chart-1); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--chart-1</span><span class="hlp">Serie 1</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--chart-2); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--chart-2</span><span class="hlp">Serie 2</span></div></div>
+
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column"><div style="height: 52px; background: var(--chart-3); border-bottom: 1px solid var(--border)"></div><div style="padding: 8px 10px; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; font-weight: 600">--chart-3</span><span class="hlp">Serie 3</span></div></div>
+
+</div>
+</section>
+
+<section aria-labelledby="s-type" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px">
+<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="s-type" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Tipografía</h2>
+<div style="display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 12px 16px; align-items: baseline">
+<span class="hlp">Cifra grande<br>Plex 600 · 40/44</span><span class="n" style="font-size: 40px; line-height: 44px; font-weight: 600; letter-spacing: -0.02em">$ 1.590.000</span>
+<span class="hlp">Página<br>Outfit 500 · 32/38</span><span class="ttl" style="font-size: 32px; line-height: 38px; font-weight: 500; letter-spacing: -0.02em">¿Cómo voy este mes?</span>
+<span class="hlp">Sección<br>Outfit 500 · 20/26</span><span class="ttl" style="font-size: 20px; line-height: 26px; font-weight: 500">Tu horizonte de caja</span>
+<span class="hlp">Tarjeta<br>Plex 600 · 16/22</span><span style="font-size: 16px; line-height: 22px; font-weight: 600">Próximos 14 días</span>
+<span class="hlp">Indicador<br>Plex 600 · 22/28</span><span class="n" style="font-size: 22px; line-height: 28px; font-weight: 600">−$ 2.610.000</span>
+<span class="hlp">Cuerpo<br>Plex 400 · 15/24</span><span style="font-size: 15px; line-height: 24px">El saldo baja en diciembre porque coinciden el arriendo y la prima del seguro.</span>
+<span class="hlp">Tabla<br>Plex 500 · 14/20</span><span class="n" style="font-size: 14px; line-height: 20px; font-weight: 500">26,67 % · 12 oct 2026 · $ 45.000</span>
+<span class="hlp">Ayuda<br>Plex 400 · 12/16</span><span class="hlp">Registra al menos un ingreso para calcular la tasa de ahorro.</span>
+<span class="hlp">Sobretítulo<br>Plex 600 · 11/16</span><span class="ov">Nivel 3 de 7</span>
+</div>
+</div>
+<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<h2 class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Espacio, forma y movimiento</h2>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">Espaciado · base 4 px</span>
+<div style="display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap"><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 4px; height: 4px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">4</span></div><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 8px; height: 8px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">8</span></div><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 12px; height: 12px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">12</span></div><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 16px; height: 16px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">16</span></div><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 20px; height: 20px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">20</span></div><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 24px; height: 24px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">24</span></div><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 32px; height: 32px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">32</span></div><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 40px; height: 40px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">40</span></div><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 48px; height: 48px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">48</span></div><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 64px; height: 64px; background: var(--brand-soft); border: 1px solid var(--brand)"></div><span class="hlp n">64</span></div></div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">Radios</span>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 56px; height: 40px; border-radius: 6px; background: var(--surface-3)"></div><span class="hlp">sm 6 · insignia</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 56px; height: 40px; border-radius: 8px; background: var(--surface-3)"></div><span class="hlp">md 8 · control</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 56px; height: 40px; border-radius: 12px; background: var(--surface-3)"></div><span class="hlp">lg 12 · tarjeta</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><div style="width: 56px; height: 40px; border-radius: 16px; background: var(--surface-3)"></div><span class="hlp">xl 16 · diálogo</span></div>
+</div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">Sombras · solo en capas flotantes</span>
+<div style="display: flex; gap: 16px; flex-wrap: wrap; padding: 8px 0">
+<div style="width: 90px; height: 50px; border-radius: 12px; background: var(--surface); box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center"><span class="hlp">sm</span></div>
+<div style="width: 90px; height: 50px; border-radius: 12px; background: var(--surface); box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center"><span class="hlp">md · menú</span></div>
+<div style="width: 90px; height: 50px; border-radius: 12px; background: var(--surface); box-shadow: var(--shadow-lg); display: flex; align-items: center; justify-content: center"><span class="hlp">lg · diálogo</span></div>
+</div></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="lbl">Movimiento</span><span class="hlp">120 ms hover y presionado · 180 ms cambios de valor y pestañas · 260 ms hoja inferior y diálogo · curva estándar cubic-bezier(.2, 0, 0, 1) · con «reducir movimiento» todo es instantáneo.</span></div>
+</div>
+</section>
+
+<section aria-labelledby="s-btn" class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px"><h2 id="s-btn" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Botones</h2><span class="hlp">Alto 44 (md) · 36 (sm, solo escritorio) · 52 (lg, móvil principal) · padding 16 · radio 8 · texto 14/600</span></div>
+<div style="overflow-x: auto">
+<div style="display: grid; grid-template-columns: 110px repeat(6, minmax(120px, 1fr)); gap: 12px; align-items: center; min-width: 900px">
+<span></span><span class="hlp">Normal</span><span class="hlp">Hover</span><span class="hlp">Foco</span><span class="hlp">Presionado</span><span class="hlp">Deshabilitado</span><span class="hlp">Cargando</span>
+<span class="lbl">Primario</span><button type="button" class="btn b-pri">Guardar</button><button type="button" class="btn b-pri h">Guardar</button><button type="button" class="btn b-pri f">Guardar</button><button type="button" class="btn b-pri p">Guardar</button><button type="button" class="btn b-pri" disabled>Guardar</button><button type="button" class="btn b-pri" aria-busy="true"><svg class="spin" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg>Guardando</button>
+<span class="lbl">Secundario</span><button type="button" class="btn b-sec">Cancelar</button><button type="button" class="btn b-sec h">Cancelar</button><button type="button" class="btn b-sec f">Cancelar</button><button type="button" class="btn b-sec p">Cancelar</button><button type="button" class="btn b-sec" disabled>Cancelar</button><button type="button" class="btn b-sec" aria-busy="true"><svg class="spin" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg>Cargando</button>
+<span class="lbl">Fantasma</span><button type="button" class="btn b-gho">Ver más</button><button type="button" class="btn b-gho h">Ver más</button><button type="button" class="btn b-gho f">Ver más</button><button type="button" class="btn b-gho p">Ver más</button><button type="button" class="btn b-gho" disabled>Ver más</button><button type="button" class="btn b-gho" aria-busy="true"><svg class="spin" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg>Cargando</button>
+<span class="lbl">Peligro</span><button type="button" class="btn b-dan">Eliminar</button><button type="button" class="btn b-dan h">Eliminar</button><button type="button" class="btn b-dan f">Eliminar</button><button type="button" class="btn b-dan p">Eliminar</button><button type="button" class="btn b-dan" disabled>Eliminar</button><button type="button" class="btn b-dan" aria-busy="true"><svg class="spin" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"></path></svg>Eliminando</button>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="s-fld" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px">
+<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 id="s-fld" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Campo de dinero</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label class="lbl" for="m1">Normal</label><div class="fld"><span style="color: var(--muted)">$</span><input id="m1" class="n" inputmode="numeric" value="620.000" style="flex: 1; min-width: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: right; outline: none"></div><span class="hlp">Sin decimales. Punto de miles automático.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">Foco</span><div class="fld f"><span style="color: var(--muted)">$</span><span class="n" style="flex: 1; text-align: right">1.600.000</span></div><span class="hlp">Teclado numérico en móvil.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">Error</span><div class="fld e"><span style="color: var(--muted)">$</span><span class="n" style="flex: 1; text-align: right">0</span></div><span style="display: flex; gap: 6px; font-size: 12px; line-height: 16px; color: var(--neg); font-weight: 600"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>Escribe un valor mayor que $ 0.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">Deshabilitado</span><div class="fld d"><span>$</span><span class="n" style="flex: 1; text-align: right">45.000</span></div><span class="hlp">Valor de una recurrencia ya confirmada.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label class="lbl" for="sel1">Selector</label><div class="fld" style="padding: 0"><select id="sel1" style="flex: 1; height: 42px; border: 0; background: transparent; color: inherit; font: inherit; padding: 0 12px; border-radius: 8px"><option>Cuenta de ahorros</option><option>Billetera digital</option><option>Efectivo</option></select></div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl">Casilla</span><label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px"><input type="checkbox" checked style="width: 20px; height: 20px; accent-color: var(--brand)">Se repite cada mes</label></div>
+</div>
+</div>
+
+<div class="card" style="padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Avisos e insignias</h2>
+<div class="alr" style="background: var(--pos-soft); border-color: var(--pos); color: var(--ink)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--pos)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><circle cx="12" cy="12" r="9"></circle><polyline points="8 12 11 15 16 9"></polyline></svg><span><strong style="color: var(--pos)">Bien.</strong> Movimiento guardado. Tu presupuesto de Mercado quedó en 83 %.</span></div>
+<div class="alr" style="background: var(--warn-soft); border-color: var(--warn); color: var(--ink)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 3 2 20h20z"></path><path d="M12 10v4M12 17h.01"></path></svg><span><strong style="color: var(--warn)">Atención.</strong> El gasto va más rápido que el mes: 67 % usado al día 12.</span></div>
+<div class="alr" style="background: var(--neg-soft); border-color: var(--neg); color: var(--ink)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--neg)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><circle cx="12" cy="12" r="9"></circle><path d="M9 9l6 6M15 9l-6 6"></path></svg><span><strong style="color: var(--neg)">Déficit previsto.</strong> El 7 dic tu saldo quedaría en −$ 120.000. Mira qué lo causa.</span></div>
+<div class="alr" style="background: var(--info-soft); border-color: var(--info); color: var(--ink)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg><span><strong style="color: var(--info)">Dato.</strong> Las cuentas de inversión no cuentan como caja.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span class="bdg" style="background: var(--pos-soft); color: var(--pos)">+ Ingreso</span>
+<span class="bdg" style="background: var(--neg-soft); color: var(--neg)">− Gasto</span>
+<span class="bdg" style="background: var(--surface-3); color: var(--ink-2)">⇄ Transferencia</span>
+<span class="bdg" style="background: var(--info-soft); color: var(--info)">◷ Previsto</span>
+<span class="bdg" style="background: var(--surface-2); color: var(--muted); text-decoration: line-through">Anulado</span>
+<span class="bdg" style="background: var(--brand-soft); color: var(--brand)">✓ Conciliado</span>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="s-ind" style="display: flex; flex-direction: column; gap: 16px">
+<h2 id="s-ind" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Indicadores y progreso</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px">
+<div class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: var(--muted)">Gastaste · oct 2026</span><span class="n" style="font-size: 22px; line-height: 28px; font-weight: 600; color: var(--neg)">−$ 2.610.000</span><span style="font-size: 12px; color: var(--muted)">▲ 8 % frente a septiembre</span></div>
+<div class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: var(--muted)">Cobertura de emergencia</span><span class="n" style="font-size: 22px; line-height: 28px; font-weight: 600">0,8 meses</span><span class="bdg" style="align-self: flex-start; background: var(--warn-soft); color: var(--warn)">! Meta: 5 meses</span></div>
+<div class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: var(--muted)">Tasa de ahorro</span><span style="font-size: 15px; font-weight: 600; color: var(--ink-2)">Datos insuficientes</span><span class="hlp">Registra al menos un ingreso realizado en el periodo.</span><a href="#" style="font-size: 13px; font-weight: 600; color: var(--brand)">Registrar ingreso</a></div>
+<div class="card" aria-busy="true" aria-label="Cargando indicador" style="padding: 16px; display: flex; flex-direction: column; gap: 10px"><div class="sk" style="width: 60%; height: 12px"></div><div class="sk" style="width: 80%; height: 24px"></div><div class="sk" style="width: 40%; height: 10px"></div></div>
+</div>
+<div class="card" style="padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="display: flex; justify-content: space-between; font-size: 14px"><span>Servicios · Energía</span><span class="n">$ 185.000 / $ 200.000</span></div><div style="height: 8px; border-radius: 99px; background: var(--surface-3)"><div style="width: 92%; height: 8px; border-radius: 99px; background: var(--brand)"></div></div><span style="font-size: 12px; color: var(--pos); font-weight: 600">✓ Dentro del plan · quedan $ 15.000</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="display: flex; justify-content: space-between; font-size: 14px"><span>Alimentación · Mercado</span><span class="n">$ 620.000 / $ 750.000</span></div><div style="position: relative; height: 8px; border-radius: 99px; background: var(--surface-3)"><div style="width: 83%; height: 8px; border-radius: 99px; background: var(--warn)"></div><div style="position: absolute; left: 39%; top: -4px; width: 2px; height: 16px; background: var(--ink)"></div></div><span style="font-size: 12px; color: var(--warn); font-weight: 600">! 83 % usado · el mes va en 39 %</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="display: flex; justify-content: space-between; font-size: 14px"><span>Cuidado personal</span><span class="n">$ 130.000 / $ 110.000</span></div><div style="height: 8px; border-radius: 99px; background: var(--surface-3)"><div style="width: 100%; height: 8px; border-radius: 99px; background: var(--neg)"></div></div><span style="font-size: 12px; color: var(--neg); font-weight: 600">✕ Pasado por $ 20.000 · reasignar</span></div>
+</div>
+</section>
+
+<section aria-labelledby="s-data" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px">
+<div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+<h2 id="s-data" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Tabla</h2>
+<div style="overflow-x: auto; border: 1px solid var(--border); border-radius: 8px">
+<table class="tbl">
+<thead><tr><th>Fecha</th><th>Descripción</th><th>Estado</th><th style="text-align: right">Valor</th></tr></thead>
+<tbody>
+<tr><td class="n">12 oct 2026</td><td>Mercado de la semana<br><span class="hlp">Alimentación · Esencial</span></td><td><span class="bdg" style="background: var(--brand-soft); color: var(--brand)">✓ Conciliado</span></td><td class="n" style="text-align: right; font-weight: 500; color: var(--neg)">−$ 186.400</td></tr>
+<tr><td class="n">15 oct 2026</td><td>Salario quincena<br><span class="hlp">Salario</span></td><td><span class="bdg" style="background: var(--info-soft); color: var(--info)">◷ Previsto</span></td><td class="n" style="text-align: right; font-weight: 500; color: var(--pos)">+$ 2.600.000</td></tr>
+<tr style="background: var(--surface-2)"><td class="n">15 oct 2026</td><td>Plataformas de streaming<br><span class="hlp">Suscripciones · Discrecional</span></td><td><span class="bdg" style="background: var(--warn-soft); color: var(--warn)">! Por confirmar</span></td><td class="n" style="text-align: right; font-weight: 500; color: var(--neg)">−$ 45.000</td></tr>
+<tr><td class="n">10 oct 2026</td><td>A ahorro programado<br><span class="hlp">Transferencia</span></td><td><span class="bdg" style="background: var(--surface-3); color: var(--ink-2)">⇄ Transferencia</span></td><td class="n" style="text-align: right; font-weight: 500">$ 300.000</td></tr>
+</tbody>
+</table>
+</div>
+<span class="hlp">La tabla desplaza dentro de su caja; la página nunca. Ingreso con «+», gasto con «−» real, además del color.</span>
+</div>
+<div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+<h2 class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Gráficos</h2>
+<div style="display: flex; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap"><span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; border-top: 2.5px solid var(--chart-1)"></span>Real</span><span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; border-top: 2.5px dashed var(--chart-1)"></span>Programado</span><span style="display: flex; align-items: center; gap: 6px"><span style="width: 16px; border-top: 2.5px dotted var(--chart-1)"></span>Estimado</span></div>
+<svg role="img" aria-label="Saldo: real hasta hoy, programado y estimado después; punto más bajo el 7 de diciembre" viewBox="0 0 520 160" style="width: 100%; height: auto">
+<line x1="0" x2="520" y1="20" y2="20" stroke="var(--chart-grid)"></line><line x1="0" x2="520" y1="80" y2="80" stroke="var(--chart-grid)"></line><line x1="0" x2="520" y1="140" y2="140" stroke="var(--chart-axis)"></line>
+<polyline points="0,58 40,52 80,62 120,50" fill="none" stroke="var(--chart-1)" stroke-width="2.5"></polyline>
+<polyline points="120,50 160,56 200,46 240,86 280,54 320,66" fill="none" stroke="var(--chart-1)" stroke-width="2.5" stroke-dasharray="7 5"></polyline>
+<polyline points="320,66 360,88 400,118 440,80 480,90 520,70" fill="none" stroke="var(--chart-1)" stroke-width="2.5" stroke-dasharray="2 4" stroke-linecap="round"></polyline>
+<circle cx="400" cy="118" r="6" fill="var(--chart-mark)" stroke="var(--chart-1)" stroke-width="2.5"></circle>
+<text x="0" y="156" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">sep</text><text x="120" y="156" font-size="11" fill="var(--muted)" font-family="IBM Plex Sans">hoy</text><text x="400" y="156" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="600" font-family="IBM Plex Sans">7 dic</text>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px">
+<div style="display: grid; grid-template-columns: 110px minmax(0, 1fr) 96px; gap: 10px; align-items: center"><span>Vivienda</span><div style="height: 12px; border-radius: 3px; background: var(--chart-1); width: 100%"></div><span class="n" style="text-align: right">$ 1.600.000</span></div>
+<div style="display: grid; grid-template-columns: 110px minmax(0, 1fr) 96px; gap: 10px; align-items: center"><span>Alimentación</span><div style="height: 12px; border-radius: 3px; background: var(--chart-1); width: 39%"></div><span class="n" style="text-align: right">$ 620.000</span></div>
+<div style="display: grid; grid-template-columns: 110px minmax(0, 1fr) 96px; gap: 10px; align-items: center"><span>Servicios</span><div style="height: 12px; border-radius: 3px; background: var(--chart-1); width: 18%"></div><span class="n" style="text-align: right">$ 280.000</span></div>
+</div>
+<span class="hlp">Un solo eje por gráfico. Real, programado y estimado se distinguen por trazo y por la leyenda escrita, no solo por color.</span>
+</div>
+</section>
+
+<section aria-labelledby="s-nav" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px">
+<div style="border-radius: 12px; background: var(--nav-bg); padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; font-size: 14px">
+<span id="s-nav" style="padding: 4px 10px 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nav-label)">Navegación lateral · estados</span>
+<a href="#" aria-current="page" style="height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 10px; border-radius: 8px; background: var(--nav-active-bg); color: #ffffff; font-weight: 600; text-decoration: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>Panel · activo</a>
+<a href="#" style="height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 10px; border-radius: 8px; background: rgb(255 255 255 / 0.07); color: var(--nav-ink); text-decoration: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M17 7H9M17 7v8"></path></svg>Movimientos · hover</a>
+<a href="#" style="height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 10px; border-radius: 8px; color: var(--nav-ink); text-decoration: none; outline: 2px solid #7fb1ef; outline-offset: -2px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9v9z"></path></svg>Presupuesto · foco</a>
+<a href="#" style="height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 10px; border-radius: 8px; color: var(--nav-ink); text-decoration: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"></path></svg>Flujo de caja · normal</a>
+</div>
+
+<div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px; align-items: center">
+<span class="lbl" style="align-self: flex-start">Navegación inferior móvil · 390 px</span>
+<nav aria-label="Navegación inferior" style="width: 100%; max-width: 390px; height: 72px; border-top: 1px solid var(--border); background: var(--surface); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; position: relative">
+<a href="#" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; font-weight: 600; color: var(--brand); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>Panel</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; color: var(--muted); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg>Movimientos</a>
+<button type="button" aria-label="Registrar movimiento" style="justify-self: center; width: 56px; height: 56px; margin-top: -28px; border-radius: 50%; border: 4px solid var(--bg); background: var(--brand); color: var(--brand-ink); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); cursor: pointer"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; color: var(--muted); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9v9z"></path></svg>Presupuesto</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; color: var(--muted); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle></svg>Más</a>
+</nav>
+<span class="hlp">«Más» abre una hoja con las otras 8 secciones de Finanzas, la Universidad y el tema.</span>
+</div>
+</section>
+
+<section aria-labelledby="s-flow" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 10px; max-width: 460px">
+<h2 id="s-flow" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">Registro rápido · hoja inferior</h2>
+<p style="margin: 0; font-size: 15px; line-height: 24px; color: var(--ink-2)">Pruébalo: toca el importe, elige una categoría y guarda. Tres toques. Cuenta, fecha (hoy) y estado (realizado) vienen por defecto; recurrencia y notas quedan plegadas en «Más opciones».</p>
+<span class="hlp">Componentes nuevos: botón flotante, hoja inferior, selector de tipo, teclado de importe y selector de categoría con íconos.</span>
+</div>
+<div style="width: 390px; max-width: 100%; border-radius: 28px; overflow: hidden; background: var(--overlay); padding-top: 120px; box-sizing: border-box">
+<div role="dialog" aria-label="Registrar movimiento" style="background: var(--surface); border-radius: 16px 16px 0 0; padding: 10px 16px 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow-lg)">
+<div style="align-self: center; width: 40px; height: 4px; border-radius: 99px; background: var(--border-strong)"></div>
+<div role="radiogroup" aria-label="Tipo de movimiento" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 10px; background: var(--surface-2)">
+<button type="button" role="radio" aria-checked="true" onClick="" style="height: 40px; border: 0; border-radius: 8px; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer; background: var(--surface); color: var(--ink); box-shadow: var(--shadow-sm)">− Gasto</button><button type="button" role="radio" aria-checked="false" onClick="" style="height: 40px; border: 0; border-radius: 8px; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none">+ Ingreso</button><button type="button" role="radio" aria-checked="false" onClick="" style="height: 40px; border: 0; border-radius: 8px; font: 600 14px 'IBM Plex Sans', sans-serif; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none">⇄ Transferir</button>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 0">
+<span class="hlp">Importe</span>
+<output class="n" aria-live="polite" style="font-size: 40px; line-height: 44px; font-weight: 600; letter-spacing: -0.02em; color: var(--neg)">−$ 186.400</output>
+</div>
+<div role="radiogroup" aria-label="Categoría" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<button type="button" role="radio" aria-checked="true" onClick="" style="min-height: 64px; border-radius: 10px; border: 2px solid var(--brand); background: var(--brand-soft); color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font: 500 12px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l2.4 12h11.2L21 7H6M9 20h.01M18 20h.01"></path></svg>Mercado</button><button type="button" role="radio" aria-checked="false" onClick="" style="min-height: 64px; border-radius: 10px; border: 2px solid transparent; background: var(--surface-2); color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font: 500 12px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>Vivienda</button><button type="button" role="radio" aria-checked="false" onClick="" style="min-height: 64px; border-radius: 10px; border: 2px solid transparent; background: var(--surface-2); color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font: 500 12px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12M4 11h16M8 21v-4M16 21v-4M6 17h12"></path></svg>Transporte</button><button type="button" role="radio" aria-checked="false" onClick="" style="min-height: 64px; border-radius: 10px; border: 2px solid transparent; background: var(--surface-2); color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font: 500 12px 'IBM Plex Sans', sans-serif; cursor: pointer"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h.01M12 12h.01M19 12h.01"></path></svg>Otros</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+<button type="button" class="key n" aria-label="1" onClick="">1</button><button type="button" class="key n" aria-label="2" onClick="">2</button><button type="button" class="key n" aria-label="3" onClick="">3</button><button type="button" class="key n" aria-label="4" onClick="">4</button><button type="button" class="key n" aria-label="5" onClick="">5</button><button type="button" class="key n" aria-label="6" onClick="">6</button><button type="button" class="key n" aria-label="7" onClick="">7</button><button type="button" class="key n" aria-label="8" onClick="">8</button><button type="button" class="key n" aria-label="9" onClick="">9</button><button type="button" class="key n" aria-label="000" onClick="">000</button><button type="button" class="key n" aria-label="0" onClick="">0</button><button type="button" class="key n" aria-label="Borrar" onClick="">⌫</button>
+</div>
+<button type="button" class="btn b-pri" onClick="" style="height: 52px; font-size: 15px">Guardar gasto</button>
+<button type="button" class="btn b-gho" style="height: 44px">Más opciones · cuenta, fecha, recurrencia, notas</button>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="s-misc" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px">
+<div style="border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-lg); border: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="s-misc" class="ttl" style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 500">¿Eliminar este movimiento?</h2>
+<p style="margin: 0; font-size: 15px; line-height: 24px; color: var(--ink-2)">«Mercado de la semana», −$ 186.400 del 12 oct 2026. Tu presupuesto y tu caja se recalculan. Esta acción no se puede deshacer.</p>
+<div style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap"><button type="button" class="btn b-sec">Cancelar</button><button type="button" class="btn b-dan">Eliminar movimiento</button></div>
+<span class="hlp">Diálogo de confirmación: el foco empieza en «Cancelar»; Esc cierra.</span>
+</div>
+<div class="card" style="padding: 28px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<svg aria-hidden="true" width="160" height="72" viewBox="0 0 160 72"><circle cx="112" cy="40" r="16" fill="var(--accent)"></circle><path d="M0 52c27-8 53-8 80 0s53 8 80 0" fill="none" stroke="var(--brand)" stroke-width="2.5"></path><path d="M0 64c27-6 53-6 80 0s53 6 80 0" fill="none" stroke="var(--brand)" stroke-width="1.5" opacity=".5"></path><circle cx="48" cy="48" r="4" fill="var(--brand)"></circle></svg>
+<span class="ttl" style="font-size: 20px; font-weight: 500">Aún no tienes deudas registradas</span>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-2); max-width: 300px">Si tienes tarjetas o créditos, regístralos para ver cuánto pagas de intereses y qué pagar primero.</span>
+<button type="button" class="btn b-pri">Registrar una deuda</button>
+<span class="hlp">Estado vacío: enseña y propone una sola acción.</span>
+</div>
+<div class="card" style="overflow: hidden; display: flex; flex-direction: column">
+<div style="position: relative; aspect-ratio: 16 / 9; background: var(--surface-3); display: flex; align-items: center; justify-content: center">
+<span class="hlp" style="position: absolute; left: 12px; top: 10px">[Video de Alejandro · 2 min]</span>
+<span style="width: 56px; height: 56px; border-radius: 50%; background: var(--brand); color: var(--brand-ink); display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span>
+<span class="n" style="position: absolute; right: 10px; bottom: 10px; padding: 2px 6px; border-radius: 4px; background: rgb(0 0 0 / 0.7); color: #ffffff; font-size: 12px">2:14</span>
+</div>
+<div style="padding: 16px; display: flex; flex-direction: column; gap: 6px">
+<span class="ov">Nivel 4 · Lección 1 de 2</span>
+<span style="font-size: 16px; line-height: 22px; font-weight: 600">Entender las tasas: E.A., N.A.M.V. y mensual</span>
+<span style="font-size: 13px; color: var(--muted)">12 min · video, lectura, cuestionario y reto</span>
+<div style="height: 6px; border-radius: 99px; background: var(--surface-3)"><div style="width: 40%; height: 6px; border-radius: 99px; background: var(--brand)"></div></div>
+<a href="#" class="btn b-pri" style="align-self: flex-start; text-decoration: none; margin-top: 4px">Retomar en el minuto 4</a>
+</div>
+</div>
+<div class="card" style="padding: 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<svg role="img" aria-label="Insignia: Nivel 3 completo" width="96" height="96" viewBox="0 0 96 96"><circle cx="48" cy="48" r="44" fill="var(--accent)"></circle><circle cx="48" cy="48" r="34" fill="none" stroke="var(--accent-ink)" stroke-width="2" stroke-dasharray="3 5"></circle><path d="M60 33A19 19 0 1 0 60 63" fill="none" stroke="#1c1c21" stroke-width="6" stroke-linecap="round"></path><circle cx="58" cy="48" r="5" fill="#1c1c21"></circle></svg>
+<span class="ov">Logro desbloqueado</span>
+<span class="ttl" style="font-size: 22px; font-weight: 500">Nivel 3 completo</span>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-2)">Tu horizonte se amplió: ya puedes comparar tasas con criterio.</span>
+<span class="hlp">Insignia de logro: durazno solo aquí, nunca como estado.</span>
+</div>
+</section>
+
+<footer class="hlp">Datos ficticios. Herramienta educativa; no es asesoría financiera. Tokens: tokens.css y tokens.json (v0.1).</footer>
+</div>
+</body></html>

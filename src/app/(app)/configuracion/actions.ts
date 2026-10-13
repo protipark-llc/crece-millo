@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { runAction, type ActionState } from "@/server/action-utils";
-import { addRate, setDiagnosticStep, updateSettings } from "@/server/services/settings";
+import { addRate, setDiagnosticStep, setView, updateSettings } from "@/server/services/settings";
 import { currency, formToObject, isoDate, passwordRule, settingsInput, zodFieldErrors } from "@/server/validation";
 import { getCurrentUser, destroySession, createSession } from "@/server/session";
 import { changePassword, deleteUserAndData } from "@/server/services/users";
@@ -25,6 +25,22 @@ export async function updateSettingsAction(_: ActionState, fd: FormData) {
     revalidatePath("/", "layout");
     return { message: "Preferencias guardadas." };
   });
+}
+
+export async function setViewAction(_: ActionState, fd: FormData) {
+  return runAction(
+    z.object({ mode: z.enum(["esencial", "pro", "personalizada"]), sections: z.string().max(2000).optional() }),
+    fd,
+    async ({ tx, userId, input }) => {
+      const sections = (input.sections ?? "").split(",").map((x) => x.trim()).filter(Boolean);
+      if (input.mode === "personalizada" && sections.filter((k) => k !== "configuracion").length === 0) {
+        throw new UserFacingError("Elige al menos una sección además de Configuración.", "sections");
+      }
+      await setView(tx, userId, input.mode, input.mode === "personalizada" ? sections : null);
+      revalidatePath("/", "layout");
+      return { message: "Vista guardada. La navegación ya muestra solo lo que elegiste." };
+    },
+  );
 }
 
 export async function addRateAction(_: ActionState, fd: FormData) {

@@ -10,8 +10,8 @@ test("en móvil: menú navegable y sin desplazamiento horizontal", async ({ page
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow, `desbordamiento en ${path}`).toBeLessThanOrEqual(1);
   }
-  await page.getByRole("button", { name: "Abrir menú" }).click();
-  await page.getByRole("dialog", { name: "Menú" }).getByRole("link", { name: "Deudas" }).click();
+  await page.getByRole("button", { name: "Más", exact: true }).click();
+  await page.getByRole("dialog", { name: "Más secciones" }).getByRole("link", { name: "Deudas" }).click();
   await expect(page).toHaveURL(/\/deudas/);
   await expect(page.getByRole("heading", { name: "Deudas y obligaciones" })).toBeVisible();
 });

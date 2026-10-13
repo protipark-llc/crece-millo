@@ -47,7 +47,7 @@ export default async function GoalsPage() {
       <Card className="mb-6">
         <CardHeader title="¿Cuántos meses debería cubrir mi fondo de emergencia?" description="No hay una cifra universal. Este es el criterio que usamos con tus datos del diagnóstico; ajústalo a tu realidad." />
         <div className="grid gap-4 p-5 text-sm sm:grid-cols-[auto_1fr]">
-          <div className="rounded-xl bg-brand-soft px-5 py-4 text-center">
+          <div className="rounded-lg bg-brand-soft px-5 py-4 text-center">
             <p className="text-3xl font-semibold text-brand">{sugg.months}</p>
             <p className="text-xs text-brand">meses sugeridos</p>
           </div>
@@ -157,7 +157,7 @@ export default async function GoalsPage() {
                   </div>
                   <div className="space-y-3">
                     {goal.status !== "achieved" && (
-                      <div className="rounded-lg bg-surface-2 p-4">
+                      <div className="rounded-md bg-surface-2 p-4">
                         <ContributionForm goalId={goal.id} currency={goal.currency} today={d.today} />
                       </div>
                     )}

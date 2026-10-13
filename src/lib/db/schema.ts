@@ -24,6 +24,7 @@ import {
   numeric,
   pgEnum,
   pgTable,
+  primaryKey,
   smallint,
   text,
   timestamp,
@@ -158,9 +159,13 @@ export const userSettings = pgTable("user_settings", {
   /** Pasos del diagnóstico completados (claves estables). */
   diagnosticSteps: jsonb("diagnostic_steps").$type<string[]>().notNull().default([]),
   businessExpensesEnabled: boolean("business_expenses_enabled").notNull().default(false),
+  /** Vista de la cuenta: esencial, pro o personalizada (ver src/lib/sections.ts). */
+  viewMode: text("view_mode").notNull().default("pro"),
+  /** Secciones visibles cuando la vista es personalizada (claves estables). */
+  sections: jsonb("sections").$type<string[]>(),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
-});
+}, (t) => [check("user_settings_view_mode", sql`${t.viewMode} IN ('esencial', 'pro', 'personalizada')`)]);
 
 /* ───────────── Cuentas y categorías ───────────── */
 
@@ -614,6 +619,99 @@ export const auditLog = pgTable(
 );
 
 /** Tablas con datos de una persona protegidas por RLS (ver drizzle/0001_rls.sql). */
+/* ───────────── Co-Piloto de Negocio (dropshipping) ───────────── */
+
+export const copilotProducts = pgTable(
+  "copilot_products",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    status: text("status").notNull().default("idea"),
+    currency: text("currency").notNull(),
+    supplier: text("supplier"),
+    productCost: money("product_cost").notNull().default(0),
+    shippingCost: money("shipping_cost").notNull().default(0),
+    otherCosts: money("other_costs").notNull().default(0),
+    returnShippingCost: money("return_shipping_cost").notNull().default(0),
+    paymentFeeBps: integer("payment_fee_bps").notNull().default(0),
+    platformFeeBps: integer("platform_fee_bps").notNull().default(0),
+    returnRateBps: integer("return_rate_bps").notNull().default(0),
+    expectedCpa: money("expected_cpa").notNull().default(0),
+    targetMarginBps: integer("target_margin_bps").notNull().default(2000),
+    /** Precio de venta elegido; null = aún no definido (se usa el recomendado). */
+    salePrice: money("sale_price"),
+    notes: text("notes"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    unique("copilot_products_id_user_uq").on(t.id, t.userId),
+    index("copilot_products_user_idx").on(t.userId),
+    check("copilot_products_status", sql`${t.status} IN ('idea', 'prueba', 'ganador', 'pausado', 'descartado')`),
+    check(
+      "copilot_products_nonneg",
+      sql`${t.productCost} >= 0 AND ${t.shippingCost} >= 0 AND ${t.otherCosts} >= 0 AND ${t.returnShippingCost} >= 0 AND ${t.expectedCpa} >= 0 AND (${t.salePrice} IS NULL OR ${t.salePrice} > 0)`,
+    ),
+    check(
+      "copilot_products_bps",
+      sql`${t.paymentFeeBps} BETWEEN 0 AND 5000 AND ${t.platformFeeBps} BETWEEN 0 AND 5000 AND ${t.returnRateBps} BETWEEN 0 AND 9000 AND ${t.targetMarginBps} BETWEEN 0 AND 8000`,
+    ),
+  ],
+);
+
+export const copilotTests = pgTable(
+  "copilot_tests",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").notNull(),
+    productId: uuid("product_id").notNull(),
+    startedOn: day("started_on").notNull(),
+    days: smallint("days").notNull(),
+    adSpend: money("ad_spend").notNull(),
+    orders: integer("orders").notNull(),
+    channel: text("channel"),
+    notes: text("notes"),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    foreignKey({ columns: [t.productId, t.userId], foreignColumns: [copilotProducts.id, copilotProducts.userId], name: "copilot_tests_product_fk" }).onDelete("cascade"),
+    index("copilot_tests_product_idx").on(t.productId),
+    check("copilot_tests_values", sql`${t.days} BETWEEN 1 AND 90 AND ${t.adSpend} >= 0 AND ${t.orders} >= 0`),
+  ],
+);
+
+export const copilotPlans = pgTable(
+  "copilot_plans",
+  {
+    userId: uuid("user_id")
+      .primaryKey()
+      .references(() => users.id, { onDelete: "cascade" }),
+    currency: text("currency").notNull(),
+    capital: money("capital").notNull().default(0),
+    reserveBps: integer("reserve_bps").notNull().default(3000),
+    monthlyFixed: money("monthly_fixed").notNull().default(0),
+    /** Presupuesto de prueba por producto; null = sugerido (3 × CPA de equilibrio). */
+    testBudget: money("test_budget"),
+    updatedAt: updatedAt(),
+  },
+  (t) => [check("copilot_plans_values", sql`${t.capital} >= 0 AND ${t.monthlyFixed} >= 0 AND ${t.reserveBps} BETWEEN 0 AND 10000 AND (${t.testBudget} IS NULL OR ${t.testBudget} > 0)`)],
+);
+
+export const dropshipProgress = pgTable(
+  "dropship_progress",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    stepKey: text("step_key").notNull(),
+    doneAt: timestamp("done_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.stepKey] })],
+);
+
 export const RLS_TABLES = [
   "user_settings",
   "accounts",
@@ -633,4 +731,8 @@ export const RLS_TABLES = [
   "course_enrollments",
   "lesson_progress",
   "audit_log",
+  "copilot_products",
+  "copilot_tests",
+  "copilot_plans",
+  "dropship_progress",
 ] as const;

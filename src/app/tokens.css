@@ -1,0 +1,228 @@
+/* ==========================================================================
+   Copia de docs/diseno/crece-millo-v1/tokens.css (solo cambia la carga de fuentes).
+   Crece Millo · Tokens de diseño · Marca «Umbral» (tinta y bermellón) · v1.0 (13 oct 2026)
+   Next.js 15 + Tailwind CSS 4.
+   - Los componentes usan SOLO roles (bg, surface, brand, neg…), nunca hex.
+   - Claro en :root, oscuro en [data-theme="dark"]. La persona elige el modo
+     con el selector de tema; "sistema" = sin atributo + media query.
+   - Contraste verificado WCAG 2.2 AA (texto ≥ 4,5:1, controles y gráficos ≥ 3:1).
+   ========================================================================== */
+
+/* Fuentes: se cargan con next/font/google en src/app/layout.tsx, que define
+   --font-outfit (Outfit 400/500/600) y --font-plex (IBM Plex Sans 400/500/600) en <html>. */
+
+:root {
+  color-scheme: light;
+
+  /* Superficies */
+  --bg: #f5f2ec;
+  --surface: #ffffff;
+  --surface-2: #efebe4;
+  --surface-3: #e5e0d7;
+  --overlay: rgb(28 28 33 / 0.48);
+
+  /* Bordes */
+  --border: rgb(28 28 33 / 0.12);
+  --border-strong: rgb(28 28 33 / 0.22);
+  --control-border: #8a8690;           /* borde de campos: 3,6:1 sobre surface */
+
+  /* Texto */
+  --ink: #1c1c21;                      /* 17,0:1 sobre surface · 15,2:1 sobre bg */
+  --ink-2: #45434a;                    /* 8,7:1 sobre bg */
+  --muted: #625f66;                    /* 5,6:1 sobre bg · ayuda y etiquetas */
+
+  /* Marca */
+  --brand: #1c1c21;                    /* sumi (tinta) · botón principal, enlaces, pestaña activa */
+  --brand-hover: #000000;
+  --brand-pressed: #000000;
+  --brand-soft: #ece8e1;
+  --brand-ink: #ffffff;                /* texto sobre brand · 17,0:1 */
+  --accent: #d1401f;                   /* bermellón acción · insignias PREMIUM, indicador activo, logros (4,7:1 con blanco) */
+  --accent-ink: #ffffff;               /* texto sobre accent · 4,7:1 */
+  --mark: #e0482d;                     /* bermellón de marca · SOLO la llama del logo e ilustraciones; nunca texto */
+
+  /* Navegación lateral (escritorio) */
+  --nav-bg: #1c1c21;
+  --nav-ink: #e6e2db;
+  --nav-ink-active: #ffffff;
+  --nav-active-bg: rgb(224 72 45 / 0.24);
+  --nav-label: #a6a29b;
+
+  /* Estados (siempre con ícono y texto) */
+  --pos: #106a1e;      --pos-soft: #e6f2e7;    /* ingreso, bien */
+  --neg: #b42318;      --neg-soft: #fbe9e7;    /* gasto, peligro */
+  --warn: #8a5a00;     --warn-soft: #fbf1dc;   /* atención */
+  --info: #1c5cab;     --info-soft: #e6eef8;   /* información */
+  --focus: #2a78d6;                            /* anillo 2 px, separado 2 px */
+
+  /* Gráficos (orden fijo de series) */
+  --chart-1: #c63e22;  /* saldo / serie principal · bermellón 5,1:1 */
+  --chart-2: #4a4850;  /* comparación · grafito */
+  --chart-3: #2a78d6;  /* tercera serie */
+  --chart-grid: #e7e2da;
+  --chart-axis: #94908a;
+  --chart-mark: #e0482d;  /* punto destacado (mínimo, hoy) */
+
+  /* Tipografía */
+  --font-title: var(--font-outfit, "Outfit"), ui-sans-serif, system-ui, sans-serif;
+  --font-ui: var(--font-plex, "IBM Plex Sans"), ui-sans-serif, system-ui, sans-serif;
+
+  /* Escala (tamaño / interlineado) */
+  --text-display: 40px;   --leading-display: 44px;   /* cifra grande · Plex 600 · tnum · -0.02em */
+  --text-page: 32px;      --leading-page: 38px;      /* título de página · Outfit 500 (móvil 26/32) */
+  --text-section: 20px;   --leading-section: 26px;   /* título de sección · Outfit 500 */
+  --text-card: 16px;      --leading-card: 22px;      /* título de tarjeta · Plex 600 */
+  --text-kpi: 22px;       --leading-kpi: 28px;       /* valor de indicador · Plex 600 · tnum */
+  --text-body: 15px;      --leading-body: 24px;      /* cuerpo · Plex 400 */
+  --text-sm: 14px;        --leading-sm: 20px;        /* tablas, listas · Plex 400/500 · tnum en cifras */
+  --text-help: 12px;      --leading-help: 16px;      /* ayuda, notas · Plex 400 */
+  --text-overline: 11px;  --leading-overline: 16px;  /* sobretítulo · Plex 600 · 0.1em · mayúsculas */
+
+  /* Espaciado (base 4) */
+  --space-0: 0; --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px;
+  --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px; --space-16: 64px;
+
+  /* Medidas de control */
+  --control-sm: 36px;  /* solo escritorio, nunca como único objetivo táctil */
+  --control-md: 44px;  /* por defecto, objetivo táctil mínimo */
+  --control-lg: 52px;
+  --content-max: 1200px;
+  --nav-width: 240px;
+
+  /* Radios */
+  --radius-sm: 6px;    /* insignias, chips */
+  --radius-md: 8px;    /* botones, campos */
+  --radius-lg: 12px;   /* tarjetas */
+  --radius-xl: 16px;   /* diálogos, hoja inferior */
+  --radius-full: 999px;
+
+  /* Sombras (jerarquía principal por borde; sombra solo en capas flotantes) */
+  --shadow-sm: 0 1px 2px rgb(28 28 33 / 0.06);
+  --shadow-md: 0 4px 12px rgb(28 28 33 / 0.08);
+  --shadow-lg: 0 16px 40px rgb(28 28 33 / 0.18);
+
+  /* Movimiento */
+  --duration-fast: 120ms;   /* hover, presionado */
+  --duration-base: 180ms;   /* cambios de valor, pestañas, acordeón */
+  --duration-slow: 260ms;   /* hoja inferior, diálogo */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #111114;
+  --surface: #1a1a1f;
+  --surface-2: #222228;
+  --surface-3: #2b2b32;
+  --overlay: rgb(0 0 0 / 0.6);
+
+  --border: rgb(255 255 255 / 0.10);
+  --border-strong: rgb(255 255 255 / 0.18);
+  --control-border: #6e6a72;
+
+  --ink: #f2efea;
+  --ink-2: #c9c5bf;
+  --muted: #9c988f;
+
+  --brand: #f2efea;
+  --brand-hover: #ffffff;
+  --brand-pressed: #e5e0d7;
+  --brand-soft: #2a2826;
+  --brand-ink: #111114;
+  --accent: #ff6b4a;
+  --accent-ink: #111114;
+  --mark: #ff6b4a;
+
+  --nav-bg: #0b0b0d;
+  --nav-ink: #c9c5bf;
+  --nav-ink-active: #ffffff;
+  --nav-active-bg: rgb(255 107 74 / 0.18);
+  --nav-label: #8e8a84;
+
+  --pos: #3fbf4a;      --pos-soft: #12301a;
+  --neg: #f08080;      --neg-soft: #3a1a1a;
+  --warn: #f2c14e;     --warn-soft: #33280f;
+  --info: #7fb1ef;     --info-soft: #142a45;
+  --focus: #7fb1ef;
+
+  --chart-1: #ff7a5c;
+  --chart-2: #b9b5ae;
+  --chart-3: #7fb1ef;
+  --chart-grid: #2a2a30;
+  --chart-axis: #5e5b62;
+  --chart-mark: #ff6b4a;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.45);
+  --shadow-lg: 0 16px 40px rgb(0 0 0 / 0.6);
+}
+
+/* Selector de tema (Claro · Oscuro · Sistema):
+   un script en <head>, antes del primer pintado, lee la preferencia guardada
+   ("light" | "dark" | "system"); si es "system" usa matchMedia("(prefers-color-scheme: dark)").
+   Siempre escribe data-theme="light" o "dark" en <html>, así solo hacen falta los dos bloques de arriba
+   y no hay parpadeo. Escuchar el cambio de matchMedia mientras la preferencia sea "system". */
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --duration-fast: 0ms; --duration-base: 0ms; --duration-slow: 0ms; }
+}
+
+/* Tailwind CSS 4: expone los roles como utilidades (bg-surface, text-ink, border-border, rounded-md…) */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-overlay: var(--overlay);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-control-border: var(--control-border);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-pressed: var(--brand-pressed);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-ink: var(--brand-ink);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-mark: var(--mark);
+  --color-nav-bg: var(--nav-bg);
+  --color-nav-ink: var(--nav-ink);
+  --color-nav-ink-active: var(--nav-ink-active);
+  --color-nav-active-bg: var(--nav-active-bg);
+  --color-nav-label: var(--nav-label);
+  --color-pos: var(--pos);
+  --color-pos-soft: var(--pos-soft);
+  --color-neg: var(--neg);
+  --color-neg-soft: var(--neg-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-focus: var(--focus);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-axis: var(--chart-axis);
+  --color-chart-mark: var(--chart-mark);
+
+  --font-title: var(--font-title);
+  --font-sans: var(--font-ui);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  --ease-standard: var(--ease-standard);
+}

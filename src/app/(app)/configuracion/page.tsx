@@ -8,6 +8,8 @@ import { getCurrentUser } from "@/server/session";
 import { Card, CardHeader, PageHeader, buttonClass } from "@/components/ui/primitives";
 import { SettingsForm } from "@/components/finance/forms/settings-form";
 import { ChangePasswordForm, DeleteAccountForm, RateForm } from "@/components/finance/forms/account-settings-forms";
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
+import { ViewForm } from "@/components/settings/view-form";
 
 export const metadata: Metadata = { title: "Configuración" };
 
@@ -16,8 +18,14 @@ export default async function SettingsPage() {
   const { settings, rates, today } = await loadForUser(async ({ tx, userId, today }) => ({ settings: await getSettings(tx, userId), rates: await listRates(tx, userId), today }));
   return (
     <>
-      <PageHeader title="Configuración" description={`Cuenta de ${user?.email}`} />
+      <PageHeader eyebrow="Cuenta" title="Configuración" description={`Cuenta de ${user?.email}`} />
       <div className="space-y-6">
+        <Card id="vista" className="scroll-mt-6">
+          <CardHeader title="Tu vista" description="Elige qué secciones ves en tu cuenta. Puedes cambiarlo cuando quieras." />
+          <div className="p-5">
+            <ViewForm mode={(settings.viewMode ?? "pro") as "esencial" | "pro" | "personalizada"} sections={settings.sections ?? null} />
+          </div>
+        </Card>
         <Card>
           <CardHeader title="Preferencias regionales y del hogar" />
           <div className="p-5">
@@ -45,6 +53,12 @@ export default async function SettingsPage() {
           )}
           <div className="p-5">
             <RateForm base={settings.currency} today={today} />
+          </div>
+        </Card>
+        <Card>
+          <CardHeader title="Apariencia" description="Elige el tema. «Sistema» sigue la configuración de tu dispositivo. Se guarda en este navegador." />
+          <div className="p-5">
+            <ThemeSwitcher withLabels />
           </div>
         </Card>
         <Card>

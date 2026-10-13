@@ -1,0 +1,84 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+[data-theme="light"]{--bg:#f5f2ec;--surface:#fff;--surface-2:#efebe4;--surface-3:#e5e0d7;--overlay:rgb(28 28 33/.48);--border:rgb(28 28 33/.12);--border-strong:rgb(28 28 33/.22);--control-border:#8a8690;--ink:#1c1c21;--ink-2:#45434a;--muted:#625f66;--brand:#1c1c21;--brand-hover:#000;--brand-soft:#ece8e1;--brand-ink:#fff;--accent:#d1401f;--accent-ink:#fff;--nav-bg:#1c1c21;--nav-ink:#e6e2db;--nav-active-bg:rgb(224 72 45/.24);--nav-label:#a6a29b;--pos:#106a1e;--pos-soft:#e6f2e7;--neg:#b42318;--neg-soft:#fbe9e7;--warn:#8a5a00;--warn-soft:#fbf1dc;--info:#1c5cab;--info-soft:#e6eef8;--focus:#2a78d6;--chart-1:#c63e22;--chart-2:#4a4850;--chart-3:#2a78d6;--chart-grid:#e7e2da;--chart-axis:#94908a;--chart-mark:#e0482d;--shadow-sm:0 1px 2px rgb(28 28 33/.06);--shadow-md:0 4px 12px rgb(28 28 33/.08);--shadow-lg:0 16px 40px rgb(28 28 33/.18);color-scheme:light}
+[data-theme="dark"]{--bg:#111114;--surface:#1a1a1f;--surface-2:#222228;--surface-3:#2b2b32;--overlay:rgb(0 0 0/.6);--border:rgb(255 255 255/.10);--border-strong:rgb(255 255 255/.18);--control-border:#6e6a72;--ink:#f2efea;--ink-2:#c9c5bf;--muted:#9c988f;--brand:#f2efea;--brand-hover:#fff;--brand-soft:#2a2826;--brand-ink:#111114;--accent:#ff6b4a;--accent-ink:#111114;--nav-bg:#0b0b0d;--nav-ink:#c9c5bf;--nav-active-bg:rgb(255 107 74/.18);--nav-label:#8e8a84;--pos:#3fbf4a;--pos-soft:#12301a;--neg:#f08080;--neg-soft:#3a1a1a;--warn:#f2c14e;--warn-soft:#33280f;--info:#7fb1ef;--info-soft:#142a45;--focus:#7fb1ef;--chart-1:#ff7a5c;--chart-2:#b9b5ae;--chart-3:#7fb1ef;--chart-grid:#2a2a30;--chart-axis:#5e5b62;--chart-mark:#ff6b4a;--shadow-sm:0 1px 2px rgb(0 0 0/.4);--shadow-md:0 4px 12px rgb(0 0 0/.45);--shadow-lg:0 16px 40px rgb(0 0 0/.6);color-scheme:dark}
+.app{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.ttl{font-family:Outfit,system-ui,sans-serif}
+.n{font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.ov{font-size:11px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.hlp{font-size:12px;line-height:16px;color:var(--muted)}
+.lbl{font-size:13px;font-weight:600;color:var(--ink)}
+.lnk{font-size:13px;font-weight:600;color:var(--brand);text-decoration:none;background:none;border:0;padding:0;cursor:pointer;min-height:32px;display:inline-flex;align-items:center}
+.btn{height:44px;padding:0 16px;border-radius:8px;font:600 14px/1 'IBM Plex Sans',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap;box-sizing:border-box}
+.b-pri{background:var(--brand);color:var(--brand-ink)}.b-pri:hover{background:var(--brand-hover)}
+.b-sec{background:var(--surface);color:var(--brand);border-color:var(--control-border)}.b-sec:hover{background:var(--brand-soft)}
+.b-gho{background:transparent;color:var(--brand)}.b-gho:hover{background:var(--brand-soft)}
+.b-acc{background:var(--accent);color:var(--accent-ink)}
+.sm{height:36px;padding:0 12px;font-size:13px}
+.fld{height:44px;width:100%;border:1px solid var(--control-border);border-radius:8px;background:var(--surface);color:var(--ink);font:400 15px 'IBM Plex Sans',sans-serif;padding:0 12px;box-sizing:border-box}
+.bdg{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
+.nv{height:34px;display:flex;align-items:center;gap:8px;padding:0 10px;border-radius:8px;text-decoration:none;font-size:14px}
+.bar{transition:width 180ms cubic-bezier(.2,0,0,1),height 180ms cubic-bezier(.2,0,0,1)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.bar{transition:none}}
+</style>
+
+</head><body>
+<div class="app" data-theme="light" style="width: 390px; min-height: 100%; display: flex; flex-direction: column">
+<header style="position: sticky; top: 0; z-index: 2; height: 56px; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 10px; background: var(--surface); border-bottom: 1px solid var(--border)">
+<svg aria-hidden="true" width="28" height="28" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="var(--nav-bg)"></rect><path d="M6 12.5Q24 17.5 42 12.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"></path><path d="M11 20H37M15 14.5V41M33 14.5V41" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round"></path><path transform="translate(24 31) scale(0.4) translate(-24 -23)" d="M24 6C31 13 36 20 36 28A12 12 0 0 1 12 28C12 21.5 15.5 17 19 13C20 18 22 20.5 25 21.5C26.5 16 26 11 24 6Z" fill="#e0482d"></path></svg>
+<span class="ttl" style="font-size: 14px; letter-spacing: 0.06em; flex: 1"><b style="font-weight: 600">CRECE</b> MILLO</span>
+<span aria-label="Laura Gómez" style="width: 32px; height: 32px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">LG</span>
+</header>
+<main style="padding: 16px 16px 112px; display: flex; flex-direction: column; gap: 14px">
+<section style="border-radius: 16px; background: var(--nav-bg); color: #ffffff; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #e0482d">Hola, Laura</span>
+<h1 class="ttl" style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 500">Retoma donde quedaste</h1>
+<span style="font-size: 15px; font-weight: 600">Entender las tasas: E.A., N.A.M.V. y mensual</span>
+<div style="height: 6px; border-radius: 99px; background: rgb(255 255 255 / 0.2)"><div style="width: 35%; height: 6px; border-radius: 99px; background: #e0482d"></div></div>
+<a href="#" class="btn b-acc" style="width: 100%; height: 48px">Continuar · 8 min</a>
+</section>
+<a href="#" class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 6px; color: var(--ink); text-decoration: none">
+<span style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 15px; font-weight: 600">Tu mes en un vistazo</span><span class="bdg" style="background: var(--warn-soft); color: var(--warn)">! Mercado</span></span>
+<span class="n" style="font-size: 14px">Te queda <strong>$ 1.590.000</strong> · presupuesto 50,5 %</span>
+</a>
+<section class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><h2 class="ttl" style="margin: 0; font-size: 18px; font-weight: 500">Tu ruta</h2><span class="hlp n">7 de 14 lecciones</span></div>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px">
+
+<li style="display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 44px"><span class="n" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: var(--brand); color: var(--brand-ink); border: 0">✓</span><span style="font-size: 14px; font-weight: 400">Diagnóstico y conciencia financiera</span><span style="font-size: 11px; font-weight: 600; color: var(--pos)">✓</span></li>
+
+<li style="display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 44px"><span class="n" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: var(--brand); color: var(--brand-ink); border: 0">✓</span><span style="font-size: 14px; font-weight: 400">Organización de ingresos y gastos</span><span style="font-size: 11px; font-weight: 600; color: var(--pos)">✓</span></li>
+
+<li style="display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 44px"><span class="n" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: var(--brand); color: var(--brand-ink); border: 0">✓</span><span style="font-size: 14px; font-weight: 400">Presupuesto y flujo de caja</span><span style="font-size: 11px; font-weight: 600; color: var(--pos)">✓</span></li>
+
+<li style="display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 44px"><span class="n" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: var(--accent); color: var(--accent-ink); border: 0">4</span><span style="font-size: 14px; font-weight: 600">Deudas y obligaciones</span><span style="font-size: 11px; font-weight: 600; color: var(--brand)">1 de 2</span></li>
+
+<li style="display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 44px"><span class="n" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: transparent; color: var(--ink-2); border: 1px solid var(--control-border)">5</span><span style="font-size: 14px; font-weight: 400">Ahorro y fondo de emergencia</span><span style="font-size: 11px; font-weight: 600; color: var(--brand)"></span></li>
+
+<li style="display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 44px"><span class="n" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: transparent; color: var(--ink-2); border: 1px solid var(--control-border)">6</span><span style="font-size: 14px; font-weight: 400">Patrimonio y objetivos</span><span style="font-size: 11px; font-weight: 600; color: var(--brand)"></span></li>
+
+<li style="display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 44px"><span class="n" style="width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; background: transparent; color: var(--ink-2); border: 1px solid var(--control-border)">7</span><span style="font-size: 14px; font-weight: 400">Proyecciones y decisiones</span><span style="font-size: 11px; font-weight: 600; color: var(--brand)"></span></li>
+
+</ol>
+</section>
+<h2 class="ttl" style="margin: 4px 0 0; font-size: 18px; font-weight: 500">Tus áreas</h2>
+<a href="#" class="card" style="padding: 14px; display: flex; gap: 12px; align-items: center; color: var(--ink); text-decoration: none; border: 2px solid var(--brand)"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Finanzas personales</span><span class="hlp">Panel y ruta de 7 niveles</span></span><span class="bdg" style="background: var(--pos-soft); color: var(--pos)">✓ Disponible</span></a>
+<a href="#" class="card" style="padding: 14px; display: flex; gap: 12px; align-items: center; color: var(--ink); text-decoration: none"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Emprendedores · Co-Piloto de Negocio</span><span class="hlp">Prueba productos con números antes de invertir</span></span><span class="bdg" style="background: var(--accent); color: var(--accent-ink)">Premium</span></a>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div style="padding: 12px; border-radius: 12px; background: var(--surface-2); display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; font-weight: 600; color: var(--ink-2)">Desarrollo personal</span><span class="hlp">Próximamente</span></div><div style="padding: 12px; border-radius: 12px; background: var(--surface-2); display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; font-weight: 600; color: var(--ink-2)">Salud y hábitos</span><span class="hlp">Próximamente</span></div><div style="padding: 12px; border-radius: 12px; background: var(--surface-2); display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; font-weight: 600; color: var(--ink-2)">Aprendizaje</span><span class="hlp">Próximamente</span></div><div style="padding: 12px; border-radius: 12px; background: var(--surface-2); display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; font-weight: 600; color: var(--ink-2)">Productividad</span><span class="hlp">Próximamente</span></div><div style="padding: 12px; border-radius: 12px; background: var(--surface-2); display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; font-weight: 600; color: var(--ink-2)">Relaciones</span><span class="hlp">Próximamente</span></div><div style="padding: 12px; border-radius: 12px; background: var(--surface-2); display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; font-weight: 600; color: var(--ink-2)">Propósito</span><span class="hlp">Próximamente</span></div>
+</div>
+</main>
+<nav aria-label="Navegación inferior" style="position: sticky; bottom: 0; margin-top: auto; height: 72px; border-top: 1px solid var(--border); background: var(--surface); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center">
+<a href="#" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; font-weight: 600; color: var(--brand); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>Inicio</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; color: var(--muted); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>Panel</a>
+<button type="button" aria-label="Registrar movimiento" style="justify-self: center; width: 56px; height: 56px; margin-top: -28px; border-radius: 50%; border: 4px solid var(--bg); background: var(--brand); color: var(--brand-ink); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md)"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; color: var(--muted); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l10-4 10 4-10 4zM6 9v5c3 2 9 2 12 0V9"></path></svg>Ruta</a>
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 48px; justify-content: center; font-size: 11px; color: var(--muted); text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle></svg>Más</a>
+</nav>
+</div>
+</body></html>

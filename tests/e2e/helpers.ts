@@ -30,8 +30,11 @@ export async function newMovement(page: Page, kind: "Gasto" | "Ingreso" | "Trans
   await page.getByLabel("Importe", { exact: true }).fill(data.amount);
   if (data.from) await page.getByLabel(/Desde la cuenta|Cuenta de destino|Pagado desde/).selectOption({ label: `${data.from} (COP)` });
   if (data.to) await page.getByLabel("Hacia la cuenta").selectOption({ label: `${data.to} (COP)` });
-  if (data.status) await page.getByLabel("Estado").selectOption({ label: data.status });
+  if (data.status) {
+    await page.getByText("Más opciones").click();
+    await page.getByLabel("Estado").selectOption({ label: data.status });
+  }
   await page.getByLabel(/^Fecha/).first().fill(data.date ?? "2026-02-10");
-  await page.getByRole("button", { name: new RegExp(`^Registrar ${kind.toLowerCase()}`) }).click();
+  await page.getByRole("button", { name: new RegExp(`^Guardar ${kind.toLowerCase()}`) }).click();
   await expect(page.getByText(/registrad[oa]/)).toBeVisible();
 }

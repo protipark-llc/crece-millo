@@ -1,0 +1,126 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+[data-theme="light"]{--bg:#f5f2ec;--surface:#fff;--surface-2:#efebe4;--surface-3:#e5e0d7;--border:rgb(28 28 33/.12);--control-border:#8a8690;--ink:#1c1c21;--ink-2:#45434a;--muted:#625f66;--brand:#1c1c21;--brand-soft:#ece8e1;--brand-ink:#fff;--accent:#d1401f;--pos:#106a1e;--pos-soft:#e6f2e7;--neg:#b42318;--neg-soft:#fbe9e7;--warn:#8a5a00;--warn-soft:#fbf1dc;--info:#1c5cab;--info-soft:#e6eef8;--focus:#2a78d6;--chart-1:#c63e22;--chart-grid:#e7e2da;--chart-axis:#94908a;--chart-mark:#e0482d;--shadow-sm:0 1px 2px rgb(28 28 33/.06);--shadow-md:0 4px 12px rgb(28 28 33/.08);color-scheme:light}
+[data-theme="dark"]{--bg:#111114;--surface:#1a1a1f;--surface-2:#222228;--surface-3:#2b2b32;--border:rgb(255 255 255/.10);--control-border:#6e6a72;--ink:#f2efea;--ink-2:#c9c5bf;--muted:#9c988f;--brand:#f2efea;--brand-soft:#2a2826;--brand-ink:#111114;--accent:#ff6b4a;--pos:#3fbf4a;--pos-soft:#12301a;--neg:#f08080;--neg-soft:#3a1a1a;--warn:#f2c14e;--warn-soft:#33280f;--info:#7fb1ef;--info-soft:#142a45;--focus:#7fb1ef;--chart-1:#ff7a5c;--chart-grid:#2a2a30;--chart-axis:#5e5b62;--chart-mark:#ff6b4a;--shadow-sm:0 1px 2px rgb(0 0 0/.4);--shadow-md:0 4px 12px rgb(0 0 0/.45);color-scheme:dark}
+.app{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.ttl{font-family:Outfit,system-ui,sans-serif}
+.n{font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.hlp{font-size:12px;line-height:16px;color:var(--muted)}
+.bdg{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 7px;border-radius:6px;font-size:11px;font-weight:600}
+button:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+</style>
+</head><body>
+<div class="app" data-theme="light" style="width: 390px; min-height: 100%; display: flex; flex-direction: column">
+<header style="position: sticky; top: 0; z-index: 2; background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 16px 12px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; height: 40px"><h1 class="ttl" style="margin: 0; font-size: 22px; font-weight: 500; flex: 1">Flujo de caja</h1><button type="button" aria-label="Supuestos y filtros" style="width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg></button></div>
+<div role="radiogroup" aria-label="Escenario" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 3px; gap: 2px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border)">
+<button type="button" role="radio" aria-checked="false" onClick="" style="height: 38px; border: 0; border-radius: 8px; font: 500 13px 'IBM Plex Sans', sans-serif; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none">Conservador</button><button type="button" role="radio" aria-checked="true" onClick="" style="height: 38px; border: 0; border-radius: 8px; font: 500 13px 'IBM Plex Sans', sans-serif; cursor: pointer; background: var(--surface); color: var(--ink); box-shadow: var(--shadow-sm)">Base</button><button type="button" role="radio" aria-checked="false" onClick="" style="height: 38px; border: 0; border-radius: 8px; font: 500 13px 'IBM Plex Sans', sans-serif; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none">Optimista</button>
+</div>
+<span class="hlp">Ingresos programados 0 % · gastos 0 % · lo real no se ajusta</span>
+</header>
+<main style="padding: 14px 16px 32px; display: flex; flex-direction: column; gap: 12px">
+
+<section class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<span class="bdg" style="align-self: flex-start; background: var(--pos-soft); color: var(--pos)">✓ Sin déficit previsto</span>
+<h2 class="ttl" style="margin: 0; font-size: 21px; line-height: 27px; font-weight: 500">Te alcanza 6 meses, con un bache en diciembre.</h2>
+<p style="margin: 0; font-size: 14px; line-height: 21px; color: var(--ink-2)">Lo más bajo: <strong class="n">$ 3.820.000</strong> el 7 dic, cuando coinciden arriendo, cuotas y la prima anual del seguro, antes de la quincena.</p>
+<div class="n" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding-top: 10px; border-top: 1px solid var(--border)"><div style="display: flex; flex-direction: column"><span class="hlp">Saldo hoy</span><span style="font-size: 17px; font-weight: 600">$ 5.930.000</span></div><div style="display: flex; flex-direction: column"><span class="hlp">Al 31 mar 2027</span><span style="font-size: 17px; font-weight: 600">$ 9.680.000</span></div></div>
+</section>
+<section class="card" style="padding: 14px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: center"><h2 style="margin: 0; font-size: 15px; font-weight: 600">Saldo a fin de mes</h2><span class="hlp" style="display: flex; gap: 10px"><span>— real</span><span>- - proyectado</span></span></div>
+<div style="position: relative; height: 160px">
+<svg role="img" aria-label="Saldo a fin de mes de agosto a marzo; punto más bajo $ 3.820.000 el 7 de diciembre." viewBox="0 0 1000 1000" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%">
+<line x1="0" x2="1000" y1="500" y2="500" stroke="var(--chart-grid)" vector-effect="non-scaling-stroke"></line><line x1="0" x2="1000" y1="1000" y2="1000" stroke="var(--chart-axis)" vector-effect="non-scaling-stroke"></line>
+<polyline points="62.5,642.0 187.5,566.0 287.5,407.0" fill="none" stroke="var(--chart-1)" stroke-width="3" vector-effect="non-scaling-stroke"></polyline>
+<polyline points="287.5,407.0 312.5,211.5 437.5,151.0 562.5,23.0 687.5,58.0 812.5,45.0 937.5,32.0" fill="none" stroke="var(--chart-1)" stroke-width="3" stroke-dasharray="7 5" vector-effect="non-scaling-stroke"></polyline>
+</svg>
+<span class="hlp n" style="position: absolute; left: 0; top: 50%; transform: translateY(-110%)">$ 5 M</span>
+<span aria-hidden="true" style="position: absolute; left: 52.5%; top: 61.8%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--chart-mark); border: 3px solid var(--chart-1); box-sizing: border-box"></span>
+</div>
+<div class="hlp" style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr))"><span style="text-align: center">ago</span><span style="text-align: center">sep</span><span style="text-align: center">oct</span><span style="text-align: center">nov</span><span style="text-align: center">dic</span><span style="text-align: center">ene</span><span style="text-align: center">feb</span><span style="text-align: center">mar</span></div>
+</section>
+<h2 class="ttl" style="margin: 6px 0 0; font-size: 18px; font-weight: 500">Mes a mes</h2>
+
+<div class="card" style="overflow: hidden; background: var(--surface)">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: transparent; color: var(--ink); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; text-align: left; cursor: pointer; font-family: inherit">
+<span style="font-size: 15px; font-weight: 600">Agosto 2026</span><span class="n" style="font-size: 15px; font-weight: 600; text-align: right">$ 3.580.000</span>
+<span><span class="bdg" style="background: var(--surface-3); color: var(--ink-2)">Real</span></span><span class="hlp n" style="text-align: right">neto +$ 570.000</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden; background: var(--surface)">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: transparent; color: var(--ink); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; text-align: left; cursor: pointer; font-family: inherit">
+<span style="font-size: 15px; font-weight: 600">Septiembre 2026</span><span class="n" style="font-size: 15px; font-weight: 600; text-align: right">$ 4.340.000</span>
+<span><span class="bdg" style="background: var(--surface-3); color: var(--ink-2)">Real</span></span><span class="hlp n" style="text-align: right">neto +$ 760.000</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden; background: var(--brand-soft)">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: transparent; color: var(--ink); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; text-align: left; cursor: pointer; font-family: inherit">
+<span style="font-size: 15px; font-weight: 600">Octubre 2026</span><span class="n" style="font-size: 15px; font-weight: 600; text-align: right">$ 7.885.000</span>
+<span><span class="bdg" style="background: var(--brand-soft); color: var(--brand)">En curso</span></span><span class="hlp n" style="text-align: right">neto +$ 3.545.000</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden; background: var(--surface)">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: transparent; color: var(--ink); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; text-align: left; cursor: pointer; font-family: inherit">
+<span style="font-size: 15px; font-weight: 600">Noviembre 2026</span><span class="n" style="font-size: 15px; font-weight: 600; text-align: right">$ 8.490.000</span>
+<span><span class="bdg" style="background: var(--info-soft); color: var(--info)">Proyectado</span></span><span class="hlp n" style="text-align: right">neto +$ 605.000</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden; background: var(--surface)">
+<button type="button" onClick="" aria-expanded="true" style="width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: transparent; color: var(--ink); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; text-align: left; cursor: pointer; font-family: inherit">
+<span style="font-size: 15px; font-weight: 600">Diciembre 2026 · con prima</span><span class="n" style="font-size: 15px; font-weight: 600; text-align: right">$ 9.770.000</span>
+<span><span class="bdg" style="background: var(--info-soft); color: var(--info)">Proyectado</span></span><span class="hlp n" style="text-align: right">neto +$ 1.280.000</span>
+</button>
+
+<div class="n" style="margin: 0 14px 14px; padding: 10px; border-radius: 8px; background: var(--surface-2); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; font-size: 13px">
+<span class="hlp">Inicial</span><span style="text-align: right">$ 8.490.000</span>
+<span class="hlp">Ingresos reales</span><span style="text-align: right; color: var(--pos)">+$ 0</span>
+<span class="hlp">Gastos reales</span><span style="text-align: right; color: var(--neg)">−$ 0</span>
+<span class="hlp">Ingresos programados</span><span style="text-align: right; color: var(--pos)">+$ 7.800.000</span>
+<span class="hlp">Gastos programados</span><span style="text-align: right; color: var(--neg)">−$ 5.120.000</span>
+<span class="hlp">Estimados</span><span style="text-align: right; color: var(--neg)">−$ 1.400.000</span>
+</div>
+
+</div>
+
+<div class="card" style="overflow: hidden; background: var(--surface)">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: transparent; color: var(--ink); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; text-align: left; cursor: pointer; font-family: inherit">
+<span style="font-size: 15px; font-weight: 600">Enero 2027</span><span class="n" style="font-size: 15px; font-weight: 600; text-align: right">$ 9.420.000</span>
+<span><span class="bdg" style="background: var(--info-soft); color: var(--info)">Proyectado</span></span><span class="hlp n" style="text-align: right">neto −$ 350.000</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden; background: var(--surface)">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: transparent; color: var(--ink); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; text-align: left; cursor: pointer; font-family: inherit">
+<span style="font-size: 15px; font-weight: 600">Febrero 2027</span><span class="n" style="font-size: 15px; font-weight: 600; text-align: right">$ 9.550.000</span>
+<span><span class="bdg" style="background: var(--info-soft); color: var(--info)">Proyectado</span></span><span class="hlp n" style="text-align: right">neto +$ 130.000</span>
+</button>
+
+</div>
+
+<div class="card" style="overflow: hidden; background: var(--surface)">
+<button type="button" onClick="" aria-expanded="false" style="width: 100%; min-height: 56px; padding: 10px 14px; border: 0; background: transparent; color: var(--ink); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; text-align: left; cursor: pointer; font-family: inherit">
+<span style="font-size: 15px; font-weight: 600">Marzo 2027</span><span class="n" style="font-size: 15px; font-weight: 600; text-align: right">$ 9.680.000</span>
+<span><span class="bdg" style="background: var(--info-soft); color: var(--info)">Proyectado</span></span><span class="hlp n" style="text-align: right">neto +$ 130.000</span>
+</button>
+
+</div>
+
+
+
+<p class="hlp" style="margin: 4px 0 0">Proyecciones con supuestos explícitos; no es asesoría financiera. Datos ficticios.</p>
+</main>
+</div>
+</body></html>
