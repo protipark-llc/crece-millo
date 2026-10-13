@@ -54,7 +54,8 @@ Las páginas cargan todos los datos de la persona con `loadFinanceData` y calcul
 |---|---|
 | `users`, `sessions`, `login_attempts` | Identidad, sesiones (token hasheado), límite de intentos |
 | `user_settings` | País, moneda, idioma regional, zona horaria, perfil del hogar, pasos del diagnóstico, vista (`view_mode`: esencial/pro/personalizada) y secciones visibles (`sections`) |
-| `copilot_products`, `copilot_tests`, `copilot_plans`, `dropship_progress` | Co-Piloto de Negocio: productos con costos y comisiones, tests de anuncios, plan de capital y avance en la ruta de dropshipping (claves estables de `src/lib/copilot/route.ts`) |
+| `copilot_products`, `copilot_tests`, `copilot_plans`, `dropship_progress` | Co-Piloto anterior. Se conservan como origen de la migración: la primera vez que la persona abre el Co-Piloto nuevo, sus datos pasan a `copiloto_*` (`legacyState` en `src/server/services/copiloto.ts`). |
+| `copiloto_settings`, `copiloto_products`, `copiloto_tests`, `copiloto_product_state`, `copiloto_saved` | Co-Piloto de Negocio (paquete `docs/copiloto/`): misma forma lógica que el estado `S` del original. Productos y tests se guardan como documento jsonb con su id original para que los respaldos JSON entren y salgan sin pérdida. Motor en `src/lib/copiloto/engine.ts` (verificado contra `golden.json`). |
 | `accounts` | Cuentas (tipo, moneda, saldo inicial, fecha de apertura, líquida o no) |
 | `categories` | Árbol de dos niveles, naturaleza (esencial/discrecional) y comportamiento (fijo/variable) |
 | `transactions` | Ingresos, gastos y transferencias; estado previsto/realizado/anulado; fecha prevista y efectiva; conciliación; ocurrencia de recurrencia; clave de idempotencia |

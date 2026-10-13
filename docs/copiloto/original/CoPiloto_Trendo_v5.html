@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co-Piloto de Inversión · Trendo v3</title>
+<style>
+:root{color-scheme:light;--ink:#141a3a;--bg:#F4F6FB;--card:#fff;--line:#E1E5F0;--mut:#6A7194;--indigo:#0B1231;--accent:#385BFF;--scale:#4F8DFF;--good:#14A37F;--warn:#D98E00;--stop:#E2405F;--soft:#EEF2FF}
+*{box-sizing:border-box}
+body{margin:0;font-family:Sora,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+.mono{font-family:"JetBrains Mono",Consolas,"Courier New",monospace}
+header{background:linear-gradient(120deg,var(--indigo),#1b2a6b);color:#fff;padding:16px 22px}
+.hrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:19px}
+header p{margin:2px 0 0;opacity:.75;font-size:12.5px}
+.chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 10px;font-size:12px}
+.riskbar{margin-top:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:10px 14px}
+.riskbar .top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px}
+.riskbar input{width:100%;margin:8px 0 2px;-webkit-appearance:none;appearance:none;height:6px;border-radius:9px;background:linear-gradient(90deg,#34D6A8,#FFB020,#FF5C7A);outline:none}
+.riskbar input::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--accent);cursor:pointer}
+.riskbar input::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--accent);cursor:pointer}
+.rlabels{display:flex;justify-content:space-between;font-size:10.5px;opacity:.7}
+.ctrls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:12px}
+.ctrls select,.ctrls input{background:rgba(255,255,255,.95);border:0;border-radius:7px;padding:5px 8px;font-size:12px;font-family:inherit}
+nav{display:flex;gap:6px;padding:12px 22px 0;flex-wrap:wrap;max-width:1440px;margin:auto}
+nav button{background:#fff;border:1px solid var(--line);color:var(--mut);border-radius:10px;padding:9px 14px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit}
+nav button.on{border-color:var(--accent);color:var(--accent);background:var(--soft)}
+main{max-width:1440px;margin:auto;padding:14px 22px 30px}
+.grid{display:grid;grid-template-columns:330px 1fr;gap:16px}
+.grid>*{min-width:0}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.card{margin-top:14px}
+h2{font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin:14px 0 8px}
+h2:first-child{margin-top:0}
+h3{margin:0 0 10px;font-size:15px}
+label.f{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 0;font-size:13px}
+label.f span{color:var(--mut);flex:1}
+label.f input,label.f select{width:128px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;text-align:right;font-family:"JetBrains Mono",Consolas,monospace;background:#fff}
+label.f select{font-family:inherit;text-align:left}
+.hint{font-size:11px;color:var(--mut);margin:-2px 0 6px;line-height:1.35}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:9px 13px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn.alt{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.btn.ghost{background:#fff;color:var(--mut);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;border-left:5px solid var(--accent)}
+.kpi .t{font-size:10.5px;text-transform:uppercase;color:var(--mut);letter-spacing:.6px}
+.kpi .v{font-size:20px;font-weight:700;margin-top:3px;font-family:"JetBrains Mono",Consolas,monospace}
+.kpi .s{font-size:11px;color:var(--mut);margin-top:2px}
+.kpi.g{border-left-color:var(--good)}.kpi.r{border-left-color:var(--stop)}.kpi.a{border-left-color:var(--warn)}
+.alert{border-radius:11px;padding:10px 14px;margin:12px 0;font-size:13px;line-height:1.45}
+.alert.g{background:#E6F7F1;color:#0c6b52}.alert.r{background:#FDECEF;color:#9b1c36}.alert.a{background:#FFF5DF;color:#7a5200}.alert.b{background:var(--soft);color:#23338f}
+.verdict{display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.verdict .big{font-size:22px;font-weight:700}
+.verdict .lbl{font-size:11px;text-transform:uppercase;color:var(--mut);letter-spacing:.8px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{background:#F3F5FB;color:var(--mut);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;position:sticky;top:0}
+td{font-family:"JetBrains Mono",Consolas,monospace}
+td:first-child,th:first-child{text-align:left;font-family:inherit}
+.scroll{max-height:380px;overflow:auto}
+table.wrap td,table.wrap th{white-space:normal}
+main{overflow-x:hidden}
+.pos{color:var(--good)}.neg{color:var(--stop)}.wrn{color:var(--warn)}
+.heat td{text-align:center;font-weight:600}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--mut);margin-top:6px;flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:3px;margin-right:5px;vertical-align:middle}
+.phase{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;margin-bottom:10px}
+.phase .ph{display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}
+.phase .num{width:30px;height:30px;border-radius:9px;background:var(--soft);color:var(--accent);display:grid;place-items:center;font-weight:700;flex-shrink:0}
+.phase.done .num{background:var(--good);color:#fff}
+.phase.cur{border-color:var(--accent);box-shadow:0 0 0 3px #385bff1a}
+.phase .ttl{flex:1;font-weight:600}
+.phase .sub{font-size:12px;color:var(--mut);font-weight:400}
+.prog{height:6px;background:#E8ECF7;border-radius:9px;overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:var(--accent)}
+.checks{margin-top:10px;display:none}
+.phase.open .checks{display:block}
+.checks label{display:flex;gap:9px;align-items:flex-start;font-size:13px;margin:6px 0;line-height:1.4}
+.checks input{margin-top:2px}
+.auto{font-size:10px;background:var(--soft);color:var(--accent);border-radius:6px;padding:1px 6px;margin-left:6px}
+.goto{font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline;margin-top:6px;display:inline-block}
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.mod{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.mod.off{opacity:.55}
+.mentor{background:#fff;border:1px solid #385bff55;border-radius:14px;padding:14px 16px;margin-top:12px;font-size:13px;line-height:1.55}
+.mentor .info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:700px){.mentor .info{grid-template-columns:1fr}}
+.mentor .box{border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.mentor .box b{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+textarea{width:100%;min-height:160px;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:"JetBrains Mono",Consolas,monospace;font-size:12px}
+.tag{display:inline-block;font-size:11px;border-radius:6px;padding:2px 7px;font-weight:600}
+.tag.g{background:#E6F7F1;color:#0c6b52}.tag.r{background:#FDECEF;color:#9b1c36}.tag.a{background:#FFF5DF;color:#7a5200}.tag.b{background:var(--soft);color:#23338f}
+.subtabs{display:flex;gap:6px;margin:12px 0;flex-wrap:wrap}
+.subtabs button{background:#fff;border:1px solid var(--line);color:var(--mut);border-radius:9px;padding:7px 12px;font-weight:600;font-size:12.5px;cursor:pointer;font-family:inherit}
+.subtabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.fgrid>div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+@media(max-width:1100px){.fgrid{grid-template-columns:1fr 1fr}}@media(max-width:760px){.fgrid{grid-template-columns:1fr}}
+.fgrid label.f input,.fgrid label.f select{width:150px}
+.fgrid label.t{display:block;margin:6px 0;font-size:13px;color:var(--mut)}
+.fgrid label.t textarea,.fgrid label.t input{display:block;width:100%;margin-top:4px;min-height:0;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-family:inherit;font-size:13px}
+.fgrid label.t textarea{min-height:58px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.toolbar input,.toolbar select{padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:13px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.two>*{min-width:0}@media(max-width:900px){.two{grid-template-columns:1fr}}
+.crit label.f select{width:150px}
+.bigscore{font-size:46px;font-weight:700;font-family:"JetBrains Mono",Consolas,monospace;line-height:1}
+.funnel .row{display:grid;grid-template-columns:120px 1fr 120px;gap:10px;align-items:center;margin:6px 0;font-size:12.5px}
+.funnel .bar{height:22px;border-radius:6px;background:linear-gradient(90deg,#385BFF,#4F8DFF);min-width:2px}
+.diag{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:10px;padding:9px 12px;margin:8px 0;font-size:13px;line-height:1.45}
+.diag.r{border-left-color:var(--stop)}.diag.a{border-left-color:var(--warn)}.diag.g{border-left-color:var(--good)}
+.diag b{display:block}
+tr.sel td{background:#EEF2FF}
+.coach{display:flex;gap:12px;align-items:center;background:linear-gradient(90deg,#EEF2FF,#fff);border:1px solid #385bff44;border-radius:14px;padding:11px 14px;margin-bottom:14px}
+.coach .ic{font-size:22px}.coach .tx{flex:1;font-size:13.5px;line-height:1.45}.coach .tx b{color:#23338f}
+.tip{display:inline-block;width:15px;height:15px;border-radius:50%;background:#E8ECF7;color:#385BFF;font-size:10px;line-height:15px;text-align:center;margin-left:4px;cursor:help;font-weight:700;text-transform:none}
+.modal{position:fixed;inset:0;background:rgba(11,18,49,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal.hide{display:none}.mbox{background:#fff;border-radius:16px;max-width:760px;width:100%;max-height:85vh;overflow:auto;padding:18px 20px}
+.gl{border-bottom:1px solid var(--line);padding:8px 0;font-size:13px;line-height:1.45}.gl b{color:#23338f}
+.offer{border:1px solid var(--line);border-radius:14px;padding:13px 15px;background:#fff;display:flex;flex-direction:column;gap:6px}
+.offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.offer h4{margin:0;font-size:14.5px}.offer .what{font-size:12.5px;color:var(--mut);line-height:1.4}
+.offer .nums{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:4px}
+.offer .nums label{font-size:11px;color:var(--mut)}.offer .nums input{width:100%;padding:5px 6px;border:1px solid var(--line);border-radius:7px;text-align:right;font-family:"JetBrains Mono",Consolas,monospace;font-size:12px}
+.offer .res{font-size:12.5px;background:#F5F7FC;border-radius:9px;padding:7px 9px;line-height:1.5}
+.say{background:#F5F7FC;border-left:3px solid #385BFF;border-radius:8px;padding:8px 10px;font-size:12.5px;line-height:1.45;white-space:pre-wrap}
+.cpy{float:right;font-size:11px;background:#fff;border:1px solid var(--line);color:var(--accent);border-radius:7px;padding:2px 8px;cursor:pointer;margin-left:6px}
+.hooks{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px}
+.hook{border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:13px;background:#fff}
+.hook small{display:block;color:var(--mut);font-size:11px;margin-top:3px}
+.script{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;margin-bottom:10px}
+.script ol{margin:6px 0 0 18px;padding:0;font-size:13px;line-height:1.55}
+.edu{background:#FFFBEF;border:1px solid #F3E2B3;border-radius:12px;padding:10px 13px;font-size:12.8px;line-height:1.5;margin-bottom:12px}
+.edu b{color:#7a5200}
+.mbox.wide{max-width:1180px}
+.qa-grid{display:grid;grid-template-columns:360px 1fr;gap:16px}.qa-grid>*{min-width:0}@media(max-width:900px){.qa-grid{grid-template-columns:1fr}}
+.qa-step{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--mut);margin-bottom:8px}
+.qa-step b{background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;display:inline-grid;place-items:center;font-size:11px}
+.qa-f{display:block;margin:8px 0;font-size:12.5px;color:var(--mut)}
+.qa-f input,.qa-f select,.qa-f textarea{display:block;width:100%;margin-top:4px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-family:inherit;font-size:13.5px;color:var(--ink)}
+.qa-f textarea{min-height:64px}
+.qa-big input{font-size:16px;font-weight:600}
+.auto-tag{font-size:10px;background:#E6F7F1;color:#0c6b52;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.chipsel button{background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 11px;font-size:12.5px;margin:3px;cursor:pointer;font-family:inherit;color:var(--ink)}
+.chipsel button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sl{display:grid;grid-template-columns:1fr 112px;gap:2px 10px;align-items:center;margin:7px 0}
+.sl span{font-size:12.5px;color:var(--mut)}.sl input[type=number]{width:112px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;text-align:right;font-family:"JetBrains Mono",Consolas,monospace;font-size:12.5px}
+.sl input[type=range]{grid-column:1/-1;width:100%;accent-color:#385BFF}
+.stack{display:flex;height:30px;border-radius:8px;overflow:hidden;margin:8px 0}.stack div{height:100%}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin:6px 0}
+.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;margin:2px}
+footer{text-align:center;color:var(--mut);font-size:11px;padding:10px 20px 24px}
+.hide{display:none}
+@media print{header .riskbar,header .ctrls,nav,.btns,.btn{display:none}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div><h1>Co-Piloto de Inversión</h1><p>Método Trendo · dropshipping contraentrega en Colombia · Shopify + Dropi</p></div>
+    <span><button class="chip" style="cursor:pointer;color:#fff" onclick="openGlos()">📘 Glosario</button> <span class="chip">TRENDO · v5.1</span></span>
+  </div>
+  <div class="riskbar">
+    <div class="top"><span style="opacity:.75;text-transform:uppercase;letter-spacing:1px">Nivel de riesgo</span><span class="mono"><b id="riskNum" style="font-size:20px">5</b><span style="opacity:.6">/10 · </span><b id="riskLbl">Normal</b></span></div>
+    <input type="range" id="risk" min="1" max="10" step="1" value="5">
+    <div class="rlabels"><span>1 · Proteger capital</span><span>5 · Equilibrio</span><span>10 · Máximo empuje</span></div>
+  </div>
+  <div class="ctrls">
+    <span>Producto activo</span><select id="prodSel"></select>
+    <span>Ver en</span><select id="cur"><option value="COP">COP</option><option value="USD">USD</option></select>
+    <span>TRM</span><input id="trm" type="number" step="10" style="width:80px">
+  </div>
+</header>
+
+<nav id="nav">
+  <button data-t="ruta" class="on">1 · Ruta</button>
+  <button data-t="producto">2 · Productos</button>
+  <button data-t="marketing">3 · Marketing</button>
+  <button data-t="test">4 · Analizar test</button>
+  <button data-t="plan">5 · Planificar capital</button>
+  <button data-t="crecer">6 · Crecer (interés compuesto)</button>
+  <button data-t="bitacora">7 · Bitácora</button>
+</nav>
+
+<main>
+<div class="coach" id="coach"></div>
+<!-- =============== RUTA =============== -->
+<section id="t-ruta">
+  <div class="alert b" id="rutaResumen"></div>
+  <div id="fases"></div>
+  <div class="card">
+    <h3>Ritmo operativo</h3>
+    <div class="scroll"><table class="wrap"><tr><th>Cuándo</th><th style="text-align:left">Qué haces</th><th style="text-align:left">Dónde</th></tr>
+      <tr><td>Diario (1–3 h)</td><td style="text-align:left;font-family:inherit">Aprender 20 min · investigar 20 min · crear 30–60 min · revisar métricas de ayer y tomar UNA decisión · cerrar el día</td><td style="text-align:left;font-family:inherit">Notion › Plan de Acción</td></tr>
+      <tr><td>Cada test (3–5 días)</td><td style="text-align:left;font-family:inherit">Cargar el test aquí, leer el veredicto, registrar en Notion › Pruebas</td><td style="text-align:left;font-family:inherit">Pestañas 2 y 4</td></tr>
+      <tr><td>Semanal (45 min)</td><td style="text-align:left;font-family:inherit">Revisión con el mentor: qué escalar, qué matar, cuánto capital mover</td><td style="text-align:left;font-family:inherit">Pestaña 7 · Revisión semanal</td></tr>
+      <tr><td>Mensual</td><td style="text-align:left;font-family:inherit">Re-planificar capital con datos reales y decidir si el ganador pasa a importación</td><td style="text-align:left;font-family:inherit">Pestañas 5 y 6</td></tr>
+    </table></div>
+  </div>
+  <div class="card">
+    <h3>Módulos</h3>
+    <div class="mods">
+      <div class="mod"><b>Dropshipping</b><div class="hint" style="margin-top:4px">Activo · Shopify + Dropi · Colombia</div></div>
+      <div class="mod off"><b>Bolsa</b><div class="hint" style="margin-top:4px">Próximamente · cartera, riesgo y rebalanceo con la misma barra 1–10</div></div>
+      <div class="mod off"><b>Propiedad raíz</b><div class="hint" style="margin-top:4px">Próximamente · cap rate, flujo y apalancamiento</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== PRODUCTO =============== -->
+<section id="t-producto" class="hide">
+  <div class="kpis" id="pfK"></div>
+  <div class="card">
+    <div class="toolbar"><h3 style="margin:0;flex:1">Base de datos de productos</h3>
+      <input id="pfQ" placeholder="Buscar producto…" style="width:170px">
+      <select id="pfEtapa"></select>
+      <select id="pfSort"><option value="score">Ordenar por puntaje</option><option value="neta">Utilidad neta real</option><option value="up">Utilidad por pedido</option><option value="gasto">Gasto en ads</option><option value="nombre">Nombre</option></select>
+      <button class="btn" onclick="qaOpen()">⚡ Alta rápida de producto</button><button class="btn ghost" onclick="newProduct()">+ En blanco</button>
+      <button class="btn ghost" onclick="exportProductsCSV()">CSV para Notion</button></div>
+    <div class="scroll"><table id="pfTable"></table></div>
+    <div class="hint" style="margin-top:6px">Haz clic en un producto para abrir su ficha. Clase A = testear ya · B = testear si no hay A · C = no testear.</div>
+  </div>
+
+  <div class="card" id="pDetail">
+    <div class="toolbar"><div style="flex:1"><div class="hint" style="margin:0;text-transform:uppercase;letter-spacing:.6px">Producto activo</div><h3 id="pdTitle" style="margin:2px 0 0;font-size:18px"></h3></div><div id="pdBadges"></div></div>
+    <div class="subtabs" id="pdTabs"><button data-s="ficha">1 · Ficha</button><button data-s="eval">2 · Evaluación inicial</button><button data-s="res">3 · Resultados de venta</button><button data-s="ana">4 · Análisis y estrategia</button><button data-s="precio">5 · Precio y margen</button></div>
+
+    <div id="pd-ficha"><div class="fgrid" id="fichaForm"></div>
+      <div class="btns"><button class="btn ghost" onclick="duplicateProduct()">Duplicar producto</button><button class="btn ghost" onclick="deleteProduct()">Eliminar producto</button></div>
+      <div class="hint" style="margin-top:6px">Los cambios se guardan solos.</div></div>
+
+    <div id="pd-eval" class="hide"><div class="two">
+      <div><h2>Criterios (1 = malo · 5 = excelente)</h2><div class="crit" id="critForm"></div>
+        <div class="hint">El puntaje combina estos criterios (65%) con la economía del producto (35%). Si no pasa la validación de margen, queda en clase C aunque los criterios sean buenos.</div></div>
+      <div><div id="evalBox"></div><div id="evalWarn"></div></div></div>
+      <h2>Unidad económica</h2>
+      <div class="kpis" id="pk1"></div><div id="pGate"></div><div class="kpis" id="pk2"></div></div>
+
+    <div id="pd-res" class="hide">
+      <h2>Registrar resultado (un día, una semana o un test)</h2>
+      <div class="fgrid">
+        <div><label class="f"><span>Fecha</span><input id="r_fecha" type="date"></label><label class="f"><span>Canal</span><select id="r_canal"><option>TikTok Ads</option><option>Meta Ads</option><option>Orgánico TikTok</option><option>Orgánico Reels</option><option>Otro</option></select></label><label class="f"><span>Días que cubre</span><input id="r_dias" type="number" step="1"></label><label class="f"><span>Gasto en ads</span><input id="r_ads" type="number" step="1000"></label></div>
+        <div><label class="f"><span>Impresiones</span><input id="r_imp" type="number" step="100"></label><label class="f"><span>Clics</span><input id="r_clics" type="number" step="1"></label><label class="f"><span>Pedidos generados</span><input id="r_ped" type="number" step="1"></label><label class="f"><span>Pedidos confirmados</span><input id="r_conf" type="number" step="1"></label><div class="hint">Confirmados por WhatsApp y despachados. Vacío = todos.</div></div>
+        <div><label class="f"><span>Pedidos entregados</span><input id="r_ent" type="number" step="1"></label><div class="hint">Vacío = se estima con el % de entrega esperado.</div><label class="f"><span>Ticket promedio (AOV)</span><input id="r_aov" type="number" step="1000"></label><div class="hint">Vacío = precio + upsell esperado.</div><label class="t">Notas (creativo, ángulo, cambio que hiciste)<input id="r_notas"></label></div>
+      </div>
+      <div class="kpis" id="rPrev" style="margin-top:10px"></div>
+      <div class="btns"><button class="btn" id="btnRes" onclick="saveResult()">Registrar resultado</button><button class="btn ghost" onclick="clearResultForm()">Limpiar</button></div>
+      <div class="card"><h3>Historial de este producto</h3><div class="scroll"><table id="resTable"></table></div></div>
+    </div>
+
+    <div id="pd-ana" class="hide">
+      <div id="anaEmpty"></div>
+      <div class="kpis" id="paK"></div>
+      <div class="two" style="margin-top:14px">
+        <div class="card" style="margin-top:0"><h3>Embudo</h3><div class="funnel" id="paFunnel"></div></div>
+        <div class="card" style="margin-top:0"><h3>Esperado vs. real</h3><div class="scroll"><table id="paVs"></table></div>
+          <div class="btns"><button class="btn alt" onclick="useRealDelivery()">Usar el % de entrega real como esperado</button></div></div>
+      </div>
+      <div class="card"><h3>Evolución</h3><svg id="paChart" viewBox="0 0 900 260" width="100%" height="260" preserveAspectRatio="none"></svg>
+        <div class="legend"><span><i style="background:#14A37F"></i>Utilidad neta acumulada</span><span><i style="background:#385BFF"></i>Recaudo acumulado</span><span><i style="background:#E2405F"></i>Gasto en ads acumulado</span></div></div>
+      <div class="card"><h3>Diagnóstico y estrategia</h3><div id="paStrat"></div><div id="paDiag"></div>
+        <div class="btns"><button class="btn" onclick="mentorProduct()">Pedir estrategia al mentor</button><button class="btn ghost" onclick="applySuggestedStage()">Aplicar etapa sugerida</button></div>
+        <div id="mentorProdOut"></div></div>
+    </div>
+
+    <div id="pd-precio" class="hide">
+      <div class="alert b" style="margin-top:0">Mueve los controles y mira cómo cambia el rango de precios. <b>Subir el precio deja más por pedido, pero encarece el CPA</b> porque menos gente compra. El mejor precio es el que deja más utilidad total al mes <b>sin bajar del margen saludable</b>, porque esa utilidad es la que reinviertes para crecer de forma compuesta.</div>
+      <div class="grid">
+        <div class="panel" id="pcForm"></div>
+        <div>
+          <div class="kpis" id="pcK"></div>
+          <div id="pcAlert"></div>
+          <div class="card"><h3>Precio vs. utilidad mensual y margen neto</h3>
+            <svg id="pcChart" viewBox="0 0 900 300" width="100%" height="300" preserveAspectRatio="none"></svg>
+            <div class="legend"><span><i style="background:#385BFF"></i>Utilidad neta mensual (izq.)</span><span><i style="background:#14A37F"></i>Margen neto % (der.)</span><span><i style="background:#E6F7F1;height:10px"></i>Rango saludable</span><span><i style="background:#E2405F"></i>Equilibrio</span><span><i style="background:#0B1231"></i>Precio evaluado</span></div></div>
+          <div class="two">
+            <div class="card"><h3>¿A dónde va cada peso? <span class="hint">(precio evaluado, por pedido entregado)</span></h3><div class="stack" id="pcStack"></div><div class="scroll"><table id="pcParts"></table></div></div>
+            <div class="card"><h3>Salud del precio</h3><div id="pcHealth"></div></div>
+          </div>
+          <div class="card"><h3>Estrategia de inversión: cómo crece el capital con cada precio</h3>
+            <div class="hint" style="margin-bottom:8px">Usa el capital, la reinversión, el ciclo y el horizonte de la pestaña 6 · Crecer, y el CPA que corresponde a cada precio. Sin fase de testeo, porque es el mismo producto ya validado.</div>
+            <div class="scroll"><table id="pcSim"></table></div><div id="pcComp"></div></div>
+          <div class="card"><h3>Tabla de precios</h3><div class="scroll"><table id="pcGrid"></table></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== MARKETING =============== -->
+<section id="t-marketing" class="hide">
+  <div class="toolbar"><div style="flex:1"><div class="hint" style="margin:0;text-transform:uppercase;letter-spacing:.6px">Marketing para</div><h3 id="mkTitle" style="margin:2px 0 0;font-size:18px"></h3><div class="hint" id="mkSub" style="margin:2px 0 0"></div></div>
+    <input id="mkMarca" placeholder="Nombre de tu tienda" style="width:180px" oninput="S.marca=this.value;save()"><button class="btn ghost" onclick="openProduct(S.active);go('producto');setPtab('ficha')">Editar público, beneficio y ángulos</button></div>
+  <div class="subtabs" id="mkTabs"><button data-m="ofertas">1 · Ofertas (upsell y downsell)</button><button data-m="creativos">2 · Creativos y anuncios</button><button data-m="pagina">3 · Página y WhatsApp</button><button data-m="lanz">4 · Plan de lanzamiento</button></div>
+
+  <div id="mk-ofertas">
+    <div class="edu"><b>¿Para qué sirve?</b> Subir lo que te paga cada cliente (ticket promedio) sin pagar más publicidad. Si cada pedido deja más, puedes pagar un CPA más alto, ganarle a la competencia en la subasta y escalar con más margen. En contraentrega el mejor momento para ofrecer es <b>la llamada o el WhatsApp de confirmación</b>. Ajusta precio, costo y % de aceptación de cada oferta y mira el efecto en vivo.</div>
+    <div class="offers" id="mkOffers"></div>
+    <div class="card"><h3>Ideas de complementos para tu nicho</h3><div id="mkIdeas"></div></div>
+    <div class="btns"><button class="btn" onclick="mentorOffers()">✨ Generar ofertas personalizadas con IA</button></div><div id="mentorOffersOut"></div>
+  </div>
+
+  <div id="mk-creativos" class="hide">
+    <div class="edu"><b>Cómo usarlo:</b> elige un ángulo, toma 3 ganchos distintos y graba un video corto por cada uno con el guion. Lanza los 3 a la vez con el mismo presupuesto: el que tenga mejor CTR y CPA es el ganador y de ese haces variaciones. <b>Los primeros 3 segundos deciden el 80% del resultado.</b></div>
+    <h2>Ángulo de venta</h2><div class="chipsel" id="mkAngs"></div>
+    <div class="card"><h3>10 ganchos para los primeros 3 segundos</h3><div class="hooks" id="mkHooks"></div></div>
+    <div class="card"><h3>Guiones de video (TikTok / Reels)</h3><div id="mkScripts"></div></div>
+    <div class="two"><div class="card"><h3>Textos del anuncio</h3><div id="mkCopy"></div></div><div class="card"><h3>Matriz de test (3 × 3)</h3><div id="mkMatrix"></div></div></div>
+    <div class="card"><h3>Checklist del creativo</h3><div id="mkCheck"></div></div>
+    <div class="btns"><button class="btn" onclick="mentorCreatives()">✨ Generar más creativos con IA</button></div><div id="mentorCreativesOut"></div>
+  </div>
+
+  <div id="mk-pagina" class="hide">
+    <div class="edu"><b>La página de producto es la que vende.</b> Orden recomendado: título con beneficio → video o GIF en uso → precio tachado y oferta → 3–5 beneficios → reseñas → preguntas frecuentes → garantía y “pagas al recibir”. Los mensajes de WhatsApp suben la confirmación y la entrega, que en contraentrega son tu utilidad.</div>
+    <div class="two"><div class="card" style="margin-top:0"><h3>Textos de la página</h3><div id="mkPage"></div></div><div class="card" style="margin-top:0"><h3>Mensajes de WhatsApp</h3><div id="mkWa"></div></div></div>
+  </div>
+
+  <div id="mk-lanz" class="hide">
+    <div class="edu"><b>Un test bien hecho responde una sola pregunta:</b> ¿este producto, con esta oferta, consigue pedidos a un CPA que me deja ganar? El plan se arma con tu nivel de riesgo y la unidad económica del producto.</div>
+    <div id="mkLaunch"></div>
+  </div>
+</section>
+
+<!-- =============== TEST =============== -->
+<section id="t-test" class="hide">
+<div class="grid">
+  <div class="panel">
+    <h2>Datos del test</h2>
+    <label class="f"><span>Nombre del test</span><input id="t_nombre" style="text-align:left;font-family:inherit;width:170px" placeholder="Ej: Ojos · TikTok · semana 1"></label>
+    <label class="f"><span>Canal</span><select id="t_canal"><option>TikTok Ads</option><option>Meta Ads</option><option>Orgánico TikTok</option><option>Orgánico Reels</option></select></label>
+    <label class="f"><span>Fecha</span><input id="t_fecha" type="date"></label>
+    <label class="f"><span>Días del test</span><input id="t_dias" type="number" step="1"></label>
+    <label class="f"><span>Gasto en ads</span><input id="t_ads" type="number" step="1000"></label>
+    <label class="f"><span>Impresiones</span><input id="t_imp" type="number" step="100"></label>
+    <label class="f"><span>Clics</span><input id="t_clics" type="number" step="1"></label>
+    <label class="f"><span>Pedidos generados</span><input id="t_ped" type="number" step="1"></label>
+    <label class="f"><span>Pedidos confirmados</span><input id="t_conf" type="number" step="1"></label>
+    <label class="f"><span>Pedidos entregados</span><input id="t_ent" type="number" step="1"></label>
+    <div class="hint">Si aún no sabes cuántos se entregaron, deja vacío y se usa el % esperado del producto.</div>
+    <label class="f"><span>Ticket promedio (AOV)</span><input id="t_aov" type="number" step="1000"></label>
+    <div class="hint">Vacío = precio del producto activo.</div>
+    <label class="f"><span>Meta de rentabilidad %</span><input id="t_meta" type="number" step="1"></label>
+    <div class="hint">Costo, flete y comisión se toman del producto activo. Este test también queda en el historial del producto (pestaña 2 › Resultados de venta).</div>
+    <div class="btns">
+      <button class="btn" id="btnSaveTest" onclick="saveTest()">Guardar test</button>
+      <button class="btn ghost" onclick="clearTest()">Limpiar</button>
+    </div>
+  </div>
+  <div>
+    <div class="verdict" id="verdict"></div>
+    <div id="killAlert"></div>
+    <div class="kpis" id="tk"></div>
+    <div class="btns"><button class="btn" id="btnMentorTest" onclick="mentorTest()">Pedir análisis al mentor</button></div>
+    <div id="mentorTestOut"></div>
+  </div>
+</div>
+</section>
+
+<!-- =============== PLAN =============== -->
+<section id="t-plan" class="hide">
+<div class="grid">
+  <div class="panel">
+    <h2>Meta</h2>
+    <label class="f"><span>Unidad</span><select id="pl_unidad"><option value="mes">Mes</option><option value="semana">Semana</option></select></label>
+    <label class="f"><span>Facturación objetivo / periodo</span><input id="pl_R" type="number" step="100000"></label>
+    <label class="f"><span>Margen bruto en</span><select id="pl_modo"><option value="pct">%</option><option value="monto">Monto</option></select></label>
+    <label class="f"><span id="pl_mLbl">Margen bruto %</span><input id="pl_m" type="number" step="1"></label>
+    <div class="hint" id="pl_mHint"></div>
+    <div class="btns" style="margin-top:2px"><button class="btn alt" onclick="marginFromProduct()">Usar margen del producto</button><button class="btn alt" id="btnReal" onclick="marginFromTests()">Usar mis tests reales</button></div>
+    <h2>Recursos</h2>
+    <label class="f"><span>Costos fijos / periodo</span><input id="pl_fijos" type="number" step="10000"></label>
+    <label class="f"><span>Capital disponible</span><input id="pl_cap" type="number" step="100000"></label>
+    <label class="f"><span>Intervalos (1–12)</span><input id="pl_N" type="number" step="1" min="1" max="12"></label>
+    <h2>Caja</h2>
+    <label class="f"><span>Dinero en tránsito %</span><input id="pl_ret" type="number" step="1"></label>
+    <div class="hint">Recaudo que Dropi aún no te liquida (o retenciones de pasarela).</div>
+    <label class="f"><span>Devoluciones / reembolsos %</span><input id="pl_ree" type="number" step="1"></label>
+  </div>
+  <div>
+    <div class="kpis" id="plk"></div>
+    <div id="plAlert"></div>
+    <div class="card"><h3>Plan por intervalo</h3><div class="scroll"><table id="plTable"></table></div></div>
+    <div class="btns"><button class="btn" onclick="mentorPlan()">Generar propuesta y justificar el propósito</button><button class="btn ghost" onclick="savePlan()">Guardar plan</button></div>
+    <div id="mentorPlanOut"></div>
+  </div>
+</div>
+</section>
+
+<!-- =============== CRECER =============== -->
+<section id="t-crecer" class="hide">
+<div class="grid">
+  <div class="panel">
+    <div class="alert b" style="margin-top:0">Usa la unidad económica del producto activo. El CPA sale de tus tests si tienes; si no, del CPA objetivo según tu riesgo.</div>
+    <h2>Publicidad</h2>
+    <label class="f"><span>CPA por pedido</span><input id="s_cpa" type="number" step="500"></label>
+    <div class="btns" style="margin-top:0"><button class="btn alt" onclick="cpaSuggest()">Sugerir CPA</button></div>
+    <label class="f"><span>Encarecimiento CPA al duplicar %</span><input id="s_deg" type="number" step="1"></label>
+    <label class="f"><span>Tope de pauta diaria</span><input id="s_tope" type="number" step="10000"></label>
+    <h2>Capital y reinversión</h2>
+    <label class="f"><span>Capital inicial</span><input id="s_cap" type="number" step="100000"></label>
+    <label class="f"><span>% del capital a pauta por ciclo</span><input id="s_asig" type="number" step="5"></label>
+    <label class="f"><span>% de utilidad que reinviertes</span><input id="s_reinv" type="number" step="5"></label>
+    <div class="btns" style="margin-top:0"><button class="btn alt" onclick="applyRiskSim()">Aplicar mi perfil de riesgo</button></div>
+    <label class="f"><span>Costos fijos mensuales</span><input id="s_fijos" type="number" step="10000"></label>
+    <label class="f"><span>Ciclo de caja (días)</span><input id="s_ciclo" type="number" step="1" min="3"></label>
+    <h2>Fase de testeo</h2>
+    <label class="f"><span>Productos a testear antes del ganador</span><input id="s_ntest" type="number" step="1" min="0"></label>
+    <div class="hint">Se descuenta del capital antes de escalar. 0 = ya tienes ganador.</div>
+    <h2>Horizonte</h2>
+    <label class="f"><span>Meses</span><input id="s_meses" type="number" step="1" min="1" max="36"></label>
+    <label class="f"><span>CDT % E.A.</span><input id="s_cdt" type="number" step="0.5"></label>
+    <div class="btns"><button class="btn ghost" onclick="saveSim()">Guardar simulación</button><button class="btn ghost" onclick="exportSimCSV()">CSV</button></div>
+  </div>
+  <div>
+    <div class="kpis" id="sk"></div>
+    <div id="sAlert"></div>
+    <div class="card"><h3>Crecimiento del capital</h3>
+      <svg id="chart" viewBox="0 0 900 290" width="100%" height="290" preserveAspectRatio="none"></svg>
+      <div class="legend"><span><i style="background:#385BFF"></i>Capital en el negocio</span><span><i style="background:#14A37F"></i>Capital + retirado</span><span><i style="background:#D98E00"></i>Mismo dinero en CDT</span><span><i style="background:#E2405F"></i>Fin de la fase de testeo</span></div></div>
+    <div class="card"><h3>Escenarios</h3><div class="scroll"><table id="escTable"></table></div><div class="hint" style="margin-top:6px">Pesimista: entrega −10 pp y CPA +25%. Optimista: entrega +5 pp y CPA −15%.</div></div>
+    <div class="card"><h3>Sensibilidad · utilidad mensual promedio según CPA y % de entrega</h3><div class="scroll"><table id="sensTable" class="heat"></table></div></div>
+    <div class="card"><h3>Detalle por ciclo</h3><div class="scroll"><table id="simTable"></table></div></div>
+  </div>
+</div>
+</section>
+
+<!-- =============== BITACORA =============== -->
+<section id="t-bitacora" class="hide">
+  <div class="kpis" id="bk"></div>
+  <div class="card"><h3>Tests guardados</h3><div class="scroll"><table id="bTests"></table></div></div>
+  <div class="card"><h3>Planes y simulaciones</h3><div class="scroll"><table id="bPlans"></table></div></div>
+  <div class="card"><h3>Revisión semanal con el mentor</h3>
+    <div class="hint">Junta todo (productos, tests, plan, riesgo) y pide una revisión: qué escalar, qué matar y cuánto capital mover.</div>
+    <div class="btns"><button class="btn" onclick="mentorWeekly()">Hacer revisión semanal</button></div>
+    <div id="mentorWeeklyOut"></div></div>
+  <div class="card"><h3>Respaldo y portabilidad</h3>
+    <div class="hint">Tus datos viven en este navegador. Exporta un respaldo cada semana y guárdalo en Drive › Dropshipping › 4. Finanzas.</div>
+    <div class="btns"><button class="btn alt" onclick="exportJSON()">Exportar respaldo (JSON)</button><button class="btn alt" onclick="document.getElementById('imp').click()">Importar respaldo</button><button class="btn ghost" onclick="exportTestsCSV()">Tests a CSV (para Notion)</button><button class="btn ghost" onclick="resetAll()">Borrar todo</button></div>
+    <input type="file" id="imp" accept=".json" class="hide" onchange="importJSON(event)">
+  </div>
+</section>
+</main>
+<div class="modal hide" id="qa" onclick="if(event.target===this)this.classList.add('hide')"><div class="mbox wide">
+  <div class="toolbar"><div style="flex:1"><h3 style="margin:0">⚡ Alta rápida de producto</h3><div class="hint" style="margin:2px 0 0">Pon lo que ves en Dropi. La app calcula el precio, los márgenes y la evaluación, y completa público, beneficio, ángulos, objeciones y creativos. Todo queda editable.</div></div><button class="btn ghost" onclick="$('qa').classList.add('hide')">Cerrar</button></div>
+  <div class="qa-grid">
+    <div class="panel">
+      <div class="qa-step"><b>1</b> Lo que ves en Dropi</div>
+      <label class="qa-f">Pega aquí el texto del producto en Dropi (opcional)<textarea id="qa_paste" placeholder="Nombre, precio proveedor, precio sugerido, stock, descripción…"></textarea></label>
+      <div class="btns" style="margin:0 0 6px"><button class="btn alt" onclick="qaParse()">Leer el texto pegado</button></div>
+      <label class="qa-f qa-big">Nombre del producto<input id="qa_nombre" placeholder="Ej: Masajeador de cuello eléctrico"></label>
+      <div class="two" style="gap:10px"><label class="qa-f qa-big">Costo proveedor (COP)<input id="qa_costo" type="number" step="500" placeholder="45000"></label>
+      <label class="qa-f">Precio sugerido en Dropi<input id="qa_sug" type="number" step="1000" placeholder="opcional"></label></div>
+      <div class="two" style="gap:10px"><label class="qa-f">Categoría <span id="qa_catAuto"></span><select id="qa_cat"></select></label>
+      <label class="qa-f">Tamaño del paquete<select id="qa_tam"><option value="16000">Pequeño (flete ~$16.000)</option><option value="18000">Mediano (~$18.000)</option><option value="22000">Grande o pesado (~$22.000)</option></select></label></div>
+      <label class="qa-f">Descripción o características (opcional, mejora los textos)<textarea id="qa_desc" placeholder="Ej: 6 modos de masaje, calor, recargable USB…"></textarea></label>
+      <div class="two" style="gap:10px"><label class="qa-f">Link en Dropi<input id="qa_link" placeholder="https://"></label><label class="qa-f">Stock del proveedor<input id="qa_stock" type="number" step="1"></label></div>
+      <label class="chk" style="margin-top:8px"><input type="checkbox" id="qa_combo" checked> Agregar combo 2× automáticamente (segunda unidad con descuento, 20% de aceptación)</label>
+      <div class="btns"><button class="btn" onclick="qaCompute()">Calcular y completar</button></div>
+    </div>
+    <div id="qaOut"><div class="alert b" style="margin-top:0">Escribe al menos el <b>nombre</b> y el <b>costo del proveedor</b> y pulsa <b>Calcular y completar</b>.</div></div>
+  </div></div></div>
+<div class="modal hide" id="glos" onclick="if(event.target===this)this.classList.add('hide')"><div class="mbox"><div class="toolbar"><h3 style="margin:0;flex:1">📘 Glosario en lenguaje sencillo</h3><button class="btn ghost" onclick="$('glos').classList.add('hide')">Cerrar</button></div><div id="glosList"></div></div></div>
+<footer>Trendo · powered by Protipark · Co-Piloto v5.1 — Herramienta educativa y de apoyo a decisiones. No es asesoría financiera. Solo invierte capital que puedas perder.</footer>
+
+<script>
+/* ================= MOTOR (funciones puras) ================= */
+const E = {
+ riskProfile(r){return r<=3?{label:"Pasivo",tone:"g"}:r<=7?{label:"Normal",tone:"a"}:{label:"Agresivo",tone:"r"}},
+ rn(r){return (r-1)/9},
+ // Reglas del método según riesgo
+ rules(r){const n=E.rn(r);return{
+   holguraCPA:0.40-0.30*n,          // margen de seguridad exigido sobre el CPA máximo (40% → 10%)
+   margenMin:0.20-0.10*n,           // utilidad por pedido mínima / precio (20% → 10%)
+   pedidosDecidir:10,               // pedidos para tomar decisión de un test
+   killMult:1.5+1.0*n,              // matar si gastas X × CPA máximo sin una venta (1.5× → 2.5×)
+   asignacion:50+40*n, reinversion:50+40*n,  // simulador (50% → 90%)
+   k:0.7+0.7*n, mult:1.8-0.75*n, start:0.25+0.45*n, // analizador y planificador (spec v2)
+   subida:Math.round(15+15*n)        // % de subida de presupuesto cada 2–3 días al escalar
+ }},
+ unit(p){const e=p.entrega/100,c=(p.conf??100)/100,tx=(p.com+(p.imp||0))/100,ut=(p.upTasa||0)/100;const upP=p.upPrecio||0,upC=p.upCosto||0,emp=p.empaque||0,cc=p.costoConf||0;
+   const aov=p.precio+ut*upP;const mE=aov*(1-tx)-p.costo-ut*upC-p.flete-emp;const pD=p.flete+p.fleteRet+emp;const u=c*(e*mE-(1-e)*pD-cc);
+   return{e,c,aov,costoUnit:p.costo+ut*upC,costoConf:cc,margenEntregado:mE,perdidaDevuelto:pD,utilidadPedido:u,cpaMax:u,roasMin:u>0?(aov*e*c)/u:Infinity,margenPct:aov?u/aov:0,cmRatio:aov*e*c>0?u/(aov*e*c):0}},
+ gate(p,r){const u=E.unit(p),R=E.rules(r);const cpaObj=Math.max(0,u.cpaMax*(1-R.holguraCPA));
+   const ok1=u.utilidadPedido>0, ok2=u.margenPct>=R.margenMin;
+   const presTest=cpaObj*R.pedidosDecidir, fondo=presTest*5;
+   return{u,R,cpaObj,presTest,fondo,pass:ok1&&ok2,ok1,ok2}},
+ // Analizador de test (contraentrega): generados -> confirmados (despachados) -> entregados
+ test(f,p){const U=E.unit(p);const has=v=>v!==null&&v!==undefined&&v!=="";const ped=+f.ped||0;const conf=has(f.conf)?Math.min(+f.conf,ped):Math.min(ped,Math.max(ped*((p.conf??100)/100),has(f.ent)?+f.ent:0));
+   const ent=has(f.ent)?Math.min(+f.ent,conf):conf*(p.entrega/100);const dev=Math.max(0,conf-ent);
+   const aov=f.aov>0?f.aov:U.aov;const ingresos=ent*aov;const com=p.com/100;const ads=+f.ads||0,imp=+f.imp||0,clics=+f.clics||0;
+   const emp=p.empaque||0;const costosVar=ent*(U.costoUnit+p.flete+emp)+dev*(p.flete+p.fleteRet+emp)+ingresos*(com+(p.imp||0)/100)+conf*(p.costoConf||0);const contrib=ingresos-costosVar;const neta=contrib-ads;const cm=ingresos?contrib/ingresos:0;
+   return{ped,conf,ent,dev,aov,ingresos,contrib,neta,cm,ads,imp,clics,roas:ads?ingresos/ads:0,roasEq:cm>0?1/cm:Infinity,cpa:ped?ads/ped:ads,cpaMax:ped?contrib/ped:U.cpaMax,
+     tasaConf:ped?conf/ped:0,tasaEntrega:conf?ent/conf:0,rent:ingresos?neta/ingresos*100:0,ctr:imp?clics/imp:null,cpc:clics?ads/clics:null,cvr:clics?ped/clics:null}},
+ verdict(c,meta,r,p){const R=E.rules(r);const cpaMaxTeo=E.unit(p).cpaMax;
+   if(c.ads>0&&c.ped===0)return c.ads>=R.killMult*cpaMaxTeo?{label:"Pausar / matar",tone:"r",why:`Gastaste ${R.killMult.toFixed(1)}× el CPA máximo sin un solo pedido.`}:{label:"Seguir midiendo",tone:"b",why:`Aún no hay pedidos. Regla de corte: matar al llegar a ${R.killMult.toFixed(1)}× el CPA máximo sin ventas.`};
+   if(!c.ads||!c.ingresos)return{label:"Faltan datos",tone:"b",why:"Ingresa gasto en ads y pedidos."};
+   const ratio=isFinite(c.roasEq)?c.roas/c.roasEq:0;
+   if(c.neta<=0)return ratio>0.85?{label:"Optimizar",tone:"a",why:"Estás cerca del equilibrio: mejora creativo, oferta o % de entrega antes de subir presupuesto."}:{label:"Pausar / matar",tone:"r",why:"Muy lejos del equilibrio. Pasa al siguiente producto."};
+   const pocos=c.ped<R.pedidosDecidir;
+   if(c.rent>=meta/R.k&&ratio>=1.1/R.k)return pocos?{label:"Escalar con cautela",tone:"g",why:`Rentable, pero con solo ${c.ped} pedidos la muestra es pequeña. Sube ${R.subida}% y confirma.`}:{label:"Escalar",tone:"g",why:`Rentable y sobre el equilibrio. Sube el presupuesto ${R.subida}% cada 2–3 días.`};
+   return{label:"Mantener y optimizar",tone:"a",why:"Gana dinero pero no llega a tu meta para tu nivel de riesgo."}},
+ // Agregado de resultados (ponderado)
+ agg(tests){const t=tests.filter(x=>x.c);if(!t.length)return null;const S=f=>t.reduce((s,x)=>s+(+f(x.c)||0),0);
+   const ads=S(c=>c.ads),imp=S(c=>c.imp),clics=S(c=>c.clics),ped=S(c=>c.ped),conf=S(c=>c.conf??c.ped),ent=S(c=>c.ent),dev=S(c=>c.dev),ing=S(c=>c.ingresos),con=S(c=>c.contrib),neta=S(c=>c.neta);
+   const cm=ing?con/ing:0;return{n:t.length,ads,imp,clics,ped,conf,ent,dev,ingresos:ing,contrib:con,neta,cm,roas:ads?ing/ads:0,roasEq:cm>0?1/cm:Infinity,cpa:ped?ads/ped:0,cpaMax:ped?con/ped:0,
+     ctr:imp?clics/imp:null,cpc:clics?ads/clics:null,cvr:clics?ped/clics:null,tasaConf:ped?conf/ped:0,tasaEntrega:conf?ent/conf:0,entrega:conf?ent/conf:0,aov:ent?ing/ent:0,rent:ing?neta/ing*100:0,
+     dias:t.reduce((s,x)=>s+(+(x.form&&x.form.dias)||0),0)}},
+ real(tests){return E.agg(tests.filter(x=>x.c&&x.c.ped>0))},
+ // Evaluación inicial: criterios cualitativos (65%) + economía (35%)
+ CRIT:[["wow","Factor wow · se luce en un video de 15 s",15],["problema","Resuelve un problema o un deseo fuerte",12],["valor","Valor percibido mayor que el precio",12],["demanda","Demanda / tendencia",12],["competencia","Competencia (5 = poca)",10],["envio","Fácil de enviar (ligero, no frágil)",8],["recompra","Recompra o upsell posible",8],["creativos","Hay material para creativos (videos, UGC)",8],["devol","Bajo riesgo de devolución o garantía",7],["prov","Proveedor confiable (stock, calificación)",8]],
+ evaluate(p,r){const g=E.gate(p,r);const sc=p.score||{};let cual=0;E.CRIT.forEach(([k,,w])=>{const v=Math.max(1,Math.min(5,+sc[k]||3));cual+=w*(v-1)/4});
+   const econ=Math.max(0,Math.min(1,g.u.margenPct/0.30))*100;const total=Math.round(0.65*cual+0.35*econ);
+   const clase=!g.pass?"C":total>=75?"A":total>=60?"B":"C";const warn=[];
+   if(!g.pass)warn.push(["r","No pasa la validación de margen para tu nivel de riesgo."]);
+   if(p.invima==="Sí")warn.push(["a","Requiere permiso sanitario (INVIMA): pide al proveedor el registro o la notificación antes de pautar."]);
+   if(p.invima==="No sé")warn.push(["a","Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo)."]);
+   if(p.precioComp>0&&p.precio>p.precioComp*1.15)warn.push(["a",`Tu precio está ${Math.round((p.precio/p.precioComp-1)*100)}% por encima del promedio de la competencia: necesitas una oferta o un ángulo que lo justifique.`]);
+   if(p.precioComp>0&&p.precio<p.precioComp*0.85)warn.push(["g","Tu precio está por debajo de la competencia: hay espacio para subirlo o para un combo."]);
+   if(p.competidores>=15)warn.push(["a",`Viste ${p.competidores} tiendas vendiéndolo: diferencia la marca, la oferta o el ángulo.`]);
+   if(p.ancla>0&&p.ancla<=p.precio)warn.push(["a","El precio tachado debe ser mayor que el precio de venta."]);
+   if(!(p.upTasa>0))warn.push(["b","Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."]);
+   return{g,cual:Math.round(cual),econ:Math.round(econ),total,clase,warn}},
+ // Diagnóstico por cuellos de botella del embudo
+ diagnose(a,p,r){const out=[];if(!a)return out;const g=E.gate(p,r),U=g.u,R=E.rules(r);
+   if(a.ped===0){out.push(["r","Sin pedidos",a.ads>=R.killMult*U.cpaMax?`Ya gastaste ${money(a.ads)} (más de ${R.killMult.toFixed(1)}× el CPA máximo). Mata el test o cambia de creativo y ángulo.`:"Todavía no hay pedidos. Deja correr hasta el corte o revisa el creativo."]);return out}
+   if(a.ctr!==null){if(a.ctr<0.008)out.push(["r","Creativo (CTR "+pct(a.ctr)+")","El anuncio no detiene el scroll. Prueba 3 ganchos nuevos en los primeros 3 segundos y muestra el producto en uso."]);
+     else if(a.ctr<0.012)out.push(["a","Creativo (CTR "+pct(a.ctr)+")","CTR aceptable pero mejorable. Prueba variaciones del gancho y del texto."]);else out.push(["g","Creativo (CTR "+pct(a.ctr)+")","El anuncio atrae clics. Mantén el ángulo y crea variaciones."])}
+   if(a.cvr!==null){if(a.cvr<0.008)out.push(["r","Página y oferta (conversión "+pct(a.cvr)+")","Llegan pero no compran: revisa precio tachado, reseñas, video en la página, velocidad en celular, garantía y un combo 2×."]);
+     else if(a.cvr<0.015)out.push(["a","Página y oferta (conversión "+pct(a.cvr)+")","Conversión media. Prueba una oferta más clara (envío gratis, combo, garantía) y prueba social arriba."]);else out.push(["g","Página y oferta (conversión "+pct(a.cvr)+")","La página convierte bien."])}
+   if(a.tasaConf<0.8)out.push(["a","Confirmación ("+pct(a.tasaConf)+")","Muchos pedidos no se confirman. Escribe por WhatsApp en menos de 1 hora y usa un mensaje automático con resumen del pedido."]);
+   if(a.conf>0){if(a.tasaEntrega<0.7)out.push(["r","Entregas ("+pct(a.tasaEntrega)+")","Demasiadas devoluciones. Confirma dirección y disponibilidad, compara transportadoras por ciudad y evita zonas con más rechazo."]);
+     else if(a.tasaEntrega<0.8)out.push(["a","Entregas ("+pct(a.tasaEntrega)+")","Entrega aceptable. Cada punto que subas aquí va directo a utilidad."]);else out.push(["g","Entregas ("+pct(a.tasaEntrega)+")","Buena tasa de entrega."])}
+   if(a.cpa>a.cpaMax)out.push(["r","Unidad económica","Tu CPA real ("+money(a.cpa)+") supera lo que deja cada pedido ("+money(a.cpaMax)+"). Sube el ticket con combo o upsell, o el precio."]);
+   else if(a.cpa>g.cpaObj)out.push(["a","Unidad económica","Ganas, pero el CPA ("+money(a.cpa)+") está por encima de tu objetivo ("+money(g.cpaObj)+"). Optimiza antes de escalar fuerte."]);
+   else out.push(["g","Unidad económica","CPA ("+money(a.cpa)+") dentro de tu objetivo ("+money(g.cpaObj)+")."]);
+   if(a.aov>0&&a.aov<=p.precio*1.02)out.push(["b","Ticket promedio","El AOV es igual al precio: agrega un combo 2× o un upsell posventa para subirlo."]);
+   if(a.ped<R.pedidosDecidir)out.push(["b","Muestra",`Llevas ${a.ped} pedidos. Con menos de ${R.pedidosDecidir} las conclusiones son preliminares.`]);
+   return out},
+ // ===== Calculadora de precio y costo de venta =====
+ // CPA sensible al precio: A(P)=A0·(P/P0)^ε hasta el techo percibido T; por encima, la sensibilidad se duplica.
+ cpaAt(q,P){const T=q.techo>0?q.techo:Infinity;const base=Math.min(P,T);let A=q.cpa0*Math.pow(base/q.p0,q.elast);if(P>T)A*=Math.pow(P/T,2*q.elast);return A},
+ priceEval(q,P){const c=q.conf/100,e=q.entrega/100,ce=c*e,ut=(q.upTasa||0)/100,tx=(q.com+q.imp)/100;
+   const aov=P+ut*(q.upPrecio||0);const A=E.cpaAt(q,P);const rev=ce*aov;
+   const cProd=ce*(q.costo+ut*(q.upCosto||0)),cFlete=ce*q.flete,cEmp=ce*q.empaque,cCom=rev*tx,cDev=c*(1-e)*(q.flete+q.fleteRet+q.empaque),cConf=c*q.costoConf;
+   const vari=cProd+cFlete+cEmp+cCom+cDev+cConf;const pedidos=A>0?q.presupuesto/A:0;const fpp=pedidos>0?q.fijosMes/pedidos:0;const pi=rev-vari-A-fpp;
+   return{P,aov,A,rev,ce,pedidos,entregados:pedidos*ce,pi,mes:pedidos*pi,mn:rev?pi/rev:-1,mc:rev?(rev-vari)/rev:-1,roas:A?rev/A:0,roasEq:rev-vari>0?rev/(rev-vari):Infinity,markup:q.costo?P/q.costo:0,
+     parts:{producto:cProd,flete:cFlete,devoluciones:cDev,comision:cCom,empaque:cEmp,confirmacion:cConf,publicidad:A,fijos:fpp,utilidad:pi}}},
+ psych(P){const g=P>=50000?10000:1000;return Math.max(g-100,Math.ceil((P+100)/g)*g-100)},
+ pricing(q){const lo=Math.max(1000,Math.round(q.costo*1.1/1000)*1000);const hi=Math.max(q.costo*5,(q.techo||0)*1.6,q.p0*2,lo+20000);const step=Math.max(500,Math.round((hi-lo)/160/500)*500);
+   const grid=[];for(let P=lo;P<=hi;P+=step)grid.push(E.priceEval(q,P));
+   const first=fn=>{const x=grid.find(fn);return x?x.P:null};
+   const be=first(g=>g.pi>=0),pMin=first(g=>g.mn>=q.margenMin/100),pObj=first(g=>g.mn>=q.margenObj/100);
+   const opt=grid.reduce((a,b)=>b.mes>a.mes?b:a,grid[0]);const H=grid.filter(g=>g.mn>=q.margenMin/100&&g.mes>0);
+   let range=null,rec=null,bestH=null;
+   if(H.length){bestH=H.reduce((a,b)=>b.mes>a.mes?b:a,H[0]);const ok=H.filter(g=>g.mes>=0.85*bestH.mes);range=[ok[0].P,ok[ok.length-1].P];
+     const fl=P=>{const g2=P>=50000?10000:1000;return Math.floor((P+100)/g2)*g2-100};
+     const cand=[E.psych(bestH.P),fl(bestH.P),E.psych(range[0]),fl(range[1])].filter((v,i,a)=>v>0&&a.indexOf(v)===i).map(P=>E.priceEval(q,P)).filter(g=>g.mn>=q.margenMin/100&&g.mes>0);
+     rec=cand.length?cand.reduce((a,b)=>b.mes>a.mes?b:a).P:Math.round(bestH.P/100)*100}
+   return{grid,step,lo,hi,be,pMin,pObj,opt,bestH,range,rec}},
+ // Planificador (lógica de la spec v2 con la contabilidad de caja corregida)
+ plan(p,r){const R=p.R,m=p.modo==="pct"?p.m/100:(R?p.m/R:0);const N=Math.max(1,Math.min(12,Math.round(p.N||1)));const RR=E.rules(r);
+   const be=m>0?1/m:0,targetROAS=be*RR.mult,full=targetROAS>0?R/targetROAS:0;const rRet=p.ret/100,rRee=p.ree/100;
+   let cash=p.cap,cum=0,tot=0,self=null,prevB=0;const rows=[];
+   for(let i=0;i<N;i++){const t=N>1?i/(N-1):1;const ramp=Math.min(1,RR.start+(1-RR.start)*t);const spend=full*ramp,rev=spend*targetROAS;
+     const gp=rev*m*(1-rRee);const buffer=rev*rRet;const net=gp-spend-p.fijos;const need=spend+p.fijos+Math.max(0,buffer-prevB);
+     let inject=0;if(cash<need){inject=need-cash;cash=0}else cash-=need;
+     cash+=gp; // vuelve la contribución (antes de ads); la pauta y los fijos ya salieron
+     cum+=net;tot+=inject;prevB=buffer;if(self===null&&i>0&&inject===0)self=i+1;
+     rows.push({i:i+1,spend,rev,gp,buffer,net,inject,cum,cash})}
+   return{R,m,be,targetROAS,full,N,rows,tot,cum,fullNet:R*m*(1-rRee)-full-p.fijos,self}},
+ // Simulador de crecimiento con interés compuesto y fase de testeo
+ sim(p){const u=E.unit(p);const cpm=30/p.ciclo,n=Math.max(1,Math.round(p.meses*cpm)),fc=p.fijos/cpm,tope=p.tope*p.ciclo;
+   let cap=p.cap-p.testeo,ret=0,base=null;const rows=[];let payback=null,dup=null,quiebra=null;
+   if(cap<=0)return{u,rows:[{ciclo:0,mes:0,pauta:0,cpa:p.cpa,pedidos:0,entregados:0,utilidad:-p.testeo,retiro:0,capital:cap,retirado:0,ventas:0,roas:0}],patrimonio:Math.max(0,cap),roi:-1,tm:-1,ta:-1,payback,dup,quiebra:0,cdt:p.cap,totPed:0,totUtil:-p.testeo,totPauta:0,testeo:p.testeo};
+   for(let i=1;i<=n;i++){const disp=Math.max(0,cap-fc);const pauta=Math.max(0,Math.min(disp*p.asig/100,tope));if(base===null)base=Math.max(pauta,1);
+     const f=pauta>base?Math.pow(1+p.deg/100,Math.log2(pauta/base)):1;const cpa=p.cpa*f;const ped=cpa>0?pauta/cpa:0;const ship=ped*u.c;const ent=ship*u.e;
+     const util=ent*u.margenEntregado-(ship-ent)*u.perdidaDevuelto-ship*u.costoConf-pauta-fc;const retiro=util>0?util*(1-p.reinv/100):0;cap=cap+util-retiro;ret+=retiro;const mes=i/cpm;
+     rows.push({ciclo:i,mes,pauta,cpa,pedidos:ped,entregados:ent,utilidad:util,retiro,capital:cap,retirado:ret,ventas:ent*p.precio,roas:pauta?ent*p.precio/pauta:0});
+     if(payback===null&&cap+ret>=p.cap&&ret>0)payback=mes;if(dup===null&&cap+ret>=2*p.cap)dup=mes;if(cap<=fc){quiebra=mes;break}}
+   const L=rows[rows.length-1],pat=L.capital+L.retirado,m=L.mes;const tm=pat>0?Math.pow(pat/p.cap,1/m)-1:-1;
+   return{u,rows,patrimonio:pat,roi:pat/p.cap-1,tm,ta:Math.pow(1+tm,12)-1,payback,dup,quiebra,cdt:p.cap*Math.pow(1+p.cdt/100,m/12),
+     totPed:rows.reduce((s,r)=>s+r.pedidos,0),totUtil:rows.reduce((s,r)=>s+r.utilidad,0),totPauta:rows.reduce((s,r)=>s+r.pauta,0),testeo:p.testeo}}
+};
+if(typeof module!=="undefined"){module.exports=E}
+</script>
+<script>
+/* ================= ESTADO ================= */
+const KEY="trendo_copiloto_v3";
+const DEF_PRODUCTS=[
+ {id:"ojos",nombre:"Masajeador de ojos térmico",costo:56000,precio:129900,flete:16000,fleteRet:0,entrega:75,com:3},
+ {id:"cuello",nombre:"Masajeador de cuello EMS",costo:40000,precio:99900,flete:16000,fleteRet:0,entrega:75,com:3},
+ {id:"lampara",nombre:"Lámpara proyector",costo:26000,precio:69900,flete:16000,fleteRet:0,entrega:75,com:3},
+ {id:"mopa",nombre:"Mopa giratoria con balde",costo:43000,precio:89900,flete:18000,fleteRet:0,entrega:75,com:3},
+ {id:"difusor",nombre:"Difusor humidificador LED",costo:30000,precio:69900,flete:16000,fleteRet:0,entrega:75,com:3},
+ {id:"mascarilla",nombre:"Mascarilla hidroplástica",costo:13000,precio:49900,flete:16000,fleteRet:0,entrega:75,com:3}];
+const DEF={v:4,ptab:"ficha",pf:{q:"",etapa:"",sort:"score"},risk:5,cur:"COP",trm:3300,active:"ojos",products:DEF_PRODUCTS,tests:[],plans:[],sims:[],checks:{},
+ testForm:{nombre:"",canal:"TikTok Ads",fecha:"",dias:5,ads:"",imp:"",clics:"",ped:"",conf:"",ent:"",aov:"",meta:20},
+ planForm:{unidad:"mes",R:10000000,modo:"pct",m:35,fijos:200000,cap:3300000,N:4,ret:25,ree:12},
+ simForm:{cpa:null,deg:20,tope:300000,cap:3300000,asig:72,reinv:72,fijos:200000,ciclo:10,ntest:3,meses:6,cdt:9}};
+const today=()=>new Date().toISOString().slice(0,10);
+const ETAPAS=["Idea","Investigando","Validado","En test","Ganador","Escalando","Pausado","Descartado"];
+const PDEF={sku:"",categoria:"Hogar",subnicho:"Ambiente y bienestar",etapa:"Investigando",proveedor:"Dropi",stock:0,linkDropi:"",linkRef:"",linkAd:"",fecha:"",
+ ancla:0,upPrecio:0,upCosto:0,upTasa:0,meta:20,conf:90,empaque:1000,costoConf:0,imp:0,beneficio:"",dolor:"",publico:"",angulos:"",objeciones:"",competidores:0,precioComp:0,invima:"No sé",notas:"",
+ score:{wow:3,problema:3,valor:3,demanda:3,competencia:3,envio:3,recompra:3,creativos:3,devol:3,prov:3}};
+const PRESET={ojos:{beneficio:"Descanso visual y mejor sueño en 15 minutos",dolor:"Ojos cansados y tensión por pasar horas frente a pantallas",categoria:"Bienestar",ancla:179900,publico:"Adultos 25–55 con muchas horas de pantalla",angulos:"Descansa la vista y duerme mejor · regalo de autocuidado",invima:"No sé",score:{wow:3,problema:4,valor:4,demanda:4,competencia:4,envio:4,recompra:2,creativos:3,devol:3,prov:3}},
+ cuello:{beneficio:"Alivio del dolor de cuello y hombros en casa",dolor:"Tensión y dolor de cuello por trabajar sentado o usar el celular",categoria:"Bienestar",ancla:149900,publico:"Oficinistas y trabajadores remotos con tensión en cuello",angulos:"Adiós al dolor de cuello sin ir al masajista",invima:"No sé",score:{wow:4,problema:5,valor:4,demanda:4,competencia:3,envio:4,recompra:2,creativos:3,devol:3,prov:3}},
+ lampara:{beneficio:"Un cuarto con ambiente increíble en segundos",dolor:"Un cuarto aburrido y sin ambiente",categoria:"Hogar",ancla:99900,publico:"Jóvenes 18–35, parejas, gamers",angulos:"Transforma tu cuarto en segundos",invima:"No",score:{wow:5,problema:2,valor:4,demanda:4,competencia:2,envio:4,recompra:2,creativos:5,devol:4,prov:3}},
+ mopa:{beneficio:"Pisos limpios sin agacharse ni mojarse las manos",dolor:"Trapear es cansado, lento y deja las manos sucias",categoria:"Hogar",ancla:129900,publico:"Amas y amos de casa 30–60",angulos:"Limpia sin agacharte ni mojarte las manos",invima:"No",score:{wow:4,problema:4,valor:4,demanda:3,competencia:2,envio:2,recompra:2,creativos:4,devol:3,prov:3}},
+ difusor:{beneficio:"Aroma y luz que convierten el cuarto en un spa",dolor:"Estrés y ambiente cargado en la casa",categoria:"Hogar",ancla:99900,publico:"Mujeres 20–45 interesadas en bienestar y decoración",angulos:"Tu cuarto convertido en spa",invima:"No",score:{wow:4,problema:3,valor:4,demanda:4,competencia:3,envio:4,recompra:3,creativos:4,devol:3,prov:3}},
+ mascarilla:{beneficio:"Piel hidratada y luminosa en 15 minutos",dolor:"Piel opaca, reseca y sin tiempo para ir al spa",categoria:"Belleza",ancla:79900,publico:"Mujeres 20–45 interesadas en skincare",angulos:"Spa facial en casa en 15 minutos",invima:"Sí",score:{wow:3,problema:3,valor:3,demanda:3,competencia:2,envio:5,recompra:4,creativos:3,devol:4,prov:3}}};
+const withDefaults=p=>{const pr=PRESET[p.id]||{};return{...PDEF,...pr,...p,score:{...PDEF.score,...(pr.score||{}),...(p.score||{})},fecha:p.fecha||today()}};
+DEF.products=DEF.products.map(withDefaults);
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||null}catch(e){S=null}
+if(S&&S.v===3){S.v=4;S.products=S.products.map(withDefaults);S.ptab="ficha";S.pf={q:"",etapa:"",sort:"score"};S.testForm={...DEF.testForm,...S.testForm}}
+if(!S||S.v!==4)S=JSON.parse(JSON.stringify(DEF));
+S.products=S.products.map(withDefaults);if(!S.pc)S.pc={};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const prod=()=>S.products.find(p=>p.id===S.active)||S.products[0];
+const fx=n=>S.cur==="USD"?n/S.trm:n;
+const money=n=>{if(!isFinite(n))return"—";const v=fx(n);return(v<0?"-":"")+(S.cur==="USD"?"US$":"$")+Math.round(Math.abs(v)).toLocaleString("es-CO")};
+const pct=n=>isFinite(n)?(n*100).toLocaleString("es-CO",{maximumFractionDigits:1})+"%":"—";
+const xx=n=>isFinite(n)&&n>0?n.toFixed(2)+"×":"—";
+const mesTxt=m=>m===null||m===undefined?"—":(m<1?Math.round(m*30)+" días":(Math.abs(m-1)<.05?"1 mes":m.toLocaleString("es-CO",{maximumFractionDigits:1})+" meses"));
+const GLOS=[["CPA","Costo por adquisición: lo que pagas en anuncios por cada pedido. Si es mayor que la utilidad por pedido, pierdes plata.",/CPA/],
+ ["ROAS","Retorno sobre la publicidad: ventas ÷ gasto en anuncios. ROAS 3× = vendes $3 por cada $1 de pauta. El de equilibrio es el mínimo para no perder.",/ROAS/],
+ ["AOV / ticket promedio","Lo que paga en promedio cada cliente. Se sube con combos y upsells.",/AOV|Ticket/i],
+ ["CTR","Porcentaje de personas que hacen clic en el anuncio. Mide si el creativo atrae (sano: 1,2% o más).",/CTR/],
+ ["CPC","Costo por clic: gasto en anuncios ÷ clics.",/CPC/],
+ ["Conversión","Pedidos ÷ clics. Mide si la página y la oferta convencen (sano: 1,5% o más).",/Conversión/],
+ ["% de confirmación","Pedidos que el cliente confirma por WhatsApp o llamada antes de despachar. Los no confirmados no se envían.",/confirmación/i],
+ ["% de entrega","Pedidos despachados que el cliente recibe y paga. El resto vuelve y pierdes el flete.",/entrega/i],
+ ["Utilidad por pedido","Lo que te deja cada pedido antes de publicidad. Es el CPA máximo que puedes pagar.",/Utilidad por pedido|CPA máximo/i],
+ ["Margen de contribución","Lo que queda de las ventas después de producto, fletes, devoluciones y comisiones, antes de la publicidad.",/contribución/i],
+ ["Margen neto","Lo que queda de las ventas después de TODO, incluida la publicidad y los fijos. Es lo que puedes reinvertir.",/Margen neto/i],
+ ["Precio de equilibrio","El precio en el que no ganas ni pierdes.",/equilibrio/i],
+ ["Puntaje y clase","Evaluación inicial del producto de 0 a 100. A = testear ya, B = testear si no hay A, C = no testear.",/Puntaje|Clase/],
+ ["Upsell","Oferta adicional que se agrega al pedido (un complemento o una segunda unidad).",/upsell/i],
+ ["Downsell","Oferta más barata o con descuento para el cliente que duda o rechaza, para no perder la venta.",/downsell/i],
+ ["Cross-sell","Venta de un producto relacionado después de la compra (recompra), sin pagar publicidad.",/cross-sell/i],
+ ["Order bump","Complemento barato que se marca en el mismo formulario de compra.",/order bump/i],
+ ["Contraentrega (COD)","El cliente paga al recibir. Tú pagas la publicidad antes; Dropi te liquida después de la entrega.",/contraentrega/i],
+ ["Interés compuesto","Reinvertir parte de la utilidad para que la pauta y las ganancias crezcan sobre lo ya ganado.",/compuest|Patrimonio/i],
+ ["Fondo de aprendizaje","Dinero que separas para testear productos y das por gastado. Cada test fallido es información.",/aprendizaje/i]];
+const tipFor=t=>{const g=GLOS.find(x=>x[2].test(t));return g?`<span class="tip" title="${esc(g[1])}">i</span>`:""};
+const kpi=(t,v,s,c)=>`<div class="kpi ${c||""}"><div class="t">${t}${tipFor(t)}</div><div class="v">${v}</div><div class="s">${s||""}</div></div>`;
+function openGlos(){$("glosList").innerHTML=GLOS.map(([n,d])=>`<div class="gl"><b>${n}.</b> ${d}</div>`).join("");$("glos").classList.remove("hide")}
+const num=v=>{const n=parseFloat(v);return isNaN(n)?0:n};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ================= RUTA (método) ================= */
+const FASES=[
+ {id:"f0",t:"Fundamentos",s:"Define tu riesgo y separa el capital de aprendizaje",items:[
+   ["f0a","Elegí mi nivel de riesgo en la barra superior"],["f0b","Separé el capital de aprendizaje (dinero que puedo perder) del capital de la tienda"],
+   ["f0c","Tengo Notion (HQ) y Drive (carpeta Dropshipping) organizados"],["f0d","Entiendo CPA, AOV, ROAS, margen de contribución y % de entrega"]]},
+ {id:"f1",t:"Validar producto (margen primero)",s:"Ningún producto entra a test si no pasa la validación",tab:"producto",items:[
+   ["f1a","Tengo al menos 3 productos candidatos cargados",true],["f1b","Reemplacé los costos estimados por el precio real de Dropi",true],
+   ["f1c","Mi producto activo pasa la validación para mi nivel de riesgo",true],["f1d","Revisé la competencia en la biblioteca de anuncios de Meta y en TikTok"]]},
+ {id:"f2",t:"Montar la tienda",s:"Shopify + Dropi + confirmación por WhatsApp",tab:"marketing",items:[
+   ["f2a","Tienda en Shopify con dominio, tema limpio y páginas legales"],["f2b","Producto importado desde Dropi con página de producto completa (fotos, video, beneficios, reseñas, oferta)"],
+   ["f2c","Contraentrega activa y confirmación de pedidos por WhatsApp"],["f2d","Píxeles de Meta y TikTok instalados antes de pautar"],["f2e","3–4 creatividades listas (pestaña 3 · Marketing)"]]},
+ {id:"f3",t:"Testear",s:"3–5 días por producto, decisión con datos",tab:"test",items:[
+   ["f3a","Lancé el primer test con el presupuesto recomendado"],["f3b","Guardé al menos un test en el Co-Piloto",true],
+   ["f3c","Apliqué el veredicto (escalar / optimizar / matar) sin enamorarme del producto"],["f3d","Registré el test en Notion › Pruebas"]]},
+ {id:"f4",t:"Escalar",s:"Solo lo que el veredicto dice Escalar",tab:"plan",items:[
+   ["f4a","Tengo un test con veredicto Escalar",true],["f4b","Hice el plan de capital con mis datos reales"],
+   ["f4c","Subo el presupuesto de forma gradual según mi riesgo"],["f4d","Simulé el crecimiento y defino cuánto retiro y cuánto reinvierto"]]},
+ {id:"f5",t:"Sistematizar",s:"Del producto ganador a un negocio y un método",items:[
+   ["f5a","Cotizo importar el ganador por volumen (Trendo / Protipark Supply) para subir margen"],["f5b","Documenté lo que funcionó (creativos, ángulos, proveedores) en Notion"],
+   ["f5c","Abro el siguiente producto con el mismo ciclo"],["f5d","Mido 90 días de resultados propios antes de enseñar el método"]]}];
+function autoCheck(id){const p=prod();if(id==="f1a")return S.products.length>=3;if(id==="f1b")return !!(p.costoReal||p.sku||p.linkDropi);if(id==="f1c")return E.gate(p,S.risk).pass;if(id==="f3b")return S.tests.length>0;if(id==="f4a")return S.tests.some(t=>/Escalar/.test(t.verdict||""));return null}
+function renderRuta(){
+ let cur=null,done=0;const html=FASES.map((f,fi)=>{const it=f.items.map(([id,txt,auto])=>{const a=auto?autoCheck(id):null;const v=a!==null?a:!!S.checks[id];return{id,txt,auto,v}});
+   const d=it.filter(x=>x.v).length,pc=d/it.length;if(pc===1)done++;else if(cur===null)cur=fi;
+   return{f,fi,it,pc}}).map(({f,fi,it,pc})=>`<div class="phase ${pc===1?"done":""} ${fi===cur?"cur open":""}" id="ph_${f.id}">
+     <div class="ph" onclick="this.parentNode.classList.toggle('open')"><div class="num">${pc===1?"✓":fi}</div><div class="ttl">Fase ${fi} · ${f.t}<div class="sub">${f.s}</div></div><div class="mono" style="font-size:12px;color:var(--mut)">${Math.round(pc*100)}%</div></div>
+     <div class="prog"><i style="width:${pc*100}%"></i></div>
+     <div class="checks">${it.map(x=>`<label><input type="checkbox" ${x.v?"checked":""} ${x.auto?"disabled":""} onchange="S.checks['${x.id}']=this.checked;save();renderRuta()">${esc(x.txt)}${x.auto?'<span class="auto">automático</span>':""}</label>`).join("")}
+     ${f.tab?`<span class="goto" onclick="go('${f.tab}')">Ir a la herramienta de esta fase →</span>`:""}</div></div>`).join("");
+ $("fases").innerHTML=html;
+ const g=E.gate(prod(),S.risk);const rp=E.riskProfile(S.risk);
+ $("rutaResumen").innerHTML=`<b>Estás en la Fase ${cur===null?5:cur}.</b> Riesgo ${S.risk}/10 (${rp.label}) · producto activo: <b>${esc(prod().nombre)}</b> ${g.pass?'<span class="tag g">pasa validación</span>':'<span class="tag r">no pasa validación</span>'} · CPA objetivo ${money(g.cpaObj)} · presupuesto por test ${money(g.presTest)}.`;
+}
+
+/* ================= PRODUCTOS (base de datos) ================= */
+const CATS=["Hogar","Bienestar","Belleza","Mascotas","Tecnología","Fitness","Cocina","Auto","Bebés","Otro"];
+const FICHA=[
+ ["Identificación",[["nombre","Nombre","text"],["etapa","Etapa","select",ETAPAS],["categoria","Categoría","select",CATS],["subnicho","Sub-nicho","text"],["sku","SKU / ID en Dropi","text"],["proveedor","Proveedor / bodega","text"],["stock","Stock del proveedor","number"],["fecha","Fecha de alta","date"],["linkDropi","Link en Dropi","url"],["linkRef","Link de referencia (AliExpress, Amazon)","url"],["linkAd","Anuncio de la competencia","url"]]],
+ ["Economía",[["costo","Costo proveedor (COP)","number"],["precio","Precio de venta","number"],["ancla","Precio tachado (ancla)","number"],["flete","Flete por pedido","number"],["fleteRet","Flete de retorno","number"],["entrega","% de entrega esperado","number"],["com","Comisión Dropi / pasarela %","number"],["imp","Impuestos / retenciones % sobre recaudo","number"],["conf","% de confirmación esperado","number"],["empaque","Empaque e insertos por pedido","number"],["costoConf","Costo de confirmación por pedido","number"],["upPrecio","Precio del upsell / combo","number"],["upCosto","Costo del upsell","number"],["upTasa","% de clientes que lo toma","number"],["meta","Rentabilidad objetivo %","number"]]],
+ ["Mercado y estrategia",[["publico","Público objetivo","textarea"],["beneficio","Beneficio principal (lo que gana el cliente)","textarea"],["dolor","Problema que resuelve","textarea"],["angulos","Ángulos de venta","textarea"],["objeciones","Objeciones principales","textarea"],["competidores","Tiendas competidoras vistas","number"],["precioComp","Precio promedio de la competencia","number"],["invima","Requiere permiso sanitario (INVIMA)","select",["No","Sí","No sé"]],["notas","Notas","textarea"]]]];
+const NUMK=new Set(FICHA.flatMap(g=>g[1]).filter(x=>x[2]==="number").map(x=>x[0]));
+function buildFicha(){$("fichaForm").innerHTML=FICHA.map(([g,fs])=>`<div><h2>${g}</h2>${fs.map(([k,l,t,o])=>t==="textarea"?`<label class="t">${l}<textarea data-k="${k}" id="pf_${k}"></textarea></label>`:(t==="url"?`<label class="t">${l}<input data-k="${k}" id="pf_${k}" placeholder="https://"></label>`:`<label class="f"><span>${l}</span>${t==="select"?`<select data-k="${k}" id="pf_${k}">${o.map(x=>`<option>${x}</option>`).join("")}</select>`:`<input data-k="${k}" id="pf_${k}" type="${t==="number"?"number":t}" ${t==="text"?'style="text-align:left;font-family:inherit"':""}>`}</label>`)).join("")}</div>`).join("");
+ $("fichaForm").querySelectorAll("[data-k]").forEach(el=>el.addEventListener("input",()=>{const p=prod(),k=el.dataset.k;p[k]=NUMK.has(k)?num(el.value):el.value;if(k==="costo")p.costoReal=true;save();renderLight()}));
+ $("critForm").innerHTML=E.CRIT.map(([k,l,w])=>`<label class="f"><span>${l} <span class="hint">(${w}%)</span></span><select id="sc_${k}" data-c="${k}">${[1,2,3,4,5].map(v=>`<option value="${v}">${v}${v===1?" · malo":v===3?" · regular":v===5?" · excelente":""}</option>`).join("")}</select></label>`).join("");
+ $("critForm").querySelectorAll("[data-c]").forEach(el=>el.addEventListener("change",()=>{prod().score[el.dataset.c]=+el.value;save();renderLight()}));
+ $("pfEtapa").innerHTML=`<option value="">Todas las etapas</option>`+ETAPAS.map(e=>`<option>${e}</option>`).join("")}
+function fillFicha(){const p=prod();FICHA.forEach(([,fs])=>fs.forEach(([k])=>{const el=$("pf_"+k);if(el&&document.activeElement!==el)el.value=p[k]??""}));E.CRIT.forEach(([k])=>$("sc_"+k).value=p.score[k]||3);
+ $("pfQ").value=S.pf.q;$("pfEtapa").value=S.pf.etapa;$("pfSort").value=S.pf.sort;if(!$("r_fecha").value)$("r_fecha").value=today()}
+const prodTests=id=>S.tests.filter(t=>t.productId===id).sort((a,b)=>(a.form.fecha||"").localeCompare(b.form.fecha||"")||a.ts-b.ts);
+function suggestion(p){const a=E.agg(prodTests(p.id));if(!a)return{label:"Sin datos",tone:"b"};const v=E.verdict(a,p.meta||20,S.risk,p);return v}
+const STAGE_FROM={"Escalar":"Escalando","Escalar con cautela":"Ganador","Mantener y optimizar":"En test","Optimizar":"En test","Pausar / matar":"Descartado","Seguir midiendo":"En test"};
+const etTag=e=>`<span class="tag ${/Ganador|Escalando/.test(e)?"g":/Descartado|Pausado/.test(e)?"r":/En test|Validado/.test(e)?"a":"b"}">${e}</span>`;
+const clTag=c=>`<span class="tag ${c==="A"?"g":c==="B"?"a":"r"}">Clase ${c}</span>`;
+function renderPortfolio(){const rows=S.products.map(p=>({p,ev:E.evaluate(p,S.risk),a:E.agg(prodTests(p.id)),sg:suggestion(p)}));
+ const A=rows.map(r=>r.a).filter(Boolean);const T=k=>A.reduce((s,a)=>s+a[k],0);const ads=T("ads"),ing=T("ingresos"),neta=T("neta");
+ $("pfK").innerHTML=kpi("Productos",S.products.length,`${rows.filter(r=>r.ev.clase==="A").length} clase A · ${rows.filter(r=>r.ev.clase==="B").length} clase B`,"")+
+  kpi("En test",S.products.filter(p=>p.etapa==="En test").length,"","a")+kpi("Ganadores",S.products.filter(p=>/Ganador|Escalando/.test(p.etapa)).length,"ganador o escalando","g")+
+  kpi("Gasto total en ads",money(ads),`${A.length} producto(s) con datos`,"")+kpi("Recaudo total",money(ing),"","")+kpi("Utilidad neta real",money(neta),ads?`ROAS global ${xx(ing/ads)}`:"sin datos",neta>=0?"g":"r");
+ const q=S.pf.q.toLowerCase();let L=rows.filter(r=>(!q||(r.p.nombre+" "+r.p.categoria+" "+r.p.subnicho).toLowerCase().includes(q))&&(!S.pf.etapa||r.p.etapa===S.pf.etapa));
+ const key={score:r=>-r.ev.total,neta:r=>-(r.a?r.a.neta:-1e12),up:r=>-r.ev.g.u.utilidadPedido,gasto:r=>-(r.a?r.a.ads:0),nombre:r=>r.p.nombre};
+ L.sort((x,y)=>{const a=key[S.pf.sort](x),b=key[S.pf.sort](y);return typeof a==="string"?a.localeCompare(b):a-b});
+ $("pfTable").innerHTML=`<tr><th>Producto</th><th>Etapa</th><th>Clase</th><th>Puntaje</th><th>Precio</th><th>Utilidad/pedido</th><th>Registros</th><th>Gasto</th><th>Pedidos</th><th>Entrega real</th><th>ROAS</th><th>CPA</th><th>Neta</th><th>Sugerencia</th></tr>`+
+  (L.length?L.map(({p,ev,a,sg})=>`<tr class="${p.id===S.active?"sel":""}" style="cursor:pointer" onclick="openProduct('${p.id}')"><td><b>${esc(p.nombre)}</b><div class="hint" style="margin:0">${esc(p.categoria)} · ${esc(p.subnicho||"")}</div></td><td>${etTag(p.etapa)}</td><td>${clTag(ev.clase)}</td><td>${ev.total}</td><td>${money(p.precio)}</td><td class="${ev.g.u.utilidadPedido>0?"pos":"neg"}">${money(ev.g.u.utilidadPedido)}</td><td>${a?a.n:0}</td><td>${a?money(a.ads):"—"}</td><td>${a?a.ped:"—"}</td><td>${a&&a.conf?pct(a.tasaEntrega):"—"}</td><td>${a?xx(a.roas):"—"}</td><td>${a&&a.ped?money(a.cpa):"—"}</td><td class="${a?(a.neta>=0?"pos":"neg"):""}">${a?money(a.neta):"—"}</td><td><span class="tag ${sg.tone}">${sg.label}</span></td></tr>`).join(""):`<tr><td colspan="14" style="text-align:center;color:var(--mut)">No hay productos con ese filtro.</td></tr>`)}
+function openProduct(id){S.active=id;$("pcForm").innerHTML="";S.simForm.cpa=null;save();fillFicha();fillSim();renderAll();setTimeout(()=>$("pDetail").scrollIntoView({behavior:"smooth",block:"start"}),50)}
+function setPtab(t){S.ptab=t;save();["ficha","eval","res","ana","precio"].forEach(x=>$("pd-"+x).classList.toggle("hide",x!==t));document.querySelectorAll("#pdTabs button").forEach(b=>b.classList.toggle("on",b.dataset.s===t))}
+function renderDetail(){const p=prod(),ev=E.evaluate(p,S.risk),sg=suggestion(p);
+ $("pdTitle").textContent=p.nombre;$("pdBadges").innerHTML=`${etTag(p.etapa)} ${clTag(ev.clase)} <span class="tag b">Puntaje ${ev.total}/100</span> <span class="tag ${sg.tone}">${sg.label}</span>`;
+ setPtab(S.ptab||"ficha");renderEval(ev);renderResults();renderAnalysis();renderPricing()}
+function renderEval(ev){const p=prod(),g=ev.g,u=g.u,R=g.R;const col={A:"var(--good)",B:"var(--warn)",C:"var(--stop)"}[ev.clase];
+ $("evalBox").innerHTML=`<div class="panel" style="text-align:center;border-color:${col}"><div class="hint" style="text-transform:uppercase;letter-spacing:.6px">Puntaje de evaluación inicial</div><div class="bigscore" style="color:${col}">${ev.total}</div><div style="font-weight:700;color:${col};margin-top:4px">Clase ${ev.clase} · ${ev.clase==="A"?"testear ya":ev.clase==="B"?"testear si no hay clase A":"no testear así"}</div>
+  <div class="kpis" style="margin-top:12px">${kpi("Criterios",Math.round(ev.cual*0.65)+"/65","atractivo comercial","")}${kpi("Economía",Math.round(ev.econ*0.35)+"/35",pct(u.margenPct)+" del ticket","")}</div></div>`;
+ $("evalWarn").innerHTML=ev.warn.map(([t,m])=>`<div class="alert ${t}">${m}</div>`).join("");
+ $("pk1").innerHTML=kpi("Utilidad por pedido",money(u.utilidadPedido),"antes de publicidad",u.utilidadPedido>0?"g":"r")+kpi("CPA máximo",money(u.cpaMax),"punto de equilibrio","")+kpi("CPA objetivo",money(g.cpaObj),`deja ${pct(R.holguraCPA)} de holgura`,"g")+kpi("ROAS mínimo",xx(u.roasMin),"sobre lo entregado","");
+ $("pGate").innerHTML=g.pass?`<div class="alert g">🟢 <b>Pasa la validación para riesgo ${S.risk}/10.</b> Utilidad por pedido ${pct(u.margenPct)} del ticket (mínimo ${pct(R.margenMin)}). Para testear, apunta a un CPA de ${money(g.cpaObj)} o menos.</div>`:`<div class="alert r">🔴 <b>No pasa la validación.</b> ${!g.ok1?"Pierde dinero aunque la publicidad fuera gratis.":`La utilidad por pedido es ${pct(u.margenPct)} del ticket y tu riesgo exige al menos ${pct(R.margenMin)}.`} Sube el precio, agrega un combo, negocia el costo o busca otro producto.</div>`;
+ $("pk2").innerHTML=kpi("Ticket esperado",money(u.aov),p.upTasa>0?`incluye upsell (${p.upTasa}%)`:"sin upsell","")+kpi("Margen por entregado",money(u.margenEntregado),"","")+kpi("Pérdida por devolución",money(u.perdidaDevuelto),"flete perdido","a")+
+  kpi("Presupuesto por test",money(g.presTest),`${R.pedidosDecidir} pedidos a CPA objetivo`,"")+kpi("Fondo de aprendizaje",money(g.fondo),"5 tests","a")+kpi("Corte sin ventas",money(R.killMult*u.cpaMax),`${R.killMult.toFixed(1)}× CPA máximo`,"r")}
+const RF=["fecha","canal","dias","ads","imp","clics","ped","conf","ent","aov","notas"];
+function resInput(){const v=k=>$("r_"+k).value;return{fecha:v("fecha")||today(),canal:v("canal"),dias:num(v("dias")),ads:num(v("ads")),imp:num(v("imp")),clics:num(v("clics")),ped:num(v("ped")),conf:v("conf")===""?null:num(v("conf")),ent:v("ent")===""?null:num(v("ent")),aov:num(v("aov")),notas:v("notas")}}
+function renderResultPreview(){const p=prod(),f=resInput(),c=E.test(f,p);$("btnRes").disabled=!(f.ads>0||f.ped>0);
+ $("rPrev").innerHTML=kpi("Utilidad neta",money(c.neta),"de este registro",c.neta>=0?"g":"r")+kpi("ROAS",xx(c.roas),`equilibrio ${xx(c.roasEq)}`,c.roas>=c.roasEq?"g":"r")+kpi("CPA",money(c.cpa),`máximo ${money(c.cpaMax)}`,c.cpa<=c.cpaMax?"g":"r")+kpi("CTR",c.ctr===null?"—":pct(c.ctr),c.cpc===null?"":"CPC "+money(c.cpc),"")+kpi("Conversión",c.cvr===null?"—":pct(c.cvr),"pedidos / clics","")}
+function saveResult(){const p=prod(),f=resInput(),c=E.test(f,p),v=E.verdict(c,p.meta||20,S.risk,p);
+ S.tests.unshift({id:"t"+Date.now(),ts:Date.parse(f.fecha+"T12:00:00")||Date.now(),risk:S.risk,productId:p.id,producto:p.nombre,form:{nombre:f.notas||`${f.canal} ${f.fecha}`,...f,meta:p.meta||20},c,verdict:v.label,meta:p.meta||20});
+ if(p.etapa==="Idea"||p.etapa==="Investigando"||p.etapa==="Validado")p.etapa="En test";save();clearResultForm();renderAll();toast("Resultado registrado")}
+function clearResultForm(){["dias","ads","imp","clics","ped","conf","ent","aov","notas"].forEach(k=>$("r_"+k).value="");$("r_fecha").value=today();renderResultPreview()}
+function renderResults(){const p=prod(),T=prodTests(p.id).slice().reverse();renderResultPreview();
+ $("resTable").innerHTML=`<tr><th>Fecha</th><th>Canal</th><th>Días</th><th>Gasto</th><th>Impr.</th><th>Clics</th><th>CTR</th><th>Pedidos</th><th>Confirm.</th><th>Entreg.</th><th>Recaudo</th><th>ROAS</th><th>CPA</th><th>Neta</th><th>Veredicto</th><th>Notas</th><th></th></tr>`+
+  (T.length?T.map(t=>{const c=t.c;return`<tr><td>${esc(t.form.fecha||new Date(t.ts).toISOString().slice(0,10))}</td><td style="font-family:inherit">${esc(t.form.canal||"")}</td><td>${t.form.dias||"—"}</td><td>${money(c.ads)}</td><td>${c.imp?c.imp.toLocaleString("es-CO"):"—"}</td><td>${c.clics||"—"}</td><td>${c.ctr==null?"—":pct(c.ctr)}</td><td>${c.ped}</td><td>${Math.round(c.conf??c.ped)}</td><td>${Math.round(c.ent)}</td><td>${money(c.ingresos)}</td><td>${xx(c.roas)}</td><td>${money(c.cpa)}</td><td class="${c.neta>=0?"pos":"neg"}">${money(c.neta)}</td><td style="font-family:inherit">${esc(t.verdict)}</td><td style="font-family:inherit;white-space:normal;min-width:140px">${esc(t.form.notas||"")}</td><td><button class="btn ghost" onclick="delItem('tests','${t.id}')">✕</button></td></tr>`}).join(""):`<tr><td colspan="17" style="text-align:center;color:var(--mut)">Todavía no hay resultados. Registra el primero arriba.</td></tr>`)}
+function renderAnalysis(){const p=prod(),T=prodTests(p.id),a=E.agg(T),g=E.gate(p,S.risk),U=g.u;
+ ["paK","paFunnel","paVs","paChart","paStrat","paDiag"].forEach(id=>$(id).innerHTML="");
+ if(!a){$("anaEmpty").innerHTML=`<div class="alert b">Aún no hay resultados de venta para este producto. Registra el primero en <b>3 · Resultados de venta</b> y aquí verás métricas, embudo, evolución y estrategia.</div>`;return}
+ $("anaEmpty").innerHTML="";const v=E.verdict(a,p.meta||20,S.risk,p);
+ $("paK").innerHTML=kpi("Gasto en ads",money(a.ads),`${a.n} registro(s)${a.dias?" · "+a.dias+" días":""}`,"")+kpi("Recaudo",money(a.ingresos),`AOV ${money(a.aov)}`,"")+kpi("Utilidad neta",money(a.neta),`rentabilidad ${pct(a.rent/100)} · meta ${p.meta||20}%`,a.neta>=0?"g":"r")+
+  kpi("ROAS",xx(a.roas),`equilibrio ${xx(a.roasEq)}`,a.roas>=a.roasEq?"g":"r")+kpi("CPA real",money(a.cpa),`objetivo ${money(g.cpaObj)}`,a.cpa<=g.cpaObj?"g":a.cpa<=a.cpaMax?"a":"r")+
+  kpi("CTR",a.ctr===null?"—":pct(a.ctr),a.cpc===null?"registra impresiones y clics":"CPC "+money(a.cpc),a.ctr===null?"":a.ctr>=0.012?"g":a.ctr>=0.008?"a":"r")+kpi("Conversión",a.cvr===null?"—":pct(a.cvr),"pedidos / clics",a.cvr===null?"":a.cvr>=0.015?"g":a.cvr>=0.008?"a":"r")+
+  kpi("% confirmación",pct(a.tasaConf),`${Math.round(a.conf)} de ${a.ped}`,a.tasaConf>=0.8?"g":"a")+kpi("% entrega",pct(a.tasaEntrega),`${Math.round(a.ent)} entregados · ${Math.round(a.dev)} devueltos`,a.tasaEntrega>=0.8?"g":a.tasaEntrega>=0.7?"a":"r");
+ const F=[["Impresiones",a.imp],["Clics",a.clics],["Pedidos",a.ped],["Confirmados",a.conf],["Entregados",a.ent]].filter(x=>x[1]>0);const mx=Math.max(...F.map(x=>x[1]),1);
+ $("paFunnel").innerHTML=F.map(([n,val],i)=>`<div class="row"><span>${n}</span><div class="bar" style="width:${Math.max(2,Math.sqrt(val/mx)*100)}%"></div><span class="mono">${Math.round(val).toLocaleString("es-CO")}${i>0?` · ${pct(val/F[i-1][1])}`:""}</span></div>`).join("")+`<div class="hint">El ancho usa raíz cuadrada para que se vean todas las etapas. El % es la conversión frente a la etapa anterior.</div>`;
+ const rowsVs=[["% de entrega",pct(U.e),pct(a.tasaEntrega),a.tasaEntrega>=U.e],["Ticket promedio",money(U.aov),money(a.aov),a.aov>=U.aov*0.98],["Utilidad por pedido",money(U.utilidadPedido),money(a.cpaMax),a.cpaMax>=U.utilidadPedido*0.95],["CPA",money(g.cpaObj)+" (objetivo)",money(a.cpa),a.cpa<=g.cpaObj],["ROAS",xx(U.roasMin)+" (mínimo)",xx(a.roas),a.roas>=U.roasMin]];
+ $("paVs").innerHTML=`<tr><th>Métrica</th><th>Esperado</th><th>Real</th><th></th></tr>`+rowsVs.map(([n,e,r,ok])=>`<tr><td>${n}</td><td>${e}</td><td>${r}</td><td>${ok?'<span class="tag g">mejor o igual</span>':'<span class="tag r">por debajo</span>'}</td></tr>`).join("");
+ let cn=0,ci=0,cg=0;const pts=[{x:0,n:0,i:0,g:0}].concat(T.map((t,k)=>{cn+=t.c.neta;ci+=t.c.ingresos;cg+=t.c.ads;return{x:k+1,n:cn,i:ci,g:cg,l:t.form.fecha||""}}));
+ const W=900,H=260,pd={l:80,r:12,t:12,b:28};const mxY=Math.max(...pts.map(q=>Math.max(q.i,q.g,q.n)),1)*1.06,mnY=Math.min(0,...pts.map(q=>q.n));const n=pts.length-1||1;
+ const X=k=>pd.l+k/n*(W-pd.l-pd.r),Y=v=>H-pd.b-(v-mnY)/(mxY-mnY||1)*(H-pd.t-pd.b);let sv="";
+ for(let k=0;k<=4;k++){const val=mnY+(mxY-mnY)*k/4;sv+=`<line x1="${pd.l}" x2="${W-pd.r}" y1="${Y(val)}" y2="${Y(val)}" stroke="#E1E5F0"/><text x="${pd.l-8}" y="${Y(val)+4}" font-size="11" text-anchor="end" fill="#6A7194">${money(val)}</text>`}
+ pts.slice(1).forEach(q=>sv+=`<text x="${X(q.x)}" y="${H-8}" font-size="10" text-anchor="middle" fill="#6A7194">${esc((q.l||"").slice(5))}</text>`);
+ const ln=(k,c)=>`<polyline fill="none" stroke="${c}" stroke-width="2.6" points="${pts.map(q=>X(q.x)+","+Y(q[k])).join(" ")}"/>`+pts.slice(1).map(q=>`<circle cx="${X(q.x)}" cy="${Y(q[k])}" r="3.5" fill="${c}"/>`).join("");
+ sv+=`<line x1="${pd.l}" x2="${W-pd.r}" y1="${Y(0)}" y2="${Y(0)}" stroke="#9aa3c7" stroke-dasharray="4 4"/>`+ln("g","#E2405F")+ln("i","#385BFF")+ln("n","#14A37F");$("paChart").innerHTML=sv;
+ const D=E.diagnose(a,p,S.risk);const R=E.rules(S.risk);const acts=D.filter(d=>d[0]==="r"||d[0]==="a").slice(0,3);
+ const plan=/Escalar/.test(v.label)?`Hazlo mientras el CPA siga bajo ${money(g.cpaObj)}; duplica el conjunto de anuncios ganador y prueba un público nuevo.`:/matar/i.test(v.label)?`Detén la pauta, documenta lo aprendido y pasa al siguiente producto clase A.`:`No subas presupuesto todavía. Ataca primero ${acts.length?acts.map(x=>x[1].split(" (")[0].toLowerCase()).join(", "):"la muestra"} y vuelve a medir.`;
+ $("paStrat").innerHTML=`<div class="alert ${v.tone==="b"?"b":v.tone}"><b>Estrategia sugerida · ${v.label}.</b> ${v.why} ${plan}</div>`;
+ $("paDiag").innerHTML=D.map(([t,ti,m])=>`<div class="diag ${t}"><b>${ti}</b>${m}</div>`).join("");window._ana={a,v,D}}
+function useRealDelivery(){const a=E.agg(prodTests(S.active));if(!a||!a.conf)return;prod().entrega=Math.round(a.tasaEntrega*100);save();fillFicha();renderAll();toast("% de entrega esperado actualizado a "+prod().entrega+"%")}
+function applySuggestedStage(){const sg=suggestion(prod());const st=STAGE_FROM[sg.label];if(!st)return;prod().etapa=st;save();fillFicha();renderAll();toast("Etapa: "+st)}
+function newProduct(){const id="p"+Date.now();S.products.push(withDefaults({id,nombre:"Nuevo producto",costo:0,precio:0,flete:16000,fleteRet:0,entrega:75,com:3,etapa:"Idea",fecha:today()}));S.active=id;S.ptab="ficha";save();fillFicha();renderAll();go("producto");setTimeout(()=>{$("pDetail").scrollIntoView({behavior:"smooth"});$("pf_nombre").select()},80)}
+function duplicateProduct(){const p=JSON.parse(JSON.stringify(prod()));p.id="p"+Date.now();p.nombre+=" (copia)";p.etapa="Idea";p.fecha=today();S.products.push(p);S.active=p.id;save();fillFicha();renderAll()}
+function deleteProduct(){if(S.products.length<=1)return;if(!confirm("¿Eliminar "+prod().nombre+"? Sus resultados quedan en la bitácora."))return;S.products=S.products.filter(p=>p.id!==S.active);S.active=S.products[0].id;save();fillFicha();renderAll()}
+function setActive(id){openProduct(id)}
+function renderProductos(){renderPortfolio();renderDetail()}
+function renderLight(){renderHeader();renderProductos();renderMarketing();renderTest();renderSim();renderRuta();renderCoach()}
+function exportProductsCSV(){const h=["Producto","Etapa","Categoría","Sub-nicho","SKU Dropi","Costo proveedor (COP)","Precio venta (COP)","Precio tachado (COP)","Flete (COP)","% Entrega","Puntaje evaluación","Clase","Utilidad por pedido (COP)","Requiere INVIMA","Público objetivo","Ángulo de venta","Link Dropi","Gasto ads real (COP)","Utilidad neta real (COP)","ROAS real","Notas"].join(";")+"\n";
+ const cl=v=>String(v??"").replace(/[;\n\r]+/g," ");
+ dl("productos_para_notion.csv",h+S.products.map(p=>{const ev=E.evaluate(p,S.risk),a=E.agg(prodTests(p.id));return[p.nombre,p.etapa,p.categoria,p.subnicho,p.sku,p.costo,p.precio,p.ancla,p.flete,(p.entrega/100).toFixed(2),ev.total,ev.clase,Math.round(ev.g.u.utilidadPedido),p.invima,p.publico,p.angulos,p.linkDropi,a?Math.round(a.ads):"",a?Math.round(a.neta):"",a?a.roas.toFixed(2):"",p.notas].map(cl).join(";")}).join("\n"),"text/csv")}
+function mentorProduct(){const p=prod(),ev=E.evaluate(p,S.risk),A=window._ana;
+ askMentor(`Diseña la estrategia para el producto "${p.nombre}" (${p.categoria} · ${p.subnicho}), etapa ${p.etapa}. Público: ${p.publico||"—"}. Ángulos: ${p.angulos||"—"}. Objeciones: ${p.objeciones||"—"}. Competencia: ${p.competidores||0} tiendas, precio promedio ${money(p.precioComp)}. Precio ${money(p.precio)} (tachado ${money(p.ancla)}), upsell ${p.upTasa>0?money(p.upPrecio)+" con "+p.upTasa+"% de adopción":"no tiene"}. Evaluación inicial ${ev.total}/100, clase ${ev.clase}. ${A?`Resultados acumulados (${A.a.n} registros): gasto ${money(A.a.ads)}, impresiones ${A.a.imp}, clics ${A.a.clics}, CTR ${A.a.ctr==null?"—":pct(A.a.ctr)}, pedidos ${A.a.ped}, confirmación ${pct(A.a.tasaConf)}, entrega ${pct(A.a.tasaEntrega)}, AOV ${money(A.a.aov)}, ROAS ${xx(A.a.roas)} (equilibrio ${xx(A.a.roasEq)}), CPA ${money(A.a.cpa)}, utilidad neta ${money(A.a.neta)}. Veredicto del modelo: ${A.v.label}. Diagnóstico: ${A.D.map(d=>d[1]+": "+d[2]).join(" | ")}.`:"Aún no hay resultados de venta: enfócate en cómo lanzarlo."}`,
+ "mentorProdOut",`{"estado":"","diagnostico":"","estrategia":["","",""],"creativos":"","pagina_oferta":"","logistica":"","presupuesto":"","siguiente_paso":""}`,
+ j=>`<b style="color:var(--accent)">Estado:</b> ${esc(j.estado)}<div style="margin-top:6px">${esc(j.diagnostico)}</div>${list("Estrategia",j.estrategia)}<div class="info">${box("Creativos",j.creativos,"#4F8DFF")}${box("Página y oferta",j.pagina_oferta,"#14A37F")}${box("Logística y entregas",j.logistica,"#D98E00")}${box("Presupuesto",j.presupuesto,"#385BFF")}</div>${box("Siguiente paso",j.siguiente_paso,"#E2405F")}`)}
+
+/* ================= PRECIO Y MARGEN ================= */
+const PCF=[["Producto",[["costo","Costo proveedor",0,null,500],["P","Precio a evaluar",0,null,500],["upPrecio","Precio del upsell / combo",0,200000,1000],["upCosto","Costo del upsell",0,150000,500],["upTasa","% que toma el upsell",0,80,1]]],
+ ["Publicidad",[["cpa0","CPA al precio de referencia",1000,null,500],["p0","Precio de referencia del CPA",1000,null,1000],["elast","Sensibilidad del CPA al precio",0,3,0.1],["techo","Techo de precio percibido",0,null,1000],["presupuesto","Pauta mensual",100000,20000000,100000]]],
+ ["Operación contraentrega",[["conf","% de confirmación",40,100,1],["entrega","% de entrega",40,98,1],["flete","Flete por pedido",0,40000,500],["fleteRet","Flete de retorno",0,30000,500],["empaque","Empaque e insertos",0,15000,500],["costoConf","Costo de confirmación por pedido",0,5000,100]]],
+ ["Costos y márgenes",[["com","Comisión %",0,15,0.5],["imp","Impuestos / retenciones %",0,15,0.5],["fijosMes","Costos fijos mensuales",0,5000000,50000],["margenMin","Margen neto mínimo saludable %",0,50,1],["margenObj","Margen neto objetivo %",0,60,1]]]];
+const PCH={elast:"1,2 = si subes el precio 10%, el CPA sube cerca de 12%. Cuanto más alto, más castiga subir el precio.",techo:"Precio desde el que el cliente siente que es caro (competencia, precio tachado). Por encima, el CPA sube el doble de rápido. 0 = sin techo.",cpa0:"Se llena con tu CPA real cuando tienes 3+ pedidos; si no, con 20% del precio (referencia típica de contraentrega). Ajústalo con tus tests.",margenMin:"Lo mínimo que debe quedar después de todo (incluida la pauta) para poder reinvertir y escalar.",presupuesto:"Lo que invertirías en anuncios al mes con este producto."};
+function pcDefaults(p){const a=E.agg(prodTests(p.id));const g=E.gate(p,S.risk);const n=E.rn(S.risk);
+ return{costo:p.costo,P:p.precio,upPrecio:p.upPrecio||0,upCosto:p.upCosto||0,upTasa:p.upTasa||0,cpa0:Math.round(((a&&a.ped>=3)?a.cpa:p.precio*0.2)/100)*100,p0:p.precio,elast:1.2,
+  techo:p.precioComp>0?Math.round(p.precioComp*1.15/1000)*1000:(p.ancla>p.precio?p.ancla:0),presupuesto:1500000,conf:p.conf??90,entrega:(a&&a.conf>=5)?Math.round(a.tasaEntrega*100):p.entrega,flete:p.flete,fleteRet:p.fleteRet,
+  empaque:p.empaque||0,costoConf:p.costoConf||0,com:p.com,imp:p.imp||0,fijosMes:S.simForm.fijos||200000,margenMin:Math.round(14-6*n),margenObj:20}}
+const pcQ=()=>{const p=prod();if(!S.pc[p.id])S.pc[p.id]=pcDefaults(p);return S.pc[p.id]};
+function buildPricingForm(){const q=pcQ();const R=E.pricing(q);
+ $("pcForm").innerHTML=PCF.map(([g,fs])=>`<h2>${g}</h2>`+fs.map(([k,l,mn,mx,st])=>{const max=mx!==null?mx:(k==="P"||k==="techo"||k==="p0"?Math.round(R.hi):k==="costo"?Math.max(q.costo*3,50000):Math.max(q.cpa0*3,50000));
+  return`<div class="sl"><span>${l}</span><input type="number" id="pcn_${k}" step="${st}" value="${q[k]}"><input type="range" id="pcr_${k}" min="${mn}" max="${max}" step="${st}" value="${q[k]}"></div>${PCH[k]?`<div class="hint">${PCH[k]}</div>`:""}`}).join("")).join("")+
+  `<div class="btns"><button class="btn" onclick="applyPrice('rec')">Aplicar precio recomendado</button><button class="btn alt" onclick="applyPrice('eval')">Aplicar precio evaluado</button><button class="btn ghost" onclick="pcSaveAssumptions()">Guardar supuestos en la ficha</button><button class="btn ghost" onclick="pcReset()">Restablecer</button></div>`;
+ PCF.forEach(([,fs])=>fs.forEach(([k])=>{const n=$("pcn_"+k),r=$("pcr_"+k);const upd=v=>{pcQ()[k]=num(v);save();renderPricing(true);renderCoach()};
+  n.addEventListener("input",()=>{r.value=n.value;upd(n.value)});r.addEventListener("input",()=>{n.value=r.value;upd(r.value)})}))}
+function pcReset(){delete S.pc[S.active];save();buildPricingForm();renderPricing()}
+function pcSaveAssumptions(){const p=prod(),q=pcQ();["conf","entrega","flete","fleteRet","empaque","costoConf","com","imp","upPrecio","upCosto","upTasa","costo"].forEach(k=>p[k]=q[k]);save();fillFicha();renderAll();toast("Supuestos guardados en la ficha")}
+function applyPrice(which){const q=pcQ(),R=E.pricing(q);const P=which==="rec"?R.rec:q.P;if(!P)return;prod().precio=P;q.P=P;save();fillFicha();buildPricingForm();renderAll();toast("Precio de venta: "+money(P))}
+function renderPricing(fromSlider){if(!$("pcForm").innerHTML||!fromSlider&&$("pcForm").dataset.pid!==S.active){buildPricingForm();$("pcForm").dataset.pid=S.active}
+ const q=pcQ(),R=E.pricing(q),ev=E.priceEval(q,q.P),p=prod();const rec=R.rec?E.priceEval(q,R.rec):null;
+ $("pcK").innerHTML=kpi("Precio de equilibrio",R.be?money(R.be):"—","por debajo pierdes dinero",R.be?"r":"r")+kpi("Mínimo saludable",R.pMin?money(R.pMin):"—",`margen neto ≥ ${q.margenMin}%`,"a")+
+  kpi("Precio recomendado",R.rec?money(R.rec):"—",R.range?`rango ${money(R.range[0])} – ${money(R.range[1])}`:"no hay rango saludable",R.rec?"g":"r")+kpi("Para margen objetivo",R.pObj?money(R.pObj):"—",`margen neto ${q.margenObj}%`,"")+
+  kpi("Precio evaluado",money(q.P),`margen neto ${pct(ev.mn)} · ${xx(ev.markup)} el costo`,ev.mn>=q.margenMin/100?"g":ev.pi>0?"a":"r")+kpi("Utilidad por pedido",money(ev.pi),"por pedido generado, después de todo",ev.pi>0?"g":"r")+
+  kpi("Utilidad mensual",money(ev.mes),`${Math.round(ev.pedidos)} pedidos · CPA ${money(ev.A)}`,ev.mes>0?"g":"r")+kpi("Retorno de la pauta",ev.mes>0?pct(ev.mes/q.presupuesto):"—","utilidad neta ÷ pauta, al mes",ev.mes>0?"g":"r");
+ const reinv=S.simForm.reinv||70;let al="";
+ if(!R.range)al=`<div class="alert r">🔴 <b>Con estos supuestos ningún precio deja un margen neto de ${q.margenMin}%.</b> Baja el costo, sube el % de entrega o de confirmación, agrega un combo o revisa el CPA.</div>`;
+ else al=`<div class="alert g">🟢 <b>Rango saludable: ${money(R.range[0])} – ${money(R.range[1])}. Precio recomendado: ${money(R.rec)}</b>${rec?` (margen neto ${pct(rec.mn)}, ${money(rec.mes)} de utilidad al mes con ${money(q.presupuesto)} de pauta)`:""}. Reinvirtiendo el ${reinv}% de esa utilidad, la pauta podría crecer cerca de <b>${pct(rec?rec.mes*reinv/100/q.presupuesto:0)} por mes</b> antes de que el CPA se encarezca.</div>`;
+ if(R.rec&&p.precioComp>0&&R.rec>p.precioComp*1.15)al+=`<div class="alert a">El precio recomendado queda por encima del de la competencia (${money(p.precioComp)}). Necesitas una oferta clara (combo, garantía, envío) o subir el techo percibido con marca.</div>`;
+ if(ev.P<(R.be||0))al+=`<div class="alert r">El precio evaluado está por debajo del equilibrio: cada pedido te hace perder ${money(-ev.pi)}.</div>`;
+ $("pcAlert").innerHTML=al;
+ // gráfica
+ const G=R.grid,W=900,H=300,pd={l:82,r:52,t:12,b:28};const ys=G.map(g=>g.mes);const mxY=Math.max(...ys,1)*1.08,mnY=Math.max(Math.min(...ys,0),-Math.max(...ys,1)*0.6);
+ const X=P=>pd.l+(P-R.lo)/(R.hi-R.lo)*(W-pd.l-pd.r),Y=v=>H-pd.b-(Math.max(mnY,v)-mnY)/(mxY-mnY||1)*(H-pd.t-pd.b);
+ const mMin=-0.2,mMax=0.6,Y2=v=>H-pd.b-(Math.max(mMin,Math.min(mMax,v))-mMin)/(mMax-mMin)*(H-pd.t-pd.b);let sv="";
+ if(R.range)sv+=`<rect x="${X(R.range[0])}" y="${pd.t}" width="${Math.max(2,X(R.range[1])-X(R.range[0]))}" height="${H-pd.t-pd.b}" fill="#E6F7F1"/>`;
+ for(let k=0;k<=4;k++){const v=mnY+(mxY-mnY)*k/4,m=mMin+(mMax-mMin)*k/4;sv+=`<line x1="${pd.l}" x2="${W-pd.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#E1E5F0"/><text x="${pd.l-6}" y="${Y(v)+4}" font-size="10.5" text-anchor="end" fill="#6A7194">${money(v)}</text><text x="${W-pd.r+6}" y="${Y2(m)+4}" font-size="10.5" fill="#14A37F">${Math.round(m*100)}%</text>`}
+ for(let k=0;k<=6;k++){const P=R.lo+(R.hi-R.lo)*k/6;sv+=`<text x="${X(P)}" y="${H-8}" font-size="10.5" text-anchor="middle" fill="#6A7194">${money(Math.round(P/1000)*1000)}</text>`}
+ sv+=`<line x1="${pd.l}" x2="${W-pd.r}" y1="${Y(0)}" y2="${Y(0)}" stroke="#9aa3c7" stroke-dasharray="4 4"/>`;
+ sv+=`<polyline fill="none" stroke="#14A37F" stroke-width="2" stroke-dasharray="6 4" points="${G.map(g=>X(g.P)+","+Y2(g.mn)).join(" ")}"/>`;
+ sv+=`<polyline fill="none" stroke="#385BFF" stroke-width="3" points="${G.map(g=>X(g.P)+","+Y(g.mes)).join(" ")}"/>`;
+ if(R.be)sv+=`<line x1="${X(R.be)}" x2="${X(R.be)}" y1="${pd.t}" y2="${H-pd.b}" stroke="#E2405F" stroke-width="2"/>`;
+ if(R.rec)sv+=`<line x1="${X(R.rec)}" x2="${X(R.rec)}" y1="${pd.t}" y2="${H-pd.b}" stroke="#14A37F" stroke-width="2.5"/><text x="${X(R.rec)+4}" y="${pd.t+12}" font-size="11" fill="#0c6b52">recomendado</text>`;
+ sv+=`<line x1="${X(q.P)}" x2="${X(q.P)}" y1="${pd.t}" y2="${H-pd.b}" stroke="#0B1231" stroke-width="2" stroke-dasharray="3 3"/><circle cx="${X(q.P)}" cy="${Y(ev.mes)}" r="5" fill="#0B1231"/>`;
+ $("pcChart").innerHTML=sv;
+ // desglose por pedido entregado
+ const ce=ev.ce||1,P=ev.parts;const items=[["Producto",P.producto,"#6A7194"],["Flete",P.flete,"#8B92B8"],["Devoluciones",P.devoluciones,"#D98E00"],["Comisión e impuestos",P.comision,"#B07CC6"],["Empaque",P.empaque,"#A0A8C8"],["Confirmación",P.confirmacion,"#C8CDE0"],["Publicidad",P.publicidad,"#E2405F"],["Fijos",P.fijos,"#5E6585"],["Utilidad",P.utilidad,"#14A37F"]].map(([n,v,c])=>[n,v/ce,c]);
+ const tot=ev.aov;$("pcStack").innerHTML=items.filter(x=>x[1]>0).map(([n,v,c])=>`<div title="${n}" style="width:${v/tot*100}%;background:${c}"></div>`).join("");
+ $("pcParts").innerHTML=`<tr><th>Concepto</th><th>Por pedido entregado</th><th>% del ticket</th></tr>`+items.map(([n,v,c])=>`<tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${c};margin-right:6px"></span>${n}</td><td class="${v<0?"neg":""}">${money(v)}</td><td>${pct(v/tot)}</td></tr>`).join("")+`<tr><td><b>Ticket</b></td><td><b>${money(tot)}</b></td><td>100%</td></tr>`;
+ // salud
+ const H5=[[q.costo/q.P<=0.33,`Costo del producto ≤ 33% del precio (hoy ${pct(q.costo/q.P)} · ${xx(ev.markup)})`],[ev.mc>=0.45,`Margen de contribución antes de pauta ≥ 45% (hoy ${pct(ev.mc)})`],[ev.mn>=q.margenMin/100,`Margen neto ≥ ${q.margenMin}% (hoy ${pct(ev.mn)})`],
+  [ev.roas>=1.3*ev.roasEq,`ROAS con colchón de 30% sobre el equilibrio (hoy ${xx(ev.roas)} vs. ${xx(ev.roasEq*1.3)})`],[!(p.precioComp>0)||q.P<=p.precioComp*1.15,p.precioComp>0?`Precio ≤ competencia + 15% (competencia ${money(p.precioComp)})`:"Precio de la competencia sin registrar (agrégalo en la ficha)"],[ev.mes>0&&ev.mes*reinv/100/q.presupuesto>=0.15,`La reinversión hace crecer la pauta ≥ 15% al mes (hoy ${ev.mes>0?pct(ev.mes*reinv/100/q.presupuesto):"—"})`]];
+ $("pcHealth").innerHTML=H5.map(([ok,t])=>`<div class="chk">${ok?"🟢":"🔴"} <span>${t}</span></div>`).join("")+`<div class="hint" style="margin-top:6px">${H5.filter(x=>x[0]).length}/6 en verde. Con 5 o más el precio está listo para escalar.</div>`;
+ // interés compuesto por precio
+ const pts=[["Precio actual",p.precio],["Mínimo saludable",R.pMin],["Recomendado",R.rec],["Margen objetivo",R.pObj],["Evaluado",q.P]].filter((x,i,a)=>x[1]&&a.findIndex(y=>y[1]===x[1])===i);
+ const f=S.simForm;const runSim=(P,over)=>{const pv={...p,costo:q.costo,precio:P,flete:q.flete,fleteRet:q.fleteRet,empaque:q.empaque,costoConf:q.costoConf,com:q.com,imp:q.imp,conf:q.conf,entrega:q.entrega,upPrecio:q.upPrecio,upCosto:q.upCosto,upTasa:q.upTasa};
+   return E.sim({...pv,cpa:E.cpaAt(q,P),deg:f.deg,tope:f.tope,cap:f.cap,asig:f.asig,reinv:f.reinv,fijos:q.fijosMes,ciclo:f.ciclo,meses:f.meses,cdt:f.cdt,testeo:0,...(over?over(pv,E.cpaAt(q,P)):{})})};
+ const rowsS=pts.map(([n,P])=>{const r=runSim(P),pe=runSim(P,(pv,A)=>({entrega:Math.max(1,pv.entrega-10),cpa:A*1.25}));return{n,P,r,pe,e:E.priceEval(q,P)}});
+ const best=rowsS.reduce((a,b)=>b.r.patrimonio>a.r.patrimonio?b:a,rowsS[0]);
+ $("pcSim").innerHTML=`<tr><th>Precio</th><th>Valor</th><th>Margen neto</th><th>Utilidad/pedido</th><th>CPA</th><th>Utilidad mensual*</th><th>Patrimonio en ${f.meses} meses</th><th>Tasa mensual</th><th>Pesimista</th></tr>`+
+  rowsS.map(x=>`<tr ${x===best?'class="sel"':""}><td><b>${x.n}</b></td><td>${money(x.P)}</td><td class="${x.e.mn>=q.margenMin/100?"pos":x.e.pi>0?"wrn":"neg"}">${pct(x.e.mn)}</td><td>${money(x.e.pi)}</td><td>${money(x.e.A)}</td><td>${money(x.e.mes)}</td><td>${money(x.r.patrimonio)}</td><td>${pct(x.r.tm)}</td><td>${x.pe.quiebra!==null?'<span class="neg">se agota m'+x.pe.quiebra.toFixed(1)+'</span>':'<span class="pos">sostenible</span>'}</td></tr>`).join("");
+ $("pcComp").innerHTML=`<div class="hint" style="margin-top:6px">* Con ${money(q.presupuesto)} de pauta al mes. Capital ${money(f.cap)}, ${f.asig}% a pauta por ciclo, ${f.reinv}% de reinversión, ciclo de ${f.ciclo} días. Pesimista: entrega −10 pp y CPA +25%.</div>`+(best?`<div class="alert b">Con estos supuestos, <b>${best.n.toLowerCase()} (${money(best.P)})</b> es el que más hace crecer el capital: ${money(best.r.patrimonio)} en ${f.meses} meses${best.pe.quiebra!==null?", pero en el escenario pesimista se agota: considera un precio con más margen.":" y aguanta el escenario pesimista."}</div>`:"");
+ // tabla
+ const marks=new Set([R.be,R.pMin,R.rec,R.pObj].filter(Boolean));const sample=G.filter((g,i)=>i%Math.max(1,Math.round(G.length/22))===0);
+ [R.rec,R.pMin,R.be,R.pObj].filter(Boolean).forEach(P=>{if(!sample.some(g=>g.P===P))sample.push(E.priceEval(q,P))});sample.sort((a,b)=>a.P-b.P);
+ $("pcGrid").innerHTML=`<tr><th>Precio</th><th>× costo</th><th>CPA</th><th>Pedidos/mes</th><th>Utilidad/pedido</th><th>Margen contrib.</th><th>Margen neto</th><th>ROAS</th><th>Utilidad mensual</th><th></th></tr>`+
+  sample.map(g=>`<tr ${g.P===R.rec?'class="sel"':""}><td>${money(g.P)}</td><td>${g.markup.toFixed(1)}×</td><td>${money(g.A)}</td><td>${Math.round(g.pedidos)}</td><td class="${g.pi>=0?"pos":"neg"}">${money(g.pi)}</td><td>${pct(g.mc)}</td><td class="${g.mn>=q.margenMin/100?"pos":g.mn>=0?"wrn":"neg"}">${pct(g.mn)}</td><td>${xx(g.roas)}</td><td class="${g.mes>=0?"pos":"neg"}">${money(g.mes)}</td><td>${g.P===R.rec?'<span class="tag g">recomendado</span>':g.P===R.be?'<span class="tag r">equilibrio</span>':g.P===R.pMin?'<span class="tag a">mínimo sano</span>':g.P===R.pObj?'<span class="tag b">objetivo</span>':""}</td></tr>`).join("")}
+
+/* ================= MARKETING ================= */
+const NICHE={
+ Hogar:{dolor:"una casa que se ve aburrida o desordenada",deseo:"un hogar acogedor y práctico",pub:"personas que cuidan y decoran su casa",comp:["Repuesto o recarga","Pack de accesorios","Segunda unidad para otro espacio","Organizador o soporte a juego"],escena:"la sala o el cuarto al atardecer",regalo:"Día de la Madre y Navidad"},
+ Bienestar:{dolor:"estrés, tensión y mal descanso",deseo:"sentirse relajado y descansado",pub:"adultos con mucho estrés y poco tiempo",comp:["Aceite, gel o recarga","Estuche de viaje","Segunda unidad para regalar","Kit de autocuidado"],escena:"el sofá después de un día pesado",regalo:"Día de la Madre, Día del Padre y Navidad"},
+ Belleza:{dolor:"piel o cabello sin brillo y sin tiempo para el spa",deseo:"verse y sentirse bien en casa",pub:"mujeres que cuidan su piel",comp:["Sérum o crema complementaria","Kit de 7 días","Aplicador o brocha","Segunda caja con descuento"],escena:"la rutina frente al espejo",regalo:"Amor y Amistad y Navidad"},
+ Mascotas:{dolor:"una mascota aburrida, sucia o ansiosa",deseo:"una mascota feliz y una casa limpia",pub:"dueños de perros y gatos",comp:["Repuesto o filtro","Juguete o snack","Talla adicional","Kit de limpieza"],escena:"la mascota usándolo en casa",regalo:"cumpleaños de la mascota y Navidad"},
+ Tecnología:{dolor:"cables, batería que no alcanza o equipos incómodos",deseo:"todo más práctico y ordenado",pub:"personas que viven conectadas",comp:["Cable o cargador","Estuche protector","Garantía extendida","Segunda unidad"],escena:"el escritorio o el carro",regalo:"Día del Padre y Navidad"},
+ Fitness:{dolor:"no tener tiempo ni espacio para entrenar",deseo:"ponerse en forma desde la casa",pub:"personas que quieren entrenar en casa",comp:["Bandas o accesorios","Rutina digital en PDF","Botella o toalla","Pack para pareja"],escena:"la sala convertida en gimnasio",regalo:"inicio de año y Navidad"},
+ Cocina:{dolor:"cocinar toma mucho tiempo y ensucia todo",deseo:"cocinar fácil, rápido y limpio",pub:"personas que cocinan en casa",comp:["Repuesto o cuchilla","Recetario digital","Set de utensilios","Segunda unidad"],escena:"la cocina preparando algo rápido",regalo:"Día de la Madre y Navidad"},
+ Auto:{dolor:"un carro sucio, desordenado o incómodo",deseo:"un carro limpio y práctico",pub:"conductores",comp:["Kit de limpieza","Soporte o organizador","Segunda unidad para otro carro","Ambientador"],escena:"el carro antes de salir",regalo:"Día del Padre y Navidad"},
+ Bebés:{dolor:"noches sin dormir y mil cosas que cargar",deseo:"un bebé tranquilo y unos papás descansados",pub:"mamás y papás primerizos",comp:["Repuesto","Pack de 2","Bolso o estuche","Kit regalo para baby shower"],escena:"la rutina de la noche",regalo:"baby showers y Navidad"},
+ Otro:{dolor:"un problema del día a día",deseo:"hacer la vida más fácil",pub:"personas que buscan practicidad",comp:["Accesorio complementario","Segunda unidad","Versión premium","Kit de regalo"],escena:"el uso diario",regalo:"Navidad"}};
+const low=t=>String(t||"").trim().replace(/^\w/,c=>c.toLowerCase()).replace(/\.$/,"");
+function mkCtx(){const p=prod(),N=NICHE[p.categoria]||NICHE.Otro;const split=t=>String(t||"").split(/[·\n;]+/).map(x=>x.trim()).filter(Boolean);
+ return{p,N,n:p.nombre,ben:low(p.beneficio)||N.deseo,dol:low(p.dolor)||N.dolor,pub:low(p.publico)||N.pub,angs:split(p.angulos),objs:split(p.objeciones),P:money(p.precio),A:p.ancla>p.precio?money(p.ancla):"",cat:p.categoria}}
+const mkS=()=>{if(!S.mk)S.mk={};if(!S.mk[S.active])S.mk[S.active]={tab:"ofertas",ang:0,off:{}};return S.mk[S.active]};
+let TXT=[];const cp=t=>{TXT.push(t);return`<button class="cpy" onclick="navigator.clipboard.writeText(TXT[${TXT.length-1}]);toast('Copiado')">Copiar</button>`};
+function setMk(t){mkS().tab=t;save();["ofertas","creativos","pagina","lanz"].forEach(x=>$("mk-"+x).classList.toggle("hide",x!==t));document.querySelectorAll("#mkTabs button").forEach(b=>b.classList.toggle("on",b.dataset.m===t))}
+// ----- Ofertas -----
+function offerDefs(c){const p=c.p,P=p.precio,ps=E.psych,N=c.N;
+ return[
+  {id:"combo2",tipo:"Upsell · Combo 2×",nombre:"Lleva 2 con descuento",what:"Segunda unidad con descuento. La más fácil de vender: sirve para regalar o para otro espacio.",precio:ps(P*0.75),costo:p.costo,tasa:25,
+   cuando:"En la página (selector 1 o 2 unidades) y en la confirmación por WhatsApp.",guion:`¡Hola! Ya tenemos listo tu ${c.n}. Hoy tenemos una promo: por solo ${money(ps(P*0.75))} más te llevas una segunda unidad (ideal para regalar). ¿Te la agrego al pedido?`},
+  {id:"combo3",tipo:"Upsell · Combo 3×",nombre:"Pack familiar de 3",what:"Para el cliente que compra para varios. Precio por unidad más bajo, ticket mucho más alto.",precio:ps(P*1.3),costo:p.costo*2,tasa:8,
+   cuando:"En la página como tercera opción (ancla hacia el combo 2×).",guion:`Si es para la familia, el pack de 3 te sale en ${money(P+ps(P*1.3))} en total: cada uno queda en ${money((P+ps(P*1.3))/3)}.`},
+  {id:"bump",tipo:"Order bump",nombre:N.comp[0],what:"Complemento barato que el cliente marca en el mismo formulario. Se acepta mucho porque es un “sí” pequeño.",precio:Math.max(9900,ps(P*0.22)),costo:Math.round(Math.max(9900,ps(P*0.22))*0.3/100)*100,tasa:25,
+   cuando:"Casilla en el formulario de compra (app de formulario COD o checkout).",guion:`☑️ Agrega ${N.comp[0].toLowerCase()} por solo ${money(Math.max(9900,ps(P*0.22)))} (precio especial solo con este pedido).`},
+  {id:"wa",tipo:"Upsell en la confirmación",nombre:N.comp[1],what:"Se ofrece en el WhatsApp o la llamada de confirmación, cuando el cliente ya dijo que sí. Es el upsell natural de contraentrega.",precio:ps(P*0.35),costo:Math.round(ps(P*0.35)*0.3/100)*100,tasa:15,
+   cuando:"Mensaje de confirmación, antes de despachar.",guion:`Perfecto, confirmamos tu ${c.n}. 🎁 Solo para pedidos de hoy: ${N.comp[1].toLowerCase()} por ${money(ps(P*0.35))} y te llega en el mismo envío, sin flete extra. ¿Lo agregamos?`},
+  {id:"down",tipo:"Downsell",nombre:"Descuento para el que duda",what:"Para el cliente que no confirma o dice que está caro. Mejor vender con menos margen que perder la venta y el flete.",precio:ps(P*0.88),costo:p.costo,tasa:30,down:true,
+   cuando:"Al cliente que no confirma en 2–3 horas o que pone una objeción de precio.",guion:`Entiendo 🙏 Para que lo pruebes, te lo dejo en ${money(ps(P*0.88))} si confirmas hoy. Pagas cuando te llegue a tu casa.`},
+  {id:"cross",tipo:"Cross-sell posventa",nombre:N.comp[2],what:"Se ofrece 20–30 días después de la entrega a quien ya compró. No pagas publicidad: casi todo es utilidad.",precio:ps(P*0.5),costo:Math.round(ps(P*0.5)*0.35/100)*100,tasa:10,cross:true,
+   cuando:"WhatsApp 20–30 días después de la entrega, con la reseña.",guion:`¡Hola! ¿Cómo te ha ido con tu ${c.n}? 😊 Como ya eres cliente, tenemos ${N.comp[2].toLowerCase()} con 15% de descuento: ${money(ps(P*0.5))}. Pagas al recibir.`}]}
+function offerCalc(o,p0){const p={...p0,upPrecio:0,upCosto:0,upTasa:0};const base=E.unit(p);let u,info;
+ if(o.down){const pv={...p,precio:o.precio};const ud=E.unit(pv);const t=o.tasa/100;
+   info=`A ${money(o.precio)} cada pedido deja ${money(ud.utilidadPedido)} (antes ${money(base.utilidadPedido)}). Si rescatas ${o.tasa}% de los que dudan, recuperas ventas que de otra forma se perdían, pagando el mismo anuncio.`;
+   return{u:ud,good:ud.utilidadPedido>E.gate(p,S.risk).cpaObj*0.8,info}}
+ if(o.cross){const cc=(p.com+(p.imp||0))/100;const ut=o.precio*(1-cc)-o.costo-p.flete-(p.empaque||0);
+   info=`Cada venta posventa deja ~${money(ut)} sin publicidad. Si ${o.tasa}% de tus clientes recompra, cada pedido original vale ${money(ut*o.tasa/100)} más.`;return{u:base,extra:ut*o.tasa/100,good:ut>0,info}}
+ const pv={...p,upPrecio:o.precio,upCosto:o.costo,upTasa:o.tasa};u=E.unit(pv);
+ info=`Ticket ${money(base.aov)} → <b>${money(u.aov)}</b>. Utilidad por pedido ${money(base.utilidadPedido)} → <b>${money(u.utilidadPedido)}</b> (${(u.utilidadPedido>=base.utilidadPedido?"+":"")+pct(base.utilidadPedido>0?u.utilidadPedido/base.utilidadPedido-1:0)}). Puedes pagar hasta ${money(u.cpaMax)} por pedido.`;
+ return{u,good:u.utilidadPedido>base.utilidadPedido,info}}
+function renderOffers(c){const st=mkS(),p=c.p;const defs=offerDefs(c).map(o=>({...o,...(st.off[o.id]||{})}));
+ const cur=p.upTasa>0?`<div class="alert g" style="grid-column:1/-1">Oferta activa en el producto: upsell de ${money(p.upPrecio)} con ${p.upTasa}% de aceptación. La usan la calculadora de precio, el simulador y el análisis.</div>`:"";
+ $("mkOffers").innerHTML=cur+defs.map(o=>{const r=offerCalc(o,p);return`<div class="offer"><div class="hint" style="margin:0;text-transform:uppercase;letter-spacing:.6px">${o.tipo}${tipFor(o.tipo)}</div><h4>${esc(o.nombre)}</h4><div class="what">${o.what}</div>
+  <div class="nums"><label>Precio<input type="number" step="1000" value="${Math.round(o.precio)}" onchange="setOff('${o.id}','precio',this.value)"></label><label>Costo<input type="number" step="500" value="${Math.round(o.costo)}" onchange="setOff('${o.id}','costo',this.value)"></label><label>% acepta<input type="number" step="1" value="${o.tasa}" onchange="setOff('${o.id}','tasa',this.value)"></label></div>
+  <div class="res">${r.good?"🟢":"🟡"} ${r.info}</div><div class="hint" style="margin:0"><b>Cuándo:</b> ${o.cuando}</div><div class="say">${cp(o.guion)}${esc(o.guion)}</div>
+  ${!o.down&&!o.cross?`<button class="btn alt" onclick="useOffer('${o.id}')">Usar esta oferta en el producto</button>`:""}</div>`}).join("");
+ $("mkIdeas").innerHTML=`<div class="hint" style="margin:0 0 6px">Para ${c.cat.toLowerCase()}, lo que más se agrega es:</div>`+c.N.comp.map(x=>`<span class="pill" style="background:#EEF2FF;color:#23338f">${x}</span>`).join("")+`<div class="hint" style="margin-top:8px">Busca estos complementos en Dropi con el mismo proveedor para que viajen en el mismo envío (sin flete extra). Fechas fuertes para este nicho: ${c.N.regalo}.</div>`}
+function setOff(id,k,v){const st=mkS();st.off[id]={...(st.off[id]||{}),[k]:num(v)};save();renderMarketing()}
+function useOffer(id){const c=mkCtx(),o={...offerDefs(c).find(x=>x.id===id),...(mkS().off[id]||{})};const p=prod();p.upPrecio=o.precio;p.upCosto=o.costo;p.upTasa=o.tasa;if(S.pc)delete S.pc[p.id];save();fillFicha();renderAll();toast("Oferta aplicada al producto")}
+// ----- Creativos -----
+function angles(c){const base=[`Alivio: ${c.ben}`,`Problema → solución: adiós a ${c.dol}`,"Regalo perfecto","Antes y después","Confianza: pagas al recibir"];return [...c.angs,...base].slice(0,7)}
+function hooks(c,ang){const n=c.n;return[
+ [`¿Todavía con ${c.dol}? Mira esto 👇`,"Pregunta al dolor"],[`Esto cambió mi rutina: ${c.ben}`,"Resultado primero"],[`Esto es para ${c.pub} 👀`,"Llamar al público"],
+ [`Pensé que era puro TikTok… hasta que lo probé`,"Escepticismo"],[`3 razones por las que todos están comprando ${n}`,"Lista"],[`Antes vs. después de usar ${n}`,"Contraste visual"],
+ [`El regalo que sí van a usar (y cuesta menos de ${money(E.psych(prod().precio*1.05))})`,"Regalo"],[`Deja de sufrir con ${c.dol} en 15 segundos`,"Promesa rápida"],
+ [`Lo pides hoy y pagas cuando te llega 📦`,"Confianza contraentrega"],[`POV: por fin encontraste ${n}`,"Formato POV"]].map(([h,t])=>({h,t:t+(ang?" · "+ang:"")}))}
+function scripts(c,ang){const n=c.n;return[
+ {t:"Problema → solución",d:"15–20 s",s:[`0–3 s · Gancho: muestra el problema (${c.dol}). Texto en pantalla con el gancho.`,`3–8 s · Presenta ${n} en uso, plano cerrado.`,`8–14 s · 2 beneficios en texto grande: ${c.ben}; fácil de usar.`,`14–18 s · Prueba: reacción o resultado.`,`18–20 s · Llamado: “Pídelo hoy, pagas al recibir” + precio ${c.A?`antes ${c.A}, `:""}hoy ${c.P}.`]},
+ {t:"Demostración satisfactoria",d:"10–15 s",s:["0–2 s · Primer plano del producto funcionando (sin hablar, música en tendencia).",`2–10 s · 3 tomas cortas de uso en ${c.N.escena}.`,"10–13 s · Texto: el beneficio en 5 palabras.","13–15 s · Texto final: “Envío a toda Colombia · pagas al recibir”."]},
+ {t:"Testimonio estilo UGC",d:"20–30 s",s:["0–3 s · Persona a cámara: “No pensé que esto funcionara…”.",`3–10 s · Cuenta su problema: ${c.dol}.`,`10–20 s · Muestra cómo usa ${n} y qué cambió: ${c.ben}.`,"20–26 s · Responde la duda principal"+(c.objs[0]?` (${c.objs[0]})`:" (precio, calidad o envío)")+".","26–30 s · “Lo pedí y lo pagué cuando llegó. Te dejo el link”."]},
+ {t:"Antes y después",d:"8–12 s",s:["0–4 s · ANTES: la situación sin el producto (texto “Antes”).",`4–9 s · DESPUÉS: con ${n} (texto “Después”), mismo encuadre.`,"9–12 s · Precio y “pagas al recibir”."]}]}
+function adCopy(c){return{prim:[`${c.ben[0].toUpperCase()+c.ben.slice(1)} ✨ ${c.n} es la forma más fácil de dejar atrás ${c.dol}.\n✅ Fácil de usar\n✅ Envío a toda Colombia\n✅ Pagas cuando te llega\n👉 Pide el tuyo hoy`,
+ `“Lo compré con dudas y ahora no lo suelto” ⭐⭐⭐⭐⭐\nMiles de personas ya están usando ${c.n}. ${c.A?`Antes ${c.A}, hoy `:"Hoy "}${c.P}.\nPagas al recibir 📦`,
+ `🎁 ¿Buscas un regalo que sí usen? ${c.n}: ${c.ben}.\nLlévate 2 con descuento. Unidades limitadas.\nPagas al recibir, sin riesgo.`],
+ head:[`${c.n} · pagas al recibir`,`Adiós a ${c.dol}`,`${c.ben[0].toUpperCase()+c.ben.slice(1)}`,"Envío gratis a toda Colombia","Hoy 2 con descuento"]}}
+function renderCreatives(c){const st=mkS();const A=angles(c);if(st.ang>=A.length)st.ang=0;const ang=A[st.ang];
+ $("mkAngs").innerHTML=A.map((a,i)=>`<button class="${i===st.ang?"on":""}" onclick="mkS().ang=${i};save();renderMarketing()">${esc(a)}</button>`).join("");
+ $("mkHooks").innerHTML=hooks(c,"").map(x=>`<div class="hook">${cp(x.h)}${esc(x.h)}<small>${x.t}</small></div>`).join("");
+ $("mkScripts").innerHTML=`<div class="hint" style="margin:0 0 8px">Ángulo elegido: <b>${esc(ang)}</b>. Úsalo en el texto en pantalla y en el llamado final.</div>`+scripts(c,ang).map(x=>{const t=x.t+" ("+x.d+")\n"+x.s.map((l,i)=>(i+1)+". "+l).join("\n");return`<div class="script">${cp(t)}<b>${x.t}</b> <span class="tag b">${x.d}</span><ol>${x.s.map(l=>`<li>${esc(l)}</li>`).join("")}</ol></div>`}).join("");
+ const ac=adCopy(c);$("mkCopy").innerHTML=`<h2 style="margin-top:0">Texto principal</h2>`+ac.prim.map(t=>`<div class="say" style="margin-bottom:8px">${cp(t)}${esc(t)}</div>`).join("")+`<h2>Titulares</h2>`+ac.head.map(t=>`<div class="hook" style="margin-bottom:6px">${cp(t)}${esc(t)}</div>`).join("");
+ const H=hooks(c,"");const m=[[H[0].h,H[1].h,H[8].h],[A[st.ang],A[(st.ang+1)%A.length],A[(st.ang+2)%A.length]]];
+ $("mkMatrix").innerHTML=`<div class="hint" style="margin:0 0 6px">3 ganchos × 3 ángulos = 9 combinaciones. Empieza con la diagonal (3 videos) y luego prueba las demás con el ganador.</div><table class="wrap"><tr><th>Gancho \\ Ángulo</th>${m[1].map(a=>`<th style="white-space:normal">${esc(a)}</th>`).join("")}</tr>`+m[0].map((h,i)=>`<tr><th style="white-space:normal;text-align:left">${esc(h)}</th>${m[1].map((a,j)=>`<td style="text-align:center">${i===j?'<span class="tag g">Video '+(i+1)+'</span>':'<span class="hint">después</span>'}</td>`).join("")}</tr>`).join("")+`</table>`;
+ $("mkCheck").innerHTML=["Vertical 9:16, 10–30 segundos","Gancho visual en los primeros 3 segundos","Producto en uso real (no solo fotos del proveedor)","Texto en pantalla grande y corto","Subtítulos (la mayoría lo ve sin sonido)","Precio y “pagas al recibir” al final","Música en tendencia o voz natural","Una sola idea por video"].map(t=>`<div class="chk">☐ <span>${t}</span></div>`).join("")}
+// ----- Página y WhatsApp -----
+function renderPage(c){const p=c.p;const tit=`${c.n} · ${c.ben[0].toUpperCase()+c.ben.slice(1)}`;
+ const bul=[`✅ ${c.ben[0].toUpperCase()+c.ben.slice(1)}`,`✅ Dile adiós a ${c.dol}`,...c.angs.slice(0,2).map(a=>`✅ ${a}`),"✅ Envío a toda Colombia y pagas al recibir","✅ Garantía de satisfacción"].slice(0,6);
+ const faq=[...c.objs.map(o=>[o.endsWith("?")?o:`¿${o}?`,"Responde aquí con un dato concreto, una foto o un testimonio."]),["¿Pago cuando me llega?","Sí. Pagas en efectivo al recibir el pedido en tu casa."],["¿Cuánto se demora?","Entre 2 y 5 días hábiles según tu ciudad."],["¿Y si llega dañado?","Te lo cambiamos sin costo. Escríbenos por WhatsApp con una foto."]];
+ const desc=`${tit}\n\n${p.ancla>p.precio?`Antes ${money(p.ancla)} · `:""}HOY ${money(p.precio)}\n\n${bul.join("\n")}\n\nPreguntas frecuentes\n${faq.map(f=>f[0]+"\n"+f[1]).join("\n")}`;
+ $("mkPage").innerHTML=`<h2 style="margin-top:0">Título</h2><div class="say">${cp(tit)}${esc(tit)}</div><h2>Precio</h2><div class="say">${p.ancla>p.precio?`<s>${money(p.ancla)}</s> → `:""}<b>${money(p.precio)}</b>${p.ancla>p.precio?` (ahorras ${pct(1-p.precio/p.ancla)})`:" · agrega un precio tachado en la ficha"}</div>
+  <h2>Beneficios</h2><div class="say">${cp(bul.join("\n"))}${esc(bul.join("\n"))}</div><h2>Preguntas frecuentes</h2>${faq.map(f=>`<div class="gl"><b>${esc(f[0])}</b><br>${esc(f[1])}</div>`).join("")}${!c.objs.length?`<div class="hint">Escribe las objeciones en la ficha y aparecerán aquí como preguntas.</div>`:""}
+  <div class="btns"><button class="btn alt" onclick="navigator.clipboard.writeText(TXT[${TXT.push(desc)-1}]);toast('Descripción copiada')">Copiar descripción completa</button></div>`;
+ const wa=[["1 · Confirmación (en menos de 1 hora)",`¡Hola {nombre}! 👋 Te escribimos de ${S.marca||"nuestra tienda"} para confirmar tu pedido de ${c.n} por ${money(p.precio)}, pago contra entrega.\n📍 Dirección: {dirección}, {ciudad}\n¿Está todo correcto? Responde SÍ para despacharlo hoy 🚚`],
+  ["2 · Upsell en la confirmación",offerDefs(c)[3].guion],["3 · Recordatorio si no responde (2–3 horas)",`Hola {nombre}, tu ${c.n} está reservado ⏳ Solo necesitamos tu SÍ para enviarlo. Si tienes alguna duda, te la resolvemos aquí.`],
+  ["4 · Downsell si duda o no confirma",offerDefs(c)[4].guion],["5 · Aviso de envío",`¡Listo {nombre}! 📦 Tu pedido salió hoy con {transportadora}, guía {número}. Llega en 2–5 días. Ten listo ${money(p.precio)} en efectivo 🙌`],
+  ["6 · Día de entrega",`Hola {nombre}, hoy te llega tu ${c.n} 🎉 Por favor ten disponible ${money(p.precio)}. Si no vas a estar, avísanos para reprogramar y no perder el envío.`],
+  ["7 · Reseña y cross-sell (20–30 días)",offerDefs(c)[5].guion+"\n\n¿Nos regalas una foto o un comentario de cómo te ha ido? ⭐"]];
+ $("mkWa").innerHTML=`<div class="hint" style="margin:0 0 8px">Reemplaza lo que está entre llaves. El mensaje 6 es clave: muchas devoluciones son porque el cliente no estaba en casa.</div>`+wa.map(([t,m])=>`<h2>${t}</h2><div class="say">${cp(m)}${esc(m)}</div>`).join("")}
+// ----- Plan de lanzamiento -----
+function renderLaunch(c){const p=c.p,g=E.gate(p,S.risk),R=g.R,U=g.u;const dias=4,diario=Math.max(20000,Math.round(g.presTest/dias/1000)*1000);
+ const steps=[["Día 0 · Preparar","3 videos (uno por gancho de la matriz), página lista, WhatsApp de confirmación activo y píxel probado con una compra de prueba."],
+  ["Día 1 · Lanzar",`1 campaña de ventas · 1 conjunto con público amplio en Colombia (edad del público objetivo) · 3 anuncios · ${money(diario)} al día.`],
+  ["Días 1–2 · No tocar","El algoritmo está aprendiendo. Solo revisa que los anuncios estén activos y responde los WhatsApp rápido."],
+  ["Día 3 · Primera lectura",`Apaga el anuncio con peor CTR si está por debajo de 0,8%. Si llevas ${money(R.killMult*U.cpaMax)} gastados sin pedidos, mata el test.`],
+  ["Días 4–5 · Decidir",`Registra el resultado en 2 · Productos › Resultados de venta y aplica el veredicto. Escala solo si el CPA está bajo ${money(g.cpaObj)}.`]];
+ $("mkLaunch").innerHTML=`<div class="kpis">${kpi("Presupuesto del test",money(g.presTest),`${R.pedidosDecidir} pedidos a CPA objetivo`,"")}${kpi("Pauta diaria",money(diario),`${dias} días`,"")}${kpi("CPA objetivo",money(g.cpaObj),`máximo ${money(U.cpaMax)}`,"g")}${kpi("Corte sin ventas",money(R.killMult*U.cpaMax),`${R.killMult.toFixed(1)}× CPA máximo`,"r")}</div>
+  ${g.pass?"":`<div class="alert r">Este producto no pasa la validación de margen. Revisa el precio en 2 · Productos › Precio y margen antes de lanzar.</div>`}
+  <div class="card"><h3>Paso a paso</h3>${steps.map(([t,d],i)=>`<div class="diag ${i===3?"a":i===4?"g":""}"><b>${t}</b>${d}</div>`).join("")}</div>
+  <div class="card"><h3>Qué mirar y qué significa</h3><table class="wrap"><tr><th>Indicador</th><th>Sano</th><th>Si está mal, el problema es…</th></tr>
+   <tr><td>CTR${tipFor("CTR")}</td><td>≥ 1,2%</td><td style="text-align:left;font-family:inherit">El creativo: cambia el gancho de los primeros 3 segundos.</td></tr>
+   <tr><td>Conversión${tipFor("Conversión")}</td><td>≥ 1,5%</td><td style="text-align:left;font-family:inherit">La página o la oferta: precio tachado, reseñas, combo, garantía.</td></tr>
+   <tr><td>CPA${tipFor("CPA")}</td><td>≤ ${money(g.cpaObj)}</td><td style="text-align:left;font-family:inherit">La combinación creativo + página; o el precio es bajo para lo que cuesta vender.</td></tr>
+   <tr><td>% confirmación${tipFor("confirmación")}</td><td>≥ 80%</td><td style="text-align:left;font-family:inherit">La velocidad de respuesta en WhatsApp (menos de 1 hora).</td></tr>
+   <tr><td>% entrega${tipFor("entrega")}</td><td>≥ 80%</td><td style="text-align:left;font-family:inherit">Direcciones mal tomadas, cliente ausente, transportadora o zona.</td></tr></table></div>
+  <div class="btns"><button class="btn" onclick="go('marketing');setMk('creativos')">Ver los creativos</button><button class="btn alt" onclick="openProduct(S.active);go('producto');setPtab('res')">Registrar resultados</button></div>`}
+function renderMarketing(){TXT=[];const c=mkCtx(),st=mkS();$("mkTitle").textContent=c.n;if(document.activeElement!==$("mkMarca"))$("mkMarca").value=S.marca||"";
+ $("mkSub").textContent=`${c.cat} · público: ${c.pub} · beneficio: ${c.ben}`;setMk(st.tab);renderOffers(c);renderCreatives(c);renderPage(c);renderLaunch(c)}
+function mkPromptCtx(){const c=mkCtx(),p=c.p;return`Producto: ${c.n}. Categoría: ${c.cat}. Sub-nicho: ${p.subnicho}. Público: ${c.pub}. Beneficio: ${c.ben}. Problema: ${c.dol}. Ángulos: ${c.angs.join(" | ")||"—"}. Objeciones: ${c.objs.join(" | ")||"—"}. Precio ${money(p.precio)}${p.ancla>p.precio?`, tachado ${money(p.ancla)}`:""}. Costo ${money(p.costo)}. Venta por contraentrega en Colombia con Dropi.`}
+function mentorOffers(){askMentor(`Crea ofertas para subir el ticket y rescatar ventas. ${mkPromptCtx()} Propón upsells (complementos reales que existan en Dropi), combos, un order bump, downsells para quien duda y cross-sells posventa. Para cada uno: nombre, precio sugerido en COP, por qué funciona y el mensaje exacto de WhatsApp para ofrecerlo.`,
+ "mentorOffersOut",`{"upsells":[{"nombre":"","precio":"","por_que":"","mensaje":""}],"downsells":[{"nombre":"","precio":"","por_que":"","mensaje":""}],"cross_sells":[{"nombre":"","precio":"","por_que":"","mensaje":""}]}`,
+ j=>["upsells","downsells","cross_sells"].map(k=>Array.isArray(j[k])?`<h2>${k.replace("_","-")}</h2>`+j[k].map(o=>`<div class="script"><b>${esc(o.nombre)}</b> <span class="tag b">${esc(o.precio)}</span><div class="hint" style="margin:4px 0">${esc(o.por_que)}</div><div class="say">${esc(o.mensaje)}</div></div>`).join(""):"").join(""))}
+function mentorCreatives(){const st=mkS(),A=angles(mkCtx());askMentor(`Crea creativos para TikTok y Reels. ${mkPromptCtx()} Ángulo principal: ${A[st.ang]}. Dame 10 ganchos de 3 segundos distintos a los obvios, 3 guiones con escenas y tiempos, 3 textos de anuncio y 5 titulares, en español colombiano natural.`,
+ "mentorCreativesOut",`{"ganchos":[""],"guiones":[{"titulo":"","duracion":"","escenas":[""]}],"textos":[""],"titulares":[""]}`,
+ j=>`<h2>Ganchos</h2><div class="hooks">${(j.ganchos||[]).map(h=>`<div class="hook">${esc(h)}</div>`).join("")}</div><h2>Guiones</h2>${(j.guiones||[]).map(g=>`<div class="script"><b>${esc(g.titulo)}</b> <span class="tag b">${esc(g.duracion)}</span><ol>${(g.escenas||[]).map(e=>`<li>${esc(e)}</li>`).join("")}</ol></div>`).join("")}<h2>Textos</h2>${(j.textos||[]).map(t=>`<div class="say" style="margin-bottom:6px">${esc(t)}</div>`).join("")}<h2>Titulares</h2>${(j.titulares||[]).map(t=>`<div class="hook" style="margin-bottom:5px">${esc(t)}</div>`).join("")}`)}
+
+/* ================= ALTA RÁPIDA ================= */
+// Biblioteca de palabras clave → categoría y textos base. La primera coincidencia gana.
+const KW=[
+ [/\bcarro|\bauto\b|veh[ií]c|\bmoto\b|para carro|para auto/i,{cat:"Auto",ben:"un carro limpio, ordenado y práctico",dol:"un carro sucio, desordenado o incómodo",pub:"conductores de 25 a 55 años",alt:"lavaderos y accesorios caros",inv:"No"}],
+ [/masaj|pistola.*masaje|electroestim|\bems\b|tens\b/i,{cat:"Bienestar",ben:"alivio de la tensión y el dolor muscular sin salir de casa",dol:"dolor y tensión muscular por estrés, trabajo o ejercicio",pub:"adultos de 25 a 55 años con estrés o dolor muscular",alt:"ir al masajista",inv:"No sé",sc:{problema:5,wow:4,valor:4}}],
+ [/ojo|ocular|antifaz/i,{cat:"Bienestar",ben:"descanso para la vista y mejor sueño",dol:"ojos cansados por pasar horas frente a pantallas",pub:"personas que trabajan muchas horas en pantalla",alt:"un spa o un tratamiento",inv:"No sé"}],
+ [/cuello|cervical|espalda|lumbar|postura|corrector/i,{cat:"Bienestar",ben:"alivio del cuello y la espalda y mejor postura",dol:"dolor de cuello y espalda por trabajar sentado o usar el celular",pub:"oficinistas y trabajadores remotos",alt:"terapias y fisioterapia",inv:"No sé",sc:{problema:5}}],
+ [/almohad|colch|sueño|dormir|ronqu/i,{cat:"Bienestar",ben:"dormir mejor y despertar descansado",dol:"noches de mal sueño y cansancio en el día",pub:"adultos que duermen mal",alt:"un colchón nuevo",inv:"No"}],
+ [/humidific|difusor|aroma|esencia/i,{cat:"Hogar",ben:"un ambiente relajante con aroma y luz",dol:"estrés y un ambiente cargado en casa",pub:"mujeres de 20 a 45 años que cuidan su espacio",alt:"velas y ambientadores que se acaban",inv:"No",sc:{wow:4,creativos:4}}],
+ [/l[aá]mpara|\bled\b|luz|proyector|galaxia|neón|neon|ne[oó]n/i,{cat:"Hogar",ben:"un cuarto con ambiente increíble en segundos",dol:"un cuarto aburrido y sin personalidad",pub:"jóvenes de 18 a 35 años, parejas y gamers",alt:"remodelar o decorar",inv:"No",sc:{wow:5,creativos:5,problema:2}}],
+ [/mopa|trapead|limpi|aspirad|escoba|cepillo.*limp|quitamanch|desengras/i,{cat:"Hogar",ben:"limpiar más rápido y sin esfuerzo",dol:"limpiar es cansado, lento y ensucia las manos",pub:"personas de 30 a 60 años que mantienen la casa",alt:"pagar por el aseo",inv:"No",sc:{problema:4,wow:4}}],
+ [/organiz|estante|repisa|gancho|colgador|cajón|caj[oó]n/i,{cat:"Hogar",ben:"una casa ordenada y con más espacio",dol:"desorden y falta de espacio",pub:"personas que viven en apartamentos pequeños",alt:"comprar muebles nuevos",inv:"No"}],
+ [/cocina|picador|rallad|licuad|cuchill|sart[eé]n|olla|freidora|termo|vaso|botella/i,{cat:"Cocina",ben:"cocinar más fácil y rápido",dol:"cocinar toma mucho tiempo y ensucia todo",pub:"personas que cocinan en casa a diario",alt:"pedir domicilios",inv:"No"}],
+ [/perro|gato|mascota|pet\b|collar|correa|arenero|rascador|comedero/i,{cat:"Mascotas",ben:"una mascota feliz y una casa más limpia",dol:"pelos, desorden o una mascota aburrida y ansiosa",pub:"dueños de perros y gatos",alt:"llevarla al peluquero o comprar juguetes que rompe",inv:"No",sc:{recompra:4,problema:4}}],
+ [/facial|piel|crema|s[eé]rum|mascarilla|acn[eé]|arruga|maquill|pesta|u[nñ]a|depil|cabello|pelo|plancha|secador|rizador/i,{cat:"Belleza",ben:"verse bien con resultados visibles desde la casa",dol:"piel o cabello sin brillo y sin tiempo para el salón",pub:"mujeres de 20 a 45 años interesadas en el cuidado personal",alt:"ir al salón o al spa",inv:"Sí",sc:{recompra:4,envio:5}}],
+ [/beb[eé]|infant|pañal|biber[oó]n|chupo|cuna|coche|ni[nñ]o/i,{cat:"Bebés",ben:"un bebé tranquilo y unos papás más descansados",dol:"noches sin dormir y mil cosas que cargar",pub:"mamás y papás primerizos",alt:"productos de tienda mucho más caros",inv:"No sé"}],
+ [/aud[ií]fon|cargador|cable|bater[ií]a|power ?bank|soporte.*celular|smart|reloj|parlante|c[aá]mara|bluetooth/i,{cat:"Tecnología",ben:"todo más práctico, cargado y sin cables",dol:"batería que no alcanza, cables y equipos incómodos",pub:"personas que viven conectadas al celular",alt:"marcas originales mucho más caras",inv:"No",sc:{competencia:2,devol:3}}],
+ [/abdomin|gym|ejercicio|pesa|banda|yoga|fitness|faja|rodillo/i,{cat:"Fitness",ben:"ponerse en forma desde la casa",dol:"no tener tiempo ni plata para el gimnasio",pub:"personas que quieren entrenar en casa",alt:"pagar gimnasio",inv:"No"}]];
+const CAT_OBJ={Hogar:"¿Cuánto espacio ocupa?",Bienestar:"¿Es seguro y tiene garantía?",Belleza:"¿Sirve para mi tipo de piel o cabello?",Mascotas:"¿Le sirve a mi mascota (talla, raza)?",Tecnología:"¿Es compatible con mi celular?",Fitness:"¿Sirve si soy principiante?",Cocina:"¿Es fácil de lavar?",Auto:"¿Le sirve a mi carro?",Bebés:"¿Es seguro para el bebé?",Otro:"¿Para qué me sirve exactamente?"};
+const CAT_SC={Hogar:{creativos:4},Belleza:{recompra:4,envio:5},Mascotas:{recompra:4},Tecnología:{competencia:2},Bienestar:{problema:4},Cocina:{creativos:4},Bebés:{devol:3}};
+function detect(text){for(const [re,d] of KW)if(re.test(text))return d;return null}
+const numFrom=(t,re)=>{const m=t.match(re);if(!m)return null;const v=parseInt(String(m[1]).replace(/[^\d]/g,""),10);return isNaN(v)?null:v};
+function qaOpen(){$("qa_cat").innerHTML=CATS.map(c=>`<option>${c}</option>`).join("");["qa_paste","qa_nombre","qa_costo","qa_sug","qa_desc","qa_link","qa_stock"].forEach(i=>$(i).value="");$("qa_catAuto").innerHTML="";
+ $("qaOut").innerHTML=`<div class="alert b" style="margin-top:0">Escribe al menos el <b>nombre</b> y el <b>costo del proveedor</b> y pulsa <b>Calcular y completar</b>.</div>`;window._qa=null;$("qa").classList.remove("hide");setTimeout(()=>$("qa_nombre").focus(),50);
+ $("qa_nombre").oninput=()=>{const d=detect($("qa_nombre").value+" "+$("qa_desc").value);if(d){$("qa_cat").value=d.cat;$("qa_catAuto").innerHTML='<span class="auto-tag">detectada</span>'}}}
+function qaParse(){const t=$("qa_paste").value;if(!t.trim())return;const lines=t.split(/\n+/).map(x=>x.trim()).filter(Boolean);
+ const costo=numFrom(t,/(?:precio\s*(?:de\s*)?proveedor|costo|precio\s*dropshipper|precio\s*mayorista)[^\d$]*\$?\s*([\d.,]+)/i)||numFrom(t,/\$\s*([\d.]{4,})/);
+ const sug=numFrom(t,/(?:precio\s*sugerido|sugerido|pvp|precio\s*de\s*venta)[^\d$]*\$?\s*([\d.,]+)/i);const stock=numFrom(t,/stock[^\d]*([\d.,]+)/i);
+ const nombre=lines.find(l=>!/\$|precio|stock|proveedor|sugerido|^\d/i.test(l)&&l.length>3)||"";
+ if(nombre&&!$("qa_nombre").value)$("qa_nombre").value=nombre.length>70?nombre.slice(0,70):nombre;if(costo)$("qa_costo").value=costo;if(sug&&sug!==costo)$("qa_sug").value=sug;if(stock)$("qa_stock").value=stock;
+ const desc=lines.filter(l=>l!==nombre&&!/precio|stock|proveedor|sugerido/i.test(l)).join(" · ");if(desc&&!$("qa_desc").value)$("qa_desc").value=desc.slice(0,400);
+ const d=detect(t);if(d){$("qa_cat").value=d.cat;$("qa_catAuto").innerHTML='<span class="auto-tag">detectada</span>'}
+ toast(`Leído: ${costo?"costo "+money(costo):"sin costo"}${sug?" · sugerido "+money(sug):""}`)}
+function qaBuild(){let nombre=$("qa_nombre").value.trim().replace(/\s+/g," ");if(nombre&&nombre===nombre.toUpperCase())nombre=nombre.charAt(0)+nombre.slice(1).toLowerCase();const costo=num($("qa_costo").value);if(!nombre||!(costo>0)){toast("Falta el nombre o el costo");return null}
+ const cat=$("qa_cat").value,sug=num($("qa_sug").value),desc=$("qa_desc").value.trim(),flete=num($("qa_tam").value);
+ const d=detect(nombre+" "+desc)||{};const N=NICHE[cat]||NICHE.Otro;const short=nombre.replace(/\s+(para|con|de alta|tipo)\s.*$/i,"").trim();
+ const ben=d.ben||N.deseo,dol=d.dol||N.dolor,pub=d.pub||N.pub,alt=d.alt||"otras soluciones más caras";
+ const angulos=[`${ben[0].toUpperCase()+ben.slice(1)}`,`Más fácil y barato que ${alt}`,"El regalo perfecto",`Problema resuelto: ${dol.split(" por ")[0]}`,"Pídelo hoy y pagas al recibir"];
+ const objeciones=["¿Sí funciona de verdad o es puro video?","¿Es de buena calidad o se daña rápido?",CAT_OBJ[cat]||CAT_OBJ.Otro,"¿Cuánto se demora en llegar a mi ciudad?","¿Por qué ese precio, vale la pena?"];
+ const score={...PDEF.score,...(CAT_SC[cat]||{}),...(d.sc||{})};if(sug>0)score.valor=Math.min(5,Math.max(2,Math.round(2+sug/costo)));if(flete>=22000)score.envio=2;else if(flete>=18000)score.envio=3;
+ const p=withDefaults({id:"p"+Date.now(),nombre,costo,precio:E.psych(sug>0?sug:costo*3),flete,fleteRet:0,entrega:75,com:3,categoria:cat,subnicho:"",etapa:"Investigando",
+   proveedor:"Dropi",linkDropi:$("qa_link").value.trim(),stock:num($("qa_stock").value),precioComp:sug||0,beneficio:ben,dolor:dol,publico:pub,angulos:angulos.join(" · "),objeciones:objeciones.join("\n"),
+   invima:d.inv||(cat==="Belleza"?"Sí":"No sé"),notas:desc?`Dropi: ${desc}`:"",score,costoReal:true,fecha:today()});
+ return p}
+function qaPrice(p){// calcula el precio recomendado con la calculadora de precio (sin upsell) y luego agrega el combo si se pidió
+ const saveRisk=S.pc;const q=pcDefaults(p);if(!(q.techo>0))q.techo=Math.round(p.precio*1.25/1000)*1000;const R=E.pricing(q);
+ let precio=R.rec||R.pMin||E.psych(p.costo*3);const via=R.rec?"recomendado":R.pMin?"mínimo saludable":"3× el costo";
+ const out={...p,precio,ancla:E.psych(precio*1.4)};if($("qa_combo").checked){out.upPrecio=E.psych(precio*0.75);out.upCosto=p.costo;out.upTasa=20}
+ return{p:out,R,q,via}}
+function qaCompute(){const p0=qaBuild();if(!p0)return;const {p,R,via}=qaPrice(p0);window._qa=p;qaRender(R,via)}
+function qaRender(R,via){const p=window._qa;const ev=E.evaluate(p,S.risk),g=ev.g,u=g.u;const q=pcDefaults(p);const e=E.priceEval({...q,techo:q.techo||Math.round(p.precio*1.25/1000)*1000},p.precio);
+ const col={A:"var(--good)",B:"var(--warn)",C:"var(--stop)"}[ev.clase];const fld=(k,l,ta)=>`<label class="qa-f">${l}<span class="auto-tag">automático</span>${ta?`<textarea data-q="${k}">${esc(p[k])}</textarea>`:`<input data-q="${k}" value="${esc(p[k])}">`}</label>`;
+ $("qaOut").innerHTML=`<div class="qa-step"><b>2</b> Resultado (puedes editar todo antes de guardar)</div>
+  <div class="kpis">${kpi("Precio de venta sugerido",money(p.precio),`${via}${R.range?` · rango ${money(R.range[0])}–${money(R.range[1])}`:""}`,"g")}${kpi("Precio tachado",money(p.ancla),"ancla de ~30% de descuento","")}
+   ${kpi("Utilidad por pedido",money(u.utilidadPedido),`${pct(u.margenPct)} del ticket`,u.utilidadPedido>0?"g":"r")}${kpi("Margen neto estimado",pct(e.mn),"después de pauta y fijos",e.mn>=q.margenMin/100?"g":"a")}
+   ${kpi("CPA objetivo",money(g.cpaObj),`máximo ${money(u.cpaMax)}`,"")}${kpi("Presupuesto del test",money(g.presTest),"10 pedidos","")}
+   <div class="kpi" style="border-left-color:${col}"><div class="t">Evaluación inicial${tipFor("Puntaje")}</div><div class="v" style="color:${col}">${ev.total} · Clase ${ev.clase}</div><div class="s">${ev.clase==="A"?"testear ya":ev.clase==="B"?"testear si no hay A":"no testear así"}</div></div>
+   ${kpi("Costo / precio",pct(p.costo/p.precio),`${(p.precio/p.costo).toFixed(1)}× el costo`,p.costo/p.precio<=0.34?"g":"a")}</div>
+  ${p.precioComp>0&&p.precio>p.precioComp*1.15?`<div class="alert a">El precio sugerido queda ${pct(p.precio/p.precioComp-1)} por encima del sugerido de Dropi (${money(p.precioComp)}). Revisa a cuánto lo vende la competencia; si no te da, busca otro proveedor más barato o un combo.</div>`:""}
+  ${!g.pass?`<div class="alert r">Con este costo el producto no deja margen suficiente. Busca un proveedor más barato o descártalo.</div>`:""}
+  ${p.upTasa>0?`<div class="alert g">Combo 2× incluido: segunda unidad a ${money(p.upPrecio)}. Sube el ticket esperado a ${money(u.aov)}.</div>`:""}
+  <div class="two"><div>${fld("nombre","Nombre")}${fld("publico","Público objetivo",1)}${fld("beneficio","Beneficio principal",1)}${fld("dolor","Problema que resuelve",1)}</div>
+   <div>${fld("angulos","Ángulos de venta",1)}${fld("objeciones","Objeciones",1)}<label class="qa-f">Permiso sanitario INVIMA<select data-q="invima">${["No","Sí","No sé"].map(o=>`<option ${p.invima===o?"selected":""}>${o}</option>`).join("")}</select></label></div></div>
+  <div class="hint">Los criterios de evaluación se estimaron por categoría y palabras clave: ${E.CRIT.map(([k,l])=>`${l.split(" ")[0]} ${p.score[k]}`).join(" · ")}. Ajústalos luego en la ficha.</div>
+  <div class="btns"><button class="btn" onclick="qaSave()">✅ Guardar producto</button><button class="btn alt" onclick="qaAI()">✨ Mejorar textos con IA</button><button class="btn ghost" onclick="qaCompute()">Recalcular</button></div><div id="qaAIOut"></div>`;
+ $("qaOut").querySelectorAll("[data-q]").forEach(el=>el.addEventListener("input",()=>{window._qa[el.dataset.q]=el.value}))}
+function qaSave(){const p=window._qa;if(!p)return;const g=E.gate(p,S.risk);if(g.pass&&p.etapa==="Investigando")p.etapa="Validado";S.products.push(p);S.active=p.id;delete S.pc[p.id];S.ptab="eval";save();$("qa").classList.add("hide");$("pcForm").innerHTML="";fillFicha();renderAll();go("producto");
+ setTimeout(()=>$("pDetail").scrollIntoView({behavior:"smooth"}),80);toast("Producto creado: "+p.nombre)}
+function qaApplyJSON(j){const p=window._qa;if(!p||!j)return;["publico","beneficio","dolor"].forEach(k=>{if(j[k])p[k]=String(j[k])});if(Array.isArray(j.angulos))p.angulos=j.angulos.join(" · ");if(Array.isArray(j.objeciones))p.objeciones=j.objeciones.join("\n");
+ if(j.categoria&&CATS.includes(j.categoria))p.categoria=j.categoria;if(["No","Sí","No sé"].includes(j.invima))p.invima=j.invima;if(j.nombre_corto)p.nombre=String(j.nombre_corto);
+ if(j.score&&typeof j.score==="object")E.CRIT.forEach(([k])=>{const v=+j.score[k];if(v>=1&&v<=5)p.score[k]=Math.round(v)});qaRender(E.pricing({...pcDefaults(p),techo:pcDefaults(p).techo||Math.round(p.precio*1.25/1000)*1000}),"recomendado");toast("Textos mejorados con IA")}
+async function qaAI(){const p=window._qa;if(!p)return;const out=$("qaAIOut");
+ const prompt=`${BASE}\nCompleta la ficha de un producto para vender por contraentrega en Colombia. Producto: "${p.nombre}". Categoría: ${p.categoria}. Costo proveedor ${money(p.costo)}, precio de venta ${money(p.precio)}. Descripción del proveedor: ${p.notas||"—"}.\nResponde SOLO JSON válido: {"nombre_corto":"nombre comercial corto","categoria":"una de: ${CATS.join(", ")}","publico":"","beneficio":"","dolor":"","angulos":["","","","",""],"objeciones":["","","","",""],"invima":"No | Sí | No sé","score":{${E.CRIT.map(([k])=>`"${k}":1-5`).join(",")}}}`;
+ out.innerHTML=`<div class="mentor">Consultando a la IA…</div>`;
+ if(window.cowork&&window.cowork.askClaude){try{const r=await window.cowork.askClaude(prompt,[]);if(r.isError)throw 0;const t=String(r.text).replace(/```json|```/g,"");const j=JSON.parse(t.slice(t.indexOf("{"),t.lastIndexOf("}")+1));qaApplyJSON(j);return}catch(e){}}
+ out.innerHTML=`<div class="mentor"><b>Fuera de Cowork:</b> copia esto, pégalo en Claude y pega aquí la respuesta.<textarea id="qa_ta">${esc(prompt)}</textarea><div class="btns"><button class="btn" onclick="navigator.clipboard.writeText($('qa_ta').value);toast('Copiado')">Copiar para Claude</button></div><label class="qa-f">Respuesta de Claude (JSON)<textarea id="qa_resp"></textarea></label><div class="btns"><button class="btn alt" onclick="try{const t=$('qa_resp').value;qaApplyJSON(JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1)))}catch(e){alert('No pude leer la respuesta')}">Aplicar respuesta</button></div></div>`}
+
+/* ================= COACH: tu siguiente paso ================= */
+function coach(){const p=prod(),g=E.gate(p,S.risk),a=E.agg(prodTests(p.id));let q=null,R=null;try{q=pcQ();R=E.pricing(q)}catch(e){}
+ const btn=(t,js)=>`<button class="btn" onclick="${js}">${t}</button>`;
+ if(!p.costoReal&&!p.sku&&!p.linkDropi&&!a)return["🔎",`<b>${esc(p.nombre)}:</b> los costos son estimados. Busca el producto en Dropi y carga el costo real y el link en la ficha.`,btn("Ir a la ficha","openProduct(S.active);go('producto');setPtab('ficha')")];
+ if(!g.pass)return["🧮",`<b>${esc(p.nombre)} no deja margen suficiente</b> para tu riesgo ${S.risk}/10. Mira qué precio lo vuelve sano.`,btn("Precio y margen","openProduct(S.active);go('producto');setPtab('precio')")];
+ if(R&&R.pMin&&p.precio<R.pMin)return["💰",`Tu precio (${money(p.precio)}) está por debajo del mínimo saludable (${money(R.pMin)}). El recomendado es <b>${money(R.rec)}</b>.`,btn("Revisar precio","openProduct(S.active);go('producto');setPtab('precio')")];
+ if(!(p.upTasa>0))return["🎁",`Agrega un combo o un upsell a <b>${esc(p.nombre)}</b>: sube el ticket y te deja pagar más por cada pedido.`,btn("Ver ofertas","go('marketing');setMk('ofertas')")];
+ if(!a)return["🎬",`Todo listo para testear <b>${esc(p.nombre)}</b>: graba 3 videos con la matriz de creativos y lanza con ${money(Math.max(20000,Math.round(g.presTest/4/1000)*1000))} diarios.`,btn("Plan de lanzamiento","go('marketing');setMk('lanz')")];
+ const v=E.verdict(a,p.meta||20,S.risk,p);
+ if(/matar/i.test(v.label)){const nxt=S.products.filter(x=>x.id!==p.id&&!/Descartado/.test(x.etapa)).map(x=>({x,ev:E.evaluate(x,S.risk)})).sort((m,n)=>n.ev.total-m.ev.total)[0];
+   return["🛑",`<b>Mata el test de ${esc(p.nombre)}</b> y pasa al siguiente${nxt?`: <b>${esc(nxt.x.nombre)}</b> (puntaje ${nxt.ev.total})`:""}.`,nxt?btn("Abrir siguiente","openProduct('"+nxt.x.id+"')"):""]}
+ if(/Escalar/.test(v.label))return["🚀",`<b>${esc(p.nombre)} está ganando.</b> Sube el presupuesto ${E.rules(S.risk).subida}% cada 2–3 días y simula cuánto reinvertir.`,btn("Simular crecimiento","go('crecer')")];
+ return["📈",`<b>${esc(p.nombre)}: ${v.label.toLowerCase()}.</b> ${v.why} Revisa el diagnóstico para saber qué mejorar primero.`,btn("Ver diagnóstico","openProduct(S.active);go('producto');setPtab('ana')")]}
+function renderCoach(){const [ic,tx,b]=S.products.length<3?["⚡","Carga al menos 3 productos candidatos. Con el <b>alta rápida</b> solo necesitas el nombre, el costo de Dropi y la categoría.",`<button class="btn" onclick="qaOpen()">Alta rápida</button>`]:coach();$("coach").innerHTML=`<div class="ic">${ic}</div><div class="tx"><span class="hint" style="text-transform:uppercase;letter-spacing:.6px;margin:0">Tu siguiente paso</span><br>${tx}</div>${b}`}
+
+/* ================= TEST ================= */
+const TF=["nombre","canal","fecha","dias","ads","imp","clics","ped","conf","ent","aov","meta"];
+function fillTest(){TF.forEach(k=>$("t_"+k).value=S.testForm[k]??"")}
+function readTest(){TF.forEach(k=>S.testForm[k]=$("t_"+k).value)}
+function testInput(){const f=S.testForm;return{ads:num(f.ads),imp:num(f.imp),clics:num(f.clics),ped:num(f.ped),conf:(f.conf===""||f.conf==null)?null:num(f.conf),ent:(f.ent===""||f.ent==null)?null:num(f.ent),aov:num(f.aov)}}
+function renderTest(){const p=prod();const c=E.test(testInput(),p);const meta=num(S.testForm.meta);const v=E.verdict(c,meta,S.risk,p);
+ const col={g:"var(--good)",a:"var(--warn)",r:"var(--stop)",b:"var(--accent)"}[v.tone];
+ $("verdict").style.borderColor=col;$("verdict").innerHTML=`<div style="flex:1"><div class="lbl">Veredicto · riesgo ${S.risk}/10 · ${esc(p.nombre)}</div><div class="big" style="color:${col}">${v.label}</div><div class="hint" style="margin:2px 0 0">${v.why}</div></div>`;
+ const R=E.rules(S.risk);
+ $("killAlert").innerHTML=c.ped>0&&c.cpa>c.cpaMax?`<div class="alert r">Tu CPA real (${money(c.cpa)}) supera lo que deja cada pedido (${money(c.cpaMax)}). Cada pedido te cuesta ${money(c.cpa-c.cpaMax)}.</div>`:"";
+ $("tk").innerHTML=kpi("Utilidad neta",money(c.neta),"después de ads y devoluciones",c.neta>=0?"g":"r")+kpi("Rentabilidad",pct(c.rent/100),`meta ${meta}%`,c.rent>=meta?"g":c.rent>0?"a":"r")+
+  kpi("ROAS",xx(c.roas),`equilibrio ${xx(c.roasEq)}`,c.roas>=c.roasEq?"g":"r")+kpi("CPA real",money(c.cpa),`máximo ${money(c.cpaMax)}`,c.cpa<=c.cpaMax?"g":"r")+
+  kpi("% de entrega",pct(c.tasaEntrega),`${Math.round(c.ent)} entregados · ${Math.round(c.dev)} devueltos`,c.tasaEntrega>=.75?"g":c.tasaEntrega>=.65?"a":"r")+kpi("CTR",c.ctr===null?"—":pct(c.ctr),c.cpc===null?"registra impresiones y clics":"CPC "+money(c.cpc),"")+kpi("Conversión",c.cvr===null?"—":pct(c.cvr),"pedidos / clics","")+kpi("Recaudo",money(c.ingresos),`AOV ${money(c.aov)}`,"")+
+  kpi("Margen de contribución",pct(c.cm),"antes de ads","")+kpi("Pedidos para decidir",`${c.ped}/${R.pedidosDecidir}`,c.ped>=R.pedidosDecidir?"muestra suficiente":"muestra pequeña",c.ped>=R.pedidosDecidir?"g":"a");
+ $("btnSaveTest").disabled=!(c.ads>0);window._test={c,v,meta};
+}
+function saveTest(){readTest();const {c,v,meta}=window._test;const p=prod();const fe=S.testForm.fecha||today();S.tests.unshift({id:"t"+Date.now(),ts:Date.parse(fe+"T12:00:00")||Date.now(),risk:S.risk,productId:p.id,producto:p.nombre,form:{...S.testForm,fecha:fe},c,verdict:v.label,meta});if(/Idea|Investigando|Validado/.test(p.etapa))p.etapa="En test";save();renderAll();toast("Test guardado en la bitácora y en el producto")}
+function clearTest(){S.testForm={...DEF.testForm};fillTest();save();renderTest()}
+
+/* ================= PLAN ================= */
+const PLF=["unidad","R","modo","m","fijos","cap","N","ret","ree"];
+function fillPlan(){PLF.forEach(k=>$("pl_"+k).value=S.planForm[k])}
+function readPlan(){PLF.forEach(k=>S.planForm[k]=(k==="unidad"||k==="modo")?$("pl_"+k).value:num($("pl_"+k).value))}
+function renderPlan(){const f=S.planForm;const pl=E.plan(f,S.risk);const u=f.unidad;
+ $("pl_mLbl").textContent=f.modo==="pct"?"Margen bruto %":"Utilidad bruta por periodo";
+ $("pl_mHint").textContent=`≈ margen de ${pct(pl.m)} · utilidad bruta ${money(f.R*pl.m)} por ${u}. Es la contribución antes de ads (después de producto, flete y devoluciones).`;
+ const real=E.real(S.tests);$("btnReal").disabled=!real;$("btnReal").title=real?"":"Guarda al menos un test";
+ $("plk").innerHTML=kpi("ROAS objetivo",xx(pl.targetROAS),`equilibrio ${xx(pl.be)}`,"")+kpi("Ads a pleno",money(pl.full),`por ${u}`,"")+kpi("Capital a inyectar",money(pl.tot),`en ${pl.N} ${u}${pl.N>1?(u==="mes"?"es":"s"):""}`,"a")+
+  kpi("Utilidad neta a pleno",money(pl.fullNet),`por ${u}`,pl.fullNet>=0?"g":"r")+kpi("Acumulado",money(pl.cum),"utilidad del horizonte",pl.cum>=0?"g":"r")+kpi("Autofinanciamiento",pl.self?`${u} ${pl.self}`:"—","deja de requerir inyección","g");
+ let al="";if(real){const gap=real.roas/pl.targetROAS;al=`<div class="alert ${gap>=1?"g":gap>=.85?"a":"r"}">Tus ${real.n} test(s) dan un ROAS real de <b>${xx(real.roas)}</b> frente al objetivo de <b>${xx(pl.targetROAS)}</b>. ${gap>=1?"El plan es alcanzable con tus números.":"El plan exige más de lo que hoy logras: mejora creativos/oferta o baja la meta."}</div>`}
+ else al=`<div class="alert b">El ROAS objetivo es una <b>exigencia</b> del plan, no un pronóstico. Cuando guardes tests, aquí verás si tus números reales lo alcanzan.</div>`;
+ if(pl.fullNet<0)al+=`<div class="alert r">Con este margen y estos fijos el plan pierde dinero a pleno. Sube el margen o baja los fijos.</div>`;
+ $("plAlert").innerHTML=al;
+ $("plTable").innerHTML=`<tr><th>${u}</th><th>Inyectar</th><th>Ads</th><th>Facturación</th><th>U. bruta</th><th>En tránsito</th><th>U. neta</th><th>Acum.</th><th>Caja</th></tr>`+
+  pl.rows.map(r=>`<tr><td>${r.i}</td><td class="${r.inject>0?'wrn':''}">${r.inject>0?money(r.inject):"—"}</td><td>${money(r.spend)}</td><td>${money(r.rev)}</td><td>${money(r.gp)}</td><td>${money(r.buffer)}</td><td class="${r.net>=0?'pos':'neg'}">${money(r.net)}</td><td class="${r.cum>=0?'pos':'neg'}">${money(r.cum)}</td><td>${money(r.cash)}</td></tr>`).join("");
+ window._plan=pl}
+function marginFromProduct(){const u=E.unit(prod());S.planForm.modo="pct";S.planForm.m=Math.round(u.cmRatio*1000)/10;fillPlan();save();renderPlan()}
+function marginFromTests(){const r=E.real(S.tests);if(!r)return;S.planForm.modo="pct";S.planForm.m=Math.round(r.cm*1000)/10;fillPlan();save();renderPlan();toast(`Margen real de ${r.n} test(s) aplicado`)}
+function savePlan(){readPlan();const pl=window._plan;S.plans.unshift({id:"pl"+Date.now(),ts:Date.now(),tipo:"Plan",risk:S.risk,form:{...S.planForm},resumen:{tot:pl.tot,cum:pl.cum,targetROAS:pl.targetROAS,self:pl.self}});save();renderBitacora();toast("Plan guardado")}
+
+/* ================= CRECER ================= */
+const SF=["cpa","deg","tope","cap","asig","reinv","fijos","ciclo","ntest","meses","cdt"];
+function fillSim(){if(S.simForm.cpa===null)S.simForm.cpa=Math.floor(E.gate(prod(),S.risk).cpaObj/500)*500;SF.forEach(k=>$("s_"+k).value=S.simForm[k])}
+function readSim(){SF.forEach(k=>S.simForm[k]=num($("s_"+k).value));if(S.simForm.ciclo<1)S.simForm.ciclo=1;if(S.simForm.meses<1)S.simForm.meses=1;if(S.simForm.cap<=0)S.simForm.cap=1}
+function simParams(over){const p=prod(),f=S.simForm,g=E.gate(p,S.risk);return{...p,...{cpa:f.cpa,deg:f.deg,tope:f.tope,cap:f.cap,asig:f.asig,reinv:f.reinv,fijos:f.fijos,ciclo:f.ciclo,meses:f.meses,cdt:f.cdt,testeo:g.presTest*f.ntest},...(over||{})}}
+function cpaSuggest(){const real=E.real(S.tests.filter(t=>t.productId===S.active));S.simForm.cpa=real?Math.round(real.cpa/100)*100:Math.floor(E.gate(prod(),S.risk).cpaObj/500)*500;fillSim();save();renderSim();toast(real?"CPA real de tus tests":"CPA objetivo según tu riesgo")}
+function applyRiskSim(){const R=E.rules(S.risk);S.simForm.asig=Math.round(R.asignacion/5)*5;S.simForm.reinv=Math.round(R.reinversion/5)*5;fillSim();save();renderSim()}
+function renderSim(){const p=simParams();const r=E.sim(p),u=r.u,L=r.rows[r.rows.length-1];const ms=u.cpaMax>0?(u.cpaMax-p.cpa)/u.cpaMax:-1;
+ $("sk").innerHTML=kpi("Patrimonio final",money(r.patrimonio),"capital + retirado",r.patrimonio>p.cap?"g":"r")+kpi("ROI total",pct(r.roi),"en "+mesTxt(L.mes),r.roi>0?"g":"r")+
+  kpi("Tasa compuesta mensual",pct(r.tm),r.ta>3?"no la anualices: horizonte corto":"≈ "+pct(r.ta)+" anual",r.tm>0?"g":"r")+kpi("Recuperas lo invertido",mesTxt(r.payback),"incluye lo gastado en testeo",r.payback!==null?"g":"a")+
+  kpi("Duplicas",mesTxt(r.dup),"capital + retirado = 2×","")+kpi("vs. CDT",money(r.patrimonio-r.cdt),"CDT: "+money(r.cdt),r.patrimonio>r.cdt?"g":"r")+
+  kpi("Fase de testeo",money(r.testeo),`${S.simForm.ntest} producto(s)`,"a")+kpi("Pauta diaria final",money(L.pauta/p.ciclo),"CPA final "+money(L.cpa),"");
+ let al=ms<=0?`<div class="alert r">🔴 El CPA (${money(p.cpa)}) supera el CPA máximo (${money(u.cpaMax)}). No escales este producto.</div>`:ms<E.rules(S.risk).holguraCPA?`<div class="alert a">🟡 Holgura de ${pct(ms)}: menor a la que exige tu riesgo (${pct(E.rules(S.risk).holguraCPA)}).</div>`:`<div class="alert g">🟢 Holgura de ${pct(ms)} sobre el CPA máximo: dentro de tu perfil.</div>`;
+ if(r.quiebra!==null)al+=`<div class="alert r">⚠️ Con estos supuestos el capital se agota ${r.quiebra===0?"en la fase de testeo":"hacia el mes "+r.quiebra.toFixed(1)}.</div>`;
+ $("sAlert").innerHTML=al;drawChart(r,p);
+ const defs=[["Pesimista",{entrega:Math.max(1,p.entrega-10),cpa:p.cpa*1.25}],["Base",{}],["Optimista",{entrega:Math.min(100,p.entrega+5),cpa:p.cpa*.85}]];
+ $("escTable").innerHTML=`<tr><th>Escenario</th><th>% entrega</th><th>CPA</th><th>Utilidad/pedido</th><th>Patrimonio</th><th>ROI</th><th>Tasa mensual</th><th>Resultado</th></tr>`+defs.map(([n,d])=>{const q={...p,...d},s=E.sim(q);return`<tr><td><b>${n}</b></td><td>${q.entrega}%</td><td>${money(q.cpa)}</td><td>${money(s.u.utilidadPedido)}</td><td>${money(s.patrimonio)}</td><td class="${s.roi>0?'pos':'neg'}">${pct(s.roi)}</td><td>${pct(s.tm)}</td><td>${s.quiebra!==null?'<span class="neg">se agota '+(s.quiebra===0?"en testeo":"m"+s.quiebra.toFixed(1))+'</span>':'<span class="pos">sostenible</span>'}</td></tr>`}).join("");
+ const cs=[.6,.8,1,1.2,1.4].map(f=>p.cpa*f),es=[60,65,70,75,80,85,90];
+ $("sensTable").innerHTML=`<tr><th>CPA \\ entrega</th>${es.map(e=>`<th>${e}%</th>`).join("")}</tr>`+cs.map(c=>`<tr><th>${money(c)}</th>${es.map(e=>{const s=E.sim({...p,cpa:c,entrega:e});const L2=s.rows[s.rows.length-1];const v=L2.mes>0?s.totUtil/L2.mes:s.totUtil;const a=Math.min(.85,.15+Math.abs(v)/(p.cap*.5));return`<td style="background:${v>0?`rgba(20,163,127,${a})`:`rgba(226,64,95,${a})`};color:${a>.5?"#fff":"#141a3a"}">${money(v)}</td>`}).join("")}</tr>`).join("");
+ $("simTable").innerHTML=`<tr><th>Ciclo</th><th>Mes</th><th>Pauta</th><th>CPA</th><th>Pedidos</th><th>Entregados</th><th>Ventas</th><th>ROAS</th><th>Utilidad</th><th>Retiro</th><th>Capital</th><th>Retirado</th></tr>`+r.rows.map(x=>`<tr><td>${x.ciclo}</td><td>${x.mes.toFixed(1)}</td><td>${money(x.pauta)}</td><td>${money(x.cpa)}</td><td>${x.pedidos.toFixed(0)}</td><td>${x.entregados.toFixed(0)}</td><td>${money(x.ventas)}</td><td>${x.roas.toFixed(2)}×</td><td class="${x.utilidad>=0?'pos':'neg'}">${money(x.utilidad)}</td><td>${money(x.retiro)}</td><td>${money(x.capital)}</td><td>${money(x.retirado)}</td></tr>`).join("");
+ window._sim={r,p}}
+function drawChart(r,p){const W=900,H=290,pd={l:78,r:12,t:12,b:28};const pts=[{m:0,c:p.cap,t:p.cap,d:p.cap}];
+ if(r.rows.length&&r.rows[0].ciclo!==0)pts.push({m:0.001,c:p.cap-r.testeo,t:p.cap-r.testeo,d:p.cap});
+ r.rows.forEach(x=>{if(x.ciclo>0)pts.push({m:x.mes,c:x.capital,t:x.capital+x.retirado,d:p.cap*Math.pow(1+p.cdt/100,x.mes/12)})});
+ const mx=Math.max(1,pts[pts.length-1].m),my=Math.max(...pts.map(q=>Math.max(q.t,q.c,q.d)))*1.06,mn=Math.min(0,...pts.map(q=>q.c));
+ const X=m=>pd.l+m/mx*(W-pd.l-pd.r),Y=v=>H-pd.b-(v-mn)/(my-mn||1)*(H-pd.t-pd.b);let s="";
+ for(let i=0;i<=4;i++){const v=mn+(my-mn)*i/4;s+=`<line x1="${pd.l}" x2="${W-pd.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#E1E5F0"/><text x="${pd.l-8}" y="${Y(v)+4}" font-size="11" text-anchor="end" fill="#6A7194">${money(v)}</text>`}
+ for(let m=0;m<=Math.ceil(mx);m++)s+=`<text x="${X(m)}" y="${H-8}" font-size="11" text-anchor="middle" fill="#6A7194">m${m}</text>`;
+ const ln=(k,c,w,d)=>`<polyline fill="none" stroke="${c}" stroke-width="${w}" ${d?'stroke-dasharray="6 5"':''} points="${pts.map(q=>X(q.m)+","+Y(q[k])).join(" ")}"/>`;
+ if(r.testeo>0)s+=`<line x1="${X(0)}" x2="${X(0)}" y1="${Y(p.cap)}" y2="${Y(p.cap-r.testeo)}" stroke="#E2405F" stroke-width="5"/>`;
+ s+=ln("d","#D98E00",2,1)+ln("t","#14A37F",2.5)+ln("c","#385BFF",3);$("chart").innerHTML=s}
+function saveSim(){readSim();const {r}=window._sim;S.sims.unshift({id:"s"+Date.now(),ts:Date.now(),tipo:"Simulación",risk:S.risk,producto:prod().nombre,form:{...S.simForm},resumen:{patrimonio:r.patrimonio,roi:r.roi,tm:r.tm,quiebra:r.quiebra}});save();renderBitacora();toast("Simulación guardada")}
+function exportSimCSV(){const {r}=window._sim;const h="ciclo;mes;pauta;cpa;pedidos;entregados;ventas;roas;utilidad;retiro;capital;retirado\n";dl("simulacion_copiloto.csv",h+r.rows.map(x=>[x.ciclo,x.mes.toFixed(2),Math.round(x.pauta),Math.round(x.cpa),x.pedidos.toFixed(1),x.entregados.toFixed(1),Math.round(x.ventas),x.roas.toFixed(2),Math.round(x.utilidad),Math.round(x.retiro),Math.round(x.capital),Math.round(x.retirado)].join(";")).join("\n"),"text/csv")}
+
+/* ================= BITÁCORA ================= */
+function renderBitacora(){const real=E.real(S.tests);
+ $("bk").innerHTML=kpi("Tests guardados",S.tests.length,"","")+kpi("Ganadores",S.tests.filter(t=>/Escalar/.test(t.verdict)).length,"veredicto Escalar","g")+
+  kpi("Muertos",S.tests.filter(t=>/matar/i.test(t.verdict)).length,"aprendizaje pagado","r")+kpi("ROAS real",real?xx(real.roas):"—",real?`CPA ${money(real.cpa)}`:"sin datos","")+
+  kpi("% entrega real",real?pct(real.entrega):"—","ponderado","")+kpi("Utilidad neta tests",real?money(real.neta):"—","",real&&real.neta>=0?"g":"r");
+ $("bTests").innerHTML=`<tr><th>Fecha</th><th>Test</th><th>Producto</th><th>Riesgo</th><th>Ads</th><th>Pedidos</th><th>Entrega</th><th>ROAS</th><th>CPA</th><th>U. neta</th><th>Veredicto</th><th></th></tr>`+(S.tests.length?S.tests.map((t,i)=>`<tr><td>${new Date(t.ts).toLocaleDateString("es-CO")}</td><td>${esc(t.form.nombre||"—")}</td><td>${esc(t.producto)}</td><td>${t.risk}</td><td>${money(t.c.ads)}</td><td>${t.c.ped}</td><td>${pct(t.c.tasaEntrega)}</td><td>${xx(t.c.roas)}</td><td>${money(t.c.cpa)}</td><td class="${t.c.neta>=0?'pos':'neg'}">${money(t.c.neta)}</td><td>${esc(t.verdict)}</td><td><button class="btn ghost" onclick="delItem('tests',${i})">✕</button></td></tr>`).join(""):`<tr><td colspan="12" style="text-align:center;color:var(--mut)">Aún no hay tests. Regístralos en 2 · Productos › Resultados de venta o en la pestaña 4.</td></tr>`);
+ const all=[...S.plans,...S.sims].sort((a,b)=>b.ts-a.ts);
+ $("bPlans").innerHTML=`<tr><th>Fecha</th><th>Tipo</th><th>Riesgo</th><th>Detalle</th><th></th></tr>`+(all.length?all.map(x=>`<tr><td>${new Date(x.ts).toLocaleDateString("es-CO")}</td><td>${x.tipo}</td><td>${x.risk}</td><td style="font-family:inherit;text-align:left">${x.tipo==="Plan"?`Meta ${money(x.form.R)}/${x.form.unidad} · inyectar ${money(x.resumen.tot)} · ROAS objetivo ${xx(x.resumen.targetROAS)}`:`${esc(x.producto)} · patrimonio ${money(x.resumen.patrimonio)} · ROI ${pct(x.resumen.roi)}${x.resumen.quiebra!==null?" · se agota":""}`}</td><td><button class="btn ghost" onclick="delItem('${x.tipo==="Plan"?"plans":"sims"}','${x.id}')">✕</button></td></tr>`).join(""):`<tr><td colspan="5" style="text-align:center;color:var(--mut)">Sin planes ni simulaciones guardadas.</td></tr>`)}
+function delItem(arr,k){if(typeof k==="number")S[arr].splice(k,1);else S[arr]=S[arr].filter(x=>x.id!==k);save();renderAll()}
+function exportJSON(){dl("copiloto_trendo_respaldo_"+new Date().toISOString().slice(0,10)+".json",JSON.stringify(S,null,1),"application/json")}
+function importJSON(ev){const f=ev.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const d=JSON.parse(rd.result);if(d.v===3){d.v=4;d.products=d.products.map(withDefaults);d.ptab="ficha";d.pf={q:"",etapa:"",sort:"score"}}if(d.v!==4)throw 0;S=d;save();boot();toast("Respaldo importado")}catch(e){alert("Archivo no válido")}};rd.readAsText(f)}
+function exportTestsCSV(){const h="Test;Producto;Canal;Fecha inicio;Presupuesto/día (COP);Gasto total (COP);CPA (COP);Ventas;Pedidos entregados;Pedidos devueltos;Resultado;Aprendizaje\n";
+ const map=v=>/Escalar/.test(v)?"Escalar":/matar/i.test(v)?"Matar":/Optimizar|Mantener/.test(v)?"Iterar":"En curso";
+ dl("tests_para_notion.csv",h+S.tests.map(t=>[t.form.nombre||t.producto,t.producto,t.form.canal,new Date(t.ts).toISOString().slice(0,10),Math.round(t.c.ads/Math.max(1,num(t.form.dias))),Math.round(t.c.ads),Math.round(t.c.cpa),t.c.ped,Math.round(t.c.ent),Math.round(t.c.dev),map(t.verdict),t.verdict].join(";")).join("\n"),"text/csv")}
+function resetAll(){if(!confirm("Esto borra todos tus datos del Co-Piloto en este navegador. ¿Exportaste un respaldo?"))return;S=JSON.parse(JSON.stringify(DEF));save();boot()}
+function dl(name,txt,type){const b=new Blob(["﻿"+txt],{type:type+";charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click()}
+function toast(m){const t=document.createElement("div");t.textContent=m;t.style.cssText="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#0B1231;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;z-index:99";document.body.appendChild(t);setTimeout(()=>t.remove(),2200)}
+
+/* ================= MENTOR (Claude) ================= */
+const BASE=`Eres el mentor del Método Trendo: experto en e-commerce y dropshipping contraentrega en Colombia (Shopify + Dropi). Usas terminología técnica (ROAS, CPA, AOV, margen de contribución, % de entrega) pero explicas claro y directo, en español. Contexto: en contraentrega el capital propio financia la pauta, Dropi liquida días después de la entrega y en cada devolución se pierde el flete. Nunca prometas rentabilidad; esto es apoyo educativo, no asesoría financiera.`;
+function ctx(){const p=prod(),g=E.gate(p,S.risk),rp=E.riskProfile(S.risk),real=E.real(S.tests);
+ return `Nivel de riesgo: ${S.risk}/10 (${rp.label}); reglas: holgura exigida sobre CPA máximo ${pct(g.R.holguraCPA)}, corte sin ventas ${g.R.killMult.toFixed(1)}× CPA máximo, subida de presupuesto ${g.R.subida}% cada 2–3 días.
+Producto activo: ${p.nombre}. Costo ${money(p.costo)}, precio ${money(p.precio)}, flete ${money(p.flete)}, % entrega esperado ${p.entrega}%, comisión ${p.com}%. Utilidad por pedido ${money(g.u.utilidadPedido)} (= CPA máximo), CPA objetivo ${money(g.cpaObj)}, ROAS mínimo ${xx(g.u.roasMin)}. ${g.pass?"Pasa":"No pasa"} la validación.
+${real?`Datos reales de ${real.n} test(s): ROAS ${xx(real.roas)}, CPA ${money(real.cpa)}, % entrega ${pct(real.entrega)}, margen de contribución ${pct(real.cm)}, utilidad neta acumulada ${money(real.neta)}.`:"Aún no hay tests reales guardados."}`}
+async function askMentor(prompt,outId,schema,render){const out=$(outId);out.innerHTML=`<div class="mentor">Consultando al mentor…</div>`;
+ const full=`${BASE}\n${ctx()}\n${prompt}\nResponde SOLO JSON válido con esta forma: ${schema}`;
+ if(window.cowork&&window.cowork.askClaude){try{const r=await window.cowork.askClaude(full,[]);if(r.isError)throw new Error(r.text||"error");const clean=String(r.text).replace(/```json|```/g,"").trim();let j;try{j=JSON.parse(clean.slice(clean.indexOf("{"),clean.lastIndexOf("}")+1))}catch(e){j=null}
+   out.innerHTML=`<div class="mentor">${j?render(j):`<div style="white-space:pre-wrap">${esc(clean)}</div>`}<div class="hint" style="margin-top:10px">Respuesta generada por IA. No es asesoría financiera.</div></div>`;return}catch(e){}}
+ out.innerHTML=`<div class="mentor"><b>El mentor con IA funciona cuando abres el Co-Piloto dentro de Cowork.</b> Aquí puedes copiar el análisis completo y pegarlo en Claude:<textarea id="${outId}_ta">${esc(full)}</textarea><div class="btns"><button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('${outId}_ta').value);toast('Copiado')">Copiar para Claude</button></div></div>`}
+const box=(t,v,c)=>v?`<div class="box" style="border-color:${c}55"><b style="color:${c}">${t}</b>${esc(Array.isArray(v)?v.join(" · "):v)}</div>`:"";
+const list=(t,a)=>Array.isArray(a)&&a.length?`<div style="margin-top:8px"><div class="hint" style="text-transform:uppercase;letter-spacing:.5px">${t}</div>${a.map((x,i)=>`<div>${i+1}. ${esc(x)}</div>`).join("")}</div>`:"";
+function mentorTest(){readTest();const c=window._test.c,v=window._test.v;
+ askMentor(`Analiza este test: "${S.testForm.nombre||"sin nombre"}" en ${S.testForm.canal}, ${S.testForm.dias} días. Ads ${money(c.ads)}, pedidos ${c.ped}, entregados ${Math.round(c.ent)}, devueltos ${Math.round(c.dev)}, AOV ${money(c.aov)}, recaudo ${money(c.ingresos)}, contribución ${money(c.contrib)}, utilidad neta ${money(c.neta)}, ROAS ${xx(c.roas)} (equilibrio ${xx(c.roasEq)}), CPA ${money(c.cpa)} (máximo ${money(c.cpaMax)}), rentabilidad ${pct(c.rent/100)} vs meta ${S.testForm.meta}%. Veredicto del modelo: ${v.label}.`,
+ "mentorTestOut",`{"veredicto":"","diagnostico":"","acciones":["",""],"ajuste_ads":"","foco_ux":"","riesgo":"","siguiente_paso":""}`,
+ j=>`<b style="color:var(--accent)">Veredicto:</b> ${esc(j.veredicto)}<div style="margin-top:6px">${esc(j.diagnostico)}</div>${list("Acciones",j.acciones)}<div class="info">${box("Ajuste de ads",j.ajuste_ads,"#4F8DFF")}${box("Foco UX / tienda",j.foco_ux,"#14A37F")}${box("Riesgo a vigilar",j.riesgo,"#D98E00")}${box("Siguiente paso",j.siguiente_paso,"#385BFF")}</div>`)}
+function mentorPlan(){readPlan();const pl=window._plan,f=S.planForm;
+ askMentor(`Propón cómo desplegar capital. Meta de facturación ${money(f.R)} por ${f.unidad}, margen bruto ${pct(pl.m)}, fijos ${money(f.fijos)}, capital ${money(f.cap)}, horizonte ${pl.N} ${f.unidad}(es), dinero en tránsito ${f.ret}%, devoluciones ${f.ree}%. El modelo calculó: ROAS objetivo ${xx(pl.targetROAS)} (equilibrio ${xx(pl.be)}), ads a pleno ${money(pl.full)}, capital a inyectar ${money(pl.tot)}, utilidad neta a pleno ${money(pl.fullNet)}, autofinanciamiento desde ${pl.self?f.unidad+" "+pl.self:"—"}. Plan: ${pl.rows.map(r=>`${f.unidad} ${r.i}: inyectar ${money(r.inject)}, ads ${money(r.spend)}, facturación ${money(r.rev)}, neta ${money(r.net)}`).join("; ")}. Justifica el propósito de cada recomendación.`,
+ "mentorPlanOut",`{"proposito":"","propuesta_capital":"","proximos_pasos":["","",""],"justificacion_riesgo":"","advertencia":""}`,
+ j=>`<b style="color:var(--accent)">Propósito:</b> ${esc(j.proposito)}<div style="margin-top:6px">${esc(j.propuesta_capital)}</div>${list("Próximos pasos",j.proximos_pasos)}<div class="info">${box("Riesgo "+S.risk+"/10",j.justificacion_riesgo,"#D98E00")}${box("Advertencia",j.advertencia,"#E2405F")}</div>`)}
+function mentorWeekly(){const ts=S.tests.slice(0,10).map(t=>`${t.producto} (${new Date(t.ts).toLocaleDateString("es-CO")}): ads ${money(t.c.ads)}, pedidos ${t.c.ped}, entrega ${pct(t.c.tasaEntrega)}, ROAS ${xx(t.c.roas)}, CPA ${money(t.c.cpa)}, neta ${money(t.c.neta)}, veredicto ${t.verdict}`).join("; ");
+ const ps=S.products.map(p=>{const g=E.gate(p,S.risk);return`${p.nombre}: utilidad/pedido ${money(g.u.utilidadPedido)}, ${g.pass?"pasa":"no pasa"}`}).join("; ");
+ askMentor(`Haz la revisión semanal del negocio. Productos: ${ps}. Últimos tests: ${ts||"ninguno"}. Dime qué escalar, qué optimizar, qué matar, qué producto testear después y cuánto capital mover esta semana.`,
+ "mentorWeeklyOut",`{"resumen":"","escalar":[""],"optimizar":[""],"matar":[""],"siguiente_test":"","capital_semana":"","foco_semana":["","",""]}`,
+ j=>`<b style="color:var(--accent)">Resumen:</b> ${esc(j.resumen)}<div class="info">${box("Escalar",j.escalar,"#14A37F")}${box("Optimizar",j.optimizar,"#D98E00")}${box("Matar",j.matar,"#E2405F")}${box("Siguiente test",j.siguiente_test,"#385BFF")}</div>${box("Capital esta semana",j.capital_semana,"#4F8DFF")}${list("Foco de la semana",j.foco_semana)}`)}
+
+/* ================= NAVEGACIÓN E INICIO ================= */
+function go(t){document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));["ruta","producto","marketing","test","plan","crecer","bitacora"].forEach(x=>$("t-"+x).classList.toggle("hide",x!==t));S.tab=t;save();window.scrollTo(0,0)}
+function renderHeader(){const rp=E.riskProfile(S.risk);$("risk").value=S.risk;$("riskNum").textContent=S.risk;$("riskLbl").textContent=rp.label;$("cur").value=S.cur;$("trm").value=S.trm;
+ $("prodSel").innerHTML=S.products.map(p=>`<option value="${p.id}" ${p.id===S.active?"selected":""}>${esc(p.nombre)}</option>`).join("")}
+function renderAll(){renderHeader();fillFicha();renderProductos();renderMarketing();renderTest();renderPlan();renderSim();renderBitacora();renderRuta();renderCoach()}
+function boot(){buildFicha();fillFicha();fillTest();fillPlan();fillSim();renderAll();go(S.tab||"ruta")}
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>go(b.dataset.t));
+$("risk").oninput=e=>{S.risk=+e.target.value;save();renderAll()};
+$("cur").onchange=e=>{S.cur=e.target.value;save();renderAll()};
+$("trm").oninput=e=>{S.trm=num(e.target.value)||3300;save();renderAll()};
+$("prodSel").onchange=e=>{$("pcForm").innerHTML="";S.active=e.target.value;S.simForm.cpa=null;save();fillFicha();fillSim();renderAll()};
+$("pfQ").oninput=e=>{S.pf.q=e.target.value;save();renderPortfolio()};$("pfEtapa").onchange=e=>{S.pf.etapa=e.target.value;save();renderPortfolio()};$("pfSort").onchange=e=>{S.pf.sort=e.target.value;save();renderPortfolio()};
+document.querySelectorAll("#pdTabs button").forEach(b=>b.onclick=()=>setPtab(b.dataset.s));
+document.querySelectorAll("#mkTabs button").forEach(b=>b.onclick=()=>setMk(b.dataset.m));
+RF.forEach(k=>$("r_"+k).addEventListener("input",renderResultPreview));
+TF.forEach(k=>$("t_"+k).addEventListener("input",()=>{readTest();save();renderTest()}));
+PLF.forEach(k=>$("pl_"+k).addEventListener("input",()=>{readPlan();save();renderPlan()}));
+SF.forEach(k=>$("s_"+k).addEventListener("input",()=>{readSim();save();renderSim()}));
+boot();
+</script>
+</body>
+</html>

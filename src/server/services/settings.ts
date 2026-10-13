@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { normalizeSections, type ViewMode } from "@/lib/sections";
 import { eq } from "drizzle-orm";
 import type { z } from "zod";
@@ -20,7 +21,28 @@ export const DIAGNOSTIC_STEPS = [
 ] as const;
 export type DiagnosticStepKey = (typeof DIAGNOSTIC_STEPS)[number]["key"];
 
-export async function getSettings(tx: Tx, userId: string): Promise<Settings> {
+/**
+ * Memoria por petición: el layout, la página y loadForUser piden la configuración varias
+ * veces en una misma carga; con esto se consulta una sola vez. Fuera de React (pruebas,
+ * scripts) `cache` no memoriza y cada llamada consulta. Las escrituras la invalidan.
+ */
+const requestSettings = cache(() => new Map<string, Promise<Settings>>());
+
+function forget(userId: string) {
+  requestSettings().delete(userId);
+}
+
+export function getSettings(tx: Tx, userId: string): Promise<Settings> {
+  const memo = requestSettings();
+  const hit = memo.get(userId);
+  if (hit) return hit;
+  const p = readOrCreateSettings(tx, userId);
+  memo.set(userId, p);
+  p.catch(() => memo.delete(userId));
+  return p;
+}
+
+async function readOrCreateSettings(tx: Tx, userId: string): Promise<Settings> {
   const [row] = await tx.select().from(userSettings).where(eq(userSettings.userId, userId));
   if (row) return row;
   const [created] = await tx.insert(userSettings).values({ userId }).returning();
@@ -29,12 +51,14 @@ export async function getSettings(tx: Tx, userId: string): Promise<Settings> {
 
 export async function updateSettings(tx: Tx, userId: string, input: z.infer<typeof settingsInput>) {
   await getSettings(tx, userId);
+  forget(userId);
   await tx.update(userSettings).set(input).where(eq(userSettings.userId, userId));
   await audit(tx, userId, "settings", userId, "update");
 }
 
 export async function setDiagnosticStep(tx: Tx, userId: string, step: DiagnosticStepKey, done: boolean) {
   const s = await getSettings(tx, userId);
+  forget(userId);
   const set = new Set(s.diagnosticSteps);
   if (done) set.add(step);
   else set.delete(step);
@@ -44,6 +68,7 @@ export async function setDiagnosticStep(tx: Tx, userId: string, step: Diagnostic
 /** Guarda la vista (esencial, pro o personalizada) y las secciones elegidas. */
 export async function setView(tx: Tx, userId: string, mode: ViewMode, sections: string[] | null) {
   await getSettings(tx, userId);
+  forget(userId);
   await tx
     .update(userSettings)
     .set({ viewMode: mode, sections: mode === "personalizada" ? normalizeSections(sections) : null })

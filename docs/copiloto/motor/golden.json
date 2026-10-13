@@ -1,0 +1,3142 @@
+{
+ "rules_1": {
+  "holguraCPA": 0.4,
+  "margenMin": 0.2,
+  "pedidosDecidir": 10,
+  "killMult": 1.5,
+  "asignacion": 50,
+  "reinversion": 50,
+  "k": 0.7,
+  "mult": 1.8,
+  "start": 0.25,
+  "subida": 15
+ },
+ "riskProfile_1": {
+  "label": "Pasivo",
+  "tone": "g"
+ },
+ "unit_ojos": {
+  "e": 0.83,
+  "c": 0.9,
+  "aov": 179900,
+  "costoUnit": 56000,
+  "costoConf": 0,
+  "margenEntregado": 101503,
+  "perdidaDevuelto": 17000,
+  "utilidadPedido": 73221.741,
+  "cpaMax": 73221.741,
+  "roasMin": 1.835319649118969,
+  "margenPct": 0.40701356864924954,
+  "cmRatio": 0.5448642150592363
+ },
+ "gate_ojos_1": {
+  "u": {
+   "e": 0.83,
+   "c": 0.9,
+   "aov": 179900,
+   "costoUnit": 56000,
+   "costoConf": 0,
+   "margenEntregado": 101503,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 73221.741,
+   "cpaMax": 73221.741,
+   "roasMin": 1.835319649118969,
+   "margenPct": 0.40701356864924954,
+   "cmRatio": 0.5448642150592363
+  },
+  "R": {
+   "holguraCPA": 0.4,
+   "margenMin": 0.2,
+   "pedidosDecidir": 10,
+   "killMult": 1.5,
+   "asignacion": 50,
+   "reinversion": 50,
+   "k": 0.7,
+   "mult": 1.8,
+   "start": 0.25,
+   "subida": 15
+  },
+  "cpaObj": 43933.044599999994,
+  "presTest": 439330.44599999994,
+  "fondo": 2196652.2299999995,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_ojos_1": {
+  "g": {
+   "u": {
+    "e": 0.83,
+    "c": 0.9,
+    "aov": 179900,
+    "costoUnit": 56000,
+    "costoConf": 0,
+    "margenEntregado": 101503,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 73221.741,
+    "cpaMax": 73221.741,
+    "roasMin": 1.835319649118969,
+    "margenPct": 0.40701356864924954,
+    "cmRatio": 0.5448642150592363
+   },
+   "R": {
+    "holguraCPA": 0.4,
+    "margenMin": 0.2,
+    "pedidosDecidir": 10,
+    "killMult": 1.5,
+    "asignacion": 50,
+    "reinversion": 50,
+    "k": 0.7,
+    "mult": 1.8,
+    "start": 0.25,
+    "subida": 15
+   },
+   "cpaObj": 43933.044599999994,
+   "presTest": 439330.44599999994,
+   "fondo": 2196652.2299999995,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 66,
+  "econ": 100,
+  "total": 78,
+  "clase": "A",
+  "warn": [
+   [
+    "a",
+    "Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo)."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "unit_cuello": {
+  "e": 0.75,
+  "c": 0.9,
+  "aov": 99900,
+  "costoUnit": 40000,
+  "costoConf": 0,
+  "margenEntregado": 39903,
+  "perdidaDevuelto": 17000,
+  "utilidadPedido": 23109.525,
+  "cpaMax": 23109.525,
+  "roasMin": 2.9179526623762277,
+  "margenPct": 0.2313265765765766,
+  "cmRatio": 0.34270603937270605
+ },
+ "gate_cuello_1": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 99900,
+   "costoUnit": 40000,
+   "costoConf": 0,
+   "margenEntregado": 39903,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 23109.525,
+   "cpaMax": 23109.525,
+   "roasMin": 2.9179526623762277,
+   "margenPct": 0.2313265765765766,
+   "cmRatio": 0.34270603937270605
+  },
+  "R": {
+   "holguraCPA": 0.4,
+   "margenMin": 0.2,
+   "pedidosDecidir": 10,
+   "killMult": 1.5,
+   "asignacion": 50,
+   "reinversion": 50,
+   "k": 0.7,
+   "mult": 1.8,
+   "start": 0.25,
+   "subida": 15
+  },
+  "cpaObj": 13865.715,
+  "presTest": 138657.15,
+  "fondo": 693285.75,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_cuello_1": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 99900,
+    "costoUnit": 40000,
+    "costoConf": 0,
+    "margenEntregado": 39903,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 23109.525,
+    "cpaMax": 23109.525,
+    "roasMin": 2.9179526623762277,
+    "margenPct": 0.2313265765765766,
+    "cmRatio": 0.34270603937270605
+   },
+   "R": {
+    "holguraCPA": 0.4,
+    "margenMin": 0.2,
+    "pedidosDecidir": 10,
+    "killMult": 1.5,
+    "asignacion": 50,
+    "reinversion": 50,
+    "k": 0.7,
+    "mult": 1.8,
+    "start": 0.25,
+    "subida": 15
+   },
+   "cpaObj": 13865.715,
+   "presTest": 138657.15,
+   "fondo": 693285.75,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 66,
+  "econ": 77,
+  "total": 70,
+  "clase": "B",
+  "warn": [
+   [
+    "a",
+    "Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo)."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "unit_lampara": {
+  "e": 0.75,
+  "c": 0.9,
+  "aov": 69900,
+  "costoUnit": 26000,
+  "costoConf": 0,
+  "margenEntregado": 24803,
+  "perdidaDevuelto": 17000,
+  "utilidadPedido": 12917.025,
+  "cpaMax": 12917.025,
+  "roasMin": 3.652737375672804,
+  "margenPct": 0.18479291845493562,
+  "cmRatio": 0.2737672865999046
+ },
+ "gate_lampara_1": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 69900,
+   "costoUnit": 26000,
+   "costoConf": 0,
+   "margenEntregado": 24803,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 12917.025,
+   "cpaMax": 12917.025,
+   "roasMin": 3.652737375672804,
+   "margenPct": 0.18479291845493562,
+   "cmRatio": 0.2737672865999046
+  },
+  "R": {
+   "holguraCPA": 0.4,
+   "margenMin": 0.2,
+   "pedidosDecidir": 10,
+   "killMult": 1.5,
+   "asignacion": 50,
+   "reinversion": 50,
+   "k": 0.7,
+   "mult": 1.8,
+   "start": 0.25,
+   "subida": 15
+  },
+  "cpaObj": 7750.214999999999,
+  "presTest": 77502.15,
+  "fondo": 387510.75,
+  "pass": false,
+  "ok1": true,
+  "ok2": false
+ },
+ "evaluate_lampara_1": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 69900,
+    "costoUnit": 26000,
+    "costoConf": 0,
+    "margenEntregado": 24803,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 12917.025,
+    "cpaMax": 12917.025,
+    "roasMin": 3.652737375672804,
+    "margenPct": 0.18479291845493562,
+    "cmRatio": 0.2737672865999046
+   },
+   "R": {
+    "holguraCPA": 0.4,
+    "margenMin": 0.2,
+    "pedidosDecidir": 10,
+    "killMult": 1.5,
+    "asignacion": 50,
+    "reinversion": 50,
+    "k": 0.7,
+    "mult": 1.8,
+    "start": 0.25,
+    "subida": 15
+   },
+   "cpaObj": 7750.214999999999,
+   "presTest": 77502.15,
+   "fondo": 387510.75,
+   "pass": false,
+   "ok1": true,
+   "ok2": false
+  },
+  "cual": 64,
+  "econ": 62,
+  "total": 63,
+  "clase": "C",
+  "warn": [
+   [
+    "r",
+    "No pasa la validación de margen para tu nivel de riesgo."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "unit_mopa": {
+  "e": 0.75,
+  "c": 0.9,
+  "aov": 89900,
+  "costoUnit": 43000,
+  "costoConf": 0,
+  "margenEntregado": 25203,
+  "perdidaDevuelto": 19000,
+  "utilidadPedido": 12737.025,
+  "cpaMax": 12737.025,
+  "roasMin": 4.764260099984101,
+  "margenPct": 0.14167992213570635,
+  "cmRatio": 0.20989618094178716
+ },
+ "gate_mopa_1": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 89900,
+   "costoUnit": 43000,
+   "costoConf": 0,
+   "margenEntregado": 25203,
+   "perdidaDevuelto": 19000,
+   "utilidadPedido": 12737.025,
+   "cpaMax": 12737.025,
+   "roasMin": 4.764260099984101,
+   "margenPct": 0.14167992213570635,
+   "cmRatio": 0.20989618094178716
+  },
+  "R": {
+   "holguraCPA": 0.4,
+   "margenMin": 0.2,
+   "pedidosDecidir": 10,
+   "killMult": 1.5,
+   "asignacion": 50,
+   "reinversion": 50,
+   "k": 0.7,
+   "mult": 1.8,
+   "start": 0.25,
+   "subida": 15
+  },
+  "cpaObj": 7642.214999999999,
+  "presTest": 76422.15,
+  "fondo": 382110.75,
+  "pass": false,
+  "ok1": true,
+  "ok2": false
+ },
+ "evaluate_mopa_1": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 89900,
+    "costoUnit": 43000,
+    "costoConf": 0,
+    "margenEntregado": 25203,
+    "perdidaDevuelto": 19000,
+    "utilidadPedido": 12737.025,
+    "cpaMax": 12737.025,
+    "roasMin": 4.764260099984101,
+    "margenPct": 0.14167992213570635,
+    "cmRatio": 0.20989618094178716
+   },
+   "R": {
+    "holguraCPA": 0.4,
+    "margenMin": 0.2,
+    "pedidosDecidir": 10,
+    "killMult": 1.5,
+    "asignacion": 50,
+    "reinversion": 50,
+    "k": 0.7,
+    "mult": 1.8,
+    "start": 0.25,
+    "subida": 15
+   },
+   "cpaObj": 7642.214999999999,
+   "presTest": 76422.15,
+   "fondo": 382110.75,
+   "pass": false,
+   "ok1": true,
+   "ok2": false
+  },
+  "cual": 55,
+  "econ": 47,
+  "total": 52,
+  "clase": "C",
+  "warn": [
+   [
+    "r",
+    "No pasa la validación de margen para tu nivel de riesgo."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "unit_difusor": {
+  "e": 0.75,
+  "c": 0.9,
+  "aov": 69900,
+  "costoUnit": 30000,
+  "costoConf": 0,
+  "margenEntregado": 20803,
+  "perdidaDevuelto": 17000,
+  "utilidadPedido": 10217.025,
+  "cpaMax": 10217.025,
+  "roasMin": 4.6180272633178445,
+  "margenPct": 0.14616630901287553,
+  "cmRatio": 0.21654268001907487
+ },
+ "gate_difusor_1": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 69900,
+   "costoUnit": 30000,
+   "costoConf": 0,
+   "margenEntregado": 20803,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 10217.025,
+   "cpaMax": 10217.025,
+   "roasMin": 4.6180272633178445,
+   "margenPct": 0.14616630901287553,
+   "cmRatio": 0.21654268001907487
+  },
+  "R": {
+   "holguraCPA": 0.4,
+   "margenMin": 0.2,
+   "pedidosDecidir": 10,
+   "killMult": 1.5,
+   "asignacion": 50,
+   "reinversion": 50,
+   "k": 0.7,
+   "mult": 1.8,
+   "start": 0.25,
+   "subida": 15
+  },
+  "cpaObj": 6130.214999999999,
+  "presTest": 61302.149999999994,
+  "fondo": 306510.75,
+  "pass": false,
+  "ok1": true,
+  "ok2": false
+ },
+ "evaluate_difusor_1": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 69900,
+    "costoUnit": 30000,
+    "costoConf": 0,
+    "margenEntregado": 20803,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 10217.025,
+    "cpaMax": 10217.025,
+    "roasMin": 4.6180272633178445,
+    "margenPct": 0.14616630901287553,
+    "cmRatio": 0.21654268001907487
+   },
+   "R": {
+    "holguraCPA": 0.4,
+    "margenMin": 0.2,
+    "pedidosDecidir": 10,
+    "killMult": 1.5,
+    "asignacion": 50,
+    "reinversion": 50,
+    "k": 0.7,
+    "mult": 1.8,
+    "start": 0.25,
+    "subida": 15
+   },
+   "cpaObj": 6130.214999999999,
+   "presTest": 61302.149999999994,
+   "fondo": 306510.75,
+   "pass": false,
+   "ok1": true,
+   "ok2": false
+  },
+  "cual": 64,
+  "econ": 49,
+  "total": 58,
+  "clase": "C",
+  "warn": [
+   [
+    "r",
+    "No pasa la validación de margen para tu nivel de riesgo."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "unit_mascarilla": {
+  "e": 0.75,
+  "c": 0.9,
+  "aov": 49900,
+  "costoUnit": 13000,
+  "costoConf": 0,
+  "margenEntregado": 18403,
+  "perdidaDevuelto": 17000,
+  "utilidadPedido": 8597.025,
+  "cpaMax": 8597.025,
+  "roasMin": 3.917925096181528,
+  "margenPct": 0.17228507014028055,
+  "cmRatio": 0.25523714094856376
+ },
+ "gate_mascarilla_1": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 49900,
+   "costoUnit": 13000,
+   "costoConf": 0,
+   "margenEntregado": 18403,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 8597.025,
+   "cpaMax": 8597.025,
+   "roasMin": 3.917925096181528,
+   "margenPct": 0.17228507014028055,
+   "cmRatio": 0.25523714094856376
+  },
+  "R": {
+   "holguraCPA": 0.4,
+   "margenMin": 0.2,
+   "pedidosDecidir": 10,
+   "killMult": 1.5,
+   "asignacion": 50,
+   "reinversion": 50,
+   "k": 0.7,
+   "mult": 1.8,
+   "start": 0.25,
+   "subida": 15
+  },
+  "cpaObj": 5158.214999999999,
+  "presTest": 51582.149999999994,
+  "fondo": 257910.74999999997,
+  "pass": false,
+  "ok1": true,
+  "ok2": false
+ },
+ "evaluate_mascarilla_1": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 49900,
+    "costoUnit": 13000,
+    "costoConf": 0,
+    "margenEntregado": 18403,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 8597.025,
+    "cpaMax": 8597.025,
+    "roasMin": 3.917925096181528,
+    "margenPct": 0.17228507014028055,
+    "cmRatio": 0.25523714094856376
+   },
+   "R": {
+    "holguraCPA": 0.4,
+    "margenMin": 0.2,
+    "pedidosDecidir": 10,
+    "killMult": 1.5,
+    "asignacion": 50,
+    "reinversion": 50,
+    "k": 0.7,
+    "mult": 1.8,
+    "start": 0.25,
+    "subida": 15
+   },
+   "cpaObj": 5158.214999999999,
+   "presTest": 51582.149999999994,
+   "fondo": 257910.74999999997,
+   "pass": false,
+   "ok1": true,
+   "ok2": false
+  },
+  "cual": 55,
+  "econ": 57,
+  "total": 56,
+  "clase": "C",
+  "warn": [
+   [
+    "r",
+    "No pasa la validación de margen para tu nivel de riesgo."
+   ],
+   [
+    "a",
+    "Requiere permiso sanitario (INVIMA): pide al proveedor el registro o la notificación antes de pautar."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "rules_5": {
+  "holguraCPA": 0.2666666666666667,
+  "margenMin": 0.15555555555555556,
+  "pedidosDecidir": 10,
+  "killMult": 1.9444444444444444,
+  "asignacion": 67.77777777777777,
+  "reinversion": 67.77777777777777,
+  "k": 1.011111111111111,
+  "mult": 1.4666666666666668,
+  "start": 0.44999999999999996,
+  "subida": 22
+ },
+ "riskProfile_5": {
+  "label": "Normal",
+  "tone": "a"
+ },
+ "gate_ojos_5": {
+  "u": {
+   "e": 0.83,
+   "c": 0.9,
+   "aov": 179900,
+   "costoUnit": 56000,
+   "costoConf": 0,
+   "margenEntregado": 101503,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 73221.741,
+   "cpaMax": 73221.741,
+   "roasMin": 1.835319649118969,
+   "margenPct": 0.40701356864924954,
+   "cmRatio": 0.5448642150592363
+  },
+  "R": {
+   "holguraCPA": 0.2666666666666667,
+   "margenMin": 0.15555555555555556,
+   "pedidosDecidir": 10,
+   "killMult": 1.9444444444444444,
+   "asignacion": 67.77777777777777,
+   "reinversion": 67.77777777777777,
+   "k": 1.011111111111111,
+   "mult": 1.4666666666666668,
+   "start": 0.44999999999999996,
+   "subida": 22
+  },
+  "cpaObj": 53695.94339999999,
+  "presTest": 536959.4339999999,
+  "fondo": 2684797.1699999995,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_ojos_5": {
+  "g": {
+   "u": {
+    "e": 0.83,
+    "c": 0.9,
+    "aov": 179900,
+    "costoUnit": 56000,
+    "costoConf": 0,
+    "margenEntregado": 101503,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 73221.741,
+    "cpaMax": 73221.741,
+    "roasMin": 1.835319649118969,
+    "margenPct": 0.40701356864924954,
+    "cmRatio": 0.5448642150592363
+   },
+   "R": {
+    "holguraCPA": 0.2666666666666667,
+    "margenMin": 0.15555555555555556,
+    "pedidosDecidir": 10,
+    "killMult": 1.9444444444444444,
+    "asignacion": 67.77777777777777,
+    "reinversion": 67.77777777777777,
+    "k": 1.011111111111111,
+    "mult": 1.4666666666666668,
+    "start": 0.44999999999999996,
+    "subida": 22
+   },
+   "cpaObj": 53695.94339999999,
+   "presTest": 536959.4339999999,
+   "fondo": 2684797.1699999995,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 66,
+  "econ": 100,
+  "total": 78,
+  "clase": "A",
+  "warn": [
+   [
+    "a",
+    "Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo)."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_cuello_5": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 99900,
+   "costoUnit": 40000,
+   "costoConf": 0,
+   "margenEntregado": 39903,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 23109.525,
+   "cpaMax": 23109.525,
+   "roasMin": 2.9179526623762277,
+   "margenPct": 0.2313265765765766,
+   "cmRatio": 0.34270603937270605
+  },
+  "R": {
+   "holguraCPA": 0.2666666666666667,
+   "margenMin": 0.15555555555555556,
+   "pedidosDecidir": 10,
+   "killMult": 1.9444444444444444,
+   "asignacion": 67.77777777777777,
+   "reinversion": 67.77777777777777,
+   "k": 1.011111111111111,
+   "mult": 1.4666666666666668,
+   "start": 0.44999999999999996,
+   "subida": 22
+  },
+  "cpaObj": 16946.985,
+  "presTest": 169469.85,
+  "fondo": 847349.25,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_cuello_5": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 99900,
+    "costoUnit": 40000,
+    "costoConf": 0,
+    "margenEntregado": 39903,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 23109.525,
+    "cpaMax": 23109.525,
+    "roasMin": 2.9179526623762277,
+    "margenPct": 0.2313265765765766,
+    "cmRatio": 0.34270603937270605
+   },
+   "R": {
+    "holguraCPA": 0.2666666666666667,
+    "margenMin": 0.15555555555555556,
+    "pedidosDecidir": 10,
+    "killMult": 1.9444444444444444,
+    "asignacion": 67.77777777777777,
+    "reinversion": 67.77777777777777,
+    "k": 1.011111111111111,
+    "mult": 1.4666666666666668,
+    "start": 0.44999999999999996,
+    "subida": 22
+   },
+   "cpaObj": 16946.985,
+   "presTest": 169469.85,
+   "fondo": 847349.25,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 66,
+  "econ": 77,
+  "total": 70,
+  "clase": "B",
+  "warn": [
+   [
+    "a",
+    "Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo)."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_lampara_5": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 69900,
+   "costoUnit": 26000,
+   "costoConf": 0,
+   "margenEntregado": 24803,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 12917.025,
+   "cpaMax": 12917.025,
+   "roasMin": 3.652737375672804,
+   "margenPct": 0.18479291845493562,
+   "cmRatio": 0.2737672865999046
+  },
+  "R": {
+   "holguraCPA": 0.2666666666666667,
+   "margenMin": 0.15555555555555556,
+   "pedidosDecidir": 10,
+   "killMult": 1.9444444444444444,
+   "asignacion": 67.77777777777777,
+   "reinversion": 67.77777777777777,
+   "k": 1.011111111111111,
+   "mult": 1.4666666666666668,
+   "start": 0.44999999999999996,
+   "subida": 22
+  },
+  "cpaObj": 9472.484999999999,
+  "presTest": 94724.84999999999,
+  "fondo": 473624.24999999994,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_lampara_5": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 69900,
+    "costoUnit": 26000,
+    "costoConf": 0,
+    "margenEntregado": 24803,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 12917.025,
+    "cpaMax": 12917.025,
+    "roasMin": 3.652737375672804,
+    "margenPct": 0.18479291845493562,
+    "cmRatio": 0.2737672865999046
+   },
+   "R": {
+    "holguraCPA": 0.2666666666666667,
+    "margenMin": 0.15555555555555556,
+    "pedidosDecidir": 10,
+    "killMult": 1.9444444444444444,
+    "asignacion": 67.77777777777777,
+    "reinversion": 67.77777777777777,
+    "k": 1.011111111111111,
+    "mult": 1.4666666666666668,
+    "start": 0.44999999999999996,
+    "subida": 22
+   },
+   "cpaObj": 9472.484999999999,
+   "presTest": 94724.84999999999,
+   "fondo": 473624.24999999994,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 64,
+  "econ": 62,
+  "total": 63,
+  "clase": "B",
+  "warn": [
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_mopa_5": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 89900,
+   "costoUnit": 43000,
+   "costoConf": 0,
+   "margenEntregado": 25203,
+   "perdidaDevuelto": 19000,
+   "utilidadPedido": 12737.025,
+   "cpaMax": 12737.025,
+   "roasMin": 4.764260099984101,
+   "margenPct": 0.14167992213570635,
+   "cmRatio": 0.20989618094178716
+  },
+  "R": {
+   "holguraCPA": 0.2666666666666667,
+   "margenMin": 0.15555555555555556,
+   "pedidosDecidir": 10,
+   "killMult": 1.9444444444444444,
+   "asignacion": 67.77777777777777,
+   "reinversion": 67.77777777777777,
+   "k": 1.011111111111111,
+   "mult": 1.4666666666666668,
+   "start": 0.44999999999999996,
+   "subida": 22
+  },
+  "cpaObj": 9340.484999999999,
+  "presTest": 93404.84999999999,
+  "fondo": 467024.24999999994,
+  "pass": false,
+  "ok1": true,
+  "ok2": false
+ },
+ "evaluate_mopa_5": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 89900,
+    "costoUnit": 43000,
+    "costoConf": 0,
+    "margenEntregado": 25203,
+    "perdidaDevuelto": 19000,
+    "utilidadPedido": 12737.025,
+    "cpaMax": 12737.025,
+    "roasMin": 4.764260099984101,
+    "margenPct": 0.14167992213570635,
+    "cmRatio": 0.20989618094178716
+   },
+   "R": {
+    "holguraCPA": 0.2666666666666667,
+    "margenMin": 0.15555555555555556,
+    "pedidosDecidir": 10,
+    "killMult": 1.9444444444444444,
+    "asignacion": 67.77777777777777,
+    "reinversion": 67.77777777777777,
+    "k": 1.011111111111111,
+    "mult": 1.4666666666666668,
+    "start": 0.44999999999999996,
+    "subida": 22
+   },
+   "cpaObj": 9340.484999999999,
+   "presTest": 93404.84999999999,
+   "fondo": 467024.24999999994,
+   "pass": false,
+   "ok1": true,
+   "ok2": false
+  },
+  "cual": 55,
+  "econ": 47,
+  "total": 52,
+  "clase": "C",
+  "warn": [
+   [
+    "r",
+    "No pasa la validación de margen para tu nivel de riesgo."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_difusor_5": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 69900,
+   "costoUnit": 30000,
+   "costoConf": 0,
+   "margenEntregado": 20803,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 10217.025,
+   "cpaMax": 10217.025,
+   "roasMin": 4.6180272633178445,
+   "margenPct": 0.14616630901287553,
+   "cmRatio": 0.21654268001907487
+  },
+  "R": {
+   "holguraCPA": 0.2666666666666667,
+   "margenMin": 0.15555555555555556,
+   "pedidosDecidir": 10,
+   "killMult": 1.9444444444444444,
+   "asignacion": 67.77777777777777,
+   "reinversion": 67.77777777777777,
+   "k": 1.011111111111111,
+   "mult": 1.4666666666666668,
+   "start": 0.44999999999999996,
+   "subida": 22
+  },
+  "cpaObj": 7492.484999999999,
+  "presTest": 74924.84999999999,
+  "fondo": 374624.24999999994,
+  "pass": false,
+  "ok1": true,
+  "ok2": false
+ },
+ "evaluate_difusor_5": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 69900,
+    "costoUnit": 30000,
+    "costoConf": 0,
+    "margenEntregado": 20803,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 10217.025,
+    "cpaMax": 10217.025,
+    "roasMin": 4.6180272633178445,
+    "margenPct": 0.14616630901287553,
+    "cmRatio": 0.21654268001907487
+   },
+   "R": {
+    "holguraCPA": 0.2666666666666667,
+    "margenMin": 0.15555555555555556,
+    "pedidosDecidir": 10,
+    "killMult": 1.9444444444444444,
+    "asignacion": 67.77777777777777,
+    "reinversion": 67.77777777777777,
+    "k": 1.011111111111111,
+    "mult": 1.4666666666666668,
+    "start": 0.44999999999999996,
+    "subida": 22
+   },
+   "cpaObj": 7492.484999999999,
+   "presTest": 74924.84999999999,
+   "fondo": 374624.24999999994,
+   "pass": false,
+   "ok1": true,
+   "ok2": false
+  },
+  "cual": 64,
+  "econ": 49,
+  "total": 58,
+  "clase": "C",
+  "warn": [
+   [
+    "r",
+    "No pasa la validación de margen para tu nivel de riesgo."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_mascarilla_5": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 49900,
+   "costoUnit": 13000,
+   "costoConf": 0,
+   "margenEntregado": 18403,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 8597.025,
+   "cpaMax": 8597.025,
+   "roasMin": 3.917925096181528,
+   "margenPct": 0.17228507014028055,
+   "cmRatio": 0.25523714094856376
+  },
+  "R": {
+   "holguraCPA": 0.2666666666666667,
+   "margenMin": 0.15555555555555556,
+   "pedidosDecidir": 10,
+   "killMult": 1.9444444444444444,
+   "asignacion": 67.77777777777777,
+   "reinversion": 67.77777777777777,
+   "k": 1.011111111111111,
+   "mult": 1.4666666666666668,
+   "start": 0.44999999999999996,
+   "subida": 22
+  },
+  "cpaObj": 6304.485,
+  "presTest": 63044.85,
+  "fondo": 315224.25,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_mascarilla_5": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 49900,
+    "costoUnit": 13000,
+    "costoConf": 0,
+    "margenEntregado": 18403,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 8597.025,
+    "cpaMax": 8597.025,
+    "roasMin": 3.917925096181528,
+    "margenPct": 0.17228507014028055,
+    "cmRatio": 0.25523714094856376
+   },
+   "R": {
+    "holguraCPA": 0.2666666666666667,
+    "margenMin": 0.15555555555555556,
+    "pedidosDecidir": 10,
+    "killMult": 1.9444444444444444,
+    "asignacion": 67.77777777777777,
+    "reinversion": 67.77777777777777,
+    "k": 1.011111111111111,
+    "mult": 1.4666666666666668,
+    "start": 0.44999999999999996,
+    "subida": 22
+   },
+   "cpaObj": 6304.485,
+   "presTest": 63044.85,
+   "fondo": 315224.25,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 55,
+  "econ": 57,
+  "total": 56,
+  "clase": "C",
+  "warn": [
+   [
+    "a",
+    "Requiere permiso sanitario (INVIMA): pide al proveedor el registro o la notificación antes de pautar."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "rules_10": {
+  "holguraCPA": 0.10000000000000003,
+  "margenMin": 0.1,
+  "pedidosDecidir": 10,
+  "killMult": 2.5,
+  "asignacion": 90,
+  "reinversion": 90,
+  "k": 1.4,
+  "mult": 1.05,
+  "start": 0.7,
+  "subida": 30
+ },
+ "riskProfile_10": {
+  "label": "Agresivo",
+  "tone": "r"
+ },
+ "gate_ojos_10": {
+  "u": {
+   "e": 0.83,
+   "c": 0.9,
+   "aov": 179900,
+   "costoUnit": 56000,
+   "costoConf": 0,
+   "margenEntregado": 101503,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 73221.741,
+   "cpaMax": 73221.741,
+   "roasMin": 1.835319649118969,
+   "margenPct": 0.40701356864924954,
+   "cmRatio": 0.5448642150592363
+  },
+  "R": {
+   "holguraCPA": 0.10000000000000003,
+   "margenMin": 0.1,
+   "pedidosDecidir": 10,
+   "killMult": 2.5,
+   "asignacion": 90,
+   "reinversion": 90,
+   "k": 1.4,
+   "mult": 1.05,
+   "start": 0.7,
+   "subida": 30
+  },
+  "cpaObj": 65899.56689999999,
+  "presTest": 658995.6689999999,
+  "fondo": 3294978.3449999993,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_ojos_10": {
+  "g": {
+   "u": {
+    "e": 0.83,
+    "c": 0.9,
+    "aov": 179900,
+    "costoUnit": 56000,
+    "costoConf": 0,
+    "margenEntregado": 101503,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 73221.741,
+    "cpaMax": 73221.741,
+    "roasMin": 1.835319649118969,
+    "margenPct": 0.40701356864924954,
+    "cmRatio": 0.5448642150592363
+   },
+   "R": {
+    "holguraCPA": 0.10000000000000003,
+    "margenMin": 0.1,
+    "pedidosDecidir": 10,
+    "killMult": 2.5,
+    "asignacion": 90,
+    "reinversion": 90,
+    "k": 1.4,
+    "mult": 1.05,
+    "start": 0.7,
+    "subida": 30
+   },
+   "cpaObj": 65899.56689999999,
+   "presTest": 658995.6689999999,
+   "fondo": 3294978.3449999993,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 66,
+  "econ": 100,
+  "total": 78,
+  "clase": "A",
+  "warn": [
+   [
+    "a",
+    "Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo)."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_cuello_10": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 99900,
+   "costoUnit": 40000,
+   "costoConf": 0,
+   "margenEntregado": 39903,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 23109.525,
+   "cpaMax": 23109.525,
+   "roasMin": 2.9179526623762277,
+   "margenPct": 0.2313265765765766,
+   "cmRatio": 0.34270603937270605
+  },
+  "R": {
+   "holguraCPA": 0.10000000000000003,
+   "margenMin": 0.1,
+   "pedidosDecidir": 10,
+   "killMult": 2.5,
+   "asignacion": 90,
+   "reinversion": 90,
+   "k": 1.4,
+   "mult": 1.05,
+   "start": 0.7,
+   "subida": 30
+  },
+  "cpaObj": 20798.5725,
+  "presTest": 207985.72499999998,
+  "fondo": 1039928.6249999999,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_cuello_10": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 99900,
+    "costoUnit": 40000,
+    "costoConf": 0,
+    "margenEntregado": 39903,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 23109.525,
+    "cpaMax": 23109.525,
+    "roasMin": 2.9179526623762277,
+    "margenPct": 0.2313265765765766,
+    "cmRatio": 0.34270603937270605
+   },
+   "R": {
+    "holguraCPA": 0.10000000000000003,
+    "margenMin": 0.1,
+    "pedidosDecidir": 10,
+    "killMult": 2.5,
+    "asignacion": 90,
+    "reinversion": 90,
+    "k": 1.4,
+    "mult": 1.05,
+    "start": 0.7,
+    "subida": 30
+   },
+   "cpaObj": 20798.5725,
+   "presTest": 207985.72499999998,
+   "fondo": 1039928.6249999999,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 66,
+  "econ": 77,
+  "total": 70,
+  "clase": "B",
+  "warn": [
+   [
+    "a",
+    "Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo)."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_lampara_10": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 69900,
+   "costoUnit": 26000,
+   "costoConf": 0,
+   "margenEntregado": 24803,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 12917.025,
+   "cpaMax": 12917.025,
+   "roasMin": 3.652737375672804,
+   "margenPct": 0.18479291845493562,
+   "cmRatio": 0.2737672865999046
+  },
+  "R": {
+   "holguraCPA": 0.10000000000000003,
+   "margenMin": 0.1,
+   "pedidosDecidir": 10,
+   "killMult": 2.5,
+   "asignacion": 90,
+   "reinversion": 90,
+   "k": 1.4,
+   "mult": 1.05,
+   "start": 0.7,
+   "subida": 30
+  },
+  "cpaObj": 11625.322499999998,
+  "presTest": 116253.22499999998,
+  "fondo": 581266.1249999999,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_lampara_10": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 69900,
+    "costoUnit": 26000,
+    "costoConf": 0,
+    "margenEntregado": 24803,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 12917.025,
+    "cpaMax": 12917.025,
+    "roasMin": 3.652737375672804,
+    "margenPct": 0.18479291845493562,
+    "cmRatio": 0.2737672865999046
+   },
+   "R": {
+    "holguraCPA": 0.10000000000000003,
+    "margenMin": 0.1,
+    "pedidosDecidir": 10,
+    "killMult": 2.5,
+    "asignacion": 90,
+    "reinversion": 90,
+    "k": 1.4,
+    "mult": 1.05,
+    "start": 0.7,
+    "subida": 30
+   },
+   "cpaObj": 11625.322499999998,
+   "presTest": 116253.22499999998,
+   "fondo": 581266.1249999999,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 64,
+  "econ": 62,
+  "total": 63,
+  "clase": "B",
+  "warn": [
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_mopa_10": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 89900,
+   "costoUnit": 43000,
+   "costoConf": 0,
+   "margenEntregado": 25203,
+   "perdidaDevuelto": 19000,
+   "utilidadPedido": 12737.025,
+   "cpaMax": 12737.025,
+   "roasMin": 4.764260099984101,
+   "margenPct": 0.14167992213570635,
+   "cmRatio": 0.20989618094178716
+  },
+  "R": {
+   "holguraCPA": 0.10000000000000003,
+   "margenMin": 0.1,
+   "pedidosDecidir": 10,
+   "killMult": 2.5,
+   "asignacion": 90,
+   "reinversion": 90,
+   "k": 1.4,
+   "mult": 1.05,
+   "start": 0.7,
+   "subida": 30
+  },
+  "cpaObj": 11463.322499999998,
+  "presTest": 114633.22499999998,
+  "fondo": 573166.1249999999,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_mopa_10": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 89900,
+    "costoUnit": 43000,
+    "costoConf": 0,
+    "margenEntregado": 25203,
+    "perdidaDevuelto": 19000,
+    "utilidadPedido": 12737.025,
+    "cpaMax": 12737.025,
+    "roasMin": 4.764260099984101,
+    "margenPct": 0.14167992213570635,
+    "cmRatio": 0.20989618094178716
+   },
+   "R": {
+    "holguraCPA": 0.10000000000000003,
+    "margenMin": 0.1,
+    "pedidosDecidir": 10,
+    "killMult": 2.5,
+    "asignacion": 90,
+    "reinversion": 90,
+    "k": 1.4,
+    "mult": 1.05,
+    "start": 0.7,
+    "subida": 30
+   },
+   "cpaObj": 11463.322499999998,
+   "presTest": 114633.22499999998,
+   "fondo": 573166.1249999999,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 55,
+  "econ": 47,
+  "total": 52,
+  "clase": "C",
+  "warn": [
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_difusor_10": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 69900,
+   "costoUnit": 30000,
+   "costoConf": 0,
+   "margenEntregado": 20803,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 10217.025,
+   "cpaMax": 10217.025,
+   "roasMin": 4.6180272633178445,
+   "margenPct": 0.14616630901287553,
+   "cmRatio": 0.21654268001907487
+  },
+  "R": {
+   "holguraCPA": 0.10000000000000003,
+   "margenMin": 0.1,
+   "pedidosDecidir": 10,
+   "killMult": 2.5,
+   "asignacion": 90,
+   "reinversion": 90,
+   "k": 1.4,
+   "mult": 1.05,
+   "start": 0.7,
+   "subida": 30
+  },
+  "cpaObj": 9195.322499999998,
+  "presTest": 91953.22499999998,
+  "fondo": 459766.1249999999,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_difusor_10": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 69900,
+    "costoUnit": 30000,
+    "costoConf": 0,
+    "margenEntregado": 20803,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 10217.025,
+    "cpaMax": 10217.025,
+    "roasMin": 4.6180272633178445,
+    "margenPct": 0.14616630901287553,
+    "cmRatio": 0.21654268001907487
+   },
+   "R": {
+    "holguraCPA": 0.10000000000000003,
+    "margenMin": 0.1,
+    "pedidosDecidir": 10,
+    "killMult": 2.5,
+    "asignacion": 90,
+    "reinversion": 90,
+    "k": 1.4,
+    "mult": 1.05,
+    "start": 0.7,
+    "subida": 30
+   },
+   "cpaObj": 9195.322499999998,
+   "presTest": 91953.22499999998,
+   "fondo": 459766.1249999999,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 64,
+  "econ": 49,
+  "total": 58,
+  "clase": "C",
+  "warn": [
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "gate_mascarilla_10": {
+  "u": {
+   "e": 0.75,
+   "c": 0.9,
+   "aov": 49900,
+   "costoUnit": 13000,
+   "costoConf": 0,
+   "margenEntregado": 18403,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 8597.025,
+   "cpaMax": 8597.025,
+   "roasMin": 3.917925096181528,
+   "margenPct": 0.17228507014028055,
+   "cmRatio": 0.25523714094856376
+  },
+  "R": {
+   "holguraCPA": 0.10000000000000003,
+   "margenMin": 0.1,
+   "pedidosDecidir": 10,
+   "killMult": 2.5,
+   "asignacion": 90,
+   "reinversion": 90,
+   "k": 1.4,
+   "mult": 1.05,
+   "start": 0.7,
+   "subida": 30
+  },
+  "cpaObj": 7737.322499999999,
+  "presTest": 77373.22499999999,
+  "fondo": 386866.12499999994,
+  "pass": true,
+  "ok1": true,
+  "ok2": true
+ },
+ "evaluate_mascarilla_10": {
+  "g": {
+   "u": {
+    "e": 0.75,
+    "c": 0.9,
+    "aov": 49900,
+    "costoUnit": 13000,
+    "costoConf": 0,
+    "margenEntregado": 18403,
+    "perdidaDevuelto": 17000,
+    "utilidadPedido": 8597.025,
+    "cpaMax": 8597.025,
+    "roasMin": 3.917925096181528,
+    "margenPct": 0.17228507014028055,
+    "cmRatio": 0.25523714094856376
+   },
+   "R": {
+    "holguraCPA": 0.10000000000000003,
+    "margenMin": 0.1,
+    "pedidosDecidir": 10,
+    "killMult": 2.5,
+    "asignacion": 90,
+    "reinversion": 90,
+    "k": 1.4,
+    "mult": 1.05,
+    "start": 0.7,
+    "subida": 30
+   },
+   "cpaObj": 7737.322499999999,
+   "presTest": 77373.22499999999,
+   "fondo": 386866.12499999994,
+   "pass": true,
+   "ok1": true,
+   "ok2": true
+  },
+  "cual": 55,
+  "econ": 57,
+  "total": 56,
+  "clase": "C",
+  "warn": [
+   [
+    "a",
+    "Requiere permiso sanitario (INVIMA): pide al proveedor el registro o la notificación antes de pautar."
+   ],
+   [
+    "b",
+    "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."
+   ]
+  ]
+ },
+ "test_0": {
+  "ped": 9,
+  "conf": 8,
+  "ent": 6,
+  "dev": 2,
+  "aov": 179900,
+  "ingresos": 1079400,
+  "contrib": 575018,
+  "neta": 155018,
+  "cm": 0.5327200296460997,
+  "ads": 420000,
+  "imp": 61000,
+  "clics": 640,
+  "roas": 2.57,
+  "roasEq": 1.87715862807773,
+  "cpa": 46666.666666666664,
+  "cpaMax": 63890.88888888889,
+  "tasaConf": 0.8888888888888888,
+  "tasaEntrega": 0.75,
+  "rent": 14.361497128034092,
+  "ctr": 0.010491803278688525,
+  "cpc": 656.25,
+  "cvr": 0.0140625
+ },
+ "verdict_0_1": {
+  "label": "Mantener y optimizar",
+  "tone": "a",
+  "why": "Gana dinero pero no llega a tu meta para tu nivel de riesgo."
+ },
+ "verdict_0_5": {
+  "label": "Mantener y optimizar",
+  "tone": "a",
+  "why": "Gana dinero pero no llega a tu meta para tu nivel de riesgo."
+ },
+ "verdict_0_10": {
+  "label": "Escalar con cautela",
+  "tone": "g",
+  "why": "Rentable, pero con solo 9 pedidos la muestra es pequeña. Sube 30% y confirma."
+ },
+ "test_1": {
+  "ped": 13,
+  "conf": 12,
+  "ent": 10,
+  "dev": 2,
+  "aov": 179900,
+  "ingresos": 1799000,
+  "contrib": 981030,
+  "neta": 471030,
+  "cm": 0.545319622012229,
+  "ads": 510000,
+  "imp": 72000,
+  "clics": 810,
+  "roas": 3.5274509803921568,
+  "roasEq": 1.8337869382179952,
+  "cpa": 39230.769230769234,
+  "cpaMax": 75463.84615384616,
+  "tasaConf": 0.9230769230769231,
+  "tasaEntrega": 0.8333333333333334,
+  "rent": 26.182879377431906,
+  "ctr": 0.01125,
+  "cpc": 629.6296296296297,
+  "cvr": 0.016049382716049384
+ },
+ "verdict_1_1": {
+  "label": "Mantener y optimizar",
+  "tone": "a",
+  "why": "Gana dinero pero no llega a tu meta para tu nivel de riesgo."
+ },
+ "verdict_1_5": {
+  "label": "Escalar",
+  "tone": "g",
+  "why": "Rentable y sobre el equilibrio. Sube el presupuesto 22% cada 2–3 días."
+ },
+ "verdict_1_10": {
+  "label": "Escalar",
+  "tone": "g",
+  "why": "Rentable y sobre el equilibrio. Sube el presupuesto 30% cada 2–3 días."
+ },
+ "test_2": {
+  "ped": 18,
+  "conf": 16,
+  "ent": 13,
+  "dev": 3,
+  "aov": 179900,
+  "ingresos": 2338700,
+  "contrib": 1268539,
+  "neta": 618539,
+  "cm": 0.5424120237738915,
+  "ads": 650000,
+  "imp": 90000,
+  "clics": 1050,
+  "roas": 3.598,
+  "roasEq": 1.8436169483161335,
+  "cpa": 36111.11111111111,
+  "cpaMax": 70474.38888888889,
+  "tasaConf": 0.8888888888888888,
+  "tasaEntrega": 0.8125,
+  "rent": 26.447983922692092,
+  "ctr": 0.011666666666666667,
+  "cpc": 619.047619047619,
+  "cvr": 0.017142857142857144
+ },
+ "verdict_2_1": {
+  "label": "Mantener y optimizar",
+  "tone": "a",
+  "why": "Gana dinero pero no llega a tu meta para tu nivel de riesgo."
+ },
+ "verdict_2_5": {
+  "label": "Escalar",
+  "tone": "g",
+  "why": "Rentable y sobre el equilibrio. Sube el presupuesto 22% cada 2–3 días."
+ },
+ "verdict_2_10": {
+  "label": "Escalar",
+  "tone": "g",
+  "why": "Rentable y sobre el equilibrio. Sube el presupuesto 30% cada 2–3 días."
+ },
+ "test_3": {
+  "ped": 12,
+  "conf": 10.8,
+  "ent": 8.964,
+  "dev": 1.8360000000000003,
+  "aov": 179900,
+  "ingresos": 1612623.6,
+  "contrib": 878660.8920000001,
+  "neta": 398660.8920000001,
+  "cm": 0.5448642150592364,
+  "ads": 480000,
+  "imp": 64000,
+  "clics": 720,
+  "roas": 3.3596325,
+  "roasEq": 1.8353196491189685,
+  "cpa": 40000,
+  "cpaMax": 73221.74100000001,
+  "tasaConf": 0.9,
+  "tasaEntrega": 0.83,
+  "rent": 24.72126117960819,
+  "ctr": 0.01125,
+  "cpc": 666.6666666666666,
+  "cvr": 0.016666666666666666
+ },
+ "verdict_3_1": {
+  "label": "Mantener y optimizar",
+  "tone": "a",
+  "why": "Gana dinero pero no llega a tu meta para tu nivel de riesgo."
+ },
+ "verdict_3_5": {
+  "label": "Escalar",
+  "tone": "g",
+  "why": "Rentable y sobre el equilibrio. Sube el presupuesto 22% cada 2–3 días."
+ },
+ "verdict_3_10": {
+  "label": "Escalar",
+  "tone": "g",
+  "why": "Rentable y sobre el equilibrio. Sube el presupuesto 30% cada 2–3 días."
+ },
+ "test_4": {
+  "ped": 0,
+  "conf": 0,
+  "ent": 0,
+  "dev": 0,
+  "aov": 179900,
+  "ingresos": 0,
+  "contrib": 0,
+  "neta": -160000,
+  "cm": 0,
+  "ads": 160000,
+  "imp": 30000,
+  "clics": 200,
+  "roas": 0,
+  "roasEq": "Infinity",
+  "cpa": 160000,
+  "cpaMax": 73221.741,
+  "tasaConf": 0,
+  "tasaEntrega": 0,
+  "rent": 0,
+  "ctr": 0.006666666666666667,
+  "cpc": 800,
+  "cvr": 0
+ },
+ "verdict_4_1": {
+  "label": "Pausar / matar",
+  "tone": "r",
+  "why": "Gastaste 1.5× el CPA máximo sin un solo pedido."
+ },
+ "verdict_4_5": {
+  "label": "Pausar / matar",
+  "tone": "r",
+  "why": "Gastaste 1.9× el CPA máximo sin un solo pedido."
+ },
+ "verdict_4_10": {
+  "label": "Seguir midiendo",
+  "tone": "b",
+  "why": "Aún no hay pedidos. Regla de corte: matar al llegar a 2.5× el CPA máximo sin ventas."
+ },
+ "test_5": {
+  "ped": 0,
+  "conf": 0,
+  "ent": 0,
+  "dev": 0,
+  "aov": 179900,
+  "ingresos": 0,
+  "contrib": 0,
+  "neta": -90000,
+  "cm": 0,
+  "ads": 90000,
+  "imp": 20000,
+  "clics": 150,
+  "roas": 0,
+  "roasEq": "Infinity",
+  "cpa": 90000,
+  "cpaMax": 73221.741,
+  "tasaConf": 0,
+  "tasaEntrega": 0,
+  "rent": 0,
+  "ctr": 0.0075,
+  "cpc": 600,
+  "cvr": 0
+ },
+ "verdict_5_1": {
+  "label": "Seguir midiendo",
+  "tone": "b",
+  "why": "Aún no hay pedidos. Regla de corte: matar al llegar a 1.5× el CPA máximo sin ventas."
+ },
+ "verdict_5_5": {
+  "label": "Seguir midiendo",
+  "tone": "b",
+  "why": "Aún no hay pedidos. Regla de corte: matar al llegar a 1.9× el CPA máximo sin ventas."
+ },
+ "verdict_5_10": {
+  "label": "Seguir midiendo",
+  "tone": "b",
+  "why": "Aún no hay pedidos. Regla de corte: matar al llegar a 2.5× el CPA máximo sin ventas."
+ },
+ "test_6": {
+  "ped": 6,
+  "conf": 5,
+  "ent": 3,
+  "dev": 2,
+  "aov": 179900,
+  "ingresos": 539700,
+  "contrib": 270509,
+  "neta": -329491,
+  "cm": 0.5012210487307763,
+  "ads": 600000,
+  "imp": 50000,
+  "clics": 400,
+  "roas": 0.8995,
+  "roasEq": 1.9951277036993225,
+  "cpa": 100000,
+  "cpaMax": 45084.833333333336,
+  "tasaConf": 0.8333333333333334,
+  "tasaEntrega": 0.6,
+  "rent": -61.05076894571057,
+  "ctr": 0.008,
+  "cpc": 1500,
+  "cvr": 0.015
+ },
+ "verdict_6_1": {
+  "label": "Pausar / matar",
+  "tone": "r",
+  "why": "Muy lejos del equilibrio. Pasa al siguiente producto."
+ },
+ "verdict_6_5": {
+  "label": "Pausar / matar",
+  "tone": "r",
+  "why": "Muy lejos del equilibrio. Pasa al siguiente producto."
+ },
+ "verdict_6_10": {
+  "label": "Pausar / matar",
+  "tone": "r",
+  "why": "Muy lejos del equilibrio. Pasa al siguiente producto."
+ },
+ "test_7": {
+  "ped": 0,
+  "conf": 0,
+  "ent": 0,
+  "dev": 0,
+  "aov": 179900,
+  "ingresos": 0,
+  "contrib": 0,
+  "neta": 0,
+  "cm": 0,
+  "ads": 0,
+  "imp": 0,
+  "clics": 0,
+  "roas": 0,
+  "roasEq": "Infinity",
+  "cpa": 0,
+  "cpaMax": 73221.741,
+  "tasaConf": 0,
+  "tasaEntrega": 0,
+  "rent": 0,
+  "ctr": null,
+  "cpc": null,
+  "cvr": null
+ },
+ "verdict_7_1": {
+  "label": "Faltan datos",
+  "tone": "b",
+  "why": "Ingresa gasto en ads y pedidos."
+ },
+ "verdict_7_5": {
+  "label": "Faltan datos",
+  "tone": "b",
+  "why": "Ingresa gasto en ads y pedidos."
+ },
+ "verdict_7_10": {
+  "label": "Faltan datos",
+  "tone": "b",
+  "why": "Ingresa gasto en ads y pedidos."
+ },
+ "agg": {
+  "n": 3,
+  "ads": 1580000,
+  "imp": 223000,
+  "clics": 2500,
+  "ped": 40,
+  "conf": 36,
+  "ent": 29,
+  "dev": 7,
+  "ingresos": 5217100,
+  "contrib": 2824587,
+  "neta": 1244587,
+  "cm": 0.5414094036917061,
+  "roas": 3.3019620253164557,
+  "roasEq": 1.847031088084736,
+  "cpa": 39500,
+  "cpaMax": 70614.675,
+  "ctr": 0.011210762331838564,
+  "cpc": 632,
+  "cvr": 0.016,
+  "tasaConf": 0.9,
+  "tasaEntrega": 0.8055555555555556,
+  "entrega": 0.8055555555555556,
+  "aov": 179900,
+  "rent": 23.855916121983476,
+  "dias": 10
+ },
+ "real": {
+  "n": 3,
+  "ads": 1580000,
+  "imp": 223000,
+  "clics": 2500,
+  "ped": 40,
+  "conf": 36,
+  "ent": 29,
+  "dev": 7,
+  "ingresos": 5217100,
+  "contrib": 2824587,
+  "neta": 1244587,
+  "cm": 0.5414094036917061,
+  "roas": 3.3019620253164557,
+  "roasEq": 1.847031088084736,
+  "cpa": 39500,
+  "cpaMax": 70614.675,
+  "ctr": 0.011210762331838564,
+  "cpc": 632,
+  "cvr": 0.016,
+  "tasaConf": 0.9,
+  "tasaEntrega": 0.8055555555555556,
+  "entrega": 0.8055555555555556,
+  "aov": 179900,
+  "rent": 23.855916121983476,
+  "dias": 10
+ },
+ "diagnose_5": [
+  [
+   "a",
+   "Creativo (CTR 1,1%)",
+   "CTR aceptable pero mejorable. Prueba variaciones del gancho y del texto."
+  ],
+  [
+   "g",
+   "Página y oferta (conversión 1,6%)",
+   "La página convierte bien."
+  ],
+  [
+   "g",
+   "Entregas (80,6%)",
+   "Buena tasa de entrega."
+  ],
+  [
+   "g",
+   "Unidad económica",
+   "CPA ($39.500) dentro de tu objetivo ($53.696)."
+  ],
+  [
+   "b",
+   "Ticket promedio",
+   "El AOV es igual al precio: agrega un combo 2× o un upsell posventa para subirlo."
+  ]
+ ],
+ "diagnose_10": [
+  [
+   "a",
+   "Creativo (CTR 1,1%)",
+   "CTR aceptable pero mejorable. Prueba variaciones del gancho y del texto."
+  ],
+  [
+   "g",
+   "Página y oferta (conversión 1,6%)",
+   "La página convierte bien."
+  ],
+  [
+   "g",
+   "Entregas (80,6%)",
+   "Buena tasa de entrega."
+  ],
+  [
+   "g",
+   "Unidad económica",
+   "CPA ($39.500) dentro de tu objetivo ($65.900)."
+  ],
+  [
+   "b",
+   "Ticket promedio",
+   "El AOV es igual al precio: agrega un combo 2× o un upsell posventa para subirlo."
+  ]
+ ],
+ "pricing": {
+  "lo": 62000,
+  "hi": 359800,
+  "step": 2000,
+  "be": 116000,
+  "pMin": 142000,
+  "pObj": 176000,
+  "rec": 189900,
+  "range": [
+   174000,
+   212000
+  ],
+  "opt": 194000,
+  "bestH": 194000,
+  "n": 149,
+  "muestra": [
+   {
+    "P": 62000,
+    "aov": 62000,
+    "A": 11000.938252177479,
+    "rev": 46314,
+    "ce": 0.747,
+    "pedidos": 136.35200613030406,
+    "entregados": 101.85494857933713,
+    "pi": -24675.150019134475,
+    "mes": -3364506.2066751965,
+    "mn": -0.5327795055303899,
+    "mc": -0.26357947920715113,
+    "roas": 4.210004541279268,
+    "roasEq": "Infinity",
+    "markup": 1.1071428571428572,
+    "parts": {
+     "producto": 41832,
+     "flete": 11952,
+     "devoluciones": 2601.000000000001,
+     "comision": 1389.4199999999998,
+     "empaque": 747,
+     "confirmacion": 0,
+     "publicidad": 11000.938252177479,
+     "fijos": 1466.7917669569972,
+     "utilidad": -24675.150019134475
+    }
+   },
+   {
+    "P": 102000,
+    "aov": 102000,
+    "A": 19993.089297148963,
+    "rev": 76194,
+    "ce": 0.747,
+    "pedidos": 75.02592409337669,
+    "entregados": 56.044365297752385,
+    "pi": -5882.654536768825,
+    "mes": -441351.59274317586,
+    "mn": -0.07720627000510309,
+    "mc": 0.22017717930545713,
+    "roas": 3.8110168402471625,
+    "roasEq": 4.541796761837319,
+    "markup": 1.8214285714285714,
+    "parts": {
+     "producto": 41832,
+     "flete": 11952,
+     "devoluciones": 2601.000000000001,
+     "comision": 2285.8199999999997,
+     "empaque": 747,
+     "confirmacion": 0,
+     "publicidad": 19993.089297148963,
+     "fijos": 2665.745239619862,
+     "utilidad": -5882.654536768825
+    }
+   },
+   {
+    "P": 142000,
+    "aov": 142000,
+    "A": 29737.586127410486,
+    "rev": 106074,
+    "ce": 0.747,
+    "pedidos": 50.4412158261017,
+    "entregados": 37.67958822209797,
+    "pi": 12057.182388934782,
+    "mes": 608178.9391349318,
+    "mn": 0.11366765078091504,
+    "mc": 0.4313948752757509,
+    "roas": 3.5670010183586074,
+    "roasEq": 2.3180618438287945,
+    "markup": 2.5357142857142856,
+    "parts": {
+     "producto": 41832,
+     "flete": 11952,
+     "devoluciones": 2601.000000000001,
+     "comision": 3182.22,
+     "empaque": 747,
+     "confirmacion": 0,
+     "publicidad": 29737.586127410486,
+     "fijos": 3965.0114836547314,
+     "utilidad": 12057.182388934782
+    }
+   },
+   {
+    "P": 182000,
+    "aov": 182000,
+    "A": 40053.95127707087,
+    "rev": 135954,
+    "ce": 0.747,
+    "pedidos": 37.44948880633118,
+    "entregados": 27.97476813832939,
+    "pi": 29348.901885986354,
+    "mes": 1099101.372657358,
+    "mn": 0.21587376528815888,
+    "mc": 0.549769627962399,
+    "roas": 3.394271867450633,
+    "roasEq": 1.8189436977562425,
+    "markup": 3.25,
+    "parts": {
+     "producto": 41832,
+     "flete": 11952,
+     "devoluciones": 2601.000000000001,
+     "comision": 4078.62,
+     "empaque": 747,
+     "confirmacion": 0,
+     "publicidad": 40053.95127707087,
+     "fijos": 5340.526836942782,
+     "utilidad": 29348.901885986354
+    }
+   },
+   {
+    "P": 222000,
+    "aov": 222000,
+    "A": 59397.10863326804,
+    "rev": 165834,
+    "ce": 0.747,
+    "pedidos": 25.253754509522658,
+    "entregados": 18.864554618613425,
+    "pi": 36410.25688229623,
+    "mes": 919495.6889341667,
+    "mn": 0.2195584553366392,
+    "mc": 0.6254868121133182,
+    "roas": 2.791954083554787,
+    "roasEq": 1.5987547309292143,
+    "markup": 3.9642857142857144,
+    "parts": {
+     "producto": 41832,
+     "flete": 11952,
+     "devoluciones": 2601.000000000001,
+     "comision": 4975.0199999999995,
+     "empaque": 747,
+     "confirmacion": 0,
+     "publicidad": 59397.10863326804,
+     "fijos": 7919.614484435739,
+     "utilidad": 36410.25688229623
+    }
+   },
+   {
+    "P": 262000,
+    "aov": 262000,
+    "A": 88397.76102129403,
+    "rev": 195714,
+    "ce": 0.747,
+    "pedidos": 16.968755573330267,
+    "entregados": 12.67566041327771,
+    "pi": 32526.450842533442,
+    "mes": 551933.3940148923,
+    "mn": 0.16619378706956806,
+    "mc": 0.6780842453784605,
+    "roas": 2.2140153521858394,
+    "roasEq": 1.4747430084323343,
+    "markup": 4.678571428571429,
+    "parts": {
+     "producto": 41832,
+     "flete": 11952,
+     "devoluciones": 2601.000000000001,
+     "comision": 5871.42,
+     "empaque": 747,
+     "confirmacion": 0,
+     "publicidad": 88397.76102129403,
+     "fijos": 11786.368136172538,
+     "utilidad": 32526.450842533442
+    }
+   },
+   {
+    "P": 302000,
+    "aov": 302000,
+    "A": 124318.233122406,
+    "rev": 225594,
+    "ce": 0.747,
+    "pedidos": 12.065808548960574,
+    "entregados": 9.013158986073549,
+    "pi": 20800.182461273187,
+    "mes": 250971.0193611698,
+    "mn": 0.09220184251918574,
+    "mc": 0.7167485837389292,
+    "roas": 1.8146493425294745,
+    "roasEq": 1.3951893630308771,
+    "markup": 5.392857142857143,
+    "parts": {
+     "producto": 41832,
+     "flete": 11952,
+     "devoluciones": 2601.000000000001,
+     "comision": 6767.82,
+     "empaque": 747,
+     "confirmacion": 0,
+     "publicidad": 124318.233122406,
+     "fijos": 16575.764416320802,
+     "utilidad": 20800.182461273187
+    }
+   },
+   {
+    "P": 342000,
+    "aov": 342000,
+    "A": 167564.03914183425,
+    "rev": 255474,
+    "ce": 0.747,
+    "pedidos": 8.951801398928609,
+    "entregados": 6.686995644999671,
+    "pi": 771.8689725878503,
+    "mes": 6909.617748601507,
+    "mn": 0.0030213210447554363,
+    "mc": 0.7463686324244346,
+    "roas": 1.524635007059925,
+    "roasEq": 1.3398205076648155,
+    "markup": 6.107142857142857,
+    "parts": {
+     "producto": 41832,
+     "flete": 11952,
+     "devoluciones": 2601.000000000001,
+     "comision": 7664.219999999999,
+     "empaque": 747,
+     "confirmacion": 0,
+     "publicidad": 167564.03914183425,
+     "fijos": 22341.8718855779,
+     "utilidad": 771.8689725878503
+    }
+   }
+  ]
+ },
+ "priceEval_179900": {
+  "P": 179900,
+  "aov": 179900,
+  "A": 39500,
+  "rev": 134385.3,
+  "ce": 0.747,
+  "pedidos": 37.9746835443038,
+  "entregados": 28.36708860759494,
+  "pi": 28455.074333333316,
+  "mes": 1080572.4430379742,
+  "mn": 0.2117424624072225,
+  "mc": 0.5448642150592363,
+  "roas": 3.4021594936708857,
+  "roasEq": 1.835319649118969,
+  "markup": 3.2125,
+  "parts": {
+   "producto": 41832,
+   "flete": 11952,
+   "devoluciones": 2601.000000000001,
+   "comision": 4031.5589999999993,
+   "empaque": 747,
+   "confirmacion": 0,
+   "publicidad": 39500,
+   "fijos": 5266.666666666666,
+   "utilidad": 28455.074333333316
+  }
+ },
+ "priceEval_249900": {
+  "P": 249900,
+  "aov": 249900,
+  "A": 78914.56750358907,
+  "rev": 186675.3,
+  "ce": 0.747,
+  "pedidos": 19.00789736865477,
+  "entregados": 14.198899334385114,
+  "pi": 34506.53116259904,
+  "mes": 655896.6028869702,
+  "mn": 0.18484786772861245,
+  "mc": 0.6639498691042682,
+  "roas": 2.3655366291085596,
+  "roasEq": 1.5061378072852027,
+  "markup": 4.4625,
+  "parts": {
+   "producto": 41832,
+   "flete": 11952,
+   "devoluciones": 2601.000000000001,
+   "comision": 5600.258999999999,
+   "empaque": 747,
+   "confirmacion": 0,
+   "publicidad": 78914.56750358907,
+   "fijos": 10521.942333811876,
+   "utilidad": 34506.53116259904
+  }
+ },
+ "psych": [
+  9900,
+  50900,
+  59900,
+  129900,
+  179900
+ ],
+ "cpaAt": [
+  19500.164970210313,
+  39500,
+  86786.90505989883
+ ],
+ "plan_5": {
+  "R": 10000000,
+  "m": 0.35,
+  "be": 2.857142857142857,
+  "targetROAS": 4.190476190476191,
+  "full": 2386363.6363636362,
+  "N": 4,
+  "rows": [
+   {
+    "i": 1,
+    "spend": 1073863.6363636362,
+    "rev": 4500000,
+    "gp": 1386000,
+    "buffer": 1125000,
+    "net": 112136.36363636376,
+    "inject": 0,
+    "cum": 112136.36363636376,
+    "cash": 2287136.3636363638
+   },
+   {
+    "i": 2,
+    "spend": 1511363.6363636362,
+    "rev": 6333333.333333333,
+    "gp": 1950666.6666666665,
+    "buffer": 1583333.3333333333,
+    "net": 239303.03030303027,
+    "inject": 0,
+    "cum": 351439.39393939404,
+    "cash": 2068106.0606060605
+   },
+   {
+    "i": 3,
+    "spend": 1948863.6363636362,
+    "rev": 8166666.666666667,
+    "gp": 2515333.3333333335,
+    "buffer": 2041666.6666666667,
+    "net": 366469.69696969725,
+    "inject": 539090.9090909092,
+    "cum": 717909.0909090913,
+    "cash": 2515333.3333333335
+   },
+   {
+    "i": 4,
+    "spend": 2386363.6363636362,
+    "rev": 10000000,
+    "gp": 3080000,
+    "buffer": 2500000,
+    "net": 493636.36363636376,
+    "inject": 529363.6363636362,
+    "cum": 1211545.454545455,
+    "cash": 3080000
+   }
+  ],
+  "tot": 1068454.5454545454,
+  "cum": 1211545.454545455,
+  "fullNet": 493636.36363636376,
+  "self": 2
+ },
+ "plan_1": {
+  "R": 10000000,
+  "m": 0.35,
+  "be": 2.857142857142857,
+  "targetROAS": 5.142857142857143,
+  "full": 1944444.4444444443,
+  "N": 6,
+  "rows": [
+   {
+    "i": 1,
+    "spend": 486111.11111111107,
+    "rev": 2500000,
+    "gp": 770000,
+    "buffer": 625000,
+    "net": 83888.88888888893,
+    "inject": 0,
+    "cum": 83888.88888888893,
+    "cash": 2758888.888888889
+   },
+   {
+    "i": 2,
+    "spend": 777777.7777777778,
+    "rev": 4000000,
+    "gp": 1232000,
+    "buffer": 1000000,
+    "net": 254222.22222222225,
+    "inject": 0,
+    "cum": 338111.1111111112,
+    "cash": 2638111.111111111
+   },
+   {
+    "i": 3,
+    "spend": 1069444.4444444445,
+    "rev": 5500000.000000001,
+    "gp": 1694000.0000000002,
+    "buffer": 1375000.0000000002,
+    "net": 424555.55555555574,
+    "inject": 0,
+    "cum": 762666.666666667,
+    "cash": 2687666.6666666665
+   },
+   {
+    "i": 4,
+    "spend": 1361111.111111111,
+    "rev": 7000000,
+    "gp": 2156000,
+    "buffer": 1750000,
+    "net": 594888.888888889,
+    "inject": 0,
+    "cum": 1357555.555555556,
+    "cash": 2907555.555555556
+   },
+   {
+    "i": 5,
+    "spend": 1652777.7777777778,
+    "rev": 8500000,
+    "gp": 2618000,
+    "buffer": 2125000,
+    "net": 765222.2222222222,
+    "inject": 0,
+    "cum": 2122777.777777778,
+    "cash": 3297777.777777778
+   },
+   {
+    "i": 6,
+    "spend": 1944444.4444444443,
+    "rev": 10000000,
+    "gp": 3080000,
+    "buffer": 2500000,
+    "net": 935555.5555555557,
+    "inject": 0,
+    "cum": 3058333.333333334,
+    "cash": 3858333.333333334
+   }
+  ],
+  "tot": 0,
+  "cum": 3058333.333333334,
+  "fullNet": 935555.5555555557,
+  "self": 2
+ },
+ "sim_base": {
+  "u": {
+   "e": 0.83,
+   "c": 0.9,
+   "aov": 179900,
+   "costoUnit": 56000,
+   "costoConf": 0,
+   "margenEntregado": 101503,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 73221.741,
+   "cpaMax": 73221.741,
+   "roasMin": 1.835319649118969,
+   "margenPct": 0.40701356864924954,
+   "cmRatio": 0.5448642150592363
+  },
+  "rows": [
+   {
+    "ciclo": 1,
+    "mes": 0.3333333333333333,
+    "pauta": 1168167.62256,
+    "cpa": 39500,
+    "pedidos": 29.573863862278483,
+    "entregados": 22.091676305122025,
+    "utilidad": 930615.510866348,
+    "retiro": 260572.34304257747,
+    "capital": 2359164.865823771,
+    "retirado": 260572.34304257747,
+    "ventas": 3974292.567291452,
+    "roas": 3.4021594936708857
+   },
+   {
+    "ciclo": 2,
+    "mes": 0.6666666666666666,
+    "pauta": 1650598.7033931152,
+    "cpa": 43260.15958521872,
+    "pedidos": 38.15516907979918,
+    "entregados": 28.501911302609983,
+    "utilidad": 1076522.5381124814,
+    "retiro": 301426.3106714948,
+    "capital": 3134261.093264757,
+    "retirado": 561998.6537140723,
+    "ventas": 5127493.843339536,
+    "roas": 3.1064448510707123
+   },
+   {
+    "ciclo": 3,
+    "mes": 1,
+    "pauta": 2208667.9871506253,
+    "cpa": 46704.53575733619,
+    "pedidos": 47.29022462885086,
+    "entregados": 35.32579779775159,
+    "utilidad": 1187337.9257882468,
+    "retiro": 332454.61922070914,
+    "capital": 3989144.399832295,
+    "retirado": 894453.2729347814,
+    "ventas": 6355111.023815511,
+    "roas": 2.8773500864718735
+   },
+   {
+    "ciclo": 4,
+    "mes": 1.3333333333333333,
+    "pauta": 2824183.9678792525,
+    "cpa": 49824.30880836046,
+    "pedidos": 56.68285291707565,
+    "entregados": 42.34209112905551,
+    "utilidad": 1259566.540889288,
+    "retiro": 352678.6314490007,
+    "capital": 4896032.309272582,
+    "retirado": 1247131.904383782,
+    "ventas": 7617342.194117086,
+    "roas": 2.697183427408637
+   },
+   {
+    "ciclo": 5,
+    "mes": 1.6666666666666667,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 5812338.444636207,
+    "retirado": 1603473.1792474142,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 6,
+    "mes": 2,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 6728644.579999832,
+    "retirado": 1959814.4541110466,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 7,
+    "mes": 2.3333333333333335,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 7644950.715363458,
+    "retirado": 2316155.728974679,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 8,
+    "mes": 2.6666666666666665,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 8561256.850727083,
+    "retirado": 2672497.0038383114,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 9,
+    "mes": 3,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 9477562.986090709,
+    "retirado": 3028838.278701944,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 10,
+    "mes": 3.3333333333333335,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 10393869.121454334,
+    "retirado": 3385179.553565576,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 11,
+    "mes": 3.6666666666666665,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 11310175.25681796,
+    "retirado": 3741520.8284292086,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 12,
+    "mes": 4,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 12226481.392181585,
+    "retirado": 4097862.103292841,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 13,
+    "mes": 4.333333333333333,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 13142787.52754521,
+    "retirado": 4454203.378156473,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 14,
+    "mes": 4.666666666666667,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 14059093.662908835,
+    "retirado": 4810544.653020105,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 15,
+    "mes": 5,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 14975399.79827246,
+    "retirado": 5166885.927883738,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 16,
+    "mes": 5.333333333333333,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 15891705.933636086,
+    "retirado": 5523227.20274737,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 17,
+    "mes": 5.666666666666667,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 16808012.068999715,
+    "retirado": 5879568.4776110025,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   },
+   {
+    "ciclo": 18,
+    "mes": 6,
+    "pauta": 3000000,
+    "cpa": 50622.107344033524,
+    "pedidos": 59.2626454606416,
+    "entregados": 44.26919615909927,
+    "utilidad": 1272647.410227258,
+    "retiro": 356341.2748636323,
+    "capital": 17724318.204363342,
+    "retirado": 6235909.752474635,
+    "ventas": 7964028.389021959,
+    "roas": 2.6546761296739865
+   }
+  ],
+  "patrimonio": 23960227.95683798,
+  "roi": 6.260675138435751,
+  "tm": 0.3915415152993822,
+  "ta": 51.717403465899025,
+  "payback": 0.6666666666666666,
+  "dup": 1.6666666666666667,
+  "quiebra": null,
+  "cdt": 3445301.1479404815,
+  "totPed": 1001.3791469369863,
+  "totUtil": 22271106.258837976,
+  "totPauta": 49851618.28098299,
+  "testeo": 1610878.3019999997
+ },
+ "sim_pesimista": {
+  "u": {
+   "e": 0.73,
+   "c": 0.9,
+   "aov": 179900,
+   "costoUnit": 56000,
+   "costoConf": 0,
+   "margenEntregado": 101503,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 62556.471000000005,
+   "cpaMax": 62556.471000000005,
+   "roasMin": 1.8894016575839132,
+   "margenPct": 0.34772913285158424,
+   "cmRatio": 0.5292680865320917
+  },
+  "rows": [
+   {
+    "ciclo": 1,
+    "mes": 0.3333333333333333,
+    "pauta": 1168167.62256,
+    "cpa": 49375,
+    "pedidos": 23.659091089822788,
+    "entregados": 15.54402284601357,
+    "utilidad": 245194.9564201907,
+    "retiro": 68654.5877976534,
+    "capital": 1865662.0666225376,
+    "retirado": 68654.5877976534,
+    "ventas": 2796369.709997841,
+    "roas": 2.3938086075949365
+   },
+   {
+    "ciclo": 2,
+    "mes": 0.6666666666666666,
+    "pauta": 1295276.687968227,
+    "cpa": 50734.822355763135,
+    "pedidos": 25.53032863474868,
+    "entregados": 16.773425913029882,
+    "utilidad": 235143.90822523163,
+    "retiro": 65840.29430306486,
+    "capital": 2034965.6805447044,
+    "retirado": 134494.88210071827,
+    "ventas": 3017539.321754076,
+    "roas": 2.3296484448333525
+   },
+   {
+    "ciclo": 3,
+    "mes": 1,
+    "pauta": 1417175.289992187,
+    "cpa": 51949.4001000109,
+    "pedidos": 27.27991636600034,
+    "entregados": 17.922905052462223,
+    "utilidad": 222693.34037327213,
+    "retiro": 62354.1353045162,
+    "capital": 2195304.8856134606,
+    "retirado": 196849.01740523448,
+    "ventas": 3224330.618937954,
+    "roas": 2.275181229666889
+   },
+   {
+    "ciclo": 4,
+    "mes": 1.3333333333333333,
+    "pauta": 1532619.5176416915,
+    "cpa": 53030.60017119908,
+    "pedidos": 28.900663252799788,
+    "entregados": 18.98773575708946,
+    "utilidad": 208637.3183461773,
+    "retiro": 58418.449136929645,
+    "capital": 2345523.754822708,
+    "retirado": 255267.46654216413,
+    "ventas": 3415893.6627003937,
+    "roas": 2.2287943115565816
+   },
+   {
+    "ciclo": 5,
+    "mes": 1.6666666666666667,
+    "pauta": 1640777.10347235,
+    "cpa": 53990.37799005154,
+    "pedidos": 30.39017626019743,
+    "entregados": 19.96634580294971,
+    "utilidad": 193658.40976691205,
+    "retiro": 54224.35473473538,
+    "capital": 2484957.8098548846,
+    "retirado": 309491.8212768995,
+    "ventas": 3591945.609950653,
+    "roas": 2.1891734120064674
+   },
+   {
+    "ciclo": 6,
+    "mes": 2,
+    "pauta": 1741169.623095517,
+    "cpa": 54840.37533633995,
+    "pedidos": 31.74977582514341,
+    "entregados": 20.85960271711922,
+    "utilidad": 178317.6408999011,
+    "retiro": 49928.939451972314,
+    "capital": 2613346.5113028134,
+    "retirado": 359420.7607288718,
+    "ventas": 3752642.5288097477,
+    "roas": 2.1552423606714193
+   },
+   {
+    "ciclo": 7,
+    "mes": 2.3333333333333335,
+    "pauta": 1833609.4881380256,
+    "cpa": 55591.665805754135,
+    "pedidos": 32.98353200181013,
+    "entregados": 21.67018052518926,
+    "utilidad": 163057.20834411547,
+    "retiro": 45656.01833635233,
+    "capital": 2730747.7013105764,
+    "retirado": 405076.7790652241,
+    "ventas": 3898465.4764815476,
+    "roas": 2.126115457899555
+   },
+   {
+    "ciclo": 8,
+    "mes": 2.6666666666666665,
+    "pauta": 1918138.3449436151,
+    "cpa": 56254.60521993193,
+    "pedidos": 34.097445665905894,
+    "entregados": 22.402021802500172,
+    "utilidad": 148210.85936303606,
+    "retiro": 41499.0406216501,
+    "capital": 2837459.5200519627,
+    "retirado": 446575.8196868742,
+    "ventas": 4030123.722269781,
+    "roas": 2.101059985007624
+   },
+   {
+    "ciclo": 9,
+    "mes": 3,
+    "pauta": 1994970.8544374132,
+    "cpa": 56838.7556184124,
+    "pedidos": 35.098777809821726,
+    "entregados": 23.059897021052873,
+    "utilidad": 134018.15509147645,
+    "retiro": 37525.08342561341,
+    "capital": 2933952.5917178257,
+    "retirado": 484100.90311248763,
+    "ventas": 4148475.474087412,
+    "roas": 2.0794667074258046
+   },
+   {
+    "ciclo": 10,
+    "mes": 3.3333333333333335,
+    "pauta": 2064445.8660368347,
+    "cpa": 57352.859925357145,
+    "pedidos": 35.995517376529136,
+    "entregados": 23.649054916379644,
+    "utilidad": 120640.00619133965,
+    "retiro": 33779.20173357511,
+    "capital": 3020813.3961755903,
+    "retirado": 517880.1048460627,
+    "ventas": 4254464.979456698,
+    "roas": 2.0608266118520677
+   },
+   {
+    "ciclo": 11,
+    "mes": 3.6666666666666665,
+    "pauta": 2126985.645246425,
+    "cpa": 57804.85068214724,
+    "pedidos": 36.79597162082688,
+    "entregados": 24.174953354883264,
+    "utilidad": 108173.81970198809,
+    "retiro": 30288.669516556667,
+    "capital": 3098698.5463610217,
+    "retirado": 548168.7743626194,
+    "ventas": 4349074.108543499,
+    "roas": 2.044712487018045
+   },
+   {
+    "ciclo": 12,
+    "mes": 4,
+    "pauta": 2183062.9533799356,
+    "cpa": 58201.88089222495,
+    "pedidos": 37.50846054996765,
+    "entregados": 24.64305858132875,
+    "utilidad": 96667.30460209337,
+    "retiro": 27066.845288586144,
+    "capital": 3168299.005674529,
+    "retirado": 575235.6196512055,
+    "ventas": 4433286.2387810415,
+    "roas": 2.030764267204108
+   },
+   {
+    "ciclo": 13,
+    "mes": 4.333333333333333,
+    "pauta": 2233175.2840856607,
+    "cpa": 58550.36844896221,
+    "pedidos": 38.14109702883079,
+    "entregados": 25.05870074794183,
+    "utilidad": 86130.4794399122,
+    "retiro": 24116.534243175418,
+    "capital": 3230312.950871266,
+    "retirado": 599352.1538943809,
+    "ventas": 4508060.264554735,
+    "roas": 2.0186773052167695
+   },
+   {
+    "ciclo": 14,
+    "mes": 4.666666666666667,
+    "pauta": 2277825.3246273114,
+    "cpa": 58856.0481263172,
+    "pedidos": 38.701635552197274,
+    "entregados": 25.42697455779361,
+    "utilidad": 76545.75077961928,
+    "retiro": 21432.8102182934,
+    "capital": 3285425.891432592,
+    "retirado": 620784.9641126744,
+    "ventas": 4574312.72294707,
+    "roas": 2.008192934502342
+   },
+   {
+    "ciclo": 15,
+    "mes": 5,
+    "pauta": 2317506.6418314665,
+    "cpa": 59124.026943119825,
+    "pedidos": 39.19737476713181,
+    "entregados": 25.7526752220056,
+    "utilidad": 67876.1293980799,
+    "retiro": 19005.316231462373,
+    "capital": 3334296.70459921,
+    "retirado": 639790.2803441368,
+    "ventas": 4632906.272438807,
+    "roas": 1.9990908283988948
+   },
+   {
+    "ciclo": 16,
+    "mes": 5.333333333333333,
+    "pauta": 2352693.6273114313,
+    "cpa": 59358.84004230314,
+    "pedidos": 39.635101117790406,
+    "entregados": 26.0402614343883,
+    "utilidad": 60071.75967902488,
+    "retiro": 16820.092710126966,
+    "capital": 3377548.371568108,
+    "retirado": 656610.3730542638,
+    "ventas": 4684643.032046455,
+    "roas": 1.9911827777592472
+   },
+   {
+    "ciclo": 17,
+    "mes": 5.666666666666667,
+    "pauta": 2383834.827529038,
+    "cpa": 59564.50518796365,
+    "pedidos": 40.021063215526304,
+    "entregados": 26.29383853260078,
+    "utilidad": 53074.98623553368,
+    "retiro": 14860.996145949432,
+    "capital": 3415762.3616576926,
+    "retirado": 671471.3692002132,
+    "ventas": 4730261.552014881,
+    "roas": 1.984307594380618
+   },
+   {
+    "ciclo": 18,
+    "mes": 6,
+    "pauta": 2411348.9003935386,
+    "cpa": 59744.57467334914,
+    "pedidos": 40.360968566225196,
+    "entregados": 26.51715634800995,
+    "utilidad": 46824.192584772434,
+    "retiro": 13110.773923736282,
+    "capital": 3449475.780318729,
+    "retirado": 684582.1431239495,
+    "ventas": 4770436.427006991,
+    "roas": 1.9783269133008676
+   }
+  ],
+  "patrimonio": 4134057.9234426785,
+  "roi": 0.2527448252856601,
+  "tm": 0.03827031234741285,
+  "ta": 0.569369597279997,
+  "payback": 3,
+  "dup": null,
+  "quiebra": null,
+  "cdt": 3445301.1479404815,
+  "totPed": 616.0468967012757,
+  "totUtil": 2444936.225442677,
+  "totPauta": 34892783.60269067,
+  "testeo": 1610878.3019999997
+ },
+ "sim_quiebra": {
+  "u": {
+   "e": 0.83,
+   "c": 0.9,
+   "aov": 179900,
+   "costoUnit": 56000,
+   "costoConf": 0,
+   "margenEntregado": 101503,
+   "perdidaDevuelto": 17000,
+   "utilidadPedido": 73221.741,
+   "cpaMax": 73221.741,
+   "roasMin": 1.835319649118969,
+   "margenPct": 0.40701356864924954,
+   "cmRatio": 0.5448642150592363
+  },
+  "rows": [
+   {
+    "ciclo": 1,
+    "mes": 0.3333333333333333,
+    "pauta": 840000,
+    "cpa": 150000,
+    "pedidos": 5.6,
+    "entregados": 4.1832,
+    "utilidad": -496624.91706666665,
+    "retiro": 0,
+    "capital": 503375.08293333335,
+    "retirado": 0,
+    "ventas": 752557.68,
+    "roas": 0.8959020000000001
+   },
+   {
+    "ciclo": 2,
+    "mes": 0.6666666666666666,
+    "pauta": 393037.57464,
+    "cpa": 150000,
+    "pedidos": 2.6202504976,
+    "entregados": 1.9573271217071997,
+    "utilidad": -267844.9380162784,
+    "retiro": 0,
+    "capital": 235530.14491705497,
+    "retirado": 0,
+    "ventas": 352123.1491951252,
+    "roas": 0.8959019999999998
+   },
+   {
+    "ciclo": 3,
+    "mes": 1,
+    "pauta": 151977.13042534946,
+    "cpa": 150000,
+    "pedidos": 1.0131808695023297,
+    "entregados": 0.7568461095182403,
+    "utilidad": -144456.92987916176,
+    "retiro": 0,
+    "capital": 91073.21503789321,
+    "retirado": 0,
+    "ventas": 136156.61510233142,
+    "roas": 0.8959019999999999
+   },
+   {
+    "ciclo": 4,
+    "mes": 1.3333333333333333,
+    "pauta": 21965.89353410389,
+    "cpa": 150000,
+    "pedidos": 0.14643929022735927,
+    "entregados": 0.10939014979983737,
+    "utilidad": -77910.02041951903,
+    "retiro": 0,
+    "capital": 13163.194618374182,
+    "retirado": 0,
+    "ventas": 19679.287948990743,
+    "roas": 0.895902
+   }
+  ],
+  "patrimonio": 13163.194618374182,
+  "roi": -0.9868368053816258,
+  "tm": -0.9611383731992434,
+  "ta": -1,
+  "payback": null,
+  "dup": null,
+  "quiebra": 1.3333333333333333,
+  "cdt": 1009621.2894350538,
+  "totPed": 9.379870657329688,
+  "totUtil": -986836.8053816258,
+  "totPauta": 1406980.5985994535,
+  "testeo": 0
+ }
+}

@@ -1,7 +1,7 @@
 import "server-only";
 import { sql } from "drizzle-orm";
 import { getDb } from "@/lib/db/client";
-import { connectionHint, hostKind, poolConfig, type HostKind } from "@/lib/db/ssl";
+import { VERCEL_TO_AWS, connectionHint, hostKind, poolConfig, supabaseRegion, type HostKind } from "@/lib/db/ssl";
 import journal from "../../drizzle/meta/_journal.json";
 
 export interface HealthReport {
@@ -12,6 +12,11 @@ export interface HealthReport {
   /** Tipo de host y puerto (sin el host real) y código del último error de conexión. */
   connection: { host: HostKind | null; port: string | null; errorCode: string | null; issues: string[] };
   migrations: { applied: number | null; expected: number };
+  /** Dónde corre la app y dónde está la base: si no coinciden, cada consulta cruza el continente. */
+  regions: { app: string | null; database: string | null; sameRegion: boolean | null };
+  /** Tiempo de una consulta mínima a la base (mediana de 3), en milisegundos. */
+  latencyMs: number | null;
+  advice: string | null;
   initialAccount: "exists" | "missing" | "not_configured" | "unknown";
   problem: string | null;
 }
@@ -30,6 +35,9 @@ export async function healthReport(): Promise<HealthReport> {
     tls: null,
     connection: { host: null, port: null, errorCode: null, issues: [] },
     migrations: { applied: null, expected },
+    regions: { app: process.env.VERCEL_REGION ?? null, database: null, sameRegion: null },
+    latencyMs: null,
+    advice: null,
     initialAccount: process.env.BOOTSTRAP_USER_EMAIL ? "unknown" : "not_configured",
     problem: null,
   };
@@ -47,11 +55,29 @@ export async function healthReport(): Promise<HealthReport> {
   report.connection.host = hostKind(summary.host);
   report.connection.port = summary.port;
   report.connection.issues = summary.credentialIssues;
+  report.regions.database = supabaseRegion(summary.host);
+  const appAws = report.regions.app ? (VERCEL_TO_AWS[report.regions.app] ?? null) : null;
+  if (appAws && report.regions.database) {
+    report.regions.sameRegion = appAws === report.regions.database;
+    if (!report.regions.sameRegion) {
+      const match = Object.entries(VERCEL_TO_AWS).find(([, aws]) => aws === report.regions.database)?.[0];
+      report.advice = `La app corre en ${report.regions.app} (${appAws}) y la base en ${report.regions.database}: cada consulta cruza regiones y la app se siente lenta.${match ? ` Cambia "regions" en vercel.json a ["${match}"] y vuelve a desplegar.` : ""}`;
+    }
+  }
   report.tls = summary.mode === "verify-ca" ? "verificado con certificado" : summary.mode === "no-verify" ? "cifrado sin verificar" : `según la URL (sslmode=${summary.sslmodeInUrl ?? "no definido"})`;
   try {
     const db = getDb();
-    await db.execute(sql`select 1`);
+    const times: number[] = [];
+    for (let i = 0; i < 3; i++) {
+      const t = performance.now();
+      await db.execute(sql`select 1`);
+      times.push(performance.now() - t);
+    }
+    report.latencyMs = Math.round(times.sort((a, b) => a - b)[1]!);
     report.database = "ok";
+    if (!report.advice && report.latencyMs > 40) {
+      report.advice = `Cada consulta a la base tarda unos ${report.latencyMs} ms: revisa que la región de Vercel (vercel.json) sea la misma de tu proyecto de Supabase.`;
+    }
     const hasTable = await db.execute(sql`select to_regclass('drizzle.__drizzle_migrations') is not null as ok`);
     if ((hasTable.rows[0] as { ok: boolean }).ok) {
       const r = await db.execute(sql`select count(*)::int as n from drizzle.__drizzle_migrations`);

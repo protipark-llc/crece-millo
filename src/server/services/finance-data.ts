@@ -10,27 +10,52 @@ import { amortize, effectiveAnnualFromMonthly, simulatePayoff, type DebtForPlan 
 import { convert } from "@/lib/finance/fx";
 import { netWorthAt, debtBalanceAt, type EngineAsset, type EngineDebt } from "@/lib/finance/networth";
 import { effectiveDate, type EngineTx, type ExchangeRate } from "@/lib/finance/types";
-import { listAccounts, toEngineAccount } from "./accounts";
-import { listCategories, toEngineCategories } from "./categories";
-import { debtMonthlyRate, listAssets, listDebts, listGoals } from "./planning";
-import { getSettings, listRates } from "./settings";
-import { listRules, toEngineRule, toEngineTx } from "./transactions";
-import { transactions } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { toEngineAccount } from "./accounts";
+import { CATEGORY_ORDER, toCategoryRow, toEngineCategories } from "./categories";
+import { debtMonthlyRate, groupAssets, groupDebts, groupGoals } from "./planning";
+import { getSettings } from "./settings";
+import { toEngineRule, toEngineTx } from "./transactions";
+import { selectBatch } from "@/lib/db/batch";
+import {
+  accounts,
+  assetValuations,
+  assets,
+  categories,
+  debtPayments,
+  debts,
+  exchangeRates,
+  goalContributions,
+  goals,
+  recurrenceRules,
+  transactions,
+} from "@/lib/db/schema";
+import { asc, desc, eq } from "drizzle-orm";
 
 export async function loadFinanceData(tx: Tx, userId: string, now: Date = new Date()) {
   const settings = await getSettings(tx, userId);
   const today = todayIn(settings.timezone, now);
-  const [accountRows, categoryRows, txRows, ruleRows, debtRows, assetRows, goalRows, rateRows] = await Promise.all([
-    listAccounts(tx, userId),
-    listCategories(tx, userId, { includeArchived: true }),
-    tx.select().from(transactions).where(eq(transactions.userId, userId)),
-    listRules(tx, userId),
-    listDebts(tx, userId),
-    listAssets(tx, userId),
-    listGoals(tx, userId),
-    listRates(tx, userId),
-  ]);
+  // Una sola consulta para todas las tablas (mismo orden que los list* de cada servicio).
+  const b = await selectBatch(tx, {
+    accounts: [accounts, tx.select().from(accounts).where(eq(accounts.userId, userId)).orderBy(asc(accounts.archivedAt), asc(accounts.createdAt))],
+    categories: [categories, tx.select().from(categories).where(eq(categories.userId, userId)).orderBy(...CATEGORY_ORDER)],
+    txs: [transactions, tx.select().from(transactions).where(eq(transactions.userId, userId))],
+    rules: [recurrenceRules, tx.select().from(recurrenceRules).where(eq(recurrenceRules.userId, userId)).orderBy(desc(recurrenceRules.createdAt))],
+    debts: [debts, tx.select().from(debts).where(eq(debts.userId, userId)).orderBy(asc(debts.status), asc(debts.createdAt))],
+    payments: [debtPayments, tx.select().from(debtPayments).where(eq(debtPayments.userId, userId)).orderBy(desc(debtPayments.paidOn))],
+    assets: [assets, tx.select().from(assets).where(eq(assets.userId, userId)).orderBy(asc(assets.createdAt))],
+    valuations: [assetValuations, tx.select().from(assetValuations).where(eq(assetValuations.userId, userId)).orderBy(desc(assetValuations.valuedOn))],
+    goals: [goals, tx.select().from(goals).where(eq(goals.userId, userId)).orderBy(asc(goals.priority), asc(goals.createdAt))],
+    contributions: [goalContributions, tx.select().from(goalContributions).where(eq(goalContributions.userId, userId)).orderBy(desc(goalContributions.contributedOn))],
+    rates: [exchangeRates, tx.select().from(exchangeRates).where(eq(exchangeRates.userId, userId))],
+  });
+  const accountRows = b.accounts;
+  const categoryRows = b.categories.map(toCategoryRow);
+  const txRows = b.txs;
+  const ruleRows = b.rules;
+  const debtRows = groupDebts(b.debts, b.payments);
+  const assetRows = groupAssets(b.assets, b.valuations);
+  const goalRows = groupGoals(b.goals, b.contributions);
+  const rateRows = b.rates;
   const rates: ExchangeRate[] = rateRows.map((r) => ({ from: r.fromCurrency, to: r.toCurrency, rate: Number(r.rate), asOf: r.asOf }));
   const engineDebts: EngineDebt[] = debtRows.map(({ debt, payments }) => ({
     id: debt.id,

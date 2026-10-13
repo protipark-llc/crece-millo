@@ -29,27 +29,41 @@ test.describe("Vistas y Co-Piloto", () => {
     await expect(nav.getByRole("link", { name: "Simulador" })).toHaveCount(0);
   });
 
-  test("Co-Piloto: precio recomendado, test con veredicto y ruta", async ({ page }) => {
+  test("Co-Piloto: encabezado, siguiente paso, pestañas y guardado en la cuenta", async ({ page }) => {
     await register(page);
-    await page.goto("/comunidad/emprendedores/co-piloto/productos/nuevo");
-    await page.getByLabel("Nombre").fill("Lámpara de prueba");
-    await page.getByLabel("Costo del producto").fill("40.000");
-    await page.getByLabel("Envío de ida").fill("15.000");
-    // El cálculo se ve mientras se escribe, antes de guardar.
-    await expect(page.getByText("Precio recomendado").first()).toBeVisible();
-    await page.getByRole("button", { name: "Crear producto" }).click();
-    await expect(page).toHaveURL(/\/co-piloto\/productos\/[0-9a-f-]+$/);
-    await expect(page.getByRole("heading", { name: "Lámpara de prueba" })).toBeVisible();
+    // La dirección del Co-Piloto anterior lleva al nuevo.
+    await page.goto("/comunidad/emprendedores/co-piloto");
+    await expect(page).toHaveURL(/\/comunidad\/emprendedores\/copiloto\/ruta$/);
+    await expect(page.getByRole("heading", { name: "Co-Piloto de Negocio" })).toBeVisible();
 
-    await page.getByLabel("Días").fill("4");
-    await page.getByLabel("Gasto en anuncios").fill("400.000");
-    await page.getByLabel("Ventas").fill("2");
-    await page.getByRole("button", { name: "Registrar test" }).click();
-    await expect(page.getByText("Test registrado.")).toBeVisible();
-    await expect(page.getByText("Parar", { exact: true })).toBeVisible();
+    // Cuenta nueva: 6 productos del original; «Tu siguiente paso» pide el costo real del activo.
+    const select = page.getByLabel("Producto activo");
+    await expect(select.locator("option")).toHaveCount(6);
+    const coach = page.getByRole("region", { name: "Tu siguiente paso" });
+    await expect(coach).toContainText("Masajeador de ojos térmico:");
+    await expect(coach).toContainText("los costos son estimados");
+    await expect(coach.getByRole("link", { name: "Ir a la ficha" })).toHaveAttribute("href", /\/copiloto\/productos\?vista=ficha$/);
 
-    await page.goto("/comunidad/emprendedores/ruta");
-    await page.getByRole("button", { name: /Marcar hecho/ }).first().click();
-    await expect(page.getByText(/1 de 23/).first()).toBeVisible();
+    // Riesgo con teclado y producto activo; se guarda en la cuenta.
+    const risk = page.getByRole("slider", { name: "Riesgo" });
+    await risk.focus();
+    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("ArrowRight");
+    await expect(page.getByText("7 · Normal")).toBeVisible();
+    await select.selectOption({ label: "Lámpara proyector" });
+    await expect(coach).toContainText("Lámpara proyector:");
+    await page.getByRole("button", { name: "USD" }).click();
+    await expect(page.getByText("Guardado en tu cuenta")).toBeVisible();
+
+    // Pestañas: Productos muestra la vista previa con el activo resaltado y precios en USD.
+    await page.getByRole("link", { name: "Productos", exact: true }).click();
+    await expect(page).toHaveURL(/\/copiloto\/productos$/);
+    await expect(page.getByRole("button", { name: "Lámpara proyector" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByText(/US\$\u00a0\d+/).first()).toBeVisible();
+
+    await page.reload();
+    await expect(page.getByLabel("Producto activo")).toHaveValue("lampara");
+    await expect(page.getByText("7 · Normal")).toBeVisible();
+    await expect(page.getByRole("button", { name: "USD" })).toHaveAttribute("aria-pressed", "true");
   });
 });

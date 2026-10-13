@@ -28,8 +28,8 @@ export function Crumbs({ items }: { items: { href?: string; label: string }[] })
 
 const TABS = [
   { key: "muro", label: "Muro", href: "/comunidad/emprendedores" },
-  { key: "ruta", label: "Ruta", href: "/comunidad/emprendedores/ruta" },
-  { key: "copiloto", label: "Co-Piloto", href: "/comunidad/emprendedores/co-piloto" },
+  { key: "copiloto", label: "Co-Piloto", href: "/comunidad/emprendedores/copiloto" },
+  { key: "ruta", label: "Ruta", href: "/comunidad/emprendedores/copiloto/ruta" },
 ];
 
 /** Pestañas de la sección Emprendedores (indicador en accent, como en el diseño de Comunidad). */

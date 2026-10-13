@@ -4,7 +4,7 @@ La aplicación queda en **Vercel** (Next.js) y la base de datos en **Supabase** 
 
 | Archivo | Para qué |
 |---|---|
-| `vercel.json` | Usa `npm run vercel-build` y la región `iad1` (Washington D. C., EE. UU.) |
+| `vercel.json` | Usa `npm run vercel-build` y la región `pdx1` (Oregón, EE. UU.), la misma del proyecto de Supabase (`us-west-2`) |
 | `npm run vercel-build` | Aplica las migraciones (solo si `MIGRATE_ON_BUILD=true`), crea la cuenta inicial si se definió y compila |
 | `drizzle/0002_supabase_hardening.sql` | Cierra la API pública de Supabase (`anon`/`authenticated`) sobre las tablas de la app |
 | `src/lib/db/client.ts` | Pool pequeño en Vercel y TLS verificado con el certificado de Supabase |
@@ -23,7 +23,7 @@ Revisa los precios vigentes en cada sitio antes de pasar a producción.
 1. En [supabase.com](https://supabase.com) → **New project**.
    - Organización: la de Protipark. Nombre: `crece`.
    - **Database password**: genera una fuerte y guárdala en tu gestor de contraseñas.
-   - **Region**: *East US (North Virginia)*, la misma zona que Vercel `iad1` (menos latencia).
+   - **Region**: la que quieras, pero la región de funciones de Vercel (`regions` en `vercel.json`) debe ser la misma. Hoy: Supabase en *West US (Oregon)* (`us-west-2`) y Vercel en `pdx1`. `/api/salud` avisa si no coinciden (`regions.sameRegion`) y dice qué región poner.
 2. Cuando el proyecto esté listo, pulsa **Connect** (arriba) y copia dos cadenas, reemplazando `[YOUR-PASSWORD]`:
    - **Transaction pooler** (puerto **6543**) → será `DATABASE_URL`.
    - **Session pooler** (puerto **5432**) → será `MIGRATION_DATABASE_URL`.

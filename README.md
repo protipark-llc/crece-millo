@@ -65,9 +65,9 @@ Edita `src/lib/db/schema.ts`, genera la migración con `npm run db:generate` y a
 
 ## Pruebas
 
-- **Unitarias** (`tests/unit`, 74): dinero y redondeo, fechas y bisiestos, recurrencias, saldos y flujo de caja (caso de referencia COP 1.000.000 + 3.000.000 − 2.200.000 = 1.800.000, tasa de ahorro 26,67 %), transferencias, monedas sin tasa, presupuesto, conversión de tasas, amortización, avalancha / bola de nieve, objetivos, patrimonio, escenarios, indicadores sin divisiones por cero, recomendaciones, motor del Co-Piloto (precio, CPA, veredicto, capital) y vistas/secciones.
-- **Integración** (`tests/integration`, 19): persistencia real, transferencias, idempotencia de formularios, recurrencias sin duplicados, presupuesto y reasignación, pagos de deuda transaccionales, objetivos, validación de entradas, restricciones de BD, **aislamiento entre usuarios (servicios, FK compuestas y RLS)** simulaciones que no modifican datos, cuenta inicial idempotente, cambio de contraseña y Co-Piloto (productos, tests, plan, ruta, RLS y vistas).
-- **E2E** (`tests/e2e`, 10): rutas protegidas, flujo completo ingreso → gasto → transferencia con recarga, validaciones, recurrencias + presupuesto, simulador, pago de deuda, lección con cuestionario, vista Esencial/Personalizada, Co-Piloto con veredicto y ruta, y versión móvil sin desplazamiento horizontal.
+- **Unitarias** (`tests/unit`, 92): dinero y redondeo, fechas y bisiestos, recurrencias, saldos y flujo de caja (caso de referencia COP 1.000.000 + 3.000.000 − 2.200.000 = 1.800.000, tasa de ahorro 26,67 %), transferencias, monedas sin tasa, presupuesto, conversión de tasas, amortización, avalancha / bola de nieve, objetivos, patrimonio, escenarios, indicadores sin divisiones por cero, recomendaciones, motor del Co-Piloto comparado contra las 2.494 comprobaciones del original, formato es-CO, respaldo y CSV, «Tu siguiente paso» y vistas/secciones.
+- **Integración** (`tests/integration`, 25): persistencia real, transferencias, idempotencia de formularios, recurrencias sin duplicados, presupuesto y reasignación, pagos de deuda transaccionales, objetivos, validación de entradas, restricciones de BD, **aislamiento entre usuarios (servicios, FK compuestas y RLS)** simulaciones que no modifican datos, cuenta inicial idempotente, cambio de contraseña y Co-Piloto (estado inicial, respaldo de ida y vuelta, migración del Co-Piloto anterior, cargas simultáneas, RLS y vistas).
+- **E2E** (`tests/e2e`, 10): rutas protegidas, flujo completo ingreso → gasto → transferencia con recarga, validaciones, recurrencias + presupuesto, simulador, pago de deuda, lección con cuestionario, vista Esencial/Personalizada, Co-Piloto (encabezado, siguiente paso, guardado y redirección desde el anterior), y versión móvil sin desplazamiento horizontal.
 
 ## Cómo probar manualmente
 
@@ -90,7 +90,7 @@ Edita `src/lib/db/schema.ts`, genera la migración con `npm run db:generate` y a
 17. **Aislamiento**: crea un segundo usuario en otra ventana privada: no ve los datos del primero.
 18. **Móvil**: abre el sitio con ancho de 390 px; usa el menú ☰.
 19. **Vistas**: en Configuración → Tu vista elige Esencial: el menú muestra solo Panel, Movimientos, Cuentas, Flujo de caja, Emprendedores y Co-Piloto. Marca Diagnóstico: pasa a Personalizada y aparece en el menú.
-20. **Co-Piloto**: Comunidad → Emprendedores → Co-Piloto → Nuevo producto: costo 85.000, envío 16.000, devoluciones 20 %, CPA esperado 35.000 → precio recomendado y CPA máximo en vivo. Registra un test (4 días, 171.200 de anuncios, 4 ventas) y lee el veredicto; guarda un plan de capital y marca pasos en la Ruta.
+20. **Co-Piloto**: Comunidad → Emprendedores → Abrir Co-Piloto. Cambia el producto activo, el riesgo y COP/USD; «Tu siguiente paso» cambia con ellos. Recarga: todo sigue igual (se guarda en tu cuenta).
 
 ## Diseño y marca
 
@@ -113,12 +113,13 @@ En **Configuración → Tu vista** cada persona elige qué ve (`src/lib/sections
 La navegación (barra lateral, menú «Más» y barra inferior en móvil) y el Panel se ajustan a la
 vista. La página de inicio lleva a la primera sección visible.
 
-## Comunidad › Emprendedores
+## Comunidad › Emprendedores · Co-Piloto de Negocio
 
-El **Co-Piloto de Negocio** y la **Ruta de dropshipping** funcionan con datos reales: precio
-recomendado y rango, CPA máximo, veredicto de cada test (seguir, optimizar o parar) y plan de
-capital. El muro y los en vivo siguen siendo una vista previa con datos de ejemplo; su modelo de
-datos propuesto está en `docs/COMUNIDAD.md`.
+El Co-Piloto se construye por fases a partir del paquete `docs/copiloto/` (especificación, motor
+original con 2.494 comprobaciones, diseños y app original). Avance y decisiones:
+`docs/copiloto/AVANCE.md`. El motor se verifica con `npm run copiloto:verificar` (0 diferencias con
+el original). El muro y los en vivo siguen siendo una vista previa con datos de ejemplo
+(`docs/COMUNIDAD.md`).
 
 ## Limitaciones conocidas
 

@@ -45,7 +45,7 @@ export const NAV: NavGroup[] = [
       { key: "muro", href: "/comunidad", label: "Muro", icon: "MessagesSquare", exact: true },
       { key: "en_vivo", href: "/comunidad/en-vivo", label: "En vivo", icon: "Radio" },
       { key: "emprendedores", href: "/comunidad/emprendedores", label: "Emprendedores", icon: "Rocket", exact: true },
-      { key: "copiloto", href: "/comunidad/emprendedores/co-piloto", label: "Co-Piloto de Negocio", icon: "Gauge" },
+      { key: "copiloto", href: "/comunidad/emprendedores/copiloto", label: "Co-Piloto de Negocio", icon: "Gauge" },
     ],
   },
   {
@@ -60,7 +60,7 @@ export const MOBILE_CANDIDATES: NavItem[] = [
   { key: "movimientos", href: "/universidad/finanzas/movimientos", label: "Movimientos", icon: "ArrowLeftRight" },
   { key: "presupuesto", href: "/universidad/finanzas/presupuesto", label: "Presupuesto", icon: "PieChart" },
   { key: "flujo", href: "/universidad/finanzas/flujo-de-caja", label: "Flujo", icon: "Waves" },
-  { key: "copiloto", href: "/comunidad/emprendedores/co-piloto", label: "Co-Piloto", icon: "Gauge" },
+  { key: "copiloto", href: "/comunidad/emprendedores/copiloto", label: "Co-Piloto", icon: "Gauge" },
   { key: "uni_inicio", href: "/universidad", label: "Inicio", icon: "Home", exact: true },
   { key: "cuentas", href: "/universidad/finanzas/cuentas", label: "Cuentas", icon: "Landmark" },
 ];

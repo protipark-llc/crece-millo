@@ -119,3 +119,13 @@ body {
 .nav-scroll {
   scrollbar-color: rgb(255 255 255 / 0.18) transparent;
 }
+
+/* Barra de progreso de navegación: avanza rápido al principio y se frena cerca del final. */
+@keyframes nav-progress {
+  from {
+    transform: scaleX(0.05);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

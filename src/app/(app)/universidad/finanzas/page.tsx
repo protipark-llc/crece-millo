@@ -7,9 +7,11 @@ import { DIAGNOSTIC_STEPS } from "@/server/services/settings";
 import { categoryLabel } from "@/server/services/categories";
 import { courseProgress } from "@/server/education-data";
 import { currentSections } from "@/server/sections";
-import { listProducts, listTests, productSummary, routeProgress } from "@/server/services/copilot";
-import { routeStatus } from "@/lib/copilot/route";
-import { VerdictBadge } from "@/components/copilot/verdict";
+import { loadState } from "@/server/services/copiloto";
+import { E } from "@/lib/copiloto/engine";
+import { activeProduct as copilotoActive, verdictTone } from "@/lib/copiloto/logic";
+import { formatMoney as copilotoMoney } from "@/lib/copiloto/format";
+import { ToneBadge } from "@/components/copiloto/tone";
 import { daysInMonth, monthStart, parts } from "@/lib/finance/dates";
 import { panelHeadline } from "@/lib/finance/headline";
 import { LineStatusText, budgetLineStatus } from "@/components/finance/budget-status";
@@ -24,27 +26,29 @@ export const metadata: Metadata = { title: "Panel financiero" };
 const MORE_KEYS = ["net_flow", "essential", "discretionary", "budget_execution", "debt_payments", "debt_service_ratio", "emergency_coverage", "net_worth", "net_worth_mom", "net_worth_yoy", "goals"];
 
 export default async function FinancePanel() {
-  const sections = await currentSections();
-  const on = (k: string) => sections.enabled.includes(k);
-  const [data, edu] = await Promise.all([
+  // Todo en paralelo: secciones visibles, datos del panel y progreso de la Universidad.
+  const sectionsP = currentSections();
+  const [data, edu, sections] = await Promise.all([
     financePage(async ({ d, tx, userId, f }) => {
       const o = await buildOverview(tx, userId, d);
       const next = upcoming(d, 14).slice(0, 6);
       // Resumen del negocio solo si la persona ve el Co-Piloto.
-      const business = on("copiloto")
-        ? await Promise.all([listProducts(tx, userId), listTests(tx, userId), routeProgress(tx, userId)]).then(([products, tests, done]) => ({
-            summaries: products.map((p) => productSummary(p, tests)),
-            route: routeStatus(done),
-          }))
+      const business = (await sectionsP).enabled.includes("copiloto")
+        ? await loadState(tx, userId, d.today).then((S) => {
+            const p = copilotoActive(S);
+            const g = E.gate(p, S.risk);
+            const last = S.tests.find((t) => t.productId === p.id) ?? null;
+            const money = (n: number) => copilotoMoney(n, { cur: S.cur, trm: S.trm });
+            return { name: p.nombre, price: money(p.precio), cpaObj: money(g.cpaObj), pass: g.pass, last: last?.verdict ?? null, risk: `${S.risk} · ${E.riskProfile(S.risk).label}` };
+          })
         : null;
       return { d, o, next, f, business };
     }),
     courseProgress(),
+    sectionsP,
   ]);
+  const on = (k: string) => sections.enabled.includes(k);
   const { d, o, next, f, business } = data;
-  const activeProduct = business
-    ? (business.summaries.find((x) => x.product.status === "ganador") ?? business.summaries.find((x) => x.product.status === "prueba") ?? business.summaries.find((x) => x.product.status !== "descartado") ?? null)
-    : null;
   const doneSteps = d.settings.diagnosticSteps.length;
   const missingSteps = DIAGNOSTIC_STEPS.filter((s) => !d.settings.diagnosticSteps.includes(s.key));
   const { y, m, d: day } = parts(d.today);
@@ -292,28 +296,18 @@ export default async function FinancePanel() {
         {business && (
           <Card tone="dark" className="flex flex-col p-6">
             <p className="t-overline text-nav-accent">Tu negocio</p>
-            {activeProduct ? (
-              <>
-                <h2 className="mt-3 text-lg font-semibold text-nav-ink-active">{activeProduct.product.name}</h2>
-                <p className="mt-2 text-xs text-nav-ink">{activeProduct.usingRecommended ? "Precio recomendado" : "Tu precio"}</p>
-                <p className="t-kpi text-nav-ink-active">{activeProduct.price ? f.money(activeProduct.price, activeProduct.product.currency) : "—"}</p>
-                {activeProduct.check && (
-                  <p className="mt-1 text-xs text-nav-ink">CPA máximo {f.money(activeProduct.check.contribution, activeProduct.product.currency)}</p>
-                )}
-                {activeProduct.latest && (
-                  <p className="mt-2 flex items-center gap-2 text-sm text-nav-ink">
-                    Último test: <VerdictBadge verdict={activeProduct.latest.result.verdict} />
-                  </p>
-                )}
-              </>
-            ) : (
-              <p className="mt-3 text-sm text-nav-ink">Calcula tu primer producto en el Co-Piloto: precio recomendado y cuánto puedes pagar por venta en anuncios.</p>
-            )}
-            <p className="mt-3 text-xs text-nav-ink tabular">
-              Ruta de dropshipping: {business.route.done} de {business.route.total} pasos
+            <h2 className="mt-3 text-lg font-semibold text-nav-ink-active">{business.name}</h2>
+            <p className="mt-2 text-xs text-nav-ink">Precio de venta</p>
+            <p className="t-kpi text-nav-ink-active">{business.price}</p>
+            <p className="mt-1 text-xs text-nav-ink">
+              CPA objetivo {business.cpaObj} · riesgo {business.risk}
+            </p>
+            <p className="mt-2 flex flex-wrap items-center gap-2 text-sm text-nav-ink">
+              {business.pass ? <ToneBadge tone="g">Pasa la validación</ToneBadge> : <ToneBadge tone="r">No pasa la validación</ToneBadge>}
+              {business.last && <ToneBadge tone={verdictTone(business.last)}>Último test: {business.last}</ToneBadge>}
             </p>
             <div className="mt-auto pt-4">
-              <Link href="/comunidad/emprendedores/co-piloto" className={buttonClass("accent", "md", "w-full sm:w-auto")}>
+              <Link href="/comunidad/emprendedores/copiloto" className={buttonClass("accent", "md", "w-full sm:w-auto")}>
                 Abrir Co-Piloto
               </Link>
             </div>

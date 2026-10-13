@@ -152,7 +152,7 @@ export function Composer({ locked }: { locked: boolean }) {
         <p className="flex-1">
           <strong className="font-semibold">Publicar en el muro llegará pronto.</strong> Mientras tanto, tus herramientas ya funcionan: el Co-Piloto y la ruta guardan tu avance.
         </p>
-        <Link href="/comunidad/emprendedores/co-piloto" className={buttonClass("primary", "sm")}>
+        <Link href="/comunidad/emprendedores/copiloto" className={buttonClass("primary", "sm")}>
           Abrir Co-Piloto
         </Link>
       </div>
