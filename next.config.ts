@@ -16,6 +16,14 @@ const nextConfig: NextConfig = {
     // después de guardar.
     staleTimes: { dynamic: 30 },
   },
+  async redirects() {
+    // El Co-Piloto anterior se reemplazó por el del paquete docs/copiloto.
+    return [
+      { source: "/comunidad/emprendedores/co-piloto", destination: "/comunidad/emprendedores/copiloto", permanent: false },
+      { source: "/comunidad/emprendedores/co-piloto/:path*", destination: "/comunidad/emprendedores/copiloto/productos", permanent: false },
+      { source: "/comunidad/emprendedores/ruta", destination: "/comunidad/emprendedores/copiloto/ruta", permanent: false },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

@@ -432,7 +432,7 @@ const finite = z.number().finite();
 const text = (max = 5000) => z.string().max(max);
 const obj = z.record(z.string().max(64), z.unknown());
 
-const productSchema = z
+export const productSchema = z
   .object({
     id,
     nombre: text(200),
@@ -445,7 +445,7 @@ const productSchema = z
   })
   .passthrough();
 
-const testSchema = z
+export const testSchema = z
   .object({
     id,
     ts: finite,
@@ -459,7 +459,7 @@ const testSchema = z
   })
   .passthrough();
 
-const savedSchema = z
+export const savedSchema = z
   .object({
     id,
     ts: finite,

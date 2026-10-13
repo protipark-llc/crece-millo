@@ -96,7 +96,7 @@ describe("vistas y secciones", () => {
   });
   it("personalizada: filtra claves desconocidas y siempre incluye Configuración", () => {
     expect(normalizeSections(["copiloto", "inexistente"])).toEqual(["copiloto", "configuracion"]);
-    expect(homeHref(enabledSections({ viewMode: "personalizada", sections: ["copiloto"] }))).toBe("/comunidad/emprendedores/co-piloto");
+    expect(homeHref(enabledSections({ viewMode: "personalizada", sections: ["copiloto"] }))).toBe("/comunidad/emprendedores/copiloto");
   });
   it("pro (o sin valor) muestra todo", () => {
     expect(enabledSections({ viewMode: "pro" })).toHaveLength(VIEW_PRESETS.pro.length);

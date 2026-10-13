@@ -39,6 +39,17 @@ Plan por fases de `PROMPT-claude-code.md`. Decisiones del dueño del producto (1
 
 Las tablas anteriores no se borran: quedan como respaldo hasta confirmar la migración en producción.
 
+## Fase 3 · Layout del módulo ✓
+
+- Rutas `/comunidad/emprendedores/copiloto/{ruta, productos, marketing, test, capital, crecer, bitacora}`; las subpestañas van en `?vista=` (`ficha`, `evaluacion`, `resultados`, `analisis`, `precio`; `ofertas`, `creativos`, `pagina`, `lanzamiento`). El estado guarda los códigos del original (`producto`, `eval`, `lanz`…) para que los respaldos sigan siendo compatibles (`src/lib/copiloto/nav.ts`).
+- El estado se carga una vez en el layout y vive en el navegador (`src/components/copiloto/store.tsx`): cambiar de pestaña no consulta la base; cada cambio se guarda en segundo plano (espera de 450 ms al escribir, en orden, se vacía al ocultar la pestaña) con el indicador «Guardando… / Guardado en tu cuenta / Reintentar». En modo ejemplo no guarda nada.
+- Encabezado: producto activo, riesgo 1–10 (10 segmentos con «5 · Normal»; es un control deslizante accesible con teclado), COP/USD, TRM y las 7 pestañas con `aria-current`.
+- «Tu siguiente paso»: `coach()` del original portado sin cambios (`src/lib/copiloto/logic.ts`), con íconos lucide en lugar de emojis (💰 → `coins`, que faltaba en la especificación).
+- Pie con el aviso de la especificación más «Solo invierte capital que puedas perder.» del original.
+- Las direcciones del Co-Piloto anterior redirigen al nuevo. El Panel y Emprendedores leen el estado nuevo.
+- Sin la insignia PREMIUM: el acceso está abierto para todas las cuentas.
+- Mientras llegan las fases 4–9, cada sección dice qué traerá; Productos muestra una vista previa de solo lectura para revisar los datos migrados.
+
 ## Diferencias encontradas en el paquete (manda el original)
 
 - Ruta: 25 casillas (no 23); la insignia dice «automático».

@@ -40,7 +40,7 @@ export const SECTIONS: SectionDef[] = [
   { key: "muro", label: "Muro", group: "Comunidad", href: "/comunidad" },
   { key: "en_vivo", label: "En vivo", group: "Comunidad", href: "/comunidad/en-vivo" },
   { key: "emprendedores", label: "Emprendedores · Dropshipping", group: "Comunidad", href: "/comunidad/emprendedores" },
-  { key: "copiloto", label: "Co-Piloto de Negocio", group: "Comunidad", href: "/comunidad/emprendedores/co-piloto" },
+  { key: "copiloto", label: "Co-Piloto de Negocio", group: "Comunidad", href: "/comunidad/emprendedores/copiloto" },
   { key: "configuracion", label: "Configuración", group: "Cuenta", href: "/configuracion" },
 ];
 
