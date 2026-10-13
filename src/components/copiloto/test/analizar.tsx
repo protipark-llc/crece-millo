@@ -129,7 +129,7 @@ export function AnalizarTest({ mentor }: { mentor?: ReactNode }) {
   };
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
       <form
         aria-labelledby="tf-t"
         className="h-fit space-y-3 rounded-lg border border-border bg-surface p-4 sm:p-5"

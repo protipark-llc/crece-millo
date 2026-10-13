@@ -96,7 +96,7 @@ export function Resultados() {
         <h3 id="res-t" className="text-base font-semibold text-ink">
           Registrar resultado (un día, una semana o un test)
         </h3>
-        <div className="grid gap-x-6 gap-y-3 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-3 md:grid-cols-3">
           <div className="space-y-3">
             <LabeledField label="Fecha">
               {(id) => (

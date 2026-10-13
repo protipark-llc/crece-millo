@@ -26,7 +26,7 @@ export function Ficha() {
   };
   return (
     <div key={p.id} className="space-y-6">
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {FICHA.map(([group, fields]) => (
           <fieldset key={group} className="min-w-0 space-y-3">
             <legend className="mb-1 text-base font-semibold text-ink">

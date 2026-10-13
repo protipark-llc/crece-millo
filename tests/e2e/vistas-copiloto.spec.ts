@@ -256,4 +256,70 @@ test.describe("Vistas y Co-Piloto", () => {
         .first(),
     ).toBeVisible();
   });
+  test("Co-Piloto · Marketing: ofertas, creativos con checklist guardado, página y lanzamiento", async ({
+    page,
+  }) => {
+    await register(page);
+    await page.goto("/comunidad/emprendedores/copiloto/marketing");
+    await expect(
+      page.getByRole("heading", {
+        level: 2,
+        name: "Masajeador de ojos térmico",
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Lleva 2 con descuento" }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", { name: "Usar esta oferta en el producto" })
+      .first()
+      .click();
+    await expect(
+      page
+        .getByRole("status")
+        .filter({ hasText: "Oferta aplicada al producto" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/Oferta activa en el producto: upsell de/),
+    ).toBeVisible();
+
+    await page.getByLabel("Nombre de tu tienda").fill("Calma Casa");
+    const sub = page.getByRole("navigation", {
+      name: "Secciones de marketing",
+    });
+    await sub.getByRole("link", { name: "2 · Creativos y anuncios" }).click();
+    await expect(
+      page.getByRole("heading", {
+        name: "10 ganchos para los primeros 3 segundos",
+      }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Regalo perfecto" }).click();
+    await expect(
+      page.getByRole("button", { name: "Regalo perfecto" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await page
+      .getByRole("checkbox", { name: "Una sola idea por video" })
+      .check();
+    await expect(page.getByText("1/8 listos")).toBeVisible();
+
+    await sub.getByRole("link", { name: "3 · Página y WhatsApp" }).click();
+    await expect(
+      page.getByText(/Te escribimos de Calma Casa para confirmar/),
+    ).toBeVisible();
+    await sub.getByRole("link", { name: "4 · Plan de lanzamiento" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Paso a paso" }),
+    ).toBeVisible();
+    await expect(page.getByText("Guardado en tu cuenta")).toBeVisible();
+
+    await page.goto(
+      "/comunidad/emprendedores/copiloto/marketing?vista=creativos",
+    );
+    await expect(
+      page.getByRole("checkbox", { name: "Una sola idea por video" }),
+    ).toBeChecked();
+    await expect(
+      page.getByRole("button", { name: "Regalo perfecto" }),
+    ).toHaveAttribute("aria-pressed", "true");
+  });
 });

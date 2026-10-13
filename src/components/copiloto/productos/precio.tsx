@@ -220,7 +220,7 @@ export function Precio() {
         )}
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
         <form
           aria-label="Supuestos de precio"
           className="min-w-0 space-y-2"
@@ -308,7 +308,7 @@ export function Precio() {
             <PriceChart q={q} R={R} ev={ev} money={fmt.money} />
           </section>
 
-          <div className="grid gap-4 2xl:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 2xl:grid-cols-2">
             <Breakdown ev={ev} fmt={fmt} />
             <section aria-labelledby="hl-t" className={card}>
               <HealthList items={health(q, ev, p, reinv, fmt)} />

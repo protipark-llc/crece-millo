@@ -27,7 +27,7 @@ export function Evaluacion() {
   const score = p.score as Record<string, number>;
   return (
     <div className="space-y-8">
-      <div className="grid gap-6 lg:grid-cols-[1fr_420px]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_420px]">
         <div className="min-w-0">
           <h3 className="t-overline text-muted">
             Criterios (1 = malo · 5 = excelente)
