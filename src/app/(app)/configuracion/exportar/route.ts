@@ -34,6 +34,19 @@ export async function GET() {
       courseEnrollments: await tx.select().from(s.courseEnrollments).where(eq(s.courseEnrollments.userId, user.id)),
       lessonProgress: await tx.select().from(s.lessonProgress).where(eq(s.lessonProgress.userId, user.id)),
       auditLog: await tx.select().from(s.auditLog).where(eq(s.auditLog.userId, user.id)),
+      copiloto: {
+        settings: await tx.select().from(s.copilotoSettings).where(eq(s.copilotoSettings.userId, user.id)),
+        products: await tx.select().from(s.copilotoProducts).where(eq(s.copilotoProducts.userId, user.id)),
+        tests: await tx.select().from(s.copilotoTests).where(eq(s.copilotoTests.userId, user.id)),
+        productState: await tx.select().from(s.copilotoProductState).where(eq(s.copilotoProductState.userId, user.id)),
+        saved: await tx.select().from(s.copilotoSaved).where(eq(s.copilotoSaved.userId, user.id)),
+        anterior: {
+          products: await tx.select().from(s.copilotProducts).where(eq(s.copilotProducts.userId, user.id)),
+          tests: await tx.select().from(s.copilotTests).where(eq(s.copilotTests.userId, user.id)),
+          plans: await tx.select().from(s.copilotPlans).where(eq(s.copilotPlans.userId, user.id)),
+          routeProgress: await tx.select().from(s.dropshipProgress).where(eq(s.dropshipProgress.userId, user.id)),
+        },
+      },
     };
   });
   return new NextResponse(JSON.stringify(data, null, 2), {

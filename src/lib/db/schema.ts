@@ -13,6 +13,7 @@
 import { sql } from "drizzle-orm";
 import {
   bigint,
+  doublePrecision,
   bigserial,
   boolean,
   check,
@@ -712,6 +713,113 @@ export const dropshipProgress = pgTable(
   (t) => [primaryKey({ columns: [t.userId, t.stepKey] })],
 );
 
+/* ───────────── Co-Piloto de Negocio (módulo del paquete docs/copiloto) ─────────────
+ * Misma forma lógica que el estado `S` del original para que los respaldos JSON entren y
+ * salgan sin pérdida. Los productos y tests se guardan como documento (jsonb) con su id
+ * original («ojos», «p1728…», «t1728…»), validados con zod al escribir. */
+
+export const copilotoSettings = pgTable(
+  "copiloto_settings",
+  {
+    userId: uuid("user_id")
+      .primaryKey()
+      .references(() => users.id, { onDelete: "cascade" }),
+    risk: smallint("risk").notNull().default(5),
+    cur: text("cur").notNull().default("COP"),
+    trm: doublePrecision("trm").notNull().default(3300),
+    active: text("active").notNull(),
+    marca: text("marca").notNull().default(""),
+    tab: text("tab").notNull().default("ruta"),
+    ptab: text("ptab").notNull().default("ficha"),
+    pf: jsonb("pf").$type<Record<string, unknown>>().notNull(),
+    checks: jsonb("checks").$type<Record<string, boolean>>().notNull().default({}),
+    testForm: jsonb("test_form").$type<Record<string, unknown>>().notNull(),
+    planForm: jsonb("plan_form").$type<Record<string, unknown>>().notNull(),
+    simForm: jsonb("sim_form").$type<Record<string, unknown>>().notNull(),
+    /** De dónde salió el estado inicial: valores por defecto o datos del Co-Piloto anterior. */
+    origin: text("origin").notNull().default("default"),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [check("copiloto_settings_values", sql`${t.risk} BETWEEN 1 AND 10 AND ${t.cur} IN ('COP', 'USD') AND ${t.trm} > 0 AND ${t.origin} IN ('default', 'legacy', 'import')`)],
+);
+
+export const copilotoProducts = pgTable(
+  "copiloto_products",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    id: text("id").notNull(),
+    /** Orden de la lista (el original conserva el orden del arreglo). */
+    position: integer("position").notNull(),
+    data: jsonb("data").$type<Record<string, unknown>>().notNull(),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.id] }),
+    check("copiloto_products_values", sql`char_length(${t.id}) BETWEEN 1 AND 64 AND jsonb_typeof(${t.data}) = 'object'`),
+  ],
+);
+
+/** Tests: sobreviven si se borra su producto (el original los deja en la bitácora), por eso sin FK. */
+export const copilotoTests = pgTable(
+  "copiloto_tests",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    id: text("id").notNull(),
+    productId: text("product_id"),
+    ts: bigint("ts", { mode: "number" }).notNull(),
+    data: jsonb("data").$type<Record<string, unknown>>().notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.id] }),
+    index("copiloto_tests_user_ts_idx").on(t.userId, t.ts),
+    check("copiloto_tests_values", sql`char_length(${t.id}) BETWEEN 1 AND 64 AND jsonb_typeof(${t.data}) = 'object'`),
+  ],
+);
+
+/** Supuestos de Precio y margen por producto (S.pc) y marketing por producto (S.mk). */
+export const copilotoProductState = pgTable(
+  "copiloto_product_state",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    productId: text("product_id").notNull(),
+    kind: text("kind").notNull(),
+    data: jsonb("data").$type<Record<string, unknown>>().notNull(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.productId, t.kind] }),
+    check("copiloto_product_state_values", sql`${t.kind} IN ('pc', 'mk') AND jsonb_typeof(${t.data}) = 'object'`),
+  ],
+);
+
+/** Planes de capital y simulaciones guardadas (S.plans y S.sims). */
+export const copilotoSaved = pgTable(
+  "copiloto_saved",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    id: text("id").notNull(),
+    kind: text("kind").notNull(),
+    ts: bigint("ts", { mode: "number" }).notNull(),
+    data: jsonb("data").$type<Record<string, unknown>>().notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.id] }),
+    check("copiloto_saved_values", sql`${t.kind} IN ('plan', 'sim') AND char_length(${t.id}) BETWEEN 1 AND 64 AND jsonb_typeof(${t.data}) = 'object'`),
+  ],
+);
+
 export const RLS_TABLES = [
   "user_settings",
   "accounts",
@@ -735,4 +843,9 @@ export const RLS_TABLES = [
   "copilot_tests",
   "copilot_plans",
   "dropship_progress",
+  "copiloto_settings",
+  "copiloto_products",
+  "copiloto_tests",
+  "copiloto_product_state",
+  "copiloto_saved",
 ] as const;
