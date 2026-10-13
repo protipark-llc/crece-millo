@@ -1,0 +1,139 @@
+🎁
+TU SIGUIENTE PASO
+Agrega un combo o un upsell a Masajeador de ojos térmico: sube el ticket y te deja pagar más por cada pedido.
+Ver ofertas
+PRODUCTOS
+6
+1 clase A · 2 clase B
+EN TEST
+1
+GANADORES
+0
+ganador o escalando
+GASTO TOTAL EN ADS
+$1.580.000
+1 producto(s) con datos
+RECAUDO TOTAL
+$5.217.100
+UTILIDAD NETA REAL
+$1.244.587
+ROAS global 3.30×
+Base de datos de productos
+Todas las etapas
+Idea
+Investigando
+Validado
+En test
+Ganador
+Escalando
+Pausado
+Descartado
+Ordenar por puntaje
+Utilidad neta real
+Utilidad por pedido
+Gasto en ads
+Nombre
+⚡ Alta rápida de producto
++ En blanco
+CSV para Notion
+PRODUCTO	ETAPA	CLASE	PUNTAJE	PRECIO	UTILIDAD/PEDIDO	REGISTROS	GASTO	PEDIDOS	ENTREGA REAL	ROAS	CPA	NETA	SUGERENCIA
+Masajeador de ojos térmico
+Bienestar · Ambiente y bienestar
+	En test	Clase A	78	$179.900	$73.222	3	$1.580.000	40	80,6%	3.30×	$39.500	$1.244.587	Escalar
+Masajeador de cuello EMS
+Bienestar · Ambiente y bienestar
+	Validado	Clase B	70	$99.900	$23.110	0	—	—	—	—	—	—	Sin datos
+Lámpara proyector
+Hogar · Ambiente y bienestar
+	Descartado	Clase B	63	$69.900	$12.917	0	—	—	—	—	—	—	Sin datos
+Difusor humidificador LED
+Hogar · Ambiente y bienestar
+	Investigando	Clase C	58	$69.900	$10.217	0	—	—	—	—	—	—	Sin datos
+Mascarilla hidroplástica
+Belleza · Ambiente y bienestar
+	Idea	Clase C	56	$49.900	$8.597	0	—	—	—	—	—	—	Sin datos
+Mopa giratoria con balde
+Hogar · Ambiente y bienestar
+	Investigando	Clase C	52	$89.900	$12.737	0	—	—	—	—	—	—	Sin datos
+Haz clic en un producto para abrir su ficha. Clase A = testear ya · B = testear si no hay A · C = no testear.
+PRODUCTO ACTIVO
+Masajeador de ojos térmico
+En test Clase A Puntaje 78/100 Escalar
+1 · Ficha
+2 · Evaluación inicial
+3 · Resultados de venta
+4 · Análisis y estrategia
+5 · Precio y margen
+GASTO EN ADS
+$1.580.000
+3 registro(s) · 10 días
+RECAUDO
+$5.217.100
+AOV $179.900
+UTILIDAD NETA
+$1.244.587
+rentabilidad 23,9% · meta 20%
+ROASi
+3.30×
+equilibrio 1.85×
+CPA REALi
+$39.500
+objetivo $53.696
+CTRi
+1,1%
+CPC $632
+CONVERSIÓNi
+1,6%
+pedidos / clics
+% CONFIRMACIÓNi
+90%
+36 de 40
+% ENTREGAi
+80,6%
+29 entregados · 7 devueltos
+Embudo
+Impresiones
+223.000
+Clics
+2.500 · 1,1%
+Pedidos
+40 · 1,6%
+Confirmados
+36 · 90%
+Entregados
+29 · 80,6%
+El ancho usa raíz cuadrada para que se vean todas las etapas. El % es la conversión frente a la etapa anterior.
+Esperado vs. real
+MÉTRICA	ESPERADO	REAL	
+% de entrega	83%	80,6%	por debajo
+Ticket promedio	$179.900	$179.900	mejor o igual
+Utilidad por pedido	$73.222	$70.615	mejor o igual
+CPA	$53.696 (objetivo)	$39.500	mejor o igual
+ROAS	1.84× (mínimo)	3.30×	mejor o igual
+Usar el % de entrega real como esperado
+Evolución
+$0
+$1.382.532
+$2.765.063
+$4.147.595
+$5.530.126
+10-01
+10-04
+10-08
+Utilidad neta acumulada
+Recaudo acumulado
+Gasto en ads acumulado
+Diagnóstico y estrategia
+Estrategia sugerida · Escalar. Rentable y sobre el equilibrio. Sube el presupuesto 22% cada 2–3 días. Hazlo mientras el CPA siga bajo $53.696; duplica el conjunto de anuncios ganador y prueba un público nuevo.
+Creativo (CTR 1,1%)
+CTR aceptable pero mejorable. Prueba variaciones del gancho y del texto.
+Página y oferta (conversión 1,6%)
+La página convierte bien.
+Entregas (80,6%)
+Buena tasa de entrega.
+Unidad económica
+CPA ($39.500) dentro de tu objetivo ($53.696).
+Ticket promedio
+El AOV es igual al precio: agrega un combo 2× o un upsell posventa para subirlo.
+Pedir estrategia al mentor
+Aplicar etapa sugerida

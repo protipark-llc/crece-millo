@@ -1,0 +1,170 @@
+🎁
+TU SIGUIENTE PASO
+Agrega un combo o un upsell a Masajeador de ojos térmico: sube el ticket y te deja pagar más por cada pedido.
+Ver ofertas
+PRODUCTOS
+6
+1 clase A · 2 clase B
+EN TEST
+1
+GANADORES
+0
+ganador o escalando
+GASTO TOTAL EN ADS
+$1.580.000
+1 producto(s) con datos
+RECAUDO TOTAL
+$5.217.100
+UTILIDAD NETA REAL
+$1.244.587
+ROAS global 3.30×
+Base de datos de productos
+Todas las etapas
+Idea
+Investigando
+Validado
+En test
+Ganador
+Escalando
+Pausado
+Descartado
+Ordenar por puntaje
+Utilidad neta real
+Utilidad por pedido
+Gasto en ads
+Nombre
+⚡ Alta rápida de producto
++ En blanco
+CSV para Notion
+PRODUCTO	ETAPA	CLASE	PUNTAJE	PRECIO	UTILIDAD/PEDIDO	REGISTROS	GASTO	PEDIDOS	ENTREGA REAL	ROAS	CPA	NETA	SUGERENCIA
+Masajeador de ojos térmico
+Bienestar · Ambiente y bienestar
+	En test	Clase A	78	$179.900	$73.222	3	$1.580.000	40	80,6%	3.30×	$39.500	$1.244.587	Escalar
+Masajeador de cuello EMS
+Bienestar · Ambiente y bienestar
+	Validado	Clase B	70	$99.900	$23.110	0	—	—	—	—	—	—	Sin datos
+Lámpara proyector
+Hogar · Ambiente y bienestar
+	Descartado	Clase B	63	$69.900	$12.917	0	—	—	—	—	—	—	Sin datos
+Difusor humidificador LED
+Hogar · Ambiente y bienestar
+	Investigando	Clase C	58	$69.900	$10.217	0	—	—	—	—	—	—	Sin datos
+Mascarilla hidroplástica
+Belleza · Ambiente y bienestar
+	Idea	Clase C	56	$49.900	$8.597	0	—	—	—	—	—	—	Sin datos
+Mopa giratoria con balde
+Hogar · Ambiente y bienestar
+	Investigando	Clase C	52	$89.900	$12.737	0	—	—	—	—	—	—	Sin datos
+Haz clic en un producto para abrir su ficha. Clase A = testear ya · B = testear si no hay A · C = no testear.
+PRODUCTO ACTIVO
+Masajeador de ojos térmico
+En test Clase A Puntaje 78/100 Escalar
+1 · Ficha
+2 · Evaluación inicial
+3 · Resultados de venta
+4 · Análisis y estrategia
+5 · Precio y margen
+CRITERIOS (1 = MALO · 5 = EXCELENTE)
+Factor wow · se luce en un video de 15 s (15%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+Resuelve un problema o un deseo fuerte (12%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+Valor percibido mayor que el precio (12%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+Demanda / tendencia (12%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+Competencia (5 = poca) (10%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+Fácil de enviar (ligero, no frágil) (8%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+Recompra o upsell posible (8%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+Hay material para creativos (videos, UGC) (8%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+Bajo riesgo de devolución o garantía (7%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+Proveedor confiable (stock, calificación) (8%)
+1 · malo
+2
+3 · regular
+4
+5 · excelente
+El puntaje combina estos criterios (65%) con la economía del producto (35%). Si no pasa la validación de margen, queda en clase C aunque los criterios sean buenos.
+PUNTAJE DE EVALUACIÓN INICIAL
+78
+Clase A · testear ya
+CRITERIOS
+43/65
+atractivo comercial
+ECONOMÍA
+35/35
+40,7% del ticket
+Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo).
+Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido.
+UNIDAD ECONÓMICA
+UTILIDAD POR PEDIDOi
+$73.222
+antes de publicidad
+CPA MÁXIMOi
+$73.222
+punto de equilibrio
+CPA OBJETIVOi
+$53.696
+deja 26,7% de holgura
+ROAS MÍNIMOi
+1.84×
+sobre lo entregado
+🟢 Pasa la validación para riesgo 5/10. Utilidad por pedido 40,7% del ticket (mínimo 15,6%). Para testear, apunta a un CPA de $53.696 o menos.
+TICKET ESPERADOi
+$179.900
+sin upsell
+MARGEN POR ENTREGADOi
+$101.503
+PÉRDIDA POR DEVOLUCIÓN
+$17.000
+flete perdido
+PRESUPUESTO POR TEST
+$536.959
+10 pedidos a CPA objetivo
+FONDO DE APRENDIZAJEi
+$2.684.797
+5 tests
+CORTE SIN VENTAS
+$142.376
+1.9× CPA máximo

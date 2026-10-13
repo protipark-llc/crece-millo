@@ -1,0 +1,211 @@
+🎁
+TU SIGUIENTE PASO
+Agrega un combo o un upsell a Masajeador de ojos térmico: sube el ticket y te deja pagar más por cada pedido.
+Ver ofertas
+PRODUCTOS
+6
+1 clase A · 2 clase B
+EN TEST
+1
+GANADORES
+0
+ganador o escalando
+GASTO TOTAL EN ADS
+$1.580.000
+1 producto(s) con datos
+RECAUDO TOTAL
+$5.217.100
+UTILIDAD NETA REAL
+$1.244.587
+ROAS global 3.30×
+Base de datos de productos
+Todas las etapas
+Idea
+Investigando
+Validado
+En test
+Ganador
+Escalando
+Pausado
+Descartado
+Ordenar por puntaje
+Utilidad neta real
+Utilidad por pedido
+Gasto en ads
+Nombre
+⚡ Alta rápida de producto
++ En blanco
+CSV para Notion
+PRODUCTO	ETAPA	CLASE	PUNTAJE	PRECIO	UTILIDAD/PEDIDO	REGISTROS	GASTO	PEDIDOS	ENTREGA REAL	ROAS	CPA	NETA	SUGERENCIA
+Masajeador de ojos térmico
+Bienestar · Ambiente y bienestar
+	En test	Clase A	78	$179.900	$73.222	3	$1.580.000	40	80,6%	3.30×	$39.500	$1.244.587	Escalar
+Masajeador de cuello EMS
+Bienestar · Ambiente y bienestar
+	Validado	Clase B	70	$99.900	$23.110	0	—	—	—	—	—	—	Sin datos
+Lámpara proyector
+Hogar · Ambiente y bienestar
+	Descartado	Clase B	63	$69.900	$12.917	0	—	—	—	—	—	—	Sin datos
+Difusor humidificador LED
+Hogar · Ambiente y bienestar
+	Investigando	Clase C	58	$69.900	$10.217	0	—	—	—	—	—	—	Sin datos
+Mascarilla hidroplástica
+Belleza · Ambiente y bienestar
+	Idea	Clase C	56	$49.900	$8.597	0	—	—	—	—	—	—	Sin datos
+Mopa giratoria con balde
+Hogar · Ambiente y bienestar
+	Investigando	Clase C	52	$89.900	$12.737	0	—	—	—	—	—	—	Sin datos
+Haz clic en un producto para abrir su ficha. Clase A = testear ya · B = testear si no hay A · C = no testear.
+PRODUCTO ACTIVO
+Masajeador de ojos térmico
+En test Clase A Puntaje 78/100 Escalar
+1 · Ficha
+2 · Evaluación inicial
+3 · Resultados de venta
+4 · Análisis y estrategia
+5 · Precio y margen
+Mueve los controles y mira cómo cambia el rango de precios. Subir el precio deja más por pedido, pero encarece el CPA porque menos gente compra. El mejor precio es el que deja más utilidad total al mes sin bajar del margen saludable, porque esa utilidad es la que reinviertes para crecer de forma compuesta.
+PRODUCTO
+Costo proveedor
+Precio a evaluar
+Precio del upsell / combo
+Costo del upsell
+% que toma el upsell
+PUBLICIDAD
+CPA al precio de referencia
+Se llena con tu CPA real cuando tienes 3+ pedidos; si no, con 20% del precio (referencia típica de contraentrega). Ajústalo con tus tests.
+Precio de referencia del CPA
+Sensibilidad del CPA al precio
+1,2 = si subes el precio 10%, el CPA sube cerca de 12%. Cuanto más alto, más castiga subir el precio.
+Techo de precio percibido
+Precio desde el que el cliente siente que es caro (competencia, precio tachado). Por encima, el CPA sube el doble de rápido. 0 = sin techo.
+Pauta mensual
+Lo que invertirías en anuncios al mes con este producto.
+OPERACIÓN CONTRAENTREGA
+% de confirmación
+% de entrega
+Flete por pedido
+Flete de retorno
+Empaque e insertos
+Costo de confirmación por pedido
+COSTOS Y MÁRGENES
+Comisión %
+Impuestos / retenciones %
+Costos fijos mensuales
+Margen neto mínimo saludable %
+Lo mínimo que debe quedar después de todo (incluida la pauta) para poder reinvertir y escalar.
+Margen neto objetivo %
+Aplicar precio recomendado
+Aplicar precio evaluado
+Guardar supuestos en la ficha
+Restablecer
+PRECIO DE EQUILIBRIOi
+$123.500
+por debajo pierdes dinero
+MÍNIMO SALUDABLE
+$153.500
+margen neto ≥ 11%
+PRECIO RECOMENDADO
+$179.900
+rango $167.000 – $194.000
+PARA MARGEN OBJETIVO
+—
+margen neto 20%
+PRECIO EVALUADO
+$129.900
+margen neto 2,8% · 2.32× el costo
+UTILIDAD POR PEDIDOi
+$2.485
+por pedido generado, después de todo
+UTILIDAD MENSUAL
+$143.386
+58 pedidos · CPA $26.000
+RETORNO DE LA PAUTA
+9,6%
+utilidad neta ÷ pauta, al mes
+🟢 Rango saludable: $167.000 – $194.000. Precio recomendado: $179.900 (margen neto 17,4%, $824.907 de utilidad al mes con $1.500.000 de pauta). Reinvirtiendo el 72% de esa utilidad, la pauta podría crecer cerca de 39,6% por mes antes de que el CPA se encarezca.
+Precio vs. utilidad mensual y margen neto
+-$492.013
+-20%
+-$147.604
+0%
+$196.805
+20%
+$541.215
+40%
+$885.624
+60%
+$62.000
+$100.000
+$137.000
+$175.000
+$213.000
+$250.000
+$288.000
+recomendado
+Utilidad neta mensual (izq.)
+Margen neto % (der.)
+Rango saludable
+Equilibrio
+Precio evaluado
+¿A dónde va cada peso? (precio evaluado, por pedido entregado)
+CONCEPTO	POR PEDIDO ENTREGADO	% DEL TICKET
+Producto	$56.000	43,1%
+Flete	$16.000	12,3%
+Devoluciones	$5.667	4,4%
+Comisión e impuestos	$3.897	3%
+Empaque	$1.000	0,8%
+Confirmación	$0	0%
+Publicidad	$38.519	29,7%
+Fijos	$5.136	4%
+Utilidad	$3.682	2,8%
+Ticket	$129.900	100%
+Salud del precio
+🔴
+Costo del producto ≤ 33% del precio (hoy 43,1% · 2.32×)
+🔴
+Margen de contribución antes de pauta ≥ 45% (hoy 36,4%)
+🔴
+Margen neto ≥ 11% (hoy 2,8%)
+🔴
+ROAS con colchón de 30% sobre el equilibrio (hoy 3.37× vs. 3.57×)
+🟢
+Precio ≤ competencia + 15% (competencia $169.900)
+🔴
+La reinversión hace crecer la pauta ≥ 15% al mes (hoy 6,9%)
+1/6 en verde. Con 5 o más el precio está listo para escalar.
+Estrategia de inversión: cómo crece el capital con cada precio
+Usa el capital, la reinversión, el ciclo y el horizonte de la pestaña 6 · Crecer, y el CPA que corresponde a cada precio. Sin fase de testeo, porque es el mismo producto ya validado.
+PRECIO	VALOR	MARGEN NETO	UTILIDAD/PEDIDO	CPA	UTILIDAD MENSUAL*	PATRIMONIO EN 6 MESES	TASA MENSUAL	PESIMISTA
+Precio actual	$179.900	17,4%	$21.135	$38.431	$824.907	$32.997.807	46,8%	sostenible
+Mínimo saludable	$153.500	11%	$11.402	$31.767	$538.386	$23.436.214	38,6%	sostenible
+Evaluado	$129.900	2,8%	$2.485	$26.000	$143.386	$10.351.320	21%	se agota m4.3
+* Con $1.500.000 de pauta al mes. Capital $3.300.000, 72% a pauta por ciclo, 72% de reinversión, ciclo de 10 días. Pesimista: entrega −10 pp y CPA +25%.
+Con estos supuestos, precio actual ($179.900) es el que más hace crecer el capital: $32.997.807 en 6 meses y aguanta el escenario pesimista.
+Tabla de precios
+PRECIO	× COSTO	CPA	PEDIDOS/MES	UTILIDAD/PEDIDO	MARGEN CONTRIB.	MARGEN NETO	ROAS	UTILIDAD MENSUAL	
+$62.000	1.1×	$10.703	140	-$24.636	-29,9%	-58,9%	3.91×	-$3.452.588	
+$72.500	1.3×	$12.914	116	-$20.266	-11,5%	-41,4%	3.79×	-$2.354.033	
+$83.000	1.5×	$15.189	99	-$15.970	2,2%	-28,5%	3.69×	-$1.577.125	
+$93.500	1.7×	$17.523	86	-$11.741	12,9%	-18,6%	3.60×	-$1.005.001	
+$104.000	1.9×	$19.911	75	-$7.571	21,4%	-10,8%	3.53×	-$570.396	
+$114.500	2.0×	$22.346	67	-$3.457	28,3%	-4,5%	3.46×	-$232.058	
+$123.500	2.2×	$24.470	61	$28	33,3%	0%	3.41×	$1.741	equilibrio
+$125.000	2.2×	$24.828	60	$606	34,1%	0,7%	3.40×	$36.602	
+$135.500	2.4×	$27.351	55	$4.621	38,9%	5,1%	3.34×	$253.435	
+$146.000	2.6×	$29.913	50	$8.592	43,1%	8,7%	3.29×	$430.826	
+$153.500	2.7×	$31.767	47	$11.402	45,8%	11%	3.26×	$538.386	mínimo sano
+$156.500	2.8×	$32.513	46	$12.520	46,7%	11,9%	3.25×	$577.616	
+$167.000	3.0×	$35.148	43	$16.409	49,9%	14,6%	3.21×	$700.267	
+$177.500	3.2×	$37.816	40	$20.260	52,7%	16,9%	3.17×	$803.600	
+$179.900	3.2×	$38.431	39	$21.135	53,3%	17,4%	3.16×	$824.907	recomendado
+$188.000	3.4×	$42.715	35	$21.582	55,2%	17%	2.97×	$757.888	
+$198.500	3.5×	$48.667	31	$21.712	57,4%	16,2%	2.75×	$669.223	
+$209.000	3.7×	$55.075	27	$21.324	59,4%	15,1%	2.56×	$580.775	
+$219.500	3.9×	$61.951	24	$20.407	61,2%	13,8%	2.39×	$494.098	
+$230.000	4.1×	$69.303	22	$18.949	62,8%	12,2%	2.24×	$410.137	
+$240.500	4.3×	$77.140	19	$16.942	64,3%	10,4%	2.10×	$329.434	
+$251.000	4.5×	$85.472	18	$14.374	65,7%	8,5%	1.98×	$252.267	
+$261.500	4.7×	$94.306	16	$11.238	66,9%	6,4%	1.87×	$178.742	
+$272.000	4.9×	$103.650	14	$7.522	68,1%	4,1%	1.77×	$108.852	
+$282.500	5.0×	$113.514	13	$3.218	69,2%	1,7%	1.68×	$42.520	

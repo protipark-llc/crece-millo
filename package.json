@@ -16,7 +16,8 @@
     "test:integration": "vitest run --project integration",
     "test:e2e": "next build && playwright test",
     "vercel-build": "tsx scripts/migrate.ts --on-build && tsx scripts/bootstrap-user.ts && next build",
-    "user:bootstrap": "tsx --env-file=.env scripts/bootstrap-user.ts"
+    "user:bootstrap": "tsx --env-file=.env scripts/bootstrap-user.ts",
+    "copiloto:verificar": "tsx docs/copiloto/motor/verificar.mjs src/lib/copiloto/engine.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.4",

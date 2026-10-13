@@ -1,0 +1,71 @@
+⚡ Alta rápida de producto
+Pon lo que ves en Dropi. La app calcula el precio, los márgenes y la evaluación, y completa público, beneficio, ángulos, objeciones y creativos. Todo queda editable.
+Cerrar
+1
+Lo que ves en Dropi
+Pega aquí el texto del producto en Dropi (opcional)
+Leer el texto pegado
+Nombre del producto
+Costo proveedor (COP)
+Precio sugerido en Dropi
+Categoría
+Hogar
+Bienestar
+Belleza
+Mascotas
+Tecnología
+Fitness
+Cocina
+Auto
+Bebés
+Otro
+Tamaño del paquete
+Pequeño (flete ~$16.000)
+Mediano (~$18.000)
+Grande o pesado (~$22.000)
+Descripción o características (opcional, mejora los textos)
+Link en Dropi
+Stock del proveedor
+Agregar combo 2× automáticamente (segunda unidad con descuento, 20% de aceptación)
+Calcular y completar
+2
+Resultado (puedes editar todo antes de guardar)
+PRECIO DE VENTA SUGERIDO
+$169.900
+recomendado · rango $156.500–$189.500
+PRECIO TACHADO
+$239.900
+ancla de ~30% de descuento
+UTILIDAD POR PEDIDOi
+$76.502
+39,1% del ticket
+MARGEN NETO ESTIMADOi
+28,7%
+después de pauta y fijos
+CPA OBJETIVOi
+$56.102
+máximo $76.502
+PRESUPUESTO DEL TEST
+$561.018
+10 pedidos
+EVALUACIÓN INICIALi
+77 · Clase A
+testear ya
+COSTO / PRECIO
+26,5%
+3.8× el costo
+Combo 2× incluido: segunda unidad a $129.900. Sube el ticket esperado a $195.880.
+Nombreautomático
+Público objetivoautomático
+Beneficio principalautomático
+Problema que resuelveautomático
+Ángulos de ventaautomático
+Objecionesautomático
+Permiso sanitario INVIMA
+No
+Sí
+No sé
+Los criterios de evaluación se estimaron por categoría y palabras clave: Factor 4 · Resuelve 5 · Valor 4 · Demanda 3 · Competencia 3 · Fácil 3 · Recompra 3 · Hay 4 · Bajo 3 · Proveedor 3. Ajústalos luego en la ficha.
+✅ Guardar producto
+✨ Mejorar textos con IA
+Recalcular

@@ -1,0 +1,22 @@
+📘 Glosario en lenguaje sencillo
+Cerrar
+CPA. Costo por adquisición: lo que pagas en anuncios por cada pedido. Si es mayor que la utilidad por pedido, pierdes plata.
+ROAS. Retorno sobre la publicidad: ventas ÷ gasto en anuncios. ROAS 3× = vendes $3 por cada $1 de pauta. El de equilibrio es el mínimo para no perder.
+AOV / ticket promedio. Lo que paga en promedio cada cliente. Se sube con combos y upsells.
+CTR. Porcentaje de personas que hacen clic en el anuncio. Mide si el creativo atrae (sano: 1,2% o más).
+CPC. Costo por clic: gasto en anuncios ÷ clics.
+Conversión. Pedidos ÷ clics. Mide si la página y la oferta convencen (sano: 1,5% o más).
+% de confirmación. Pedidos que el cliente confirma por WhatsApp o llamada antes de despachar. Los no confirmados no se envían.
+% de entrega. Pedidos despachados que el cliente recibe y paga. El resto vuelve y pierdes el flete.
+Utilidad por pedido. Lo que te deja cada pedido antes de publicidad. Es el CPA máximo que puedes pagar.
+Margen de contribución. Lo que queda de las ventas después de producto, fletes, devoluciones y comisiones, antes de la publicidad.
+Margen neto. Lo que queda de las ventas después de TODO, incluida la publicidad y los fijos. Es lo que puedes reinvertir.
+Precio de equilibrio. El precio en el que no ganas ni pierdes.
+Puntaje y clase. Evaluación inicial del producto de 0 a 100. A = testear ya, B = testear si no hay A, C = no testear.
+Upsell. Oferta adicional que se agrega al pedido (un complemento o una segunda unidad).
+Downsell. Oferta más barata o con descuento para el cliente que duda o rechaza, para no perder la venta.
+Cross-sell. Venta de un producto relacionado después de la compra (recompra), sin pagar publicidad.
+Order bump. Complemento barato que se marca en el mismo formulario de compra.
+Contraentrega (COD). El cliente paga al recibir. Tú pagas la publicidad antes; Dropi te liquida después de la entrega.
+Interés compuesto. Reinvertir parte de la utilidad para que la pauta y las ganancias crezcan sobre lo ya ganado.
+Fondo de aprendizaje. Dinero que separas para testear productos y das por gastado. Cada test fallido es información.
