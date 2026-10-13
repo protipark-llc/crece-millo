@@ -67,7 +67,12 @@ export function formatFecha(iso: ISODate): string {
  * personas comparten el módulo, así que se fijan y se restauran en la misma llamada (es
  * síncrona: nadie más corre en medio).
  */
-export function diagnoseEsCO(a: Aggregate | null, p: CopProduct, r: number, ctx: MoneyCtx = {}) {
+export function diagnoseEsCO(
+  a: Aggregate | null,
+  p: CopProduct,
+  r: number,
+  ctx: MoneyCtx = {},
+) {
   setFormatters({ money: (n) => formatMoney(n, ctx), pct: formatPct });
   try {
     return E.diagnose(a, p, r);

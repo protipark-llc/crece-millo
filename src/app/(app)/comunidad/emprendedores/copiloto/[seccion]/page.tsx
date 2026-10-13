@@ -1,11 +1,23 @@
 import { notFound } from "next/navigation";
 import { tabBySlug } from "@/lib/copiloto/nav";
-import { ProductosPreview, SeccionPendiente } from "@/components/copiloto/pendiente";
+import { SeccionPendiente } from "@/components/copiloto/pendiente";
+import { Portfolio } from "@/components/copiloto/productos/portfolio";
+import { Detalle } from "@/components/copiloto/productos/detalle";
 
-export default async function CopilotoSeccion({ params }: { params: Promise<{ seccion: string }> }) {
+export default async function CopilotoSeccion({
+  params,
+}: {
+  params: Promise<{ seccion: string }>;
+}) {
   const { seccion } = await params;
   const tab = tabBySlug(seccion);
   if (!tab) notFound();
-  if (tab.slug === "productos") return <ProductosPreview />;
+  if (tab.slug === "productos")
+    return (
+      <div className="space-y-4">
+        <Portfolio />
+        <Detalle precio={<SeccionPendiente slug="productos" />} />
+      </div>
+    );
   return <SeccionPendiente slug={tab.slug} />;
 }

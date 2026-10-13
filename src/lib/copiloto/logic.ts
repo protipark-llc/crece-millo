@@ -7,11 +7,20 @@ import type { CopilotState, Product, Test } from "./state";
 
 /** Tests de un producto en orden cronológico (prodTests, L702). */
 export function prodTests(S: Pick<CopilotState, "tests">, id: string): Test[] {
-  return S.tests.filter((t) => t.productId === id).sort((a, b) => String(a.form.fecha || "").localeCompare(String(b.form.fecha || "")) || a.ts - b.ts);
+  return S.tests
+    .filter((t) => t.productId === id)
+    .sort(
+      (a, b) =>
+        String(a.form.fecha || "").localeCompare(String(b.form.fecha || "")) ||
+        a.ts - b.ts,
+    );
 }
 
 /** Supuestos por defecto de Precio y margen (pcDefaults, L786). */
-export function pcDefaults(S: Pick<CopilotState, "tests" | "risk" | "simForm">, p: Product) {
+export function pcDefaults(
+  S: Pick<CopilotState, "tests" | "risk" | "simForm">,
+  p: Product,
+) {
   const a = E.agg(prodTests(S, p.id));
   const n = E.rn(S.risk);
   return {
@@ -23,7 +32,12 @@ export function pcDefaults(S: Pick<CopilotState, "tests" | "risk" | "simForm">, 
     cpa0: Math.round((a && a.ped >= 3 ? a.cpa : p.precio * 0.2) / 100) * 100,
     p0: p.precio,
     elast: 1.2,
-    techo: (p.precioComp as number) > 0 ? Math.round(((p.precioComp as number) * 1.15) / 1000) * 1000 : (p.ancla as number) > p.precio ? (p.ancla as number) : 0,
+    techo:
+      (p.precioComp as number) > 0
+        ? Math.round(((p.precioComp as number) * 1.15) / 1000) * 1000
+        : (p.ancla as number) > p.precio
+          ? (p.ancla as number)
+          : 0,
     presupuesto: 1500000,
     conf: p.conf ?? 90,
     entrega: a && a.conf >= 5 ? Math.round(a.tasaEntrega * 100) : p.entrega,
@@ -112,8 +126,16 @@ export function productsCsv(S: CopilotState): string {
 
 /** «Tests a CSV» (exportTestsCSV, L1142). */
 export function testsCsv(S: CopilotState): string {
-  const h = "Test;Producto;Canal;Fecha inicio;Presupuesto/día (COP);Gasto total (COP);CPA (COP);Ventas;Pedidos entregados;Pedidos devueltos;Resultado;Aprendizaje\n";
-  const map = (v: string) => (/Escalar/.test(v) ? "Escalar" : /matar/i.test(v) ? "Matar" : /Optimizar|Mantener/.test(v) ? "Iterar" : "En curso");
+  const h =
+    "Test;Producto;Canal;Fecha inicio;Presupuesto/día (COP);Gasto total (COP);CPA (COP);Ventas;Pedidos entregados;Pedidos devueltos;Resultado;Aprendizaje\n";
+  const map = (v: string) =>
+    /Escalar/.test(v)
+      ? "Escalar"
+      : /matar/i.test(v)
+        ? "Matar"
+        : /Optimizar|Mantener/.test(v)
+          ? "Iterar"
+          : "En curso";
   return (
     h +
     S.tests
@@ -139,11 +161,19 @@ export function testsCsv(S: CopilotState): string {
 }
 
 /** Supuestos de precio de un producto: los guardados o los por defecto (pcQ, L787), sin escribir el estado. */
-export function pcQ(S: Pick<CopilotState, "tests" | "risk" | "simForm" | "pc">, p: Product) {
-  return (S.pc[p.id] as ReturnType<typeof pcDefaults> | undefined) ?? pcDefaults(S, p);
+export function pcQ(
+  S: Pick<CopilotState, "tests" | "risk" | "simForm" | "pc">,
+  p: Product,
+) {
+  return (
+    (S.pc[p.id] as ReturnType<typeof pcDefaults> | undefined) ??
+    pcDefaults(S, p)
+  );
 }
 
-export function activeProduct(S: Pick<CopilotState, "products" | "active">): Product {
+export function activeProduct(
+  S: Pick<CopilotState, "products" | "active">,
+): Product {
   return S.products.find((p) => p.id === S.active) ?? S.products[0]!;
 }
 
@@ -151,10 +181,25 @@ export function activeProduct(S: Pick<CopilotState, "products" | "active">): Pro
 
 /** Texto con partes en negrita (el original usa <b>…</b>). */
 export type Rich = { t: string; b?: boolean }[];
-export type CoachIcon = "zap" | "search" | "calculator" | "coins" | "gift" | "film" | "octagon" | "rocket" | "trending";
+export type CoachIcon =
+  | "zap"
+  | "search"
+  | "calculator"
+  | "coins"
+  | "gift"
+  | "film"
+  | "octagon"
+  | "rocket"
+  | "trending";
 export type CoachAction =
   | { kind: "alta"; label: string }
-  | { kind: "go"; label: string; tab: "producto" | "marketing" | "crecer"; vista?: string; activate?: string };
+  | {
+      kind: "go";
+      label: string;
+      tab: "producto" | "marketing" | "crecer";
+      vista?: string;
+      activate?: string;
+    };
 export interface CoachStep {
   icon: CoachIcon;
   text: Rich;
@@ -165,11 +210,18 @@ export interface CoachStep {
  * Misma cascada que el original: la primera regla que se cumple gana. `money` es el
  * formateador de la vista (es-CO, COP o USD). Los emojis del original pasan a íconos.
  */
-export function coach(S: CopilotState, money: (n: number) => string): CoachStep {
+export function coach(
+  S: CopilotState,
+  money: (n: number) => string,
+): CoachStep {
   if (S.products.length < 3)
     return {
       icon: "zap",
-      text: [{ t: "Carga al menos 3 productos candidatos. Con el " }, { t: "alta rápida", b: true }, { t: " solo necesitas el nombre, el costo de Dropi y la categoría." }],
+      text: [
+        { t: "Carga al menos 3 productos candidatos. Con el " },
+        { t: "alta rápida", b: true },
+        { t: " solo necesitas el nombre, el costo de Dropi y la categoría." },
+      ],
       action: { kind: "alta", label: "Alta rápida" },
     };
   const p = activeProduct(S),
@@ -184,26 +236,64 @@ export function coach(S: CopilotState, money: (n: number) => string): CoachStep 
   if (!p.costoReal && !p.sku && !p.linkDropi && !a)
     return {
       icon: "search",
-      text: [{ t: `${p.nombre}:`, b: true }, { t: " los costos son estimados. Busca el producto en Dropi y carga el costo real y el link en la ficha." }],
-      action: { kind: "go", label: "Ir a la ficha", tab: "producto", vista: "ficha" },
+      text: [
+        { t: `${p.nombre}:`, b: true },
+        {
+          t: " los costos son estimados. Busca el producto en Dropi y carga el costo real y el link en la ficha.",
+        },
+      ],
+      action: {
+        kind: "go",
+        label: "Ir a la ficha",
+        tab: "producto",
+        vista: "ficha",
+      },
     };
   if (!g.pass)
     return {
       icon: "calculator",
-      text: [{ t: `${p.nombre} no deja margen suficiente`, b: true }, { t: ` para tu riesgo ${S.risk}/10. Mira qué precio lo vuelve sano.` }],
-      action: { kind: "go", label: "Precio y margen", tab: "producto", vista: "precio" },
+      text: [
+        { t: `${p.nombre} no deja margen suficiente`, b: true },
+        { t: ` para tu riesgo ${S.risk}/10. Mira qué precio lo vuelve sano.` },
+      ],
+      action: {
+        kind: "go",
+        label: "Precio y margen",
+        tab: "producto",
+        vista: "precio",
+      },
     };
   if (R && R.pMin && p.precio < R.pMin)
     return {
       icon: "coins",
-      text: [{ t: `Tu precio (${money(p.precio)}) está por debajo del mínimo saludable (${money(R.pMin)}). El recomendado es ` }, { t: money(R.rec ?? NaN), b: true }, { t: "." }],
-      action: { kind: "go", label: "Revisar precio", tab: "producto", vista: "precio" },
+      text: [
+        {
+          t: `Tu precio (${money(p.precio)}) está por debajo del mínimo saludable (${money(R.pMin)}). El recomendado es `,
+        },
+        { t: money(R.rec ?? NaN), b: true },
+        { t: "." },
+      ],
+      action: {
+        kind: "go",
+        label: "Revisar precio",
+        tab: "producto",
+        vista: "precio",
+      },
     };
   if (!((p.upTasa as number) > 0))
     return {
       icon: "gift",
-      text: [{ t: "Agrega un combo o un upsell a " }, { t: p.nombre, b: true }, { t: ": sube el ticket y te deja pagar más por cada pedido." }],
-      action: { kind: "go", label: "Ver ofertas", tab: "marketing", vista: "ofertas" },
+      text: [
+        { t: "Agrega un combo o un upsell a " },
+        { t: p.nombre, b: true },
+        { t: ": sube el ticket y te deja pagar más por cada pedido." },
+      ],
+      action: {
+        kind: "go",
+        label: "Ver ofertas",
+        tab: "marketing",
+        vista: "ofertas",
+      },
     };
   if (!a)
     return {
@@ -211,9 +301,16 @@ export function coach(S: CopilotState, money: (n: number) => string): CoachStep 
       text: [
         { t: "Todo listo para testear " },
         { t: p.nombre, b: true },
-        { t: `: graba 3 videos con la matriz de creativos y lanza con ${money(Math.max(20000, Math.round(g.presTest / 4 / 1000) * 1000))} diarios.` },
+        {
+          t: `: graba 3 videos con la matriz de creativos y lanza con ${money(Math.max(20000, Math.round(g.presTest / 4 / 1000) * 1000))} diarios.`,
+        },
       ],
-      action: { kind: "go", label: "Plan de lanzamiento", tab: "marketing", vista: "lanz" },
+      action: {
+        kind: "go",
+        label: "Plan de lanzamiento",
+        tab: "marketing",
+        vista: "lanz",
+      },
     };
   const v = E.verdict(a, (p.meta as number) || 20, S.risk, p);
   if (/matar/i.test(v.label)) {
@@ -223,20 +320,51 @@ export function coach(S: CopilotState, money: (n: number) => string): CoachStep 
       .sort((m, n) => n.ev.total - m.ev.total)[0];
     return {
       icon: "octagon",
-      text: [{ t: `Mata el test de ${p.nombre}`, b: true }, { t: " y pasa al siguiente" }, ...(nxt ? [{ t: ": " }, { t: nxt.x.nombre, b: true }, { t: ` (puntaje ${nxt.ev.total})` }] : []), { t: "." }],
-      action: nxt ? { kind: "go", label: "Abrir siguiente", tab: "producto", activate: nxt.x.id } : null,
+      text: [
+        { t: `Mata el test de ${p.nombre}`, b: true },
+        { t: " y pasa al siguiente" },
+        ...(nxt
+          ? [
+              { t: ": " },
+              { t: nxt.x.nombre, b: true },
+              { t: ` (puntaje ${nxt.ev.total})` },
+            ]
+          : []),
+        { t: "." },
+      ],
+      action: nxt
+        ? {
+            kind: "go",
+            label: "Abrir siguiente",
+            tab: "producto",
+            activate: nxt.x.id,
+          }
+        : null,
     };
   }
   if (/Escalar/.test(v.label))
     return {
       icon: "rocket",
-      text: [{ t: `${p.nombre} está ganando.`, b: true }, { t: ` Sube el presupuesto ${E.rules(S.risk).subida}% cada 2–3 días y simula cuánto reinvertir.` }],
+      text: [
+        { t: `${p.nombre} está ganando.`, b: true },
+        {
+          t: ` Sube el presupuesto ${E.rules(S.risk).subida}% cada 2–3 días y simula cuánto reinvertir.`,
+        },
+      ],
       action: { kind: "go", label: "Simular crecimiento", tab: "crecer" },
     };
   return {
     icon: "trending",
-    text: [{ t: `${p.nombre}: ${v.label.toLowerCase()}.`, b: true }, { t: ` ${v.why} Revisa el diagnóstico para saber qué mejorar primero.` }],
-    action: { kind: "go", label: "Ver diagnóstico", tab: "producto", vista: "ana" },
+    text: [
+      { t: `${p.nombre}: ${v.label.toLowerCase()}.`, b: true },
+      { t: ` ${v.why} Revisa el diagnóstico para saber qué mejorar primero.` },
+    ],
+    action: {
+      kind: "go",
+      label: "Ver diagnóstico",
+      tab: "producto",
+      vista: "ana",
+    },
   };
 }
 

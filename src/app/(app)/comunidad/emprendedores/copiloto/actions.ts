@@ -2,10 +2,27 @@
 
 import { z } from "zod";
 import { withUser } from "@/lib/db/client";
-import { productSchema, savedSchema, testSchema, type Product, type Saved, type Test } from "@/lib/copiloto/state";
+import {
+  productSchema,
+  savedSchema,
+  testSchema,
+  type Product,
+  type Saved,
+  type Test,
+} from "@/lib/copiloto/state";
 import { getCurrentUser } from "@/server/session";
 import { UserFacingError } from "@/server/services/errors";
-import { putProduct, putProductState, putSaved, putTest, removeProduct, removeSaved, removeTest, saveSettings, type SettingsPatch } from "@/server/services/copiloto";
+import {
+  putProduct,
+  putProductState,
+  putSaved,
+  putTest,
+  removeProduct,
+  removeSaved,
+  removeTest,
+  saveSettings,
+  type SettingsPatch,
+} from "@/server/services/copiloto";
 import type { Tx } from "@/lib/db/client";
 
 /**
@@ -19,10 +36,16 @@ const MAX_JSON = 200_000;
 const id = z.string().min(1).max(64);
 const obj = z.record(z.string().max(64), z.unknown());
 
-async function run<T>(schema: z.ZodType<T>, input: unknown, fn: (tx: Tx, userId: string, data: T) => Promise<void>): Promise<SaveResult> {
+async function run<T>(
+  schema: z.ZodType<T>,
+  input: unknown,
+  fn: (tx: Tx, userId: string, data: T) => Promise<void>,
+): Promise<SaveResult> {
   const user = await getCurrentUser();
-  if (!user) return { ok: false, error: "Tu sesión expiró. Vuelve a ingresar." };
-  if (JSON.stringify(input ?? null).length > MAX_JSON) return { ok: false, error: "Los datos son demasiado grandes." };
+  if (!user)
+    return { ok: false, error: "Tu sesión expiró. Vuelve a ingresar." };
+  if (JSON.stringify(input ?? null).length > MAX_JSON)
+    return { ok: false, error: "Los datos son demasiado grandes." };
   const parsed = schema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Datos no válidos." };
   try {
@@ -54,7 +77,9 @@ const settingsPatch = z
   .strict();
 
 export async function saveSettingsAction(patch: SettingsPatch) {
-  return run(settingsPatch, patch, (tx, u, d) => saveSettings(tx, u, d as SettingsPatch));
+  return run(settingsPatch, patch, (tx, u, d) =>
+    saveSettings(tx, u, d as SettingsPatch),
+  );
 }
 
 export async function putProductAction(p: Product) {
@@ -73,14 +98,28 @@ export async function removeTestAction(testId: string) {
   return run(id, testId, (tx, u, d) => removeTest(tx, u, d));
 }
 
-export async function putProductStateAction(productId: string, kind: "pc" | "mk", data: Record<string, unknown> | null) {
-  return run(z.object({ productId: id, kind: z.enum(["pc", "mk"]), data: obj.nullable() }), { productId, kind, data }, (tx, u, d) =>
-    putProductState(tx, u, d.productId, d.kind, d.data),
+export async function putProductStateAction(
+  productId: string,
+  kind: "pc" | "mk",
+  data: Record<string, unknown> | null,
+) {
+  return run(
+    z.object({
+      productId: id,
+      kind: z.enum(["pc", "mk"]),
+      data: obj.nullable(),
+    }),
+    { productId, kind, data },
+    (tx, u, d) => putProductState(tx, u, d.productId, d.kind, d.data),
   );
 }
 
 export async function putSavedAction(kind: "plan" | "sim", item: Saved) {
-  return run(z.object({ kind: z.enum(["plan", "sim"]), item: savedSchema }), { kind, item }, (tx, u, d) => putSaved(tx, u, d.kind, d.item as unknown as Saved));
+  return run(
+    z.object({ kind: z.enum(["plan", "sim"]), item: savedSchema }),
+    { kind, item },
+    (tx, u, d) => putSaved(tx, u, d.kind, d.item as unknown as Saved),
+  );
 }
 
 export async function removeSavedAction(savedId: string) {

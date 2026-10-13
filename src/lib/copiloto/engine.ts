@@ -220,7 +220,17 @@ export interface PriceEval {
   roas: number;
   roasEq: number;
   markup: number;
-  parts: { producto: number; flete: number; devoluciones: number; comision: number; empaque: number; confirmacion: number; publicidad: number; fijos: number; utilidad: number };
+  parts: {
+    producto: number;
+    flete: number;
+    devoluciones: number;
+    comision: number;
+    empaque: number;
+    confirmacion: number;
+    publicidad: number;
+    fijos: number;
+    utilidad: number;
+  };
 }
 
 export interface Pricing {
@@ -323,7 +333,10 @@ export interface SimResult {
 
 let money: (n: number) => string = (n) => String(n),
   pct: (n: number) => string = (n) => String(n);
-export function setFormatters(f: { money?: (n: number) => string; pct?: (n: number) => string }) {
+export function setFormatters(f: {
+  money?: (n: number) => string;
+  pct?: (n: number) => string;
+}) {
   if (f.money) money = f.money;
   if (f.pct) pct = f.pct;
 }
@@ -343,7 +356,11 @@ const CRIT: [keyof Score, string, number][] = [
 
 export const E = {
   riskProfile(r: number): { label: string; tone: Tone } {
-    return r <= 3 ? { label: "Pasivo", tone: "g" } : r <= 7 ? { label: "Normal", tone: "a" } : { label: "Agresivo", tone: "r" };
+    return r <= 3
+      ? { label: "Pasivo", tone: "g" }
+      : r <= 7
+        ? { label: "Normal", tone: "a" }
+        : { label: "Agresivo", tone: "r" };
   },
   rn(r: number) {
     return (r - 1) / 9;
@@ -407,8 +424,18 @@ export const E = {
     const U = E.unit(p);
     const has = (v: Num) => v !== null && v !== undefined && v !== "";
     const ped = +(f.ped as any) || 0;
-    const conf = has(f.conf) ? Math.min(+(f.conf as any), ped) : Math.min(ped, Math.max(ped * ((p.conf ?? 100) / 100), has(f.ent) ? +(f.ent as any) : 0));
-    const ent = has(f.ent) ? Math.min(+(f.ent as any), conf) : conf * (p.entrega / 100);
+    const conf = has(f.conf)
+      ? Math.min(+(f.conf as any), ped)
+      : Math.min(
+          ped,
+          Math.max(
+            ped * ((p.conf ?? 100) / 100),
+            has(f.ent) ? +(f.ent as any) : 0,
+          ),
+        );
+    const ent = has(f.ent)
+      ? Math.min(+(f.ent as any), conf)
+      : conf * (p.entrega / 100);
     const dev = Math.max(0, conf - ent);
     const aov = (f.aov as any) > 0 ? (f.aov as any) : U.aov;
     const ingresos = ent * aov;
@@ -417,7 +444,11 @@ export const E = {
       imp = +(f.imp as any) || 0,
       clics = +(f.clics as any) || 0;
     const emp = p.empaque || 0;
-    const costosVar = ent * (U.costoUnit + p.flete + emp) + dev * (p.flete + p.fleteRet + emp) + ingresos * (com + (p.imp || 0) / 100) + conf * (p.costoConf || 0);
+    const costosVar =
+      ent * (U.costoUnit + p.flete + emp) +
+      dev * (p.flete + p.fleteRet + emp) +
+      ingresos * (com + (p.imp || 0) / 100) +
+      conf * (p.costoConf || 0);
     const contrib = ingresos - costosVar;
     const neta = contrib - ads;
     const cm = ingresos ? contrib / ingresos : 0;
@@ -446,25 +477,66 @@ export const E = {
       cvr: clics ? ped / clics : null,
     };
   },
-  verdict(c: Pick<TestResult, "ads" | "ped" | "ingresos" | "roasEq" | "roas" | "neta" | "rent">, meta: number, r: number, p: CopProduct): Verdict {
+  verdict(
+    c: Pick<
+      TestResult,
+      "ads" | "ped" | "ingresos" | "roasEq" | "roas" | "neta" | "rent"
+    >,
+    meta: number,
+    r: number,
+    p: CopProduct,
+  ): Verdict {
     const R = E.rules(r);
     const cpaMaxTeo = E.unit(p).cpaMax;
     if (c.ads > 0 && c.ped === 0)
       return c.ads >= R.killMult * cpaMaxTeo
-        ? { label: "Pausar / matar", tone: "r", why: `Gastaste ${R.killMult.toFixed(1)}× el CPA máximo sin un solo pedido.` }
-        : { label: "Seguir midiendo", tone: "b", why: `Aún no hay pedidos. Regla de corte: matar al llegar a ${R.killMult.toFixed(1)}× el CPA máximo sin ventas.` };
-    if (!c.ads || !c.ingresos) return { label: "Faltan datos", tone: "b", why: "Ingresa gasto en ads y pedidos." };
+        ? {
+            label: "Pausar / matar",
+            tone: "r",
+            why: `Gastaste ${R.killMult.toFixed(1)}× el CPA máximo sin un solo pedido.`,
+          }
+        : {
+            label: "Seguir midiendo",
+            tone: "b",
+            why: `Aún no hay pedidos. Regla de corte: matar al llegar a ${R.killMult.toFixed(1)}× el CPA máximo sin ventas.`,
+          };
+    if (!c.ads || !c.ingresos)
+      return {
+        label: "Faltan datos",
+        tone: "b",
+        why: "Ingresa gasto en ads y pedidos.",
+      };
     const ratio = isFinite(c.roasEq) ? c.roas / c.roasEq : 0;
     if (c.neta <= 0)
       return ratio > 0.85
-        ? { label: "Optimizar", tone: "a", why: "Estás cerca del equilibrio: mejora creativo, oferta o % de entrega antes de subir presupuesto." }
-        : { label: "Pausar / matar", tone: "r", why: "Muy lejos del equilibrio. Pasa al siguiente producto." };
+        ? {
+            label: "Optimizar",
+            tone: "a",
+            why: "Estás cerca del equilibrio: mejora creativo, oferta o % de entrega antes de subir presupuesto.",
+          }
+        : {
+            label: "Pausar / matar",
+            tone: "r",
+            why: "Muy lejos del equilibrio. Pasa al siguiente producto.",
+          };
     const pocos = c.ped < R.pedidosDecidir;
     if (c.rent >= meta / R.k && ratio >= 1.1 / R.k)
       return pocos
-        ? { label: "Escalar con cautela", tone: "g", why: `Rentable, pero con solo ${c.ped} pedidos la muestra es pequeña. Sube ${R.subida}% y confirma.` }
-        : { label: "Escalar", tone: "g", why: `Rentable y sobre el equilibrio. Sube el presupuesto ${R.subida}% cada 2–3 días.` };
-    return { label: "Mantener y optimizar", tone: "a", why: "Gana dinero pero no llega a tu meta para tu nivel de riesgo." };
+        ? {
+            label: "Escalar con cautela",
+            tone: "g",
+            why: `Rentable, pero con solo ${c.ped} pedidos la muestra es pequeña. Sube ${R.subida}% y confirma.`,
+          }
+        : {
+            label: "Escalar",
+            tone: "g",
+            why: `Rentable y sobre el equilibrio. Sube el presupuesto ${R.subida}% cada 2–3 días.`,
+          };
+    return {
+      label: "Mantener y optimizar",
+      tone: "a",
+      why: "Gana dinero pero no llega a tu meta para tu nivel de riesgo.",
+    };
   },
   // Agregado de resultados (ponderado)
   agg(tests: SavedTest[]): Aggregate | null {
@@ -527,19 +599,67 @@ export const E = {
     const total = Math.round(0.65 * cual + 0.35 * econ);
     const clase = !g.pass ? "C" : total >= 75 ? "A" : total >= 60 ? "B" : "C";
     const warn: [Tone, string][] = [];
-    if (!g.pass) warn.push(["r", "No pasa la validación de margen para tu nivel de riesgo."]);
-    if (p.invima === "Sí") warn.push(["a", "Requiere permiso sanitario (INVIMA): pide al proveedor el registro o la notificación antes de pautar."]);
-    if (p.invima === "No sé") warn.push(["a", "Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo)."]);
-    if ((p.precioComp as number) > 0 && p.precio > (p.precioComp as number) * 1.15)
-      warn.push(["a", `Tu precio está ${Math.round((p.precio / (p.precioComp as number) - 1) * 100)}% por encima del promedio de la competencia: necesitas una oferta o un ángulo que lo justifique.`]);
-    if ((p.precioComp as number) > 0 && p.precio < (p.precioComp as number) * 0.85) warn.push(["g", "Tu precio está por debajo de la competencia: hay espacio para subirlo o para un combo."]);
-    if ((p.competidores as number) >= 15) warn.push(["a", `Viste ${p.competidores} tiendas vendiéndolo: diferencia la marca, la oferta o el ángulo.`]);
-    if ((p.ancla as number) > 0 && (p.ancla as number) <= p.precio) warn.push(["a", "El precio tachado debe ser mayor que el precio de venta."]);
-    if (!((p.upTasa as number) > 0)) warn.push(["b", "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido."]);
-    return { g, cual: Math.round(cual), econ: Math.round(econ), total, clase, warn };
+    if (!g.pass)
+      warn.push([
+        "r",
+        "No pasa la validación de margen para tu nivel de riesgo.",
+      ]);
+    if (p.invima === "Sí")
+      warn.push([
+        "a",
+        "Requiere permiso sanitario (INVIMA): pide al proveedor el registro o la notificación antes de pautar.",
+      ]);
+    if (p.invima === "No sé")
+      warn.push([
+        "a",
+        "Verifica si el producto necesita registro o notificación INVIMA (cosméticos y dispositivos de salud suelen requerirlo).",
+      ]);
+    if (
+      (p.precioComp as number) > 0 &&
+      p.precio > (p.precioComp as number) * 1.15
+    )
+      warn.push([
+        "a",
+        `Tu precio está ${Math.round((p.precio / (p.precioComp as number) - 1) * 100)}% por encima del promedio de la competencia: necesitas una oferta o un ángulo que lo justifique.`,
+      ]);
+    if (
+      (p.precioComp as number) > 0 &&
+      p.precio < (p.precioComp as number) * 0.85
+    )
+      warn.push([
+        "g",
+        "Tu precio está por debajo de la competencia: hay espacio para subirlo o para un combo.",
+      ]);
+    if ((p.competidores as number) >= 15)
+      warn.push([
+        "a",
+        `Viste ${p.competidores} tiendas vendiéndolo: diferencia la marca, la oferta o el ángulo.`,
+      ]);
+    if ((p.ancla as number) > 0 && (p.ancla as number) <= p.precio)
+      warn.push([
+        "a",
+        "El precio tachado debe ser mayor que el precio de venta.",
+      ]);
+    if (!((p.upTasa as number) > 0))
+      warn.push([
+        "b",
+        "Sin upsell ni combo: agregar uno sube el ticket y te deja pagar más por cada pedido.",
+      ]);
+    return {
+      g,
+      cual: Math.round(cual),
+      econ: Math.round(econ),
+      total,
+      clase,
+      warn,
+    };
   },
   // Diagnóstico por cuellos de botella del embudo
-  diagnose(a: Aggregate | null, p: CopProduct, r: number): [Tone, string, string][] {
+  diagnose(
+    a: Aggregate | null,
+    p: CopProduct,
+    r: number,
+  ): [Tone, string, string][] {
     const out: [Tone, string, string][] = [];
     if (!a) return out;
     const g = E.gate(p, r),
@@ -556,32 +676,113 @@ export const E = {
       return out;
     }
     if (a.ctr !== null) {
-      if (a.ctr < 0.008) out.push(["r", "Creativo (CTR " + pct(a.ctr) + ")", "El anuncio no detiene el scroll. Prueba 3 ganchos nuevos en los primeros 3 segundos y muestra el producto en uso."]);
-      else if (a.ctr < 0.012) out.push(["a", "Creativo (CTR " + pct(a.ctr) + ")", "CTR aceptable pero mejorable. Prueba variaciones del gancho y del texto."]);
-      else out.push(["g", "Creativo (CTR " + pct(a.ctr) + ")", "El anuncio atrae clics. Mantén el ángulo y crea variaciones."]);
+      if (a.ctr < 0.008)
+        out.push([
+          "r",
+          "Creativo (CTR " + pct(a.ctr) + ")",
+          "El anuncio no detiene el scroll. Prueba 3 ganchos nuevos en los primeros 3 segundos y muestra el producto en uso.",
+        ]);
+      else if (a.ctr < 0.012)
+        out.push([
+          "a",
+          "Creativo (CTR " + pct(a.ctr) + ")",
+          "CTR aceptable pero mejorable. Prueba variaciones del gancho y del texto.",
+        ]);
+      else
+        out.push([
+          "g",
+          "Creativo (CTR " + pct(a.ctr) + ")",
+          "El anuncio atrae clics. Mantén el ángulo y crea variaciones.",
+        ]);
     }
     if (a.cvr !== null) {
       if (a.cvr < 0.008)
-        out.push(["r", "Página y oferta (conversión " + pct(a.cvr) + ")", "Llegan pero no compran: revisa precio tachado, reseñas, video en la página, velocidad en celular, garantía y un combo 2×."]);
+        out.push([
+          "r",
+          "Página y oferta (conversión " + pct(a.cvr) + ")",
+          "Llegan pero no compran: revisa precio tachado, reseñas, video en la página, velocidad en celular, garantía y un combo 2×.",
+        ]);
       else if (a.cvr < 0.015)
-        out.push(["a", "Página y oferta (conversión " + pct(a.cvr) + ")", "Conversión media. Prueba una oferta más clara (envío gratis, combo, garantía) y prueba social arriba."]);
-      else out.push(["g", "Página y oferta (conversión " + pct(a.cvr) + ")", "La página convierte bien."]);
+        out.push([
+          "a",
+          "Página y oferta (conversión " + pct(a.cvr) + ")",
+          "Conversión media. Prueba una oferta más clara (envío gratis, combo, garantía) y prueba social arriba.",
+        ]);
+      else
+        out.push([
+          "g",
+          "Página y oferta (conversión " + pct(a.cvr) + ")",
+          "La página convierte bien.",
+        ]);
     }
     if (a.tasaConf < 0.8)
-      out.push(["a", "Confirmación (" + pct(a.tasaConf) + ")", "Muchos pedidos no se confirman. Escribe por WhatsApp en menos de 1 hora y usa un mensaje automático con resumen del pedido."]);
+      out.push([
+        "a",
+        "Confirmación (" + pct(a.tasaConf) + ")",
+        "Muchos pedidos no se confirman. Escribe por WhatsApp en menos de 1 hora y usa un mensaje automático con resumen del pedido.",
+      ]);
     if (a.conf > 0) {
       if (a.tasaEntrega < 0.7)
-        out.push(["r", "Entregas (" + pct(a.tasaEntrega) + ")", "Demasiadas devoluciones. Confirma dirección y disponibilidad, compara transportadoras por ciudad y evita zonas con más rechazo."]);
-      else if (a.tasaEntrega < 0.8) out.push(["a", "Entregas (" + pct(a.tasaEntrega) + ")", "Entrega aceptable. Cada punto que subas aquí va directo a utilidad."]);
-      else out.push(["g", "Entregas (" + pct(a.tasaEntrega) + ")", "Buena tasa de entrega."]);
+        out.push([
+          "r",
+          "Entregas (" + pct(a.tasaEntrega) + ")",
+          "Demasiadas devoluciones. Confirma dirección y disponibilidad, compara transportadoras por ciudad y evita zonas con más rechazo.",
+        ]);
+      else if (a.tasaEntrega < 0.8)
+        out.push([
+          "a",
+          "Entregas (" + pct(a.tasaEntrega) + ")",
+          "Entrega aceptable. Cada punto que subas aquí va directo a utilidad.",
+        ]);
+      else
+        out.push([
+          "g",
+          "Entregas (" + pct(a.tasaEntrega) + ")",
+          "Buena tasa de entrega.",
+        ]);
     }
     if (a.cpa > a.cpaMax)
-      out.push(["r", "Unidad económica", "Tu CPA real (" + money(a.cpa) + ") supera lo que deja cada pedido (" + money(a.cpaMax) + "). Sube el ticket con combo o upsell, o el precio."]);
+      out.push([
+        "r",
+        "Unidad económica",
+        "Tu CPA real (" +
+          money(a.cpa) +
+          ") supera lo que deja cada pedido (" +
+          money(a.cpaMax) +
+          "). Sube el ticket con combo o upsell, o el precio.",
+      ]);
     else if (a.cpa > g.cpaObj)
-      out.push(["a", "Unidad económica", "Ganas, pero el CPA (" + money(a.cpa) + ") está por encima de tu objetivo (" + money(g.cpaObj) + "). Optimiza antes de escalar fuerte."]);
-    else out.push(["g", "Unidad económica", "CPA (" + money(a.cpa) + ") dentro de tu objetivo (" + money(g.cpaObj) + ")."]);
-    if (a.aov > 0 && a.aov <= p.precio * 1.02) out.push(["b", "Ticket promedio", "El AOV es igual al precio: agrega un combo 2× o un upsell posventa para subirlo."]);
-    if (a.ped < R.pedidosDecidir) out.push(["b", "Muestra", `Llevas ${a.ped} pedidos. Con menos de ${R.pedidosDecidir} las conclusiones son preliminares.`]);
+      out.push([
+        "a",
+        "Unidad económica",
+        "Ganas, pero el CPA (" +
+          money(a.cpa) +
+          ") está por encima de tu objetivo (" +
+          money(g.cpaObj) +
+          "). Optimiza antes de escalar fuerte.",
+      ]);
+    else
+      out.push([
+        "g",
+        "Unidad económica",
+        "CPA (" +
+          money(a.cpa) +
+          ") dentro de tu objetivo (" +
+          money(g.cpaObj) +
+          ").",
+      ]);
+    if (a.aov > 0 && a.aov <= p.precio * 1.02)
+      out.push([
+        "b",
+        "Ticket promedio",
+        "El AOV es igual al precio: agrega un combo 2× o un upsell posventa para subirlo.",
+      ]);
+    if (a.ped < R.pedidosDecidir)
+      out.push([
+        "b",
+        "Muestra",
+        `Llevas ${a.ped} pedidos. Con menos de ${R.pedidosDecidir} las conclusiones son preliminares.`,
+      ]);
     return out;
   },
   // ===== Calculadora de precio y costo de venta =====
@@ -627,7 +828,17 @@ export const E = {
       roas: A ? rev / A : 0,
       roasEq: rev - vari > 0 ? rev / (rev - vari) : Infinity,
       markup: q.costo ? P / q.costo : 0,
-      parts: { producto: cProd, flete: cFlete, devoluciones: cDev, comision: cCom, empaque: cEmp, confirmacion: cConf, publicidad: A, fijos: fpp, utilidad: pi },
+      parts: {
+        producto: cProd,
+        flete: cFlete,
+        devoluciones: cDev,
+        comision: cCom,
+        empaque: cEmp,
+        confirmacion: cConf,
+        publicidad: A,
+        fijos: fpp,
+        utilidad: pi,
+      },
     };
   },
   psych(P: number) {
@@ -636,7 +847,12 @@ export const E = {
   },
   pricing(q: PriceQ): Pricing {
     const lo = Math.max(1000, Math.round((q.costo * 1.1) / 1000) * 1000);
-    const hi = Math.max(q.costo * 5, (q.techo || 0) * 1.6, q.p0 * 2, lo + 20000);
+    const hi = Math.max(
+      q.costo * 5,
+      (q.techo || 0) * 1.6,
+      q.p0 * 2,
+      lo + 20000,
+    );
     const step = Math.max(500, Math.round((hi - lo) / 160 / 500) * 500);
     const grid: PriceEval[] = [];
     for (let P = lo; P <= hi; P += step) grid.push(E.priceEval(q, P));
@@ -661,11 +877,18 @@ export const E = {
         const g2 = P >= 50000 ? 10000 : 1000;
         return Math.floor((P + 100) / g2) * g2 - 100;
       };
-      const cand = [E.psych(bestH.P), fl(bestH.P), E.psych(range[0]), fl(range[1])]
+      const cand = [
+        E.psych(bestH.P),
+        fl(bestH.P),
+        E.psych(range[0]),
+        fl(range[1]),
+      ]
         .filter((v, i, a) => v > 0 && a.indexOf(v) === i)
         .map((P) => E.priceEval(q, P))
         .filter((g) => g.mn >= q.margenMin / 100 && g.mes > 0);
-      rec = cand.length ? cand.reduce((a, b) => (b.mes > a.mes ? b : a)).P : Math.round(bestH.P / 100) * 100;
+      rec = cand.length
+        ? cand.reduce((a, b) => (b.mes > a.mes ? b : a)).P
+        : Math.round(bestH.P / 100) * 100;
     }
     return { grid, step, lo, hi, be, pMin, pObj, opt, bestH, range, rec };
   },
@@ -707,7 +930,19 @@ export const E = {
       if (self === null && i > 0 && inject === 0) self = i + 1;
       rows.push({ i: i + 1, spend, rev, gp, buffer, net, inject, cum, cash });
     }
-    return { R, m, be, targetROAS, full, N, rows, tot, cum, fullNet: R * m * (1 - rRee) - full - p.fijos, self };
+    return {
+      R,
+      m,
+      be,
+      targetROAS,
+      full,
+      N,
+      rows,
+      tot,
+      cum,
+      fullNet: R * m * (1 - rRee) - full - p.fijos,
+      self,
+    };
   },
   // Simulador de crecimiento con interés compuesto y fase de testeo
   sim(p: SimInput): SimResult {
@@ -726,7 +961,22 @@ export const E = {
     if (cap <= 0)
       return {
         u,
-        rows: [{ ciclo: 0, mes: 0, pauta: 0, cpa: p.cpa, pedidos: 0, entregados: 0, utilidad: -p.testeo, retiro: 0, capital: cap, retirado: 0, ventas: 0, roas: 0 }],
+        rows: [
+          {
+            ciclo: 0,
+            mes: 0,
+            pauta: 0,
+            cpa: p.cpa,
+            pedidos: 0,
+            entregados: 0,
+            utilidad: -p.testeo,
+            retiro: 0,
+            capital: cap,
+            retirado: 0,
+            ventas: 0,
+            roas: 0,
+          },
+        ],
         patrimonio: Math.max(0, cap),
         roi: -1,
         tm: -1,
@@ -744,17 +994,36 @@ export const E = {
       const disp = Math.max(0, cap - fc);
       const pauta = Math.max(0, Math.min((disp * p.asig) / 100, tope));
       if (base === null) base = Math.max(pauta, 1);
-      const f = pauta > base ? Math.pow(1 + p.deg / 100, Math.log2(pauta / base)) : 1;
+      const f =
+        pauta > base ? Math.pow(1 + p.deg / 100, Math.log2(pauta / base)) : 1;
       const cpa = p.cpa * f;
       const ped = cpa > 0 ? pauta / cpa : 0;
       const ship = ped * u.c;
       const ent = ship * u.e;
-      const util = ent * u.margenEntregado - (ship - ent) * u.perdidaDevuelto - ship * u.costoConf - pauta - fc;
+      const util =
+        ent * u.margenEntregado -
+        (ship - ent) * u.perdidaDevuelto -
+        ship * u.costoConf -
+        pauta -
+        fc;
       const retiro = util > 0 ? util * (1 - p.reinv / 100) : 0;
       cap = cap + util - retiro;
       ret += retiro;
       const mes = i / cpm;
-      rows.push({ ciclo: i, mes, pauta, cpa, pedidos: ped, entregados: ent, utilidad: util, retiro, capital: cap, retirado: ret, ventas: ent * p.precio, roas: pauta ? (ent * p.precio) / pauta : 0 });
+      rows.push({
+        ciclo: i,
+        mes,
+        pauta,
+        cpa,
+        pedidos: ped,
+        entregados: ent,
+        utilidad: util,
+        retiro,
+        capital: cap,
+        retirado: ret,
+        ventas: ent * p.precio,
+        roas: pauta ? (ent * p.precio) / pauta : 0,
+      });
       if (payback === null && cap + ret >= p.cap && ret > 0) payback = mes;
       if (dup === null && cap + ret >= 2 * p.cap) dup = mes;
       if (cap <= fc) {

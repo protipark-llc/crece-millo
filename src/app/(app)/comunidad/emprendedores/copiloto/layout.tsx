@@ -11,8 +11,14 @@ export const metadata: Metadata = { title: "Co-Piloto de Negocio" };
  * El estado del Co-Piloto se carga una vez aquí (una consulta) y vive en el navegador:
  * cambiar de pestaña no vuelve a la base, y cada cambio se guarda en segundo plano.
  */
-export default async function CopilotoLayout({ children }: { children: React.ReactNode }) {
-  const S = await loadForUser(({ tx, userId, today }) => loadState(tx, userId, today));
+export default async function CopilotoLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const S = await loadForUser(({ tx, userId, today }) =>
+    loadState(tx, userId, today),
+  );
   return (
     <CopilotoProvider initial={S}>
       <CopilotoHeader />
