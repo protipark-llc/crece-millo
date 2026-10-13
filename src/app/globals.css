@@ -2,6 +2,20 @@
 @import "./tokens.css";
 
 /*
+ * Rol añadido a la entrega: texto en bermellón sobre fondos nav-bg (tarjetas oscuras).
+ * El accent claro (#D1401F) da 3,6:1 sobre sumi; este da 6,6:1 (claro) y 7:1 (oscuro).
+ */
+:root {
+  --nav-accent: #ff7a5c;
+}
+[data-theme="dark"] {
+  --nav-accent: #ff6b4a;
+}
+@theme inline {
+  --color-nav-accent: var(--nav-accent);
+}
+
+/*
  * Tokens de la marca «Umbral» en ./tokens.css. Los componentes usan roles (bg, surface, ink,
  * brand, accent, pos, neg…), nunca hex. El tema se fija con data-theme="light|dark" en <html>
  * desde un script en <head> (ver src/components/theme/theme-script.tsx), sin parpadeo.

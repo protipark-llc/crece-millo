@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AlertTriangle, ArrowDownLeft, ArrowLeftRight, ArrowUpRight, Check, ChevronDown, Clock, OctagonAlert, Stethoscope } from "lucide-react";
+import { AlertTriangle, ArrowDownLeft, ArrowLeftRight, ArrowUpRight, ChevronDown, Clock, Stethoscope } from "lucide-react";
 import { financePage } from "@/server/page-data";
 import { buildOverview, upcoming } from "@/server/services/dashboard";
 import { DIAGNOSTIC_STEPS } from "@/server/services/settings";
@@ -8,8 +8,7 @@ import { categoryLabel } from "@/server/services/categories";
 import { courseProgress } from "@/server/education-data";
 import { daysInMonth, monthStart, parts } from "@/lib/finance/dates";
 import { panelHeadline } from "@/lib/finance/headline";
-import type { BudgetLineResult } from "@/lib/finance/budget";
-import type { Fmt } from "@/server/format";
+import { LineStatusText, budgetLineStatus } from "@/components/finance/budget-status";
 import { Badge, ButtonLink, Card, Meter, buttonClass } from "@/components/ui/primitives";
 import { IndicatorGrid, formatIndicator } from "@/components/finance/indicator-grid";
 import { InsightList } from "@/components/finance/insight-list";
@@ -19,15 +18,6 @@ import { cn } from "@/components/ui/cn";
 export const metadata: Metadata = { title: "Panel financiero" };
 
 const MORE_KEYS = ["net_flow", "essential", "discretionary", "budget_execution", "debt_payments", "debt_service_ratio", "emergency_coverage", "net_worth", "net_worth_mom", "net_worth_yoy", "goals"];
-
-/** Estado de una línea de presupuesto, siempre con ícono y texto (entrega §6: «Pagado completo», «Quedan $ X»…). */
-function lineStatus(l: BudgetLineResult, f: Fmt, monthPct: number) {
-  if (l.overLimit) return { tone: "text-neg", icon: OctagonAlert, text: `Excedido por ${f.money(l.executed - l.planned)}`, meter: "neg" as const };
-  if (l.executed >= l.planned) return { tone: "text-pos", icon: Check, text: "Pagado completo", meter: "brand" as const };
-  if (l.projectedOverLimit)
-    return { tone: "text-warn", icon: AlertTriangle, text: `${f.pct(l.executed / l.planned, 0)} usado con el ${f.pct(monthPct, 0)} del mes`, meter: "warn" as const };
-  return { tone: "text-pos", icon: Check, text: `Quedan ${f.money(l.planned - l.executed)}`, meter: "brand" as const };
-}
 
 export default async function FinancePanel() {
   const [data, edu] = await Promise.all([
@@ -257,8 +247,7 @@ export default async function FinancePanel() {
           {budgetLines.length ? (
             <ul className="mt-3 space-y-4">
               {budgetLines.map((l) => {
-                const st = lineStatus(l, f, monthPct);
-                const Icon = st.icon;
+                const st = budgetLineStatus(l, f, { monthPct, pace: true });
                 return (
                   <li key={l.lineId}>
                     <div className="mb-1.5 flex justify-between gap-3 text-sm">
@@ -268,9 +257,7 @@ export default async function FinancePanel() {
                       </span>
                     </div>
                     <Meter value={l.executed} max={l.planned} tone={st.meter} label={label(l.categoryId)} />
-                    <p className={cn("mt-1 inline-flex items-center gap-1 text-xs font-semibold", st.tone)}>
-                      <Icon aria-hidden className="size-3.5" /> {st.text}
-                    </p>
+                    <LineStatusText status={st} className="mt-1" />
                   </li>
                 );
               })}
@@ -282,7 +269,7 @@ export default async function FinancePanel() {
 
         {nextLesson ? (
           <Card tone="dark" className="flex flex-col p-6 md:col-span-2 xl:col-span-1">
-            <p className="t-overline text-accent">Tu siguiente lección</p>
+            <p className="t-overline text-nav-accent">Tu siguiente lección</p>
             <h2 className="mt-3 font-title text-2xl leading-8 font-medium text-nav-ink-active">{nextLesson.lesson.title}</h2>
             <p className="mt-3 text-sm text-nav-ink">{nextLesson.lesson.summary}</p>
             <div className="mt-auto pt-5">

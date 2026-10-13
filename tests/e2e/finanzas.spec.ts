@@ -45,10 +45,10 @@ test.describe("Finanzas personales (flujo completo con persistencia)", () => {
     await createAccount(page, "Ahorros", "500.000");
     await page.goto("/universidad/finanzas/movimientos/nuevo");
     await page.getByLabel("Descripción").fill("Sin importe");
-    await page.getByRole("button", { name: /^Registrar gasto/ }).click();
+    await page.getByRole("button", { name: /^Guardar gasto/ }).click();
     await expect(page.getByText("Ingresa un importe").first()).toBeVisible();
     await page.getByLabel("Importe", { exact: true }).fill("-50");
-    await page.getByRole("button", { name: /^Registrar gasto/ }).click();
+    await page.getByRole("button", { name: /^Guardar gasto/ }).click();
     await expect(page.getByText("El importe no puede ser negativo").first()).toBeVisible();
   });
 
@@ -59,16 +59,17 @@ test.describe("Finanzas personales (flujo completo con persistencia)", () => {
     await page.getByLabel("Descripción").fill("Gimnasio");
     await page.getByLabel("Importe", { exact: true }).fill("100.000");
     await page.getByLabel("Categoría").selectOption({ label: "Gimnasio y deporte" });
+    await page.getByText("Más opciones").click();
     await page.getByLabel("Estado").selectOption({ label: "Previsto / por pagar" });
     const today = new Date().toLocaleDateString("en-CA", { timeZone: "America/Bogota" });
     await page.getByLabel(/^Fecha prevista/).fill(today);
     await page.getByLabel("¿Se repite?").selectOption({ label: "Mensual" });
-    await page.getByRole("button", { name: /^Registrar gasto/ }).click();
+    await page.getByRole("button", { name: /^Guardar gasto/ }).click();
     await expect(page.getByText(/registrado con su recurrencia/)).toBeVisible();
 
     await page.goto("/universidad/finanzas/movimientos");
     const pending = page.locator("li").filter({ hasText: "Gimnasio" }).first();
-    await pending.getByRole("button", { name: /Realizado/ }).click();
+    await pending.getByRole("button", { name: /Realizado|Ya lo pagué/ }).click();
     await expect(page.getByRole("row", { name: /Gimnasio/ }).getByText("Realizado")).toBeVisible();
     await expect(page.getByRole("row", { name: /Gimnasio/ })).toHaveCount(1);
 
@@ -89,8 +90,9 @@ test.describe("Finanzas personales (flujo completo con persistencia)", () => {
     await register(page);
     await createAccount(page, "Mi caja", "2.000.000");
     await page.goto("/universidad/finanzas/simulador");
-    await expect(page.getByText("Las simulaciones no modifican tus datos reales")).toBeVisible();
-    await page.getByLabel(/Compra importante/).fill("10.000.000");
+    await expect(page.getByText(/no cambian tus datos reales/)).toBeVisible();
+    await page.getByRole("checkbox", { name: /Compra importante/ }).check();
+    await page.getByRole("textbox", { name: "Valor" }).fill("10.000.000");
     await expect(page.getByText("Primer mes negativo").first()).toBeVisible();
     await page.getByLabel("Nombre").fill("Compra grande");
     await page.getByRole("button", { name: "Guardar" }).click();
@@ -108,10 +110,11 @@ test.describe("Finanzas personales (flujo completo con persistencia)", () => {
     await page.getByLabel("Fecha de ese saldo").fill("2026-01-01");
     await page.getByLabel("Tasa de interés (%)").fill("24");
     await page.getByLabel("Tipo de tasa").selectOption("NAMV");
-    await expect(page.getByText(/26,82 % efectivo anual/)).toBeVisible();
+    await expect(page.getByText(/26,82\s% efectivo anual/)).toBeVisible();
     await page.getByLabel("Cuota mínima mensual").fill("300.000");
     await page.getByRole("button", { name: "Registrar deuda" }).click();
     await expect(page).toHaveURL(/\/deudas$/);
+    await page.locator("summary", { hasText: "Registrar pago" }).click();
     await page.getByRole("button", { name: "Registrar pago" }).click();
     await expect(page.getByText(/Pago registrado/)).toBeVisible();
     await page.reload();

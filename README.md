@@ -90,6 +90,15 @@ Edita `src/lib/db/schema.ts`, genera la migración con `npm run db:generate` y a
 17. **Aislamiento**: crea un segundo usuario en otra ventana privada: no ve los datos del primero.
 18. **Móvil**: abre el sitio con ancho de 390 px; usa el menú ☰.
 
+## Diseño y marca
+
+La interfaz sigue la entrega de diseño v1 (marca «Umbral»): `docs/diseno/crece-millo-v1/`
+(especificación, tokens, activos y capturas de cada pantalla). Los tokens viven en
+`src/app/tokens.css` y los componentes usan solo roles (`bg-surface`, `text-ink`, `bg-accent`…).
+El tema claro, oscuro o del sistema se elige en la barra superior o en Configuración.
+Los íconos de cada sección se conservan (`docs/ICONOS.md`). La sección Comunidad es una vista
+previa con datos de ejemplo; su modelo de datos propuesto está en `docs/COMUNIDAD.md`.
+
 ## Limitaciones conocidas
 
 - Contenido educativo: 14 lecciones de texto con cuestionarios; no hay videos, docentes ni certificaciones.

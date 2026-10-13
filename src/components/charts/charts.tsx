@@ -191,14 +191,18 @@ export function LineChart({
   todayIndex,
 }: Common & {
   zeroLine?: boolean;
-  /** Punto destacado (p. ej. el saldo más bajo) en chart-mark, con su etiqueta escrita. */
-  mark?: { index: number; label: string } | null;
+  /** Punto destacado (p. ej. el saldo más bajo) en chart-mark, con su etiqueta escrita. `value` sobrescribe el valor de la serie. */
+  mark?: { index: number; label: string; value?: number } | null;
   /** Índice de «hoy»: línea vertical punteada con la palabra «hoy». */
   todayIndex?: number | null;
 }) {
   const { ref, width } = useWidth();
   const { idx, setIdx, onKey } = useHover(labels.length);
-  const { lo, hi, ticks } = useMemo(() => scaleY(series, zeroLine), [series, zeroLine]);
+  const markValue = mark ? (mark.value ?? series[0]?.values[mark.index] ?? null) : null;
+  const { lo, hi, ticks } = useMemo(
+    () => scaleY(markValue !== null && markValue !== undefined ? [...series, { key: "__mark", label: "", color: "", values: [markValue] }] : series, zeroLine),
+    [series, zeroLine, markValue],
+  );
   const iw = width - PAD.left - PAD.right;
   const ih = height - PAD.top - PAD.bottom;
   const x = (i: number) => PAD.left + (labels.length <= 1 ? iw / 2 : (i / (labels.length - 1)) * iw);
@@ -277,12 +281,12 @@ export function LineChart({
               </text>
             </g>
           )}
-          {mark && series[0] && series[0].values[mark.index] !== null && series[0].values[mark.index] !== undefined && (
+          {mark && markValue !== null && markValue !== undefined && (
             <g aria-hidden>
-              <circle cx={x(mark.index)} cy={y(series[0].values[mark.index]!)} r={6} fill="var(--chart-mark)" stroke="var(--surface)" strokeWidth={2} />
+              <circle cx={x(mark.index)} cy={y(markValue)} r={6} fill="var(--chart-mark)" stroke="var(--surface)" strokeWidth={2} />
               <text
                 x={x(mark.index)}
-                y={Math.min(PAD.top + ih - 4, y(series[0].values[mark.index]!) + 22)}
+                y={Math.min(PAD.top + ih - 4, y(markValue) + 22)}
                 textAnchor={mark.index > labels.length * 0.75 ? "end" : mark.index < labels.length * 0.25 ? "start" : "middle"}
                 fontSize="12"
                 fontWeight="600"

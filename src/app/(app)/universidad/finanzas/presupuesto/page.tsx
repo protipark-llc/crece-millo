@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, PieChart, Trash2 } from "lucide-react";
+import { AlertTriangle, ChevronLeft, ChevronRight, PieChart, Trash2 } from "lucide-react";
 import { financePage, first } from "@/server/page-data";
 import { getBudgetForMonth, previousBudgetMonth } from "@/server/services/budgets";
 import { categoryLabel } from "@/server/services/categories";
 import { cashflowEstimates, monthlyReferences } from "@/server/services/finance-data";
 import { computeBudget, BUDGET_TEMPLATES } from "@/lib/finance/budget";
-import { addMonthsClamped, monthFromKey, monthStart } from "@/lib/finance/dates";
+import { addMonthsClamped, daysInMonth, monthFromKey, monthStart, parts } from "@/lib/finance/dates";
 import { toInputString } from "@/lib/money/money";
-import { Alert, Badge, Card, CardHeader, EmptyState, InfoTip, Meter, PageHeader, Stat, Table, buttonClass, td, tdNum, th, thNum } from "@/components/ui/primitives";
+import { Alert, Badge, Card, CardHeader, EmptyState, InfoTip, Meter, PageHeader, Table, buttonClass, td, tdNum, th, thNum } from "@/components/ui/primitives";
+import { LineStatusText, budgetLineStatus } from "@/components/finance/budget-status";
+import { cn } from "@/components/ui/cn";
 import { ConfirmAction } from "@/components/ui/form";
 import { BudgetLineForm, BudgetMetaForm, CreateBudgetForm, ReallocateForm } from "@/components/finance/forms/budget-forms";
 import { deleteBudgetLineAction } from "../actions";
@@ -53,6 +55,8 @@ export default async function BudgetPage({ searchParams }: { searchParams: Promi
   const prevMonth = addMonthsClamped(month, -1, 1).slice(0, 7);
   const nextMonth = addMonthsClamped(month, 1, 1).slice(0, 7);
   const currency = row?.budget.currency ?? d.base;
+  const curMonth = monthStart(d.today);
+  const monthPct = month < curMonth ? 1 : month > curMonth ? 0 : parts(d.today).d / daysInMonth(parts(d.today).y, parts(d.today).m);
   const label = (id: string | null) => categoryLabel(d.categoryRows, id);
   const natureOf = (id: string | null) => {
     let c = d.categoryRows.find((x) => x.id === id);
@@ -70,15 +74,16 @@ export default async function BudgetPage({ searchParams }: { searchParams: Promi
   return (
     <>
       <PageHeader
+        eyebrow="Finanzas personales"
         title="Presupuesto"
-        description="Un plan para tu dinero del mes. No es dinero disponible: compáralo con lo que realmente pasa y ajústalo sin culpa."
+        description="Un plan para tu dinero del mes. No es dinero disponible: compáralo con lo que pasa y ajústalo sin culpa."
         actions={
-          <nav aria-label="Cambiar de mes" className="flex items-center gap-1">
-            <Link href={`?mes=${prevMonth}`} className={buttonClass("secondary", "sm")} aria-label="Mes anterior">
+          <nav aria-label="Cambiar de mes" className="flex items-center gap-2">
+            <Link href={`?mes=${prevMonth}`} className={buttonClass("secondary", "md", "w-11 px-0")} aria-label="Mes anterior">
               <ChevronLeft aria-hidden className="size-4" />
             </Link>
-            <span className="inline-block min-w-36 text-center text-sm font-medium text-ink first-letter:uppercase">{f.month(month)}</span>
-            <Link href={`?mes=${nextMonth}`} className={buttonClass("secondary", "sm")} aria-label="Mes siguiente">
+            <span className="inline-block min-w-36 text-center font-semibold text-ink first-letter:uppercase">{f.month(month)}</span>
+            <Link href={`?mes=${nextMonth}`} className={buttonClass("secondary", "md", "w-11 px-0")} aria-label="Mes siguiente">
               <ChevronRight aria-hidden className="size-4" />
             </Link>
           </nav>
@@ -103,28 +108,66 @@ export default async function BudgetPage({ searchParams }: { searchParams: Promi
         </Card>
       ) : (
         <>
-          <div className="mb-4 flex flex-wrap items-center gap-2">
-            {row.budget.approvedAt ? <Badge tone="pos">Aprobado</Badge> : <Badge tone="warn">Borrador</Badge>}
-            {summary.overLimitCount > 0 && <Badge tone="neg">{summary.overLimitCount} categoría(s) excedida(s)</Badge>}
-          </div>
-          <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Stat label="Ingreso esperado" value={f.money(summary.expectedIncome, currency)} sub={`Recibido: ${f.money(summary.actualIncome, currency)}`} help="Lo que planeas recibir este mes. Si no lo defines, se usa lo recibido más lo previsto." />
-            <Stat label="Gastos presupuestados" value={f.money(summary.totalPlanned, currency)} sub={`Ejecutado: ${f.money(summary.totalExecuted, currency)} (${f.pct(summary.executionPct)})`} />
-            <Stat label="Meta de ahorro" value={f.money(summary.savingsTarget, currency)} sub={`Ahorro real a la fecha: ${f.money(summary.actualSavings, currency)}`} help="Ahorro real = ingresos recibidos − gastos pagados del mes." />
-            <Stat
-              label="Sin asignar"
-              value={f.money(summary.unassigned, currency)}
-              tone={summary.unassigned < 0 ? "neg" : undefined}
-              sub={summary.unassigned < 0 ? "Planeas más de lo que esperas recibir" : "Ingreso − gastos − ahorro"}
-              help="En un presupuesto base cero, esta cifra debería llegar a cero: cada peso tiene una tarea."
-            />
-          </div>
+          <Card className="mb-5 p-5">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              {row.budget.approvedAt ? <Badge tone="pos">Aprobado</Badge> : <Badge tone="neutral">Borrador</Badge>}
+              <span className="text-xs text-muted">
+                {row.budget.approvedAt ? "Es tu plan definitivo del mes; puedes seguir ajustándolo." : "Cuando te sientas cómodo con el plan, apruébalo como definitivo del mes (en Ajustes del mes)."}
+              </span>
+              {summary.overLimitCount > 0 && (
+                <Badge tone="neg" className="sm:ml-auto">
+                  {summary.overLimitCount} {summary.overLimitCount === 1 ? "categoría excedida" : "categorías excedidas"}
+                </Badge>
+              )}
+            </div>
+            <dl className="mt-4 grid grid-cols-1 overflow-hidden rounded-lg border border-border sm:grid-cols-2 lg:grid-cols-4">
+              <div className="p-4">
+                <dt className="text-[13px] text-muted">Ingreso esperado</dt>
+                <dd className="t-kpi mt-1 text-ink">{f.money(summary.expectedIncome, currency)}</dd>
+                <dd className="mt-0.5 text-xs text-muted">Recibido hasta hoy: {f.money(summary.actualIncome, currency)}</dd>
+              </div>
+              <div className="border-t border-border p-4 sm:border-t-0 sm:border-l">
+                <dt className="text-[13px] text-muted">Gastos presupuestados</dt>
+                <dd className="t-kpi mt-1 text-ink">{f.money(summary.totalPlanned, currency)}</dd>
+                <dd className="mt-0.5 text-xs text-muted">
+                  Ejecutado {f.money(summary.totalExecuted, currency)} ({f.pct(summary.executionPct)})
+                </dd>
+              </div>
+              <div className="border-t border-border p-4 lg:border-t-0 lg:border-l">
+                <dt className="text-[13px] text-muted">Meta de ahorro</dt>
+                <dd className="t-kpi mt-1 text-ink">{f.money(summary.savingsTarget, currency)}</dd>
+                <dd className="mt-0.5 text-xs text-muted">Ahorro real a la fecha: {f.money(summary.actualSavings, currency)}</dd>
+              </div>
+              <div className={cn("border-t border-border p-4 sm:border-l lg:border-t-0", summary.unassigned < 0 && "bg-warn-soft")}>
+                <dt className="inline-flex items-center gap-1 text-[13px] text-muted">
+                  Sin asignar <InfoTip text="Ingreso esperado − gastos presupuestados − meta de ahorro. En un presupuesto base cero debería llegar a cero: cada peso tiene una tarea." />
+                </dt>
+                <dd className={cn("t-kpi mt-1", summary.unassigned < 0 ? "text-warn" : "text-ink")}>{f.money(summary.unassigned, currency)}</dd>
+                <dd className={cn("mt-0.5 text-xs", summary.unassigned < 0 ? "font-semibold text-warn" : "text-muted")}>
+                  {summary.unassigned < 0 ? "Planeas más de lo que esperas recibir" : "Ingreso − gastos − ahorro"}
+                </dd>
+              </div>
+            </dl>
+            {summary.unassigned < 0 && (
+              <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg bg-warn-soft px-4 py-3 text-sm text-ink">
+                <AlertTriangle aria-hidden className="size-5 shrink-0 text-warn" />
+                <p className="min-w-0 flex-1">
+                  Planeas <strong className="tabular">{f.money(-summary.unassigned, currency)}</strong> más de lo que esperas recibir. Puedes bajar una línea discrecional, reasignar o revisar la meta de ahorro.
+                </p>
+                <a href="#reasignar" className="inline-flex min-h-9 items-center font-semibold text-ink hover:underline">
+                  Reasignar dinero
+                </a>
+              </div>
+            )}
+          </Card>
           {summary.unbudgeted.executed > 0 && (
-            <Alert tone="warn" className="mb-6" title="Gastos sin presupuesto">
+            <Alert tone="warn" className="mb-5" title="Gastos sin presupuesto">
               Hay {f.money(summary.unbudgeted.executed, currency)} en gastos de categorías sin línea en este presupuesto. Agrega esas categorías para comparar mejor.
             </Alert>
           )}
-          <Card className="mb-6">
+          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="min-w-0 space-y-5 lg:col-span-2">
+          <Card>
             <CardHeader
               title="Plan frente a realidad"
               description={`Proyección al cierre: ${f.money(summary.totalProjected, currency)}. Comprometido = previstos pendientes del mes (incluidas recurrencias y cuotas estimadas de deudas).`}
@@ -153,15 +196,16 @@ export default async function BudgetPage({ searchParams }: { searchParams: Promi
                 <tbody>
                   {summary.lines.map((l) => {
                     const dbLine = row.lines.find((x) => x.id === l.lineId);
+                    const st = budgetLineStatus(l, f, { monthPct, currency });
                     return (
                       <tr key={l.lineId}>
                         <td className={td}>
-                          <p className="font-medium">{label(l.categoryId)}</p>
+                          <p className="font-semibold">{label(l.categoryId)}</p>
                           {dbLine?.annualAmount ? <p className="text-xs text-muted">Anual {f.money(dbLine.annualAmount, currency)} ÷ 12</p> : null}
-                          <div className="mt-1.5 w-40 max-w-full">
-                            <Meter value={l.executed} max={l.planned} tone={l.overLimit ? "neg" : l.projectedOverLimit ? "warn" : "brand"} label={`Ejecución de ${label(l.categoryId)}`} />
+                          <div className="mt-1.5 w-44 max-w-full">
+                            <Meter value={l.executed} max={l.planned} tone={st.meter} today={monthPct} label={`Ejecución de ${label(l.categoryId)}`} />
                           </div>
-                          <p className="mt-0.5 text-xs text-muted">{l.executionPct === null ? "Sin monto asignado" : `${f.pct(l.executionPct, 0)} ejecutado`}</p>
+                          <LineStatusText status={st} className="mt-1" />
                         </td>
                         <td className={tdNum}>{f.money(l.planned, currency)}</td>
                         <td className={tdNum}>{f.money(l.executed, currency)}</td>
@@ -197,15 +241,16 @@ export default async function BudgetPage({ searchParams }: { searchParams: Promi
               </Table>
             )}
           </Card>
-          <div className="grid gap-6 lg:grid-cols-2">
             <Card>
               <CardHeader title="Agregar o actualizar una línea" description="Para gastos anuales u ocasionales, indica el valor anual: se reserva una doceava parte cada mes." />
               <div className="p-5">
                 <BudgetLineForm budgetId={row.budget.id} currency={currency} categories={expenseCats} />
               </div>
             </Card>
-            <Card>
-              <CardHeader title="Reasignar dinero" description="Mueve presupuesto de una categoría a otra sin cambiar el total." />
+          </div>
+          <div className="min-w-0 space-y-5">
+            <Card id="reasignar" className="scroll-mt-6">
+              <CardHeader title="Reasignar dinero" description="Mueve plan de una categoría a otra sin cambiar el total." />
               <div className="p-5">
                 {summary.lines.length >= 2 ? (
                   <ReallocateForm currency={currency} lines={summary.lines.map((l) => ({ id: l.lineId!, label: `${label(l.categoryId)} (${f.money(l.planned, currency)})` }))} />
@@ -216,28 +261,48 @@ export default async function BudgetPage({ searchParams }: { searchParams: Promi
             </Card>
             <Card>
               <CardHeader title="Distribución del plan" description="Referencia, no regla. Compárala con tu realidad." />
-              <div className="space-y-2 p-5 text-sm">
+              <div className="space-y-3 p-5 text-sm">
                 {summary.expectedIncome > 0 ? (
                   <>
-                    <p className="flex justify-between">
-                      <span className="text-ink-2">Esenciales</span>
-                      <span className="tabular">
-                        {f.money(plannedEssential, currency)} · {f.pct(plannedEssential / summary.expectedIncome, 0)}
-                      </span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span className="text-ink-2">Discrecionales</span>
-                      <span className="tabular">
-                        {f.money(plannedDiscretionary, currency)} · {f.pct(plannedDiscretionary / summary.expectedIncome, 0)}
-                      </span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span className="text-ink-2">Ahorro</span>
-                      <span className="tabular">
-                        {f.money(summary.savingsTarget, currency)} · {f.pct(summary.savingsTarget / summary.expectedIncome, 0)}
-                      </span>
-                    </p>
-                    <p className="pt-2 text-xs text-muted">Como referencia, la regla 50/30/20 propone 50 % necesidades, 30 % deseos y 20 % ahorro. Con ingresos ajustados es normal que lo esencial pese más.</p>
+                    {(() => {
+                      const parts3 = [
+                        { key: "ess", label: "Esenciales (incluye deudas)", value: plannedEssential, ref: 0.5, color: "var(--chart-1)" },
+                        { key: "dis", label: "Discrecionales", value: plannedDiscretionary, ref: 0.3, color: "var(--chart-2)" },
+                        { key: "sav", label: "Ahorro", value: summary.savingsTarget, ref: 0.2, color: "var(--chart-3)" },
+                      ];
+                      const total = Math.max(summary.expectedIncome, parts3.reduce((a, p) => a + p.value, 0));
+                      return (
+                        <>
+                          <p className="text-xs text-muted">Tu plan (sobre el ingreso esperado)</p>
+                          <div aria-hidden className="flex h-3 overflow-hidden rounded-full bg-surface-3">
+                            {parts3.map((p) => (
+                              <span key={p.key} style={{ width: `${(p.value / total) * 100}%`, background: p.color }} />
+                            ))}
+                          </div>
+                          <p className="text-xs text-muted">Referencia 50/30/20</p>
+                          <div aria-hidden className="flex h-3 gap-0.5 overflow-hidden rounded-full opacity-45">
+                            {parts3.map((p) => (
+                              <span key={p.key} style={{ width: `${p.ref * 100}%`, background: p.color }} />
+                            ))}
+                          </div>
+                          <ul className="space-y-1.5 pt-1">
+                            {parts3.map((p) => (
+                              <li key={p.key} className="flex items-center justify-between gap-3">
+                                <span className="inline-flex items-center gap-2 text-ink">
+                                  <span aria-hidden className="size-2.5 rounded-xs" style={{ background: p.color }} />
+                                  {p.label}
+                                </span>
+                                <span className="tabular whitespace-nowrap text-ink">
+                                  {f.money(p.value, currency)} · {f.pct(p.value / summary.expectedIncome, 0)}
+                                  <span className="text-muted"> (ref. {f.pct(p.ref, 0)})</span>
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      );
+                    })()}
+                    <p className="pt-1 text-xs text-muted">Con cuotas de deuda altas es normal que lo esencial pese más. A medida que pagues deudas, esa parte puede pasar a ahorro.</p>
                   </>
                 ) : (
                   <p className="text-ink-2">Define el ingreso esperado para ver los porcentajes.</p>
@@ -245,7 +310,7 @@ export default async function BudgetPage({ searchParams }: { searchParams: Promi
               </div>
             </Card>
             <Card>
-              <CardHeader title="Ajustes del presupuesto" />
+              <CardHeader title="Ajustes del mes" />
               <div className="p-5">
                 <BudgetMetaForm
                   currency={currency}
@@ -259,6 +324,7 @@ export default async function BudgetPage({ searchParams }: { searchParams: Promi
                 />
               </div>
             </Card>
+          </div>
           </div>
         </>
       )}

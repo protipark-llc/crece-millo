@@ -1,7 +1,7 @@
 # Íconos de la interfaz
 
 Los íconos actuales son parte de la identidad del producto y **se conservan** en cualquier
-rediseño: se puede cambiar su tamaño, trazo, color o contenedor, pero no reemplazarlos por
+rediseño (también en la marca Umbral v1, aunque las capturas de diseño no los muestren): se puede cambiar su tamaño, trazo, color o contenedor, pero no reemplazarlos por
 otros. Son de [lucide-react](https://lucide.dev) y se usan siempre con `aria-hidden` junto a
 un texto visible.
 
@@ -26,6 +26,10 @@ un texto visible.
 | Patrimonio neto | `Building2` |
 | Simulador | `FlaskConical` |
 | Informes | `FileBarChart` |
+| Comunidad · Muro | `MessagesSquare` |
+| En vivo | `Radio` |
+| Emprendedores | `Rocket` |
+| Co-Piloto de Negocio | `Gauge` |
 | Configuración | `Settings` |
 
 ## Áreas de la universidad (`src/lib/education/catalog.ts`)

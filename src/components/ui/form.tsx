@@ -37,6 +37,8 @@ export function ActionForm({
   const [state, formAction] = useActionState(action, { ok: false });
   const [pending, startTransition] = useTransition();
   const ref = useRef<HTMLFormElement>(null);
+  // «Guardar y otro»: un botón con data-another="true" reinicia el formulario en vez de redirigir.
+  const another = useRef(false);
   const router = useRouter();
   const [key, setKey] = useState<string>("");
   useEffect(() => {
@@ -44,6 +46,12 @@ export function ActionForm({
   }, [state.nonce]);
   useEffect(() => {
     if (!state.ok) return;
+    if (another.current) {
+      another.current = false;
+      ref.current?.reset();
+      ref.current?.querySelector<HTMLInputElement>("input:not([type=hidden])")?.focus();
+      return;
+    }
     if (resetOnSuccess) ref.current?.reset();
     const href = state.redirectTo ?? onSuccessHref;
     if (href) router.push(href);
@@ -58,6 +66,7 @@ export function ActionForm({
           onSubmit={(e) => {
             e.preventDefault();
             if (pending) return;
+            another.current = (e.nativeEvent as SubmitEvent).submitter?.getAttribute("data-another") === "true";
             const fd = new FormData(e.currentTarget);
             startTransition(() => formAction(fd));
           }}
@@ -179,12 +188,25 @@ export function CheckboxField({ label, name, hint, defaultChecked }: { label: st
   );
 }
 
-export function SubmitButton({ children, variant = "primary", size, className }: { children: ReactNode; variant?: "primary" | "secondary" | "danger" | "ghost" | "accent"; size?: "sm" | "md" | "lg"; className?: string }) {
+export function SubmitButton({
+  children,
+  variant = "primary",
+  size,
+  className,
+  another = false,
+}: {
+  children: ReactNode;
+  variant?: "primary" | "secondary" | "danger" | "ghost" | "accent";
+  size?: "sm" | "md" | "lg";
+  className?: string;
+  /** Tras guardar, deja el formulario listo para otro registro (no redirige). */
+  another?: boolean;
+}) {
   const status = useFormStatus();
   const ctxPending = useContext(PendingCtx);
   const pending = status.pending || ctxPending;
   return (
-    <button type="submit" disabled={pending} aria-busy={pending} className={buttonClass(variant, size, className)}>
+    <button type="submit" disabled={pending} aria-busy={pending} data-another={another ? "true" : undefined} className={buttonClass(variant, size, className)}>
       {pending && <Loader2 aria-hidden className="size-4 animate-spin" />}
       {children}
     </button>

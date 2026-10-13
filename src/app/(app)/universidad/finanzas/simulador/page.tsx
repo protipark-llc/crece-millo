@@ -35,7 +35,15 @@ export default async function SimulatorPage() {
   });
   return (
     <>
-      <PageHeader title="Simulador de escenarios" description="Explora decisiones antes de tomarlas: un aumento de ingresos, una nueva cuota, una compra grande o un periodo sin ingresos." />
+      <PageHeader
+        eyebrow="Finanzas personales"
+        title="¿Qué pasa si…?"
+        description={
+          <>
+            Prueba una decisión antes de tomarla. <strong className="font-semibold text-ink">Las simulaciones no cambian tus datos reales:</strong> todo se calcula sobre una copia.
+          </>
+        }
+      />
       <Simulator currency={data.d.base} locale={data.d.locale} startDate={data.d.today} baseline={data.baseline} debts={data.debts} saved={data.saved} />
     </>
   );

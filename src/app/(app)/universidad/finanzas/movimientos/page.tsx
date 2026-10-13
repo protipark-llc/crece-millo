@@ -13,7 +13,8 @@ export default async function MovementsPage({ searchParams }: { searchParams: Pr
     <>
       <PageHeader
         title="Movimientos"
-        description="Ingresos, gastos y transferencias entre tus cuentas. Distinguimos lo previsto de lo realizado."
+        eyebrow="Finanzas personales"
+        description="Ingresos, gastos y transferencias entre tus cuentas. Separamos lo previsto de lo realizado."
         actions={
           <>
             <ButtonLink href="/universidad/finanzas/recurrencias" variant="ghost">
