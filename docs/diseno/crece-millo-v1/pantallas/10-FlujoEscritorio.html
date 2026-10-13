@@ -1,0 +1,191 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+[data-theme="light"]{--bg:#f5f2ec;--surface:#fff;--surface-2:#efebe4;--surface-3:#e5e0d7;--border:rgb(28 28 33/.12);--border-strong:rgb(28 28 33/.22);--control-border:#8a8690;--ink:#1c1c21;--ink-2:#45434a;--muted:#625f66;--brand:#1c1c21;--brand-hover:#000;--brand-soft:#ece8e1;--brand-ink:#fff;--accent:#d1401f;--nav-bg:#1c1c21;--nav-ink:#e6e2db;--nav-active-bg:rgb(224 72 45/.24);--nav-label:#a6a29b;--pos:#106a1e;--pos-soft:#e6f2e7;--neg:#b42318;--neg-soft:#fbe9e7;--warn:#8a5a00;--warn-soft:#fbf1dc;--info:#1c5cab;--info-soft:#e6eef8;--focus:#2a78d6;--chart-1:#c63e22;--chart-2:#4a4850;--chart-grid:#e7e2da;--chart-axis:#94908a;--chart-mark:#e0482d;--shadow-sm:0 1px 2px rgb(28 28 33/.06);color-scheme:light}
+[data-theme="dark"]{--bg:#111114;--surface:#1a1a1f;--surface-2:#222228;--surface-3:#2b2b32;--border:rgb(255 255 255/.10);--border-strong:rgb(255 255 255/.18);--control-border:#6e6a72;--ink:#f2efea;--ink-2:#c9c5bf;--muted:#9c988f;--brand:#f2efea;--brand-hover:#fff;--brand-soft:#2a2826;--brand-ink:#111114;--accent:#ff6b4a;--nav-bg:#0b0b0d;--nav-ink:#c9c5bf;--nav-active-bg:rgb(255 107 74/.18);--nav-label:#8e8a84;--pos:#3fbf4a;--pos-soft:#12301a;--neg:#f08080;--neg-soft:#3a1a1a;--warn:#f2c14e;--warn-soft:#33280f;--info:#7fb1ef;--info-soft:#142a45;--focus:#7fb1ef;--chart-1:#ff7a5c;--chart-2:#b9b5ae;--chart-grid:#2a2a30;--chart-axis:#5e5b62;--chart-mark:#ff6b4a;--shadow-sm:0 1px 2px rgb(0 0 0/.4);color-scheme:dark}
+.app{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.ttl{font-family:Outfit,system-ui,sans-serif}
+.n{font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.ov{font-size:11px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.hlp{font-size:12px;line-height:16px;color:var(--muted)}
+.lbl{font-size:13px;font-weight:600;color:var(--ink)}
+.lnk{font-size:13px;font-weight:600;color:var(--brand);text-decoration:none;background:none;border:0;padding:0;cursor:pointer;min-height:32px;display:inline-flex;align-items:center}
+.fld{height:40px;border:1px solid var(--control-border);border-radius:8px;background:var(--surface);color:var(--ink);font:400 14px 'IBM Plex Sans',sans-serif;padding:0 10px;box-sizing:border-box}
+.bdg{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
+.nv{height:36px;display:flex;align-items:center;padding:0 10px;border-radius:8px;text-decoration:none;font-size:14px}
+.hat-i{background:repeating-linear-gradient(45deg,var(--chart-1) 0 3px,transparent 3px 6px);border:1.5px solid var(--chart-1);box-sizing:border-box}
+.hat-g{background:repeating-linear-gradient(45deg,var(--chart-2) 0 3px,transparent 3px 6px);border:1.5px solid var(--chart-2);box-sizing:border-box}
+.dot-g{background:radial-gradient(var(--chart-2) 1.2px,transparent 1.4px) 0 0/5px 5px;border:1.5px dashed var(--chart-2);box-sizing:border-box}
+.bar{transition:height 180ms cubic-bezier(.2,0,0,1)}
+.tbl{border-collapse:collapse;width:100%;min-width:980px;font-size:13px}
+.tbl th{font-size:12px;font-weight:500;color:var(--muted);text-align:right;padding:10px;border-bottom:1px solid var(--border-strong);white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{padding:10px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.bar{transition:none}}
+</style>
+</head><body>
+<div class="app" data-theme="light" style="min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<nav aria-label="Navegación principal" style="flex: 1 1 240px; max-width: 100%; background: var(--nav-bg); padding: 20px 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+<span style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 10px; color: #ffffff"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="#ffffff"></rect><path d="M6 12.5Q24 17.5 42 12.5" fill="none" stroke="#1c1c21" stroke-width="4" stroke-linecap="round"></path><path d="M11 20H37M15 14.5V41M33 14.5V41" fill="none" stroke="#1c1c21" stroke-width="3.6" stroke-linecap="round"></path><path transform="translate(24 31) scale(0.4) translate(-24 -23)" d="M24 6C31 13 36 20 36 28A12 12 0 0 1 12 28C12 21.5 15.5 17 19 13C20 18 22 20.5 25 21.5C26.5 16 26 11 24 6Z" fill="#e0482d"></path></svg><span class="ttl" style="font-size: 16px; letter-spacing: 0.06em"><b style="font-weight: 600">CRECE</b> MILLO</span></span>
+<div style="display: flex; flex-direction: column; gap: 1px"><span style="padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nav-label)">Universidad</span><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Inicio</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Mi progreso</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Rutas de aprendizaje</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Biblioteca de módulos</a></div><div style="display: flex; flex-direction: column; gap: 1px"><span style="padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nav-label)">Finanzas personales</span><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Panel</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Diagnóstico</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Movimientos</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Ingresos</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Gastos</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Cuentas</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Presupuesto</a><a href="#" class="nv" aria-current="page" style="background: var(--nav-active-bg); color: #ffffff; font-weight: 600">Flujo de caja</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Deudas</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Ahorro y objetivos</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Patrimonio neto</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Simulador</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Informes</a></div><div style="display: flex; flex-direction: column; gap: 1px"><span style="padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nav-label)">Comunidad</span><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Muro</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">En vivo</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Emprendedores</a><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Co-Piloto de Negocio</a></div><div style="display: flex; flex-direction: column; gap: 1px"><span style="padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--nav-label)">Cuenta</span><a href="#" class="nv" aria-current="false" style="background: transparent; color: var(--nav-ink); font-weight: 400">Configuración</a></div>
+</nav>
+
+<main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+
+<div style="display: flex; flex-direction: column; gap: 6px; max-width: 720px">
+<span class="ov">Finanzas personales</span>
+<h1 class="ttl" style="margin: 0; font-size: 32px; line-height: 38px; font-weight: 500; letter-spacing: -0.02em">Flujo de caja</h1>
+<p style="margin: 0; font-size: 15px; line-height: 24px; color: var(--ink-2)">Cuánto dinero entra y sale de tus cuentas líquidas: lo que ya pasó y lo que viene. Las transferencias entre tus cuentas no son ingreso ni gasto.</p>
+</div>
+
+
+
+<section aria-label="Escenario y supuestos" class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: flex-end">
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl" id="esc-l">Escenario</span>
+<div role="radiogroup" aria-labelledby="esc-l" style="display: flex; padding: 3px; gap: 2px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border)">
+<button type="button" role="radio" aria-checked="false" onClick="" style="height: 38px; padding: 0 14px; border: 0; border-radius: 8px; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none">Conservador</button><button type="button" role="radio" aria-checked="true" onClick="" style="height: 38px; padding: 0 14px; border: 0; border-radius: 8px; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer; background: var(--surface); color: var(--ink); box-shadow: var(--shadow-sm)">Base</button><button type="button" role="radio" aria-checked="false" onClick="" style="height: 38px; padding: 0 14px; border: 0; border-radius: 8px; font: 500 14px 'IBM Plex Sans', sans-serif; cursor: pointer; background: transparent; color: var(--muted); box-shadow: none">Optimista</button>
+</div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label class="lbl" for="ai">Ingresos proyectados</label><div class="fld n" style="display: flex; align-items: center; gap: 4px; width: 120px"><input id="ai" inputmode="numeric" value="0" onChange="" style="flex: 1; min-width: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: right; outline: none"><span style="color: var(--muted)">%</span></div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label class="lbl" for="ag">Gastos proyectados</label><div class="fld n" style="display: flex; align-items: center; gap: 4px; width: 120px"><input id="ag" inputmode="numeric" value="0" onChange="" style="flex: 1; min-width: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: right; outline: none"><span style="color: var(--muted)">%</span></div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label class="lbl" for="cu">Cuentas</label><select id="cu" class="fld"><option>Todas las cuentas líquidas</option><option>Cuenta nómina</option><option>Billetera digital</option></select></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span class="lbl" id="gr-l">Ver por</span><div role="radiogroup" aria-labelledby="gr-l" style="display: flex; gap: 4px"><button type="button" role="radio" aria-checked="true" class="fld" style="background: var(--brand-soft); color: var(--brand); font-weight: 600; border-color: var(--brand)">Mes</button><button type="button" role="radio" aria-checked="false" class="fld">Semana</button><button type="button" role="radio" aria-checked="false" class="fld">Día</button></div></div>
+<label style="display: flex; gap: 8px; align-items: center; min-height: 40px; font-size: 14px"><input type="checkbox" checked="false" onChange="" style="width: 20px; height: 20px; accent-color: var(--brand)">Solo lo programado (sin estimaciones)</label>
+</div>
+<p class="hlp" style="margin: 0; line-height: 18px">Supuestos: ingresos programados 0 %, gastos programados y estimados 0 %. Lo real nunca se ajusta. Estimado = promedio de tus gastos no programados de los últimos 3 meses. Las cuotas mínimas de deudas activas entran en su día de pago.</p>
+</section>
+
+<section aria-labelledby="h-resp" class="card" style="padding: 24px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; align-items: center">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span class="bdg" style="align-self: flex-start; background: var(--pos-soft); color: var(--pos)">✓ Sin déficit previsto</span>
+<h2 id="h-resp" class="ttl" style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 500; letter-spacing: -0.01em">Te alcanza en los próximos 6 meses, con un bache en diciembre.</h2>
+<p style="margin: 0; font-size: 15px; line-height: 24px; color: var(--ink-2)">El punto más bajo, día a día, llega el <strong>7 dic 2026</strong> con <strong class="n">$ 3.820.000</strong>. Ese mes coinciden el arriendo ($ 1.600.000), las cuotas de deuda ($ 1.870.000) y la prima anual del seguro ($ 1.200.000) antes de la quincena del 15.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+<div style="background: var(--surface); padding: 14px; display: flex; flex-direction: column; gap: 4px"><span class="hlp">Saldo hoy (registrado)</span><span class="n" style="font-size: 20px; font-weight: 600">$ 5.930.000</span><span class="hlp">Incluye lo vencido asumido hoy</span></div>
+<div style="background: var(--surface); padding: 14px; display: flex; flex-direction: column; gap: 4px"><span class="hlp">Saldo más bajo</span><span class="n" style="font-size: 20px; font-weight: 600; color: var(--ink)">$ 3.820.000</span><span class="hlp">7 dic 2026</span></div>
+<div style="background: var(--surface); padding: 14px; display: flex; flex-direction: column; gap: 4px"><span class="hlp">Saldo al inicio · 1 ago 2026</span><span class="n" style="font-size: 20px; font-weight: 600">$ 3.010.000</span></div>
+<div style="background: var(--surface); padding: 14px; display: flex; flex-direction: column; gap: 4px"><span class="hlp">Saldo final proyectado</span><span class="n" style="font-size: 20px; font-weight: 600">$ 9.680.000</span><span class="hlp">31 mar 2027</span></div>
+</div>
+</section>
+
+<section aria-labelledby="h-saldo" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px"><h2 id="h-saldo" class="ttl" style="margin: 0; font-size: 20px; font-weight: 500">Saldo de caja a fin de mes</h2>
+<div style="display: flex; gap: 14px; font-size: 12px; color: var(--muted)"><span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; border-top: 3px solid var(--chart-1)"></span>Real</span><span style="display: flex; align-items: center; gap: 6px"><span style="width: 18px; border-top: 3px dashed var(--chart-1)"></span>Proyectado</span><span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 50%; background: var(--chart-mark); border: 2px solid var(--chart-1)"></span>Punto más bajo</span></div></div>
+<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 0 8px">
+<div style="position: relative; height: 220px"><span class="n hlp" style="position: absolute; right: 0; top: 100%; transform: translateY(-50%)">$ 0 M</span><span class="n hlp" style="position: absolute; right: 0; top: 75%; transform: translateY(-50%)">$ 2,5 M</span><span class="n hlp" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%)">$ 5 M</span><span class="n hlp" style="position: absolute; right: 0; top: 25%; transform: translateY(-50%)">$ 7,5 M</span><span class="n hlp" style="position: absolute; right: 0; top: 0%; transform: translateY(-50%)">$ 10 M</span></div>
+<div style="position: relative; height: 220px">
+<svg role="img" aria-label="Saldo a fin de mes: agosto $ 3.580.000, septiembre $ 4.340.000, hoy $ 5.930.000; proyectado hasta marzo $ 9.680.000. Punto más bajo $ 3.820.000 el 7 de diciembre." viewBox="0 0 1000 1000" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%">
+<line x1="0" x2="1000" y1="0" y2="0" stroke="var(--chart-grid)" vector-effect="non-scaling-stroke"></line><line x1="0" x2="1000" y1="250" y2="250" stroke="var(--chart-grid)" vector-effect="non-scaling-stroke"></line><line x1="0" x2="1000" y1="500" y2="500" stroke="var(--chart-grid)" vector-effect="non-scaling-stroke"></line><line x1="0" x2="1000" y1="750" y2="750" stroke="var(--chart-grid)" vector-effect="non-scaling-stroke"></line><line x1="0" x2="1000" y1="1000" y2="1000" stroke="var(--chart-axis)" vector-effect="non-scaling-stroke"></line>
+<line x1="300.0" x2="300.0" y1="0" y2="1000" stroke="var(--chart-axis)" stroke-dasharray="2 4" vector-effect="non-scaling-stroke"></line>
+<polyline points="62.5,642.0 187.5,566.0 300.0,407.0" fill="none" stroke="var(--chart-1)" stroke-width="3" vector-effect="non-scaling-stroke"></polyline>
+<polyline points="300.0,407.0 312.5,211.5 437.5,151.0 562.5,23.0 687.5,58.0 812.5,45.0 937.5,32.0" fill="none" stroke="var(--chart-1)" stroke-width="3" stroke-dasharray="8 6" vector-effect="non-scaling-stroke"></polyline>
+</svg>
+<span aria-hidden="true" class="hlp" style="position: absolute; left: 30.0%; top: -2px; margin-left: 4px">hoy</span>
+<span aria-hidden="true" style="position: absolute; left: 52.5%; top: 61.8%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--chart-mark); border: 3px solid var(--chart-1); box-sizing: border-box"></span>
+<span class="n" style="position: absolute; left: 52.5%; top: 61.8%; transform: translate(-50%, 12px); font-size: 12px; font-weight: 600; white-space: nowrap; background: var(--surface); padding: 0 4px">$ 3.820.000 · 7 dic</span>
+</div>
+<div></div>
+<div class="hlp" style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); margin-top: 6px"><span style="text-align: center">ago</span><span style="text-align: center">sep</span><span style="text-align: center">oct</span><span style="text-align: center">nov</span><span style="text-align: center">dic</span><span style="text-align: center">ene</span><span style="text-align: center">feb</span><span style="text-align: center">mar</span></div>
+</div>
+</section>
+
+<section aria-labelledby="h-es" class="card" style="padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px"><div style="display: flex; flex-direction: column; gap: 2px"><h2 id="h-es" class="ttl" style="margin: 0; font-size: 20px; font-weight: 500">Entradas y salidas por mes</h2><span class="hlp">Cada barra separa lo que ya pasó de lo que viene.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--ink-2)">
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 14px; height: 12px; background: var(--chart-1)"></span>Ingreso real</span>
+<span style="display: flex; align-items: center; gap: 6px"><span class="hat-i" style="width: 14px; height: 12px"></span>Ingreso programado</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 14px; height: 12px; background: var(--chart-2)"></span>Gasto real</span>
+<span style="display: flex; align-items: center; gap: 6px"><span class="hat-g" style="width: 14px; height: 12px"></span>Gasto programado</span>
+<span style="display: flex; align-items: center; gap: 6px"><span class="dot-g" style="width: 14px; height: 12px"></span>Gasto estimado</span>
+</div></div>
+<div style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 0 8px">
+<div style="position: relative; height: 200px"><span class="n hlp" style="position: absolute; right: 0; top: 0; transform: translateY(-50%)">$ 10 M</span><span class="n hlp" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%)">$ 5 M</span><span class="n hlp" style="position: absolute; right: 0; top: 100%; transform: translateY(-50%)">$ 0</span></div>
+<div style="height: 200px; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: end; border-bottom: 1px solid var(--chart-axis); background: linear-gradient(var(--chart-grid), var(--chart-grid)) 0 50%/100% 1px no-repeat">
+
+<div role="img" aria-label="agosto 2026: ingresos $ 5.200.000, gastos $ 4.630.000" style="height: 100%; display: flex; justify-content: center; align-items: flex-end; gap: 4px">
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar hat-i" style="height: 0.0%"></div><div class="bar" style="height: 52.0%; background: var(--chart-1)"></div></div>
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar dot-g" style="height: 0.0%"></div><div class="bar hat-g" style="height: 0.0%"></div><div class="bar" style="height: 46.3%; background: var(--chart-2)"></div></div>
+</div>
+
+<div role="img" aria-label="septiembre 2026: ingresos $ 5.200.000, gastos $ 4.440.000" style="height: 100%; display: flex; justify-content: center; align-items: flex-end; gap: 4px">
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar hat-i" style="height: 0.0%"></div><div class="bar" style="height: 52.0%; background: var(--chart-1)"></div></div>
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar dot-g" style="height: 0.0%"></div><div class="bar hat-g" style="height: 0.0%"></div><div class="bar" style="height: 44.4%; background: var(--chart-2)"></div></div>
+</div>
+
+<div role="img" aria-label="octubre 2026: ingresos $ 9.400.000, gastos $ 5.855.000 (incluye $ 1.150.000 estimados)" style="height: 100%; display: flex; justify-content: center; align-items: flex-end; gap: 4px">
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar hat-i" style="height: 52.0%"></div><div class="bar" style="height: 42.0%; background: var(--chart-1)"></div></div>
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar dot-g" style="height: 11.5%"></div><div class="bar hat-g" style="height: 20.9%"></div><div class="bar" style="height: 26.1%; background: var(--chart-2)"></div></div>
+</div>
+
+<div role="img" aria-label="noviembre 2026: ingresos $ 5.675.000, gastos $ 5.070.000 (incluye $ 1.150.000 estimados)" style="height: 100%; display: flex; justify-content: center; align-items: flex-end; gap: 4px">
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar hat-i" style="height: 56.8%"></div><div class="bar" style="height: 0.0%; background: var(--chart-1)"></div></div>
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar dot-g" style="height: 11.5%"></div><div class="bar hat-g" style="height: 39.2%"></div><div class="bar" style="height: 0.0%; background: var(--chart-2)"></div></div>
+</div>
+
+<div role="img" aria-label="diciembre 2026 · con prima: ingresos $ 7.800.000, gastos $ 6.520.000 (incluye $ 1.400.000 estimados)" style="height: 100%; display: flex; justify-content: center; align-items: flex-end; gap: 4px">
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar hat-i" style="height: 78.0%"></div><div class="bar" style="height: 0.0%; background: var(--chart-1)"></div></div>
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar dot-g" style="height: 14.0%"></div><div class="bar hat-g" style="height: 51.2%"></div><div class="bar" style="height: 0.0%; background: var(--chart-2)"></div></div>
+</div>
+
+<div role="img" aria-label="enero 2027: ingresos $ 5.200.000, gastos $ 5.550.000 (incluye $ 1.150.000 estimados)" style="height: 100%; display: flex; justify-content: center; align-items: flex-end; gap: 4px">
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar hat-i" style="height: 52.0%"></div><div class="bar" style="height: 0.0%; background: var(--chart-1)"></div></div>
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar dot-g" style="height: 11.5%"></div><div class="bar hat-g" style="height: 44.0%"></div><div class="bar" style="height: 0.0%; background: var(--chart-2)"></div></div>
+</div>
+
+<div role="img" aria-label="febrero 2027: ingresos $ 5.200.000, gastos $ 5.070.000 (incluye $ 1.150.000 estimados)" style="height: 100%; display: flex; justify-content: center; align-items: flex-end; gap: 4px">
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar hat-i" style="height: 52.0%"></div><div class="bar" style="height: 0.0%; background: var(--chart-1)"></div></div>
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar dot-g" style="height: 11.5%"></div><div class="bar hat-g" style="height: 39.2%"></div><div class="bar" style="height: 0.0%; background: var(--chart-2)"></div></div>
+</div>
+
+<div role="img" aria-label="marzo 2027: ingresos $ 5.200.000, gastos $ 5.070.000 (incluye $ 1.150.000 estimados)" style="height: 100%; display: flex; justify-content: center; align-items: flex-end; gap: 4px">
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar hat-i" style="height: 52.0%"></div><div class="bar" style="height: 0.0%; background: var(--chart-1)"></div></div>
+<div style="width: 22px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end"><div class="bar dot-g" style="height: 11.5%"></div><div class="bar hat-g" style="height: 39.2%"></div><div class="bar" style="height: 0.0%; background: var(--chart-2)"></div></div>
+</div>
+
+</div>
+<div></div>
+<div class="hlp" style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); margin-top: 6px"><span style="text-align: center">ago</span><span style="text-align: center">sep</span><span style="text-align: center">oct</span><span style="text-align: center">nov</span><span style="text-align: center">dic</span><span style="text-align: center">ene</span><span style="text-align: center">feb</span><span style="text-align: center">mar</span></div>
+</div>
+</section>
+
+<section aria-labelledby="h-det" class="card" style="overflow: hidden">
+<div style="padding: 16px 20px; border-bottom: 1px solid var(--border)"><h2 id="h-det" class="ttl" style="margin: 0; font-size: 20px; font-weight: 500">Detalle por mes</h2><span class="hlp">Saldo final = inicial + ingresos − gastos − estimados + transferencias con cuentas fuera del análisis y aperturas.</span></div>
+<div style="overflow-x: auto">
+<table class="tbl n">
+<thead><tr><th>Mes</th><th>Inicial</th><th>Ingresos reales</th><th>Gastos reales</th><th>Ingresos programados</th><th>Gastos programados</th><th>Estimados</th><th>Transf. y aperturas</th><th>Final</th></tr></thead>
+<tbody>
+
+<tr style="background: transparent"><td><span style="font-weight: 600">agosto 2026</span><br><span class="bdg" style="margin-top: 4px; background: var(--surface-3); color: var(--ink-2)">Real</span></td><td>$ 3.010.000</td><td style="color: var(--pos)">+$ 5.200.000</td><td style="color: var(--neg)">−$ 4.630.000</td><td style="color: var(--pos)">$ 0</td><td style="color: var(--neg)">$ 0</td><td style="color: var(--neg)">$ 0</td><td>$ 0</td><td style="font-weight: 600">$ 3.580.000</td></tr>
+
+<tr style="background: transparent"><td><span style="font-weight: 600">septiembre 2026</span><br><span class="bdg" style="margin-top: 4px; background: var(--surface-3); color: var(--ink-2)">Real</span></td><td>$ 3.580.000</td><td style="color: var(--pos)">+$ 5.200.000</td><td style="color: var(--neg)">−$ 4.440.000</td><td style="color: var(--pos)">$ 0</td><td style="color: var(--neg)">$ 0</td><td style="color: var(--neg)">$ 0</td><td>$ 0</td><td style="font-weight: 600">$ 4.340.000</td></tr>
+
+<tr style="background: var(--brand-soft)"><td><span style="font-weight: 600">octubre 2026</span><br><span class="bdg" style="margin-top: 4px; background: var(--brand-soft); color: var(--brand)">En curso</span></td><td>$ 4.340.000</td><td style="color: var(--pos)">+$ 4.200.000</td><td style="color: var(--neg)">−$ 2.610.000</td><td style="color: var(--pos)">+$ 5.200.000</td><td style="color: var(--neg)">−$ 2.095.000</td><td style="color: var(--neg)">−$ 1.150.000</td><td>$ 0</td><td style="font-weight: 600">$ 7.885.000</td></tr>
+
+<tr style="background: transparent"><td><span style="font-weight: 600">noviembre 2026</span><br><span class="bdg" style="margin-top: 4px; background: var(--info-soft); color: var(--info)">Proyectado</span></td><td>$ 7.885.000</td><td style="color: var(--pos)">$ 0</td><td style="color: var(--neg)">$ 0</td><td style="color: var(--pos)">+$ 5.675.000</td><td style="color: var(--neg)">−$ 3.920.000</td><td style="color: var(--neg)">−$ 1.150.000</td><td>$ 0</td><td style="font-weight: 600">$ 8.490.000</td></tr>
+
+<tr style="background: transparent"><td><span style="font-weight: 600">diciembre 2026 · con prima</span><br><span class="bdg" style="margin-top: 4px; background: var(--info-soft); color: var(--info)">Proyectado</span></td><td>$ 8.490.000</td><td style="color: var(--pos)">$ 0</td><td style="color: var(--neg)">$ 0</td><td style="color: var(--pos)">+$ 7.800.000</td><td style="color: var(--neg)">−$ 5.120.000</td><td style="color: var(--neg)">−$ 1.400.000</td><td>$ 0</td><td style="font-weight: 600">$ 9.770.000</td></tr>
+
+<tr style="background: transparent"><td><span style="font-weight: 600">enero 2027</span><br><span class="bdg" style="margin-top: 4px; background: var(--info-soft); color: var(--info)">Proyectado</span></td><td>$ 9.770.000</td><td style="color: var(--pos)">$ 0</td><td style="color: var(--neg)">$ 0</td><td style="color: var(--pos)">+$ 5.200.000</td><td style="color: var(--neg)">−$ 4.400.000</td><td style="color: var(--neg)">−$ 1.150.000</td><td>$ 0</td><td style="font-weight: 600">$ 9.420.000</td></tr>
+
+<tr style="background: transparent"><td><span style="font-weight: 600">febrero 2027</span><br><span class="bdg" style="margin-top: 4px; background: var(--info-soft); color: var(--info)">Proyectado</span></td><td>$ 9.420.000</td><td style="color: var(--pos)">$ 0</td><td style="color: var(--neg)">$ 0</td><td style="color: var(--pos)">+$ 5.200.000</td><td style="color: var(--neg)">−$ 3.920.000</td><td style="color: var(--neg)">−$ 1.150.000</td><td>$ 0</td><td style="font-weight: 600">$ 9.550.000</td></tr>
+
+<tr style="background: transparent"><td><span style="font-weight: 600">marzo 2027</span><br><span class="bdg" style="margin-top: 4px; background: var(--info-soft); color: var(--info)">Proyectado</span></td><td>$ 9.550.000</td><td style="color: var(--pos)">$ 0</td><td style="color: var(--neg)">$ 0</td><td style="color: var(--pos)">+$ 5.200.000</td><td style="color: var(--neg)">−$ 3.920.000</td><td style="color: var(--neg)">−$ 1.150.000</td><td>$ 0</td><td style="font-weight: 600">$ 9.680.000</td></tr>
+
+</tbody>
+</table>
+</div>
+</section>
+
+
+
+
+<footer class="hlp" style="padding-top: 12px; border-top: 1px solid var(--border)">Herramienta educativa: proyecciones con supuestos explícitos; no es asesoría financiera. Datos ficticios.</footer>
+</main>
+</div>
+</body></html>

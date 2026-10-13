@@ -78,7 +78,7 @@ export default async function NetWorthPage() {
             <LineChart
               title="Patrimonio neto al cierre de cada mes"
               labels={series.map((s) => f.axisMonth(s.date))}
-              series={[{ key: "nw", label: "Patrimonio neto", color: "var(--series-1)", values: series.map((s) => s.netWorth) }]}
+              series={[{ key: "nw", label: "Patrimonio neto", color: "var(--chart-1)", values: series.map((s) => s.netWorth) }]}
               currency={d.base}
               locale={d.locale}
             />

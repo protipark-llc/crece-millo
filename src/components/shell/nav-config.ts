@@ -3,6 +3,8 @@ export interface NavItem {
   label: string;
   icon: string;
   exact?: boolean;
+  /** Muestra la insignia PREMIUM junto al nombre. */
+  premium?: boolean;
 }
 export interface NavGroup {
   label: string;
@@ -38,7 +40,27 @@ export const NAV: NavGroup[] = [
     ],
   },
   {
+    label: "Comunidad",
+    items: [
+      { href: "/comunidad", label: "Muro", icon: "MessagesSquare", exact: true },
+      { href: "/comunidad/en-vivo", label: "En vivo", icon: "Radio" },
+      { href: "/comunidad/emprendedores", label: "Emprendedores", icon: "Rocket", exact: true, premium: true },
+      { href: "/comunidad/emprendedores/co-piloto", label: "Co-Piloto de Negocio", icon: "Gauge", premium: true },
+    ],
+  },
+  {
     label: "Cuenta",
     items: [{ href: "/configuracion", label: "Configuración", icon: "Settings" }],
   },
 ];
+
+/** Destinos de la barra inferior en móvil (el botón central «+» registra un movimiento). */
+export const MOBILE_PRIMARY: NavItem[] = [
+  { href: "/universidad/finanzas", label: "Panel", icon: "LayoutDashboard", exact: true },
+  { href: "/universidad/finanzas/movimientos", label: "Movimientos", icon: "ArrowLeftRight" },
+  { href: "/universidad/finanzas/presupuesto", label: "Presupuesto", icon: "PieChart" },
+];
+
+export function isActive(item: NavItem, pathname: string) {
+  return item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(item.href + "/");
+}

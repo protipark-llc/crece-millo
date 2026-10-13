@@ -82,7 +82,7 @@ test.describe("Finanzas personales (flujo completo con persistencia)", () => {
     await lineForm.getByRole("button", { name: "Guardar línea" }).click();
     const line = page.getByRole("row", { name: /Gimnasio y deporte/ });
     await expect(line).toContainText("100.000");
-    await expect(line).toContainText("-$ 20.000");
+    await expect(line).toContainText("−$ 20.000");
   });
 
   test("la simulación no modifica los datos reales", async ({ page }) => {

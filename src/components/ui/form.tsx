@@ -119,7 +119,7 @@ export function Field({ label, name, hint, children, className, optional }: { la
 }
 
 export const inputClass =
-  "h-10 w-full rounded-lg border border-border-strong bg-surface px-3 text-sm text-ink placeholder:text-muted aria-[invalid=true]:border-neg focus:border-[var(--focus)] focus:outline-none focus:ring-2 focus:ring-[var(--focus)]/30";
+  "h-11 w-full rounded-md border border-control-border bg-surface px-3 text-[15px] text-ink placeholder:text-muted transition-colors duration-[var(--duration-fast)] aria-[invalid=true]:border-2 aria-[invalid=true]:border-neg disabled:bg-surface-2 disabled:text-muted focus:border-focus focus:outline-none focus:ring-2 focus:ring-focus/30";
 
 export function TextField({ label, name, hint, optional, className, ...input }: { label: string; name: string; hint?: ReactNode; optional?: boolean } & ComponentProps<"input">) {
   return (
@@ -135,7 +135,7 @@ export function MoneyField({ label, name, currency, hint, optional, className, .
       {(p) => (
         <div className="relative">
           <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-medium text-muted">{currency}</span>
-          <input name={name} inputMode="decimal" autoComplete="off" placeholder={optional ? "" : "0"} className={cn(inputClass, "pl-12 tabular")} {...p} {...input} />
+          <input name={name} inputMode="decimal" autoComplete="off" placeholder={optional ? "" : "0"} className={cn(inputClass, "h-12 pl-12 text-right tabular sm:h-11")} {...p} {...input} />
         </div>
       )}
     </Field>
@@ -167,7 +167,7 @@ export function CheckboxField({ label, name, hint, defaultChecked }: { label: st
   const error = useFieldError(name);
   return (
     <div className="flex items-start gap-2.5">
-      <input id={id} type="checkbox" name={name} defaultChecked={defaultChecked} className="mt-0.5 size-4 accent-[var(--brand)]" aria-invalid={error ? true : undefined} />
+      <input id={id} type="checkbox" name={name} defaultChecked={defaultChecked} className="mt-0.5 size-5 shrink-0 accent-[var(--brand)]" aria-invalid={error ? true : undefined} />
       <div>
         <label htmlFor={id} className="text-sm text-ink">
           {label}
@@ -179,7 +179,7 @@ export function CheckboxField({ label, name, hint, defaultChecked }: { label: st
   );
 }
 
-export function SubmitButton({ children, variant = "primary", size, className }: { children: ReactNode; variant?: "primary" | "secondary" | "danger" | "ghost"; size?: "sm" | "md"; className?: string }) {
+export function SubmitButton({ children, variant = "primary", size, className }: { children: ReactNode; variant?: "primary" | "secondary" | "danger" | "ghost" | "accent"; size?: "sm" | "md" | "lg"; className?: string }) {
   const status = useFormStatus();
   const ctxPending = useContext(PendingCtx);
   const pending = status.pending || ctxPending;
@@ -234,16 +234,16 @@ export function ConfirmAction({
         {icon}
         {label}
       </button>
-      <dialog ref={dialog} className="m-auto w-[min(92vw,440px)] rounded-xl border border-border bg-surface p-0 text-ink shadow-2xl backdrop:bg-black/40">
-        <form action={formAction} className="p-5">
+      <dialog ref={dialog} className="m-auto w-[min(92vw,440px)] rounded-xl border border-border bg-surface p-0 text-ink shadow-lg backdrop:bg-overlay">
+        <form action={formAction} className="p-6">
           {Object.entries(fields).map(([k, v]) => (
             <input key={k} type="hidden" name={k} value={v} />
           ))}
-          <h2 className="text-base font-semibold">{title}</h2>
+          <h2 className="t-section">{title}</h2>
           <div className="mt-2 text-sm text-ink-2">{description}</div>
           {state.error && <Alert tone="neg" className="mt-3">{state.error}</Alert>}
           <div className="mt-5 flex justify-end gap-2">
-            <button type="button" className={buttonClass("secondary", "md")} onClick={() => dialog.current?.close()}>
+            <button type="button" autoFocus className={buttonClass("secondary", "md")} onClick={() => dialog.current?.close()}>
               Cancelar
             </button>
             <SubmitButton variant={danger ? "danger" : "primary"}>{confirmLabel}</SubmitButton>
@@ -281,7 +281,7 @@ export function InlineAction({ action, fields, children, title, className }: { a
 function InlineSubmit({ children, title, className }: { children: ReactNode; title?: string; className?: string }) {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" disabled={pending} title={title} className={cn("inline-flex h-8 items-center gap-1 rounded-lg px-2 text-sm text-ink-2 hover:bg-surface-2 hover:text-ink disabled:opacity-50", className)}>
+    <button type="submit" disabled={pending} title={title} className={cn("inline-flex h-9 items-center gap-1 rounded-md px-2.5 text-sm font-medium text-ink-2 hover:bg-surface-2 hover:text-ink disabled:opacity-50", className)}>
       {pending ? <Loader2 aria-hidden className="size-3.5 animate-spin" /> : null}
       {children}
     </button>

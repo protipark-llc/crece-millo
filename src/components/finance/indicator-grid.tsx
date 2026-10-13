@@ -25,12 +25,12 @@ export function IndicatorGrid({ indicators, f, keys }: { indicators: Indicator[]
         const missing = i.value === null;
         const negative = i.value !== null && i.value < 0 && (i.key === "net_flow" || i.key === "savings_rate" || i.key.startsWith("net_worth"));
         return (
-          <div key={i.key} className="rounded-xl border border-border bg-surface px-4 py-3.5">
-            <div className="flex items-center gap-1.5 text-sm text-muted">
+          <div key={i.key} className="rounded-lg border border-border bg-surface p-4">
+            <div className="flex items-center gap-1.5 text-[13px] text-muted">
               <span>{i.label}</span>
               <InfoTip text={`${i.explanation} Fórmula: ${i.formula}. Periodo: ${i.period}.`} />
             </div>
-            <div className={cn("mt-1 font-semibold tracking-tight", missing ? "text-sm text-muted" : "text-xl", negative ? "text-neg" : !missing ? "text-ink" : undefined)}>{formatIndicator(i, f)}</div>
+            <div className={cn("mt-1", missing ? "text-sm font-semibold text-muted" : "t-kpi", negative ? "text-neg" : !missing ? "text-ink" : undefined)}>{formatIndicator(i, f)}</div>
             <div className="mt-0.5 text-xs text-muted">{missing && i.missing ? i.missing : i.period}</div>
           </div>
         );

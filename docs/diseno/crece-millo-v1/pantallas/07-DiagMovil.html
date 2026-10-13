@@ -1,0 +1,57 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+[data-theme="light"]{--bg:#f5f2ec;--surface:#fff;--surface-2:#efebe4;--surface-3:#e5e0d7;--border:rgb(28 28 33/.12);--border-strong:rgb(28 28 33/.22);--control-border:#8a8690;--ink:#1c1c21;--ink-2:#45434a;--muted:#625f66;--brand:#1c1c21;--brand-soft:#ece8e1;--brand-ink:#fff;--accent:#d1401f;--accent-ink:#fff;--nav-bg:#1c1c21;--pos:#106a1e;--pos-soft:#e6f2e7;--neg:#b42318;--warn:#8a5a00;--warn-soft:#fbf1dc;--info:#1c5cab;--info-soft:#e6eef8;--focus:#2a78d6;color-scheme:light}
+[data-theme="dark"]{--bg:#111114;--surface:#1a1a1f;--surface-2:#222228;--surface-3:#2b2b32;--border:rgb(255 255 255/.10);--border-strong:rgb(255 255 255/.18);--control-border:#6e6a72;--ink:#f2efea;--ink-2:#c9c5bf;--muted:#9c988f;--brand:#f2efea;--brand-soft:#2a2826;--brand-ink:#111114;--accent:#ff6b4a;--accent-ink:#111114;--nav-bg:#0b0b0d;--pos:#3fbf4a;--pos-soft:#12301a;--neg:#f08080;--warn:#f2c14e;--warn-soft:#33280f;--info:#7fb1ef;--info-soft:#142a45;--focus:#7fb1ef;color-scheme:dark}
+.app{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.ttl{font-family:Outfit,system-ui,sans-serif}
+.n{font-variant-numeric:tabular-nums}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.ov{font-size:11px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.hlp{font-size:12px;line-height:16px;color:var(--muted)}
+.lbl{font-size:13px;font-weight:600}
+.lnk{font-size:14px;font-weight:600;color:var(--brand);text-decoration:none;background:none;border:0;padding:0;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.btn{height:52px;padding:0 16px;border-radius:8px;font:600 15px/1 'IBM Plex Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;cursor:pointer;text-decoration:none;width:100%;box-sizing:border-box}
+.b-pri{background:var(--brand);color:var(--brand-ink)}
+.b-sec{background:var(--surface);color:var(--brand);border-color:var(--control-border)}
+.fld{height:48px;width:100%;border:1px solid var(--control-border);border-radius:8px;background:var(--surface);color:var(--ink);font:400 16px 'IBM Plex Sans',sans-serif;padding:0 12px;box-sizing:border-box}
+.bdg{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:600}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+</style>
+</head><body>
+<div class="app" data-theme="light" style="width: 390px; min-height: 100%; display: flex; flex-direction: column">
+
+<header style="position: sticky; top: 0; z-index: 2; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 8px 0 16px; display: flex; flex-direction: column">
+<div style="height: 56px; display: flex; align-items: center; gap: 10px">
+
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 48 48"><rect width="48" height="48" rx="10" fill="var(--nav-bg)"></rect><path d="M6 12.5Q24 17.5 42 12.5" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"></path><path d="M11 20H37M15 14.5V41M33 14.5V41" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round"></path><path transform="translate(24 31) scale(0.4) translate(-24 -23)" d="M24 6C31 13 36 20 36 28A12 12 0 0 1 12 28C12 21.5 15.5 17 19 13C20 18 22 20.5 25 21.5C26.5 16 26 11 24 6Z" fill="#e0482d"></path></svg>
+<span class="n" style="flex: 1; font-size: 14px; font-weight: 600">Crece Millo</span>
+<a href="#" class="lnk" style="padding: 0 8px; font-size: 13px">Ir al panel</a>
+</div>
+
+</header>
+
+
+<main style="padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 16px">
+<div class="card" style="overflow: hidden"><div style="aspect-ratio: 16 / 9; background: var(--surface-3); position: relative; display: flex; align-items: center; justify-content: center"><span class="hlp" style="position: absolute; left: 12px; top: 10px">[Video: Alejandro te da la bienvenida]</span><button type="button" aria-label="Reproducir video de bienvenida, 1 minuto 10 segundos" style="width: 56px; height: 56px; border-radius: 50%; border: 0; background: var(--brand); color: var(--brand-ink); display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></button><span class="n" style="position: absolute; right: 10px; bottom: 10px; padding: 2px 6px; border-radius: 4px; background: rgb(0 0 0 / 0.7); color: #ffffff; font-size: 12px">1:10</span></div></div>
+<span class="ov" style="color: var(--brand)">Bienvenida, Laura</span>
+<h1 class="ttl" style="margin: 0; font-size: 30px; line-height: 36px; font-weight: 500; letter-spacing: -0.02em">Antes de cualquier plan, veamos dónde estás.</h1>
+<p style="margin: 0; font-size: 16px; line-height: 25px; color: var(--ink-2)">8 pasos. Con los primeros 4, en unos 3 minutos, ya ves tu punto de partida. Los otros 4, cuando quieras.</p>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 22px">
+<span><span class="bdg n" style="background: var(--brand-soft); color: var(--brand); margin-right: 8px">3 min</span>Tu punto de partida</span>
+<span><span class="bdg" style="background: var(--brand-soft); color: var(--brand); margin-right: 8px">Sin juicios</span>Si no sabes un dato, lo saltas</span>
+<span><span class="bdg" style="background: var(--brand-soft); color: var(--brand); margin-right: 8px">Privado</span>Nunca inventamos valores</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px; padding-top: 8px"><button type="button" class="btn b-pri" onClick="">Empezar mi diagnóstico</button><a href="#" class="lnk">Prefiero explorar primero</a></div>
+</main>
+
+
+
+
+
+
+
+</div>
+</body></html>

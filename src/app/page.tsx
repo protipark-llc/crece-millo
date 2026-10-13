@@ -19,7 +19,7 @@ export default async function Landing() {
     <main id="contenido">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
         <span className="flex items-center gap-2 font-semibold text-ink">
-          <span className="inline-flex size-9 items-center justify-center rounded-lg bg-brand text-brand-ink">
+          <span className="inline-flex size-9 items-center justify-center rounded-md bg-brand text-brand-ink">
             <Sprout aria-hidden className="size-5" />
           </span>
           Crece
@@ -49,7 +49,7 @@ export default async function Landing() {
         </div>
         <div className="mt-14 grid gap-4 sm:grid-cols-2">
           {features.map((f) => (
-            <div key={f.title} className="rounded-xl border border-border bg-surface p-5">
+            <div key={f.title} className="rounded-lg border border-border bg-surface p-5">
               <f.icon aria-hidden className="mb-3 size-5 text-brand" />
               <h2 className="font-semibold text-ink">{f.title}</h2>
               <p className="mt-1 text-sm text-ink-2">{f.text}</p>

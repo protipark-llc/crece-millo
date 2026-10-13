@@ -93,7 +93,7 @@ export default async function BudgetPage({ searchParams }: { searchParams: Promi
             <CreateBudgetForm month={month} currency={d.base} previousMonth={prev} suggestedIncome={refs.income ? toInputString(refs.income, d.base) : ""} />
             <ul className="mt-5 grid gap-3 text-sm sm:grid-cols-3">
               {Object.values(BUDGET_TEMPLATES).map((t) => (
-                <li key={t.name} className="rounded-lg bg-surface-2 p-3">
+                <li key={t.name} className="rounded-md bg-surface-2 p-3">
                   <p className="font-medium text-ink">{t.name}</p>
                   <p className="mt-1 text-ink-2">{t.description}</p>
                 </li>

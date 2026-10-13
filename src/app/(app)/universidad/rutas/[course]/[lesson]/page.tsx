@@ -31,7 +31,7 @@ function Block({ b }: { b: LessonBlock }) {
     }
     case "example":
       return (
-        <div className="rounded-xl border border-border bg-surface-2 p-4">
+        <div className="rounded-lg border border-border bg-surface-2 p-4">
           <p className="mb-2 text-sm font-semibold text-ink">Ejemplo · {b.title}</p>
           <ul className="space-y-1 text-sm text-ink-2 tabular">
             {b.lines.map((l) => (
@@ -44,7 +44,7 @@ function Block({ b }: { b: LessonBlock }) {
       const Icon = b.tone === "tip" ? Lightbulb : b.tone === "warning" ? AlertTriangle : Info;
       const tone = b.tone === "tip" ? "bg-brand-soft text-brand" : b.tone === "warning" ? "bg-warn-soft text-warn" : "bg-info-soft text-info";
       return (
-        <div className={`flex gap-3 rounded-lg px-4 py-3 text-sm ${tone}`}>
+        <div className={`flex gap-3 rounded-md px-4 py-3 text-sm ${tone}`}>
           <Icon aria-hidden className="mt-0.5 size-4 shrink-0" />
           <p className="text-ink-2">{b.text}</p>
         </div>
@@ -52,7 +52,7 @@ function Block({ b }: { b: LessonBlock }) {
     }
     case "formula":
       return (
-        <div className="rounded-xl border border-brand/30 p-4">
+        <div className="rounded-lg border border-brand/30 p-4">
           <p className="font-mono text-sm font-semibold text-ink">{b.formula}</p>
           <p className="mt-1 text-sm text-ink-2">{b.explanation}</p>
         </div>

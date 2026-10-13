@@ -106,7 +106,7 @@ export function TransactionForm({
       {editing && <input type="hidden" name="id" value={defaults.id} />}
       <input type="hidden" name="kind" value={kind} />
       {!lockKind && !editing && (
-        <div role="radiogroup" aria-label="Tipo de movimiento" className="inline-flex rounded-lg bg-surface-2 p-1">
+        <div role="radiogroup" aria-label="Tipo de movimiento" className="inline-flex rounded-md bg-surface-2 p-1">
           {(["expense", "income", "transfer"] as Kind[]).map((k) => (
             <button
               key={k}
@@ -114,7 +114,7 @@ export function TransactionForm({
               role="radio"
               aria-checked={kind === k}
               onClick={() => setKind(k)}
-              className={cn("rounded-md px-4 py-1.5 text-sm font-medium", kind === k ? "bg-surface text-ink shadow-sm" : "text-ink-2 hover:text-ink")}
+              className={cn("rounded-sm px-4 py-1.5 text-sm font-medium", kind === k ? "bg-surface text-ink shadow-sm" : "text-ink-2 hover:text-ink")}
             >
               {KIND_LABEL[k]}
             </button>

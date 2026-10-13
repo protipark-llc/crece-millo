@@ -70,7 +70,7 @@ export default async function AccountsPage() {
                   <td className={`${tdNum} ${b.projected < 0 ? "text-neg" : ""}`}>{f.money(b.projected, a.currency)}</td>
                   <td className={`${td} text-right`}>
                     <div className="flex justify-end gap-1">
-                      <Link href={`/universidad/finanzas/cuentas/${a.id}`} className="inline-flex h-8 items-center gap-1 rounded-lg px-2 text-sm text-ink-2 hover:bg-surface-2 hover:text-ink">
+                      <Link href={`/universidad/finanzas/cuentas/${a.id}`} className="inline-flex h-8 items-center gap-1 rounded-md px-2 text-sm text-ink-2 hover:bg-surface-2 hover:text-ink">
                         <Pencil aria-hidden className="size-3.5" /> Editar
                       </Link>
                       <ConfirmAction

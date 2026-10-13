@@ -35,7 +35,7 @@ export default async function UniversityHome() {
             </span>
           </div>
           {cp.next ? (
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-lg bg-surface-2 p-4">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-md bg-surface-2 p-4">
               <div className="min-w-0">
                 <p className="text-xs text-muted">
                   Nivel {cp.next.module.level} · {cp.next.module.title}
@@ -64,7 +64,7 @@ export default async function UniversityHome() {
         {LEARNING_AREAS.map((a) => {
           const available = a.status === "available";
           const inner = (
-            <div className={`h-full rounded-xl border p-4 ${available ? "border-brand/40 bg-surface hover:border-brand" : "border-border bg-surface-2/60"}`}>
+            <div className={`h-full rounded-lg border p-4 ${available ? "border-brand/40 bg-surface hover:border-brand" : "border-border bg-surface-2/60"}`}>
               <AreaIcon name={a.icon} className={`mb-2 size-5 ${available ? "text-brand" : "text-muted"}`} />
               <p className={`text-sm font-medium ${available ? "text-ink" : "text-ink-2"}`}>{a.name}</p>
               <p className="mt-1 text-xs text-muted">{a.description}</p>

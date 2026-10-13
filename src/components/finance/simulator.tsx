@@ -123,9 +123,9 @@ export function Simulator({ currency, locale, startDate, baseline, debts, saved 
   const fmt = (v: number) => formatMoney(v, currency, locale);
   const labels = computed.v.base.months.map((x) => formatMonthShort(x.date, locale));
   const variants = [
-    { key: "unfavorable", label: "Desfavorable", r: computed.v.unfavorable, color: "var(--series-2)" },
-    { key: "base", label: "Base", r: computed.v.base, color: "var(--series-1)" },
-    { key: "favorable", label: "Favorable", r: computed.v.favorable, color: "var(--series-3)" },
+    { key: "unfavorable", label: "Desfavorable", r: computed.v.unfavorable, color: "var(--chart-2)" },
+    { key: "base", label: "Base", r: computed.v.base, color: "var(--chart-1)" },
+    { key: "favorable", label: "Favorable", r: computed.v.favorable, color: "var(--chart-3)" },
   ] as const;
   const num2 = (label: string, k: keyof FormState, hint?: string, suffix?: string) => (
     <label className="flex flex-col gap-1 text-sm">
@@ -209,7 +209,7 @@ export function Simulator({ currency, locale, startDate, baseline, debts, saved 
           ))}
           <div className="grid gap-3 sm:grid-cols-3">
             {variants.map(({ key, label, r }) => (
-              <div key={key} className={cn("rounded-xl border bg-surface px-4 py-3.5", key === "base" ? "border-brand" : "border-border")}>
+              <div key={key} className={cn("rounded-lg border bg-surface px-4 py-3.5", key === "base" ? "border-brand" : "border-border")}>
                 <p className="text-sm text-muted">{label}</p>
                 <p className={cn("mt-1 text-xl font-semibold tabular", r.finalCash < 0 ? "text-neg" : "text-ink")}>{fmt(r.finalCash)}</p>
                 <p className="text-xs text-muted">caja al final ({computed.a.horizonMonths} meses)</p>
@@ -248,13 +248,13 @@ export function Simulator({ currency, locale, startDate, baseline, debts, saved 
             <Card>
               <CardHeader title="Patrimonio (escenario base)" />
               <div className="px-3 py-4 sm:px-5">
-                <LineChart title="Patrimonio neto proyectado" labels={labels} series={[{ key: "nw", label: "Patrimonio", color: "var(--series-1)", values: computed.v.base.months.map((x) => x.netWorth) }]} currency={currency} locale={locale} height={200} />
+                <LineChart title="Patrimonio neto proyectado" labels={labels} series={[{ key: "nw", label: "Patrimonio", color: "var(--chart-1)", values: computed.v.base.months.map((x) => x.netWorth) }]} currency={currency} locale={locale} height={200} />
               </div>
             </Card>
             <Card>
               <CardHeader title="Deudas (escenario base)" />
               <div className="px-3 py-4 sm:px-5">
-                <LineChart title="Saldo de deudas proyectado" labels={labels} series={[{ key: "debt", label: "Deuda", color: "var(--series-2)", values: computed.v.base.months.map((x) => x.debt) }]} currency={currency} locale={locale} height={200} />
+                <LineChart title="Saldo de deudas proyectado" labels={labels} series={[{ key: "debt", label: "Deuda", color: "var(--chart-2)", values: computed.v.base.months.map((x) => x.debt) }]} currency={currency} locale={locale} height={200} />
               </div>
             </Card>
           </div>
@@ -287,7 +287,7 @@ export function Simulator({ currency, locale, startDate, baseline, debts, saved 
                 <SubmitButton variant="secondary">Guardar</SubmitButton>
               </ActionForm>
               {saved.length > 0 && (
-                <ul className="mt-4 divide-y divide-border rounded-lg border border-border">
+                <ul className="mt-4 divide-y divide-border rounded-md border border-border">
                   {saved.map((x) => (
                     <li key={x.id} className="flex items-center justify-between gap-2 px-3 py-2 text-sm">
                       <span className="flex items-center gap-2">
@@ -295,7 +295,7 @@ export function Simulator({ currency, locale, startDate, baseline, debts, saved 
                         {x.name}
                       </span>
                       <span className="flex gap-1">
-                        <button type="button" className="rounded-lg px-2 py-1 text-sm text-brand hover:bg-surface-2" onClick={() => setS({ ...initial, ...(x.assumptions as Partial<FormState>) })}>
+                        <button type="button" className="rounded-md px-2 py-1 text-sm text-brand hover:bg-surface-2" onClick={() => setS({ ...initial, ...(x.assumptions as Partial<FormState>) })}>
                           Cargar
                         </button>
                         <ConfirmAction action={deleteScenarioAction} fields={{ id: x.id }} label={<span className="sr-only">Eliminar {x.name}</span>} icon={<Trash2 aria-hidden className="size-3.5" />} title="Eliminar escenario" description="Se eliminarán estos supuestos guardados." confirmLabel="Eliminar" />

@@ -8,6 +8,7 @@ import { getCurrentUser } from "@/server/session";
 import { Card, CardHeader, PageHeader, buttonClass } from "@/components/ui/primitives";
 import { SettingsForm } from "@/components/finance/forms/settings-form";
 import { ChangePasswordForm, DeleteAccountForm, RateForm } from "@/components/finance/forms/account-settings-forms";
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 
 export const metadata: Metadata = { title: "Configuración" };
 
@@ -45,6 +46,12 @@ export default async function SettingsPage() {
           )}
           <div className="p-5">
             <RateForm base={settings.currency} today={today} />
+          </div>
+        </Card>
+        <Card>
+          <CardHeader title="Apariencia" description="Elige el tema. «Sistema» sigue la configuración de tu dispositivo. Se guarda en este navegador." />
+          <div className="p-5">
+            <ThemeSwitcher withLabels />
           </div>
         </Card>
         <Card>

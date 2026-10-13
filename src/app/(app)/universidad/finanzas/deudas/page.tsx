@@ -34,7 +34,7 @@ export default async function DebtsPage({ searchParams }: { searchParams: Promis
   const baseline = results[0];
   const horizon = Math.min(120, Math.max(...results.map((r) => r.balanceSeries.length - 1), 1));
   const chartStrategies = results.filter((r) => r.strategy !== "custom").slice(0, 3);
-  const colors = ["var(--series-1)", "var(--series-2)", "var(--series-3)"];
+  const colors = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)"];
   return (
     <>
       <PageHeader
@@ -158,7 +158,7 @@ export default async function DebtsPage({ searchParams }: { searchParams: Promis
                         </details>
                       )}
                     </div>
-                    <div className="rounded-lg bg-surface-2 p-4">
+                    <div className="rounded-md bg-surface-2 p-4">
                       <p className="mb-3 text-sm font-medium text-ink">Registrar un pago</p>
                       <PaymentForm debtId={x.debt.id} currency={x.debt.currency} accounts={accounts} today={d.today} suggested={x.debt.minimumPayment ? toInputString(x.debt.minimumPayment, x.debt.currency) : ""} />
                     </div>
@@ -176,7 +176,7 @@ export default async function DebtsPage({ searchParams }: { searchParams: Promis
             <form method="get" className="flex flex-wrap items-end gap-3 border-b border-border px-5 py-4 text-sm">
               <label className="flex flex-col gap-1">
                 <span className="text-xs text-muted">Abono extra mensual ({d.base})</span>
-                <input name="extra" defaultValue={extra ? toInputString(extra, d.base) : ""} inputMode="decimal" placeholder="0" className="h-9 w-40 rounded-lg border border-border-strong bg-surface px-2 tabular" />
+                <input name="extra" defaultValue={extra ? toInputString(extra, d.base) : ""} inputMode="decimal" placeholder="0" className="h-9 w-40 rounded-md border border-border-strong bg-surface px-2 tabular" />
               </label>
               <button className={buttonClass("secondary", "sm", "h-9")}>Comparar</button>
             </form>

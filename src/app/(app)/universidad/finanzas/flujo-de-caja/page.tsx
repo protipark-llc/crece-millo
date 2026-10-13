@@ -85,7 +85,7 @@ export default async function CashflowPage({ searchParams }: { searchParams: Pro
           <input type="hidden" name="escenario" value={scenario} />
           <label className="flex flex-col gap-1">
             <span className="text-xs text-muted">Cuentas</span>
-            <select name="cuenta" defaultValue={accountId ?? ""} className="h-9 rounded-lg border border-border-strong bg-surface px-2">
+            <select name="cuenta" defaultValue={accountId ?? ""} className="h-9 rounded-md border border-border-strong bg-surface px-2">
               <option value="">Todas las cuentas líquidas</option>
               {d.accountRows
                 .filter((a) => !a.archivedAt)
@@ -98,11 +98,11 @@ export default async function CashflowPage({ searchParams }: { searchParams: Pro
           </label>
           <label className="flex flex-col gap-1">
             <span className="text-xs text-muted">Ajuste a ingresos proyectados (%)</span>
-            <input name="ing" defaultValue={String(incPct)} inputMode="decimal" className="h-9 w-28 rounded-lg border border-border-strong bg-surface px-2 tabular" />
+            <input name="ing" defaultValue={String(incPct)} inputMode="decimal" className="h-9 w-28 rounded-md border border-border-strong bg-surface px-2 tabular" />
           </label>
           <label className="flex flex-col gap-1">
             <span className="text-xs text-muted">Ajuste a gastos proyectados (%)</span>
-            <input name="gas" defaultValue={String(expPct)} inputMode="decimal" className="h-9 w-28 rounded-lg border border-border-strong bg-surface px-2 tabular" />
+            <input name="gas" defaultValue={String(expPct)} inputMode="decimal" className="h-9 w-28 rounded-md border border-border-strong bg-surface px-2 tabular" />
           </label>
           <label className="flex h-9 items-center gap-2">
             <input type="checkbox" name="estimar" value="0" defaultChecked={!useEstimates && !accountId} className="accent-[var(--brand)]" />
@@ -144,7 +144,7 @@ export default async function CashflowPage({ searchParams }: { searchParams: Pro
           <LineChart
             title="Saldo de caja al cierre de cada periodo"
             labels={labels}
-            series={[{ key: "closing", label: "Saldo al cierre", color: "var(--series-1)", values: cf.buckets.map((b) => b.closing) }]}
+            series={[{ key: "closing", label: "Saldo al cierre", color: "var(--chart-1)", values: cf.buckets.map((b) => b.closing) }]}
             currency={d.base}
             locale={d.locale}
             projectedFrom={firstProjected === -1 ? null : Math.max(0, firstProjected - 1)}
@@ -158,8 +158,8 @@ export default async function CashflowPage({ searchParams }: { searchParams: Pro
             title="Ingresos y gastos por periodo"
             labels={labels}
             series={[
-              { key: "in", label: "Ingresos", color: "var(--series-1)", values: cf.buckets.map((b) => b.realIncome + b.projectedIncome) },
-              { key: "out", label: "Gastos (incl. estimados)", color: "var(--series-2)", values: cf.buckets.map((b) => b.realExpense + b.projectedExpense + b.estimatedExpense) },
+              { key: "in", label: "Ingresos", color: "var(--chart-1)", values: cf.buckets.map((b) => b.realIncome + b.projectedIncome) },
+              { key: "out", label: "Gastos (incl. estimados)", color: "var(--chart-2)", values: cf.buckets.map((b) => b.realExpense + b.projectedExpense + b.estimatedExpense) },
             ]}
             currency={d.base}
             locale={d.locale}

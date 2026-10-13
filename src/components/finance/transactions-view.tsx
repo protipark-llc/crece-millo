@@ -115,22 +115,22 @@ export function TransactionsView({
 
       <Card>
         <form method="get" action={basePath} className="grid gap-3 border-b border-border p-4 sm:grid-cols-3 lg:grid-cols-6" role="search" aria-label="Filtrar movimientos">
-          <input name="q" defaultValue={one(params.q)} placeholder="Buscar descripción…" aria-label="Buscar" className="h-9 rounded-lg border border-border-strong bg-surface px-3 text-sm lg:col-span-2" />
+          <input name="q" defaultValue={one(params.q)} placeholder="Buscar descripción…" aria-label="Buscar" className="h-9 rounded-md border border-border-strong bg-surface px-3 text-sm lg:col-span-2" />
           {!fixedKind && (
-            <select name="tipo" defaultValue={one(params.tipo) ?? ""} aria-label="Tipo" className="h-9 rounded-lg border border-border-strong bg-surface px-2 text-sm">
+            <select name="tipo" defaultValue={one(params.tipo) ?? ""} aria-label="Tipo" className="h-9 rounded-md border border-border-strong bg-surface px-2 text-sm">
               <option value="">Todos los tipos</option>
               <option value="income">Ingresos</option>
               <option value="expense">Gastos</option>
               <option value="transfer">Transferencias</option>
             </select>
           )}
-          <select name="estado" defaultValue={one(params.estado) ?? ""} aria-label="Estado" className="h-9 rounded-lg border border-border-strong bg-surface px-2 text-sm">
+          <select name="estado" defaultValue={one(params.estado) ?? ""} aria-label="Estado" className="h-9 rounded-md border border-border-strong bg-surface px-2 text-sm">
             <option value="">Todos los estados</option>
             <option value="posted">Realizados</option>
             <option value="planned">Previstos</option>
             <option value="cancelled">Anulados</option>
           </select>
-          <select name="cuenta" defaultValue={one(params.cuenta) ?? ""} aria-label="Cuenta" className="h-9 rounded-lg border border-border-strong bg-surface px-2 text-sm">
+          <select name="cuenta" defaultValue={one(params.cuenta) ?? ""} aria-label="Cuenta" className="h-9 rounded-md border border-border-strong bg-surface px-2 text-sm">
             <option value="">Todas las cuentas</option>
             {d.accountRows.map((a) => (
               <option key={a.id} value={a.id}>
@@ -138,7 +138,7 @@ export function TransactionsView({
               </option>
             ))}
           </select>
-          <select name="categoria" defaultValue={one(params.categoria) ?? ""} aria-label="Categoría" className="h-9 rounded-lg border border-border-strong bg-surface px-2 text-sm">
+          <select name="categoria" defaultValue={one(params.categoria) ?? ""} aria-label="Categoría" className="h-9 rounded-md border border-border-strong bg-surface px-2 text-sm">
             <option value="">Todas las categorías</option>
             {categoryOptions
               .filter((c) => !c.parentId)
@@ -149,10 +149,10 @@ export function TransactionsView({
               ))}
           </select>
           <label className="flex items-center gap-2 text-xs text-muted">
-            Desde <input type="date" name="desde" defaultValue={one(params.desde)} className="h-9 flex-1 rounded-lg border border-border-strong bg-surface px-2 text-sm text-ink" />
+            Desde <input type="date" name="desde" defaultValue={one(params.desde)} className="h-9 flex-1 rounded-md border border-border-strong bg-surface px-2 text-sm text-ink" />
           </label>
           <label className="flex items-center gap-2 text-xs text-muted">
-            Hasta <input type="date" name="hasta" defaultValue={one(params.hasta)} className="h-9 flex-1 rounded-lg border border-border-strong bg-surface px-2 text-sm text-ink" />
+            Hasta <input type="date" name="hasta" defaultValue={one(params.hasta)} className="h-9 flex-1 rounded-md border border-border-strong bg-surface px-2 text-sm text-ink" />
           </label>
           <div className="flex gap-2">
             <button type="submit" className={buttonClass("secondary", "sm", "h-9")}>
@@ -233,7 +233,7 @@ export function TransactionsView({
                           </InlineAction>
                         )}
                         {!t.debtId && (
-                          <Link href={`/universidad/finanzas/movimientos/${t.id}`} className="inline-flex h-8 items-center rounded-lg px-2 text-ink-2 hover:bg-surface-2 hover:text-ink" title="Editar">
+                          <Link href={`/universidad/finanzas/movimientos/${t.id}`} className="inline-flex h-8 items-center rounded-md px-2 text-ink-2 hover:bg-surface-2 hover:text-ink" title="Editar">
                             <Pencil aria-hidden className="size-3.5" />
                             <span className="sr-only">Editar {t.description}</span>
                           </Link>
