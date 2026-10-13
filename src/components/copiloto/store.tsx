@@ -115,7 +115,11 @@ export function CopilotoProvider({
           failed.current.push(op);
           setError(r.error);
           setStatus("error");
-        } else if (inFlight.current === 0 && failed.current.length === 0) {
+        } else if (
+          inFlight.current === 0 &&
+          failed.current.length === 0 &&
+          timers.current.size === 0
+        ) {
           setError(null);
           setStatus("saved");
         }

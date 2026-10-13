@@ -201,4 +201,59 @@ test.describe("Vistas y Co-Piloto", () => {
         .getByRole("heading", { name: "Esperado vs. real" }),
     ).toBeVisible();
   });
+  test("Co-Piloto · Analizar test: veredicto en vivo, guardar y queda en el producto", async ({
+    page,
+  }) => {
+    await register(page);
+    await page.goto("/comunidad/emprendedores/copiloto/test");
+    const form = page.getByRole("form", { name: "Datos del test" });
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Faltan datos" }),
+    ).toBeVisible();
+    await expect(
+      form.getByRole("button", { name: "Guardar test" }),
+    ).toBeDisabled();
+    await form.getByLabel("Nombre del test").fill("Ojos · Meta · semana 1");
+    await form.getByRole("spinbutton", { name: "Gasto en ads" }).fill("650000");
+    await form.getByRole("spinbutton", { name: "Impresiones" }).fill("90000");
+    await form.getByRole("spinbutton", { name: "Clics" }).fill("1050");
+    await form
+      .getByRole("spinbutton", { name: "Pedidos generados" })
+      .fill("18");
+    await form
+      .getByRole("spinbutton", { name: "Pedidos confirmados" })
+      .fill("16");
+    await form
+      .getByRole("spinbutton", { name: "Pedidos entregados" })
+      .fill("13");
+    await expect(
+      page.getByRole("heading", {
+        level: 2,
+        name: /Escalar|Mantener|Optimizar/,
+      }),
+    ).toBeVisible();
+    await expect(page.getByText("18/10")).toBeVisible();
+    await form.getByRole("button", { name: "Guardar test" }).click();
+    await expect(
+      page
+        .getByRole("status")
+        .filter({ hasText: "Test guardado en la bitácora y en el producto" }),
+    ).toBeVisible();
+    await expect(page.getByText("Guardado en tu cuenta")).toBeVisible();
+
+    // El formulario se guarda en la cuenta y el test aparece en el historial del producto.
+    await page.reload();
+    await expect(
+      page.getByRole("spinbutton", { name: "Gasto en ads" }),
+    ).toHaveValue("650000");
+    await page.goto(
+      "/comunidad/emprendedores/copiloto/productos?vista=resultados",
+    );
+    await expect(
+      page
+        .getByRole("cell", { name: "Meta Ads" })
+        .or(page.getByRole("cell", { name: "TikTok Ads" }))
+        .first(),
+    ).toBeVisible();
+  });
 });

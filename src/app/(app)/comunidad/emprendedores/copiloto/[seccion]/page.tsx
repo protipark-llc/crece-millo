@@ -4,6 +4,7 @@ import { SeccionPendiente } from "@/components/copiloto/pendiente";
 import { Portfolio } from "@/components/copiloto/productos/portfolio";
 import { Detalle } from "@/components/copiloto/productos/detalle";
 import { Precio } from "@/components/copiloto/productos/precio";
+import { AnalizarTest } from "@/components/copiloto/test/analizar";
 
 export default async function CopilotoSeccion({
   params,
@@ -20,5 +21,6 @@ export default async function CopilotoSeccion({
         <Detalle precio={<Precio />} />
       </div>
     );
+  if (tab.slug === "test") return <AnalizarTest />;
   return <SeccionPendiente slug={tab.slug} />;
 }
