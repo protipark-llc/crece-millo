@@ -6,6 +6,10 @@ import { buildOverview, upcoming } from "@/server/services/dashboard";
 import { DIAGNOSTIC_STEPS } from "@/server/services/settings";
 import { categoryLabel } from "@/server/services/categories";
 import { courseProgress } from "@/server/education-data";
+import { currentSections } from "@/server/sections";
+import { listProducts, listTests, productSummary, routeProgress } from "@/server/services/copilot";
+import { routeStatus } from "@/lib/copilot/route";
+import { VerdictBadge } from "@/components/copilot/verdict";
 import { daysInMonth, monthStart, parts } from "@/lib/finance/dates";
 import { panelHeadline } from "@/lib/finance/headline";
 import { LineStatusText, budgetLineStatus } from "@/components/finance/budget-status";
@@ -20,15 +24,27 @@ export const metadata: Metadata = { title: "Panel financiero" };
 const MORE_KEYS = ["net_flow", "essential", "discretionary", "budget_execution", "debt_payments", "debt_service_ratio", "emergency_coverage", "net_worth", "net_worth_mom", "net_worth_yoy", "goals"];
 
 export default async function FinancePanel() {
+  const sections = await currentSections();
+  const on = (k: string) => sections.enabled.includes(k);
   const [data, edu] = await Promise.all([
     financePage(async ({ d, tx, userId, f }) => {
       const o = await buildOverview(tx, userId, d);
       const next = upcoming(d, 14).slice(0, 6);
-      return { d, o, next, f };
+      // Resumen del negocio solo si la persona ve el Co-Piloto.
+      const business = on("copiloto")
+        ? await Promise.all([listProducts(tx, userId), listTests(tx, userId), routeProgress(tx, userId)]).then(([products, tests, done]) => ({
+            summaries: products.map((p) => productSummary(p, tests)),
+            route: routeStatus(done),
+          }))
+        : null;
+      return { d, o, next, f, business };
     }),
     courseProgress(),
   ]);
-  const { d, o, next, f } = data;
+  const { d, o, next, f, business } = data;
+  const activeProduct = business
+    ? (business.summaries.find((x) => x.product.status === "ganador") ?? business.summaries.find((x) => x.product.status === "prueba") ?? business.summaries.find((x) => x.product.status !== "descartado") ?? null)
+    : null;
   const doneSteps = d.settings.diagnosticSteps.length;
   const missingSteps = DIAGNOSTIC_STEPS.filter((s) => !d.settings.diagnosticSteps.includes(s.key));
   const { y, m, d: day } = parts(d.today);
@@ -64,7 +80,7 @@ export default async function FinancePanel() {
         .sort((a, b) => (b.executionPct ?? 0) - (a.executionPct ?? 0))
         .slice(0, 5)
     : [];
-  const nextLesson = edu.next;
+  const nextLesson = on("uni_rutas") ? edu.next : null;
 
   return (
     <>
@@ -129,7 +145,7 @@ export default async function FinancePanel() {
         )}
       </Card>
 
-      {doneSteps < DIAGNOSTIC_STEPS.length && (
+      {on("diagnostico") && doneSteps < DIAGNOSTIC_STEPS.length && (
         <div className="mt-5 flex flex-col items-start gap-3 rounded-lg bg-surface-3/60 px-5 py-4 sm:flex-row sm:items-center sm:gap-4">
           <Stethoscope aria-hidden className="hidden size-5 shrink-0 text-ink sm:block" />
           <p className="min-w-0 flex-1 text-sm text-ink">
@@ -147,9 +163,11 @@ export default async function FinancePanel() {
         <Card className="p-5 lg:col-span-2">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <h2 className="t-section text-ink">Tu caja en los próximos 90 días</h2>
-            <Link href="/universidad/finanzas/flujo-de-caja" className="inline-flex min-h-9 items-center text-sm font-semibold text-ink hover:underline">
-              Ver flujo de caja
-            </Link>
+            {on("flujo") && (
+              <Link href="/universidad/finanzas/flujo-de-caja" className="inline-flex min-h-9 items-center text-sm font-semibold text-ink hover:underline">
+                Ver flujo de caja
+              </Link>
+            )}
           </div>
           {d.accounts.length ? (
             <>
@@ -200,9 +218,11 @@ export default async function FinancePanel() {
         <Card className="p-5">
           <div className="flex items-baseline justify-between gap-2">
             <h2 className="text-base font-semibold text-ink">Próximos 14 días</h2>
-            <Link href="/universidad/finanzas/movimientos" className="inline-flex min-h-9 items-center text-sm font-semibold text-ink hover:underline">
-              Movimientos
-            </Link>
+            {on("movimientos") && (
+              <Link href="/universidad/finanzas/movimientos" className="inline-flex min-h-9 items-center text-sm font-semibold text-ink hover:underline">
+                Movimientos
+              </Link>
+            )}
           </div>
           {next.length ? (
             <ul className="mt-2 divide-y divide-border">
@@ -237,6 +257,7 @@ export default async function FinancePanel() {
           )}
         </Card>
 
+        {on("presupuesto") && (
         <Card className="p-5">
           <div className="flex items-baseline justify-between gap-2">
             <h2 className="text-base font-semibold text-ink">Presupuesto del mes</h2>
@@ -266,6 +287,38 @@ export default async function FinancePanel() {
             <p className="mt-3 text-sm text-ink-2">Un presupuesto es un plan: decide antes de gastar a dónde va cada peso. Puedes empezar desde cero o con una plantilla.</p>
           )}
         </Card>
+        )}
+
+        {business && (
+          <Card tone="dark" className="flex flex-col p-6">
+            <p className="t-overline text-nav-accent">Tu negocio</p>
+            {activeProduct ? (
+              <>
+                <h2 className="mt-3 text-lg font-semibold text-nav-ink-active">{activeProduct.product.name}</h2>
+                <p className="mt-2 text-xs text-nav-ink">{activeProduct.usingRecommended ? "Precio recomendado" : "Tu precio"}</p>
+                <p className="t-kpi text-nav-ink-active">{activeProduct.price ? f.money(activeProduct.price, activeProduct.product.currency) : "—"}</p>
+                {activeProduct.check && (
+                  <p className="mt-1 text-xs text-nav-ink">CPA máximo {f.money(activeProduct.check.contribution, activeProduct.product.currency)}</p>
+                )}
+                {activeProduct.latest && (
+                  <p className="mt-2 flex items-center gap-2 text-sm text-nav-ink">
+                    Último test: <VerdictBadge verdict={activeProduct.latest.result.verdict} />
+                  </p>
+                )}
+              </>
+            ) : (
+              <p className="mt-3 text-sm text-nav-ink">Calcula tu primer producto en el Co-Piloto: precio recomendado y cuánto puedes pagar por venta en anuncios.</p>
+            )}
+            <p className="mt-3 text-xs text-nav-ink tabular">
+              Ruta de dropshipping: {business.route.done} de {business.route.total} pasos
+            </p>
+            <div className="mt-auto pt-4">
+              <Link href="/comunidad/emprendedores/co-piloto" className={buttonClass("accent", "md", "w-full sm:w-auto")}>
+                Abrir Co-Piloto
+              </Link>
+            </div>
+          </Card>
+        )}
 
         {nextLesson ? (
           <Card tone="dark" className="flex flex-col p-6 md:col-span-2 xl:col-span-1">

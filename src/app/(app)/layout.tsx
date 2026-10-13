@@ -2,6 +2,7 @@ import { LogOut } from "lucide-react";
 import { requireUser } from "@/server/session";
 import { Sidebar } from "@/components/shell/sidebar";
 import { ThemeSwitcher } from "@/components/theme/theme-switcher";
+import { currentSections } from "@/server/sections";
 import { logoutAction } from "../auth-actions";
 
 export const dynamic = "force-dynamic";
@@ -34,10 +35,12 @@ function Account({ name, email, tone }: { name: string; email: string; tone: "da
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser();
+  const { enabled } = await currentSections();
   return (
     <div className="lg:flex">
       <Sidebar
         userName={user.name}
+        enabled={enabled}
         footer={<Account name={user.name} email={user.email} tone="dark" />}
         mobileFooter={<Account name={user.name} email={user.email} tone="light" />}
       />

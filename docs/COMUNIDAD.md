@@ -1,8 +1,15 @@
 # Comunidad: propuesta de modelo de datos, moderación y permisos
 
-Estado: **propuesta, sin tablas creadas.** Hoy la sección Comunidad es solo interfaz con datos
-de ejemplo (`src/lib/community/sample.ts`) y un aviso de vista previa en todas sus páginas.
-Este documento se revisa y aprueba antes de escribir migraciones.
+Estado:
+
+- **Habilitado (con datos reales):** el Co-Piloto de Negocio (productos, precio recomendado, CPA
+  máximo, tests con veredicto y plan de capital) y la Ruta de dropshipping (6 fases, 23 pasos).
+  Tablas `copilot_products`, `copilot_tests`, `copilot_plans` y `dropship_progress` con RLS de
+  solo dueño (migración `0003`). Motor en `src/lib/copilot/engine.ts`, sin acceso a BD y probado
+  en `tests/unit/copilot.test.ts`. Están abiertos a todas las cuentas (sin Premium por ahora).
+- **Propuesta, sin tablas creadas:** el muro, los en vivo y los retos. Siguen como interfaz con
+  datos de ejemplo (`src/lib/community/sample.ts`) y un aviso de vista previa. Lo de abajo se
+  revisa y aprueba antes de escribir esas migraciones.
 
 ## Principios
 
@@ -45,7 +52,7 @@ Este documento se revisa y aprueba antes de escribir migraciones.
 | Editar o borrar lo propio | Sí | Sí | Sí | Sí |
 | Destacar respuesta | Autor del post | Autor del post | Sí | Sí |
 | Fijar, ocultar, restaurar, silenciar | No | No | Sí (en su espacio) | Sí |
-| Usar el Co-Piloto | No | Sí | — | Sí |
+| Usar el Co-Piloto y la ruta | Sí (hoy abierto a todas las cuentas) | Sí | — | Sí |
 
 - La regla de Premium vive en el servidor (`requirePremium()` en las acciones) **y** en RLS
   (política de INSERT sobre `posts`/`comments`/`reactions` que verifica `subscriptions.status`

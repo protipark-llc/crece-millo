@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/primitives";
-import { AvatarStack, Composer, LiveEventCard, PostCard, RulesCard } from "@/components/community/community";
+import { AvatarStack, Composer, LiveEventCard, PostCard, PreviewNotice, RulesCard } from "@/components/community/community";
 import { COMMUNITY_RULES, SAMPLE_COMMUNITY, SAMPLE_POSTS } from "@/lib/community/sample";
 
 export const metadata: Metadata = { title: "Muro · Comunidad" };
@@ -8,6 +8,7 @@ export const metadata: Metadata = { title: "Muro · Comunidad" };
 export default function WallPage() {
   return (
     <>
+      <PreviewNotice what="El muro todavía no está abierto" />
       <PageHeader
         eyebrow="Comunidad"
         title="Muro"

@@ -6,7 +6,6 @@ import {
   CircleHelp,
   FlaskConical,
   Info,
-  Lock,
   MessageSquare,
   Paperclip,
   Pin,
@@ -15,19 +14,18 @@ import {
   TrendingUp,
 } from "lucide-react";
 import type { PostKind, SamplePost } from "@/lib/community/sample";
-import { Badge, Card, PremiumBadge, buttonClass } from "../ui/primitives";
+import { Badge, Card, buttonClass } from "../ui/primitives";
 import { cn } from "../ui/cn";
 
 const PREVIEW_TITLE = "Disponible cuando abramos la Comunidad";
 
-/** Aviso fijo de vista previa: la Comunidad aún no existe y todo lo que se ve es de ejemplo. */
-export function PreviewNotice() {
+/** Aviso de vista previa: el muro, los en vivo y los retos aún no están abiertos; lo que se ve es de ejemplo. */
+export function PreviewNotice({ what = "La Comunidad todavía no está abierta" }: { what?: string }) {
   return (
     <div role="note" className="mb-5 flex gap-3 rounded-lg bg-info-soft px-4 py-3 text-sm text-ink">
       <Info aria-hidden className="mt-0.5 size-[18px] shrink-0 text-info" />
       <p>
-        <strong className="font-semibold">Vista previa.</strong> La Comunidad todavía no está abierta: las personas, publicaciones y cifras de esta sección son ejemplos ficticios para mostrar cómo
-        funcionará.
+        <strong className="font-semibold">Vista previa.</strong> {what}: las personas, publicaciones y cifras que ves aquí son ejemplos ficticios para mostrar cómo funcionará.
       </p>
     </div>
   );
@@ -145,17 +143,17 @@ export function PinnedVideo() {
   );
 }
 
-/** Compositor. Sin Premium (o en vista previa) se oculta y aparece un aviso informativo. */
+/** Compositor. Mientras el muro esté en vista previa se muestra deshabilitado con un aviso. */
 export function Composer({ locked }: { locked: boolean }) {
   if (locked) {
     return (
       <div className="flex flex-col gap-3 rounded-lg bg-info-soft px-4 py-3 text-sm text-ink sm:flex-row sm:items-center">
         <Info aria-hidden className="size-[18px] shrink-0 text-info" />
         <p className="flex-1">
-          <strong className="font-semibold">Puedes leer el muro.</strong> Para publicar, comentar y usar las herramientas de esta sección necesitas Premium.
+          <strong className="font-semibold">Publicar en el muro llegará pronto.</strong> Mientras tanto, tus herramientas ya funcionan: el Co-Piloto y la ruta guardan tu avance.
         </p>
         <Link href="/comunidad/emprendedores/co-piloto" className={buttonClass("primary", "sm")}>
-          Ver Premium
+          Abrir Co-Piloto
         </Link>
       </div>
     );
@@ -215,45 +213,6 @@ export function LiveEventCard({ event }: { event: { month: string; day: string; 
   );
 }
 
-const PREMIUM_INCLUDES = [
-  "Co-Piloto de Negocio: precio, tests y capital",
-  "Ruta guiada de dropshipping",
-  "Publicar y comentar en el muro",
-  "Revisiones de tiendas en vivo",
-  "Retos semanales con la comunidad",
-];
-
-/** Tarjeta de herramienta Premium. Hoy siempre bloqueada: Premium y el Co-Piloto son «futuro». */
-export function PremiumToolCard() {
-  return (
-    <section className="rounded-lg border-2 border-brand bg-surface p-5" aria-labelledby="premium-tools">
-      <div className="flex items-center gap-3">
-        <span aria-hidden className="inline-flex size-9 items-center justify-center rounded-md bg-surface-2 text-ink">
-          <Lock className="size-4" />
-        </span>
-        <h2 id="premium-tools" className="t-section text-ink">
-          Herramientas Premium
-        </h2>
-      </div>
-      <ul className="mt-4 space-y-2 text-sm text-ink">
-        {PREMIUM_INCLUDES.map((x) => (
-          <li key={x} className="flex gap-2">
-            <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-pos" /> {x}
-          </li>
-        ))}
-      </ul>
-      <div className="mt-4 flex gap-2.5 rounded-lg bg-warn-soft px-3.5 py-3 text-sm text-ink">
-        <AlertTriangle aria-hidden className="mt-0.5 size-4 shrink-0 text-warn" />
-        <p>El dropshipping tiene riesgo: puedes perder lo que inviertas. Las herramientas te ayudan a decidir; no garantizan ganancias.</p>
-      </div>
-      <Link href="/comunidad/emprendedores/co-piloto" className={buttonClass("primary", "md", "mt-4 w-full")}>
-        Ver Premium
-      </Link>
-      <p className="mt-3 text-xs text-muted">Precio por definir. El cobro en línea y la lista de acceso anticipado aún no están disponibles.</p>
-    </section>
-  );
-}
-
 export function ChallengeCard({ c }: { c: { title: string; until: string; done: number; total: number; participants: number } }) {
   return (
     <Card className="p-5">
@@ -295,4 +254,3 @@ export function CommunityFooter() {
   return <p className="mt-10 border-t border-border pt-4 text-xs text-muted">Comunidad educativa. Los resultados de otros miembros no son garantía de los tuyos. No es asesoría financiera.</p>;
 }
 
-export { PremiumBadge };

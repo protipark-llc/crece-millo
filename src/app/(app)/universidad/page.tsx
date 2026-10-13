@@ -7,6 +7,8 @@ import { financePage } from "@/server/page-data";
 import { periodBreakdown } from "@/server/services/finance-data";
 import { daysInMonth, monthStart, parts } from "@/lib/finance/dates";
 import { getCurrentUser } from "@/server/session";
+import { currentSections } from "@/server/sections";
+import { redirect } from "next/navigation";
 import { Badge, ButtonLink, Card, Meter, buttonClass } from "@/components/ui/primitives";
 import { AreaIcon } from "@/components/education/area-icon";
 import { cn } from "@/components/ui/cn";
@@ -14,6 +16,8 @@ import { cn } from "@/components/ui/cn";
 export const metadata: Metadata = { title: "Universidad" };
 
 export default async function UniversityHome() {
+  const sections = await currentSections();
+  if (!sections.enabled.includes("uni_inicio")) redirect(sections.home);
   const user = await getCurrentUser();
   const cp = await courseProgress();
   const fin = await financePage(({ d, f }) => {

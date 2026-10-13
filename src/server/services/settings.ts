@@ -1,3 +1,4 @@
+import { normalizeSections, type ViewMode } from "@/lib/sections";
 import { eq } from "drizzle-orm";
 import type { z } from "zod";
 import type { Tx } from "@/lib/db/client";
@@ -38,6 +39,15 @@ export async function setDiagnosticStep(tx: Tx, userId: string, step: Diagnostic
   if (done) set.add(step);
   else set.delete(step);
   await tx.update(userSettings).set({ diagnosticSteps: [...set] }).where(eq(userSettings.userId, userId));
+}
+
+/** Guarda la vista (esencial, pro o personalizada) y las secciones elegidas. */
+export async function setView(tx: Tx, userId: string, mode: ViewMode, sections: string[] | null) {
+  await getSettings(tx, userId);
+  await tx
+    .update(userSettings)
+    .set({ viewMode: mode, sections: mode === "personalizada" ? normalizeSections(sections) : null })
+    .where(eq(userSettings.userId, userId));
 }
 
 export async function listRates(tx: Tx, userId: string) {

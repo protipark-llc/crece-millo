@@ -34,7 +34,7 @@ import {
 } from "lucide-react";
 import { Logo } from "../brand/logo";
 import { ThemeCycleButton, ThemeSwitcher } from "../theme/theme-switcher";
-import { MOBILE_PRIMARY, NAV, isActive } from "./nav-config";
+import { isActive, mobilePrimary, visibleNav, type NavItem } from "./nav-config";
 import { cn } from "../ui/cn";
 
 // Íconos de sección: se conservan en el rediseño (docs/ICONOS.md).
@@ -69,19 +69,13 @@ function PendingDot({ className }: { className?: string }) {
   return pending ? <Loader2 aria-label="Cargando" className={cn("ml-auto size-3.5 animate-spin", className)} /> : null;
 }
 
-function PremiumTag() {
-  return (
-    <span className="ml-auto rounded-xs bg-accent px-1.5 py-px text-[10px] font-semibold tracking-[0.06em] text-accent-ink">PREMIUM</span>
-  );
-}
-
 /** Lista completa de secciones. `tone="dark"` en la barra lateral (nav-bg); "light" en la hoja móvil. */
-function NavLinks({ onNavigate, tone }: { onNavigate?: () => void; tone: "dark" | "light" }) {
+function NavLinks({ onNavigate, tone, enabled }: { onNavigate?: () => void; tone: "dark" | "light"; enabled: string[] }) {
   const pathname = usePathname();
   const dark = tone === "dark";
   return (
     <nav aria-label="Navegación principal" className="space-y-5">
-      {NAV.map((g) => (
+      {visibleNav(enabled).map((g) => (
         <div key={g.label}>
           <p className={cn("t-overline mb-1 px-3", dark ? "text-nav-label" : "text-muted")}>{g.label}</p>
           <ul className="space-y-0.5">
@@ -107,8 +101,7 @@ function NavLinks({ onNavigate, tone }: { onNavigate?: () => void; tone: "dark" 
                   >
                     <Icon aria-hidden className="size-4 shrink-0" />
                     <span className="min-w-0 truncate">{item.label}</span>
-                    {item.premium && <PremiumTag />}
-                    <PendingDot className={item.premium ? "ml-1" : undefined} />
+                    <PendingDot />
                   </Link>
                 </li>
               );
@@ -126,7 +119,7 @@ function initials(name: string) {
 }
 
 /** Hoja inferior móvil con el resto de secciones («Más»). Esc cierra; el foco queda dentro. */
-function MoreSheet({ open, onClose, footer }: { open: boolean; onClose: () => void; footer: React.ReactNode }) {
+function MoreSheet({ open, onClose, footer, enabled }: { open: boolean; onClose: () => void; footer: React.ReactNode; enabled: string[] }) {
   const panel = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
@@ -167,7 +160,7 @@ function MoreSheet({ open, onClose, footer }: { open: boolean; onClose: () => vo
           </button>
         </div>
         <div className="flex-1 overflow-y-auto px-3 pb-4">
-          <NavLinks tone="light" onNavigate={onClose} />
+          <NavLinks tone="light" onNavigate={onClose} enabled={enabled} />
         </div>
         <div className="border-t border-border p-3 pb-[max(12px,env(safe-area-inset-bottom))]">{footer}</div>
       </div>
@@ -175,28 +168,30 @@ function MoreSheet({ open, onClose, footer }: { open: boolean; onClose: () => vo
   );
 }
 
-export function Sidebar({ footer, mobileFooter, userName }: { footer: React.ReactNode; mobileFooter: React.ReactNode; userName: string }) {
+export function Sidebar({ footer, mobileFooter, userName, enabled }: { footer: React.ReactNode; mobileFooter: React.ReactNode; userName: string; enabled: string[] }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const primary = mobilePrimary(enabled);
+  const canRegister = enabled.includes("movimientos") || enabled.includes("panel");
   useEffect(() => setOpen(false), [pathname]);
   return (
     <>
       {/* Escritorio: barra lateral oscura de 240 px */}
       <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col bg-nav-bg lg:flex">
         <div className="px-5 pt-5 pb-6">
-          <Link href="/universidad" className="inline-flex rounded-md" aria-label="Crece Millo · Inicio">
+          <Link href="/" className="inline-flex rounded-md" aria-label="Crece Millo · Inicio">
             <Logo tone="oscuro" height={26} decorative />
           </Link>
         </div>
         <div className="nav-scroll flex-1 overflow-y-auto px-3 pb-4">
-          <NavLinks tone="dark" />
+          <NavLinks tone="dark" enabled={enabled} />
         </div>
         <div className="border-t border-white/10 p-3">{footer}</div>
       </aside>
 
       {/* Móvil: barra superior */}
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-surface/95 px-3 backdrop-blur lg:hidden">
-        <Link href="/universidad" className="inline-flex rounded-md px-1" aria-label="Crece Millo · Inicio">
+        <Link href="/" className="inline-flex rounded-md px-1" aria-label="Crece Millo · Inicio">
           <Logo tone="auto" height={22} decorative />
         </Link>
         <div className="flex items-center gap-1">
@@ -216,10 +211,12 @@ export function Sidebar({ footer, mobileFooter, userName }: { footer: React.Reac
       {/* Móvil: navegación inferior con botón central de registro rápido */}
       <nav aria-label="Accesos rápidos" className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden">
         <ul className="mx-auto grid h-18 max-w-md grid-cols-5 items-center">
-          {MOBILE_PRIMARY.slice(0, 2).map((item) => (
+          {primary.slice(0, 2).map((item) => (
             <BottomItem key={item.href} item={item} pathname={pathname} />
           ))}
+          {primary.length < 2 && <li />}
           <li className="flex justify-center">
+            {canRegister && (
             <Link
               href="/universidad/finanzas/movimientos/nuevo"
               aria-label="Registrar movimiento"
@@ -227,8 +224,10 @@ export function Sidebar({ footer, mobileFooter, userName }: { footer: React.Reac
             >
               <Plus aria-hidden className="size-6" />
             </Link>
+            )}
           </li>
-          {MOBILE_PRIMARY.slice(2).map((item) => (
+          {primary.length < 3 && <li />}
+          {primary.slice(2).map((item) => (
             <BottomItem key={item.href} item={item} pathname={pathname} />
           ))}
           <li>
@@ -245,12 +244,12 @@ export function Sidebar({ footer, mobileFooter, userName }: { footer: React.Reac
           </li>
         </ul>
       </nav>
-      <MoreSheet open={open} onClose={() => setOpen(false)} footer={mobileFooter} />
+      <MoreSheet open={open} onClose={() => setOpen(false)} footer={mobileFooter} enabled={enabled} />
     </>
   );
 }
 
-function BottomItem({ item, pathname }: { item: (typeof MOBILE_PRIMARY)[number]; pathname: string }) {
+function BottomItem({ item, pathname }: { item: NavItem; pathname: string }) {
   const active = isActive(item, pathname);
   const Icon = ICONS[item.icon] ?? Home;
   return (

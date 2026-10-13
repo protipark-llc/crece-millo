@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Card, PageHeader } from "@/components/ui/primitives";
-import { LiveEventCard } from "@/components/community/community";
+import { LiveEventCard, PreviewNotice } from "@/components/community/community";
 import { SAMPLE_COMMUNITY } from "@/lib/community/sample";
 
 export const metadata: Metadata = { title: "En vivo · Comunidad" };
@@ -8,6 +8,7 @@ export const metadata: Metadata = { title: "En vivo · Comunidad" };
 export default function LivePage() {
   return (
     <>
+      <PreviewNotice what="Las sesiones en vivo todavía no están abiertas" />
       <PageHeader eyebrow="Comunidad" title="En vivo" description="Sesiones en directo para resolver dudas y revisar avances. Cada sesión queda grabada, con subtítulos y transcripción." />
       <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
         <Card className="p-5">

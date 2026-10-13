@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Check, LineChart, PiggyBank, ShieldCheck, Target, Waves } from "lucide-react";
 import { getCurrentUser } from "@/server/session";
+import { currentSections } from "@/server/sections";
 import { buttonClass } from "@/components/ui/primitives";
 import { Logo } from "@/components/brand/logo";
 import { ThemeCycleButton } from "@/components/theme/theme-switcher";
@@ -11,7 +12,7 @@ import { cn } from "@/components/ui/cn";
 export const dynamic = "force-dynamic";
 
 export default async function Landing() {
-  if (await getCurrentUser()) redirect("/universidad");
+  if (await getCurrentUser()) redirect((await currentSections()).home);
   const features = [
     { icon: Waves, title: "Flujo de caja real y proyectado", text: "Mira cuánto dinero tendrás cada semana y anticipa meses con déficit antes de que lleguen." },
     { icon: PiggyBank, title: "Presupuesto que se compara con la realidad", text: "Planea por categoría, reasigna cuando haga falta y ve tu ejecución sin hojas de cálculo." },
