@@ -3,6 +3,7 @@ import { tabBySlug } from "@/lib/copiloto/nav";
 import { SeccionPendiente } from "@/components/copiloto/pendiente";
 import { Portfolio } from "@/components/copiloto/productos/portfolio";
 import { Detalle } from "@/components/copiloto/productos/detalle";
+import { Precio } from "@/components/copiloto/productos/precio";
 
 export default async function CopilotoSeccion({
   params,
@@ -16,7 +17,7 @@ export default async function CopilotoSeccion({
     return (
       <div className="space-y-4">
         <Portfolio />
-        <Detalle precio={<SeccionPendiente slug="productos" />} />
+        <Detalle precio={<Precio />} />
       </div>
     );
   return <SeccionPendiente slug={tab.slug} />;

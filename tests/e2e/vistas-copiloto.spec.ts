@@ -166,6 +166,33 @@ test.describe("Vistas y Co-Piloto", () => {
     await expect(detalle.getByText(/Estrategia sugerida ·/)).toBeVisible();
     await expect(page.getByText("Guardado en tu cuenta")).toBeVisible();
 
+    // Precio y margen: aplicar el recomendado cambia el precio de la ficha.
+    await sub.getByRole("link", { name: "5 · Precio y margen" }).click();
+    await expect(
+      detalle.getByText("¿Cuánto cobro? · Precio recomendado"),
+    ).toBeVisible();
+    await expect(
+      detalle.getByRole("heading", { name: "Salud del precio" }),
+    ).toBeVisible();
+    await detalle
+      .getByRole("button", { name: "Aplicar precio recomendado" })
+      .click();
+    await expect(
+      page
+        .getByRole("status")
+        .filter({ hasText: /Precio de venta: \$\u00a0\d/ }),
+    ).toBeVisible();
+    await sub.getByRole("link", { name: "1 · Ficha" }).click();
+    await expect(
+      detalle.getByLabel("Precio de venta", { exact: true }),
+    ).not.toHaveValue("150000");
+    await sub.getByRole("link", { name: "4 · Análisis y estrategia" }).click();
+    await expect(page).toHaveURL(/vista=analisis/);
+    await expect(
+      detalle.getByRole("heading", { name: "Embudo" }),
+    ).toBeVisible();
+    await expect(page.getByText("Guardado en tu cuenta")).toBeVisible();
+
     await page.reload();
     await expect(page).toHaveURL(/vista=analisis/);
     await expect(
