@@ -33,11 +33,42 @@ export interface SslSummary {
   host: string;
   port: string;
   sslmodeInUrl: string | null;
+  /** Usuario de la URL (no es secreto) y problemas detectados en la contraseña, sin revelarla. */
+  user: string;
+  credentialIssues: string[];
+}
+
+function credentialIssues(u: URL): string[] {
+  const issues: string[] = [];
+  let user = u.username;
+  let password = u.password;
+  try {
+    user = decodeURIComponent(u.username);
+    password = decodeURIComponent(u.password);
+  } catch {
+    issues.push("la contraseña tiene un % que no forma un código válido");
+  }
+  if (!password) issues.push("la URL no tiene contraseña");
+  if (/YOUR-PASSWORD|\[|\]/i.test(password)) issues.push("la contraseña conserva el texto de ejemplo o corchetes [ ]");
+  if (/\s/.test(password)) issues.push("la contraseña tiene espacios o saltos de línea");
+  if (/^["']|["']$/.test(password)) issues.push("la contraseña empieza o termina con comillas");
+  if (hostKind(u.hostname) === "supabase-pooler" && !user.includes(".")) {
+    issues.push(`el usuario del pooler debe ser postgres.<project-ref>, no "${user}"`);
+  }
+  return issues;
 }
 
 export function poolConfig(url: string, env: Record<string, string | undefined> = process.env): { config: PoolConfig; summary: SslSummary } {
   const u = new URL(url);
-  const summary: SslSummary = { mode: "url", certificates: 0, host: u.hostname, port: u.port || "5432", sslmodeInUrl: u.searchParams.get("sslmode") };
+  const summary: SslSummary = {
+    mode: "url",
+    certificates: 0,
+    host: u.hostname,
+    port: u.port || "5432",
+    sslmodeInUrl: u.searchParams.get("sslmode"),
+    user: safeDecode(u.username),
+    credentialIssues: credentialIssues(u),
+  };
   const stripSsl = () => {
     for (const k of ["sslmode", "sslcert", "sslkey", "sslrootcert", "uselibpqcompat", "ssl"]) u.searchParams.delete(k);
   };
@@ -63,7 +94,16 @@ export function describeSsl(s: SslSummary): string {
       : s.mode === "no-verify"
         ? "TLS SIN verificar (DATABASE_SSL_NO_VERIFY=true)"
         : `según la URL (sslmode=${s.sslmodeInUrl ?? "no definido"})`;
-  return `Base de datos ${s.host}:${s.port} · ${how}`;
+  const issues = s.credentialIssues.length ? ` · REVISAR: ${s.credentialIssues.join("; ")}` : "";
+  return `Base de datos ${s.host}:${s.port} · usuario ${s.user || "(vacío)"} · ${how}${issues}`;
+}
+
+function safeDecode(v: string): string {
+  try {
+    return decodeURIComponent(v);
+  } catch {
+    return v;
+  }
 }
 
 /** Mensaje de ayuda para errores típicos de conexión (sin exponer secretos). */
@@ -78,7 +118,10 @@ export function connectionHint(err: unknown, s: SslSummary, rawCa: string | unde
     }
     return "Falta DATABASE_CA_CERT en este entorno de Vercel (y la URL pide TLS verificado). Agrégala con el certificado de Supabase o quita ?sslmode=require de la URL.";
   }
-  if (code === "28P01") return "Usuario o contraseña incorrectos: revisa que reemplazaste [YOUR-PASSWORD] y que el usuario del pooler incluye el sufijo .<project-ref>.";
+  if (code === "28P01") {
+    if (s.credentialIssues.length) return `Supabase rechazó la contraseña: ${s.credentialIssues.join("; ")}.`;
+    return `Supabase rechazó la contraseña del usuario ${s.user} en ${s.host}:${s.port}. La URL tiene buen formato, así que la contraseña no es la vigente: si la restableciste, pega la nueva en esta variable para el entorno Production (DATABASE_URL y MIGRATION_DATABASE_URL usan la misma), espera 1-2 minutos y vuelve a desplegar.`;
+  }
   if (code === "ENOTFOUND" || code === "EAI_AGAIN" || code === "ECONNREFUSED" || code === "ETIMEDOUT" || code === "ENETUNREACH" || code === "EHOSTUNREACH") {
     const kind = hostKind(s.host);
     if (kind === "placeholder") return "La URL todavía tiene un texto de ejemplo en lugar del host real: copia de nuevo la cadena de conexión de Supabase.";

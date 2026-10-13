@@ -10,7 +10,7 @@ export interface HealthReport {
   database: "ok" | "error";
   tls: string | null;
   /** Tipo de host y puerto (sin el host real) y código del último error de conexión. */
-  connection: { host: HostKind | null; port: string | null; errorCode: string | null };
+  connection: { host: HostKind | null; port: string | null; errorCode: string | null; issues: string[] };
   migrations: { applied: number | null; expected: number };
   initialAccount: "exists" | "missing" | "not_configured" | "unknown";
   problem: string | null;
@@ -28,7 +28,7 @@ export async function healthReport(): Promise<HealthReport> {
     environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "unknown",
     database: "error",
     tls: null,
-    connection: { host: null, port: null, errorCode: null },
+    connection: { host: null, port: null, errorCode: null, issues: [] },
     migrations: { applied: null, expected },
     initialAccount: process.env.BOOTSTRAP_USER_EMAIL ? "unknown" : "not_configured",
     problem: null,
@@ -46,6 +46,7 @@ export async function healthReport(): Promise<HealthReport> {
   }
   report.connection.host = hostKind(summary.host);
   report.connection.port = summary.port;
+  report.connection.issues = summary.credentialIssues;
   report.tls = summary.mode === "verify-ca" ? "verificado con certificado" : summary.mode === "no-verify" ? "cifrado sin verificar" : `según la URL (sslmode=${summary.sslmodeInUrl ?? "no definido"})`;
   try {
     const db = getDb();

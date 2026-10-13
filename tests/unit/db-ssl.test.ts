@@ -49,4 +49,17 @@ describe("certificado de la base de datos", () => {
     expect(hint("postgres://u:p@your-host:5432/postgres")).toMatch(/texto de ejemplo/);
     expect(hint("postgres://u:p@10.0.0.5:5432/postgres", "ECONNREFUSED")).toMatch(/host y el puerto/);
   });
+
+  it("diagnostica la contraseña rechazada sin revelarla", () => {
+    const summary = (url: string) => poolConfig(url, {}).summary;
+    const ok = summary("postgres://postgres.abc:Clave123@aws-1-us-west-2.pooler.supabase.com:5432/postgres");
+    expect(ok.user).toBe("postgres.abc");
+    expect(ok.credentialIssues).toEqual([]);
+    const hint = connectionHint({ code: "28P01" }, ok, undefined)!;
+    expect(hint).toMatch(/no es la vigente/);
+    expect(hint).not.toContain("Clave123");
+    expect(summary("postgres://postgres.abc:[YOUR-PASSWORD]@aws-1-us-west-2.pooler.supabase.com:6543/postgres").credentialIssues.join()).toMatch(/texto de ejemplo/);
+    expect(summary("postgres://postgres:Clave123@aws-1-us-west-2.pooler.supabase.com:6543/postgres").credentialIssues.join()).toMatch(/postgres\.<project-ref>/);
+    expect(summary("postgres://postgres.abc:Clave%20123@aws-1-us-west-2.pooler.supabase.com:6543/postgres").credentialIssues.join()).toMatch(/espacios/);
+  });
 });
