@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+/*
+ * Tokens de diseño. Los componentes usan roles (bg, surface, ink, brand, pos, neg…),
+ * nunca hex directos. El modo oscuro tiene sus propios pasos, no una inversión automática.
+ * Paleta de gráficos: instancia validada de la guía de visualización (azul/naranja/aqua),
+ * estados reservados (good/warning/critical) que siempre van con ícono + texto.
+ */
+:root {
+  color-scheme: light;
+  --bg: #f6f6f3;
+  --surface: #ffffff;
+  --surface-2: #f1f1ed;
+  --surface-3: #e8e8e3;
+  --border: rgba(11, 11, 11, 0.1);
+  --border-strong: rgba(11, 11, 11, 0.18);
+  --ink: #141413;
+  --ink-2: #4a4945;
+  --muted: #6b6a65;
+  --brand: #0d6b57;
+  --brand-hover: #0a5747;
+  --brand-ink: #ffffff;
+  --brand-soft: #e2f0eb;
+  --pos: #106a1e;
+  --pos-soft: #e5f3e6;
+  --neg: #b42318;
+  --neg-soft: #fbe9e7;
+  --warn: #8a5a00;
+  --warn-soft: #fdf3dc;
+  --info: #1c5cab;
+  --info-soft: #e6effa;
+  --focus: #2a78d6;
+  /* gráficos */
+  --chart-surface: #ffffff;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-critical: #d03b3b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0d0d0d;
+    --surface: #1a1a19;
+    --surface-2: #222220;
+    --surface-3: #2c2c2a;
+    --border: rgba(255, 255, 255, 0.1);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --muted: #9c9a92;
+    --brand: #4cc3a6;
+    --brand-hover: #6fd3ba;
+    --brand-ink: #062019;
+    --brand-soft: #12302a;
+    --pos: #3fbf4a;
+    --pos-soft: #13291a;
+    --neg: #f08080;
+    --neg-soft: #3a1717;
+    --warn: #f2c14e;
+    --warn-soft: #33270b;
+    --info: #7fb1ef;
+    --info-soft: #14243a;
+    --focus: #7fb1ef;
+    --chart-surface: #1a1a19;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d0d0d;
+  --surface: #1a1a19;
+  --surface-2: #222220;
+  --surface-3: #2c2c2a;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --ink: #f0efec;
+  --ink-2: #c3c2b7;
+  --muted: #9c9a92;
+  --brand: #4cc3a6;
+  --brand-hover: #6fd3ba;
+  --brand-ink: #062019;
+  --brand-soft: #12302a;
+  --pos: #3fbf4a;
+  --pos-soft: #13291a;
+  --neg: #f08080;
+  --neg-soft: #3a1717;
+  --warn: #f2c14e;
+  --warn-soft: #33270b;
+  --info: #7fb1ef;
+  --info-soft: #14243a;
+  --focus: #7fb1ef;
+  --chart-surface: #1a1a19;
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
+  --color-pos: var(--pos);
+  --color-pos-soft: var(--pos-soft);
+  --color-neg: var(--neg);
+  --color-neg-soft: var(--neg-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-series-1: var(--series-1);
+  --color-series-2: var(--series-2);
+  --color-series-3: var(--series-3);
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
