@@ -24,14 +24,14 @@ export const metadata: Metadata = { title: "Panel financiero" };
 const MORE_KEYS = ["net_flow", "essential", "discretionary", "budget_execution", "debt_payments", "debt_service_ratio", "emergency_coverage", "net_worth", "net_worth_mom", "net_worth_yoy", "goals"];
 
 export default async function FinancePanel() {
-  const sections = await currentSections();
-  const on = (k: string) => sections.enabled.includes(k);
-  const [data, edu] = await Promise.all([
+  // Todo en paralelo: secciones visibles, datos del panel y progreso de la Universidad.
+  const sectionsP = currentSections();
+  const [data, edu, sections] = await Promise.all([
     financePage(async ({ d, tx, userId, f }) => {
       const o = await buildOverview(tx, userId, d);
       const next = upcoming(d, 14).slice(0, 6);
       // Resumen del negocio solo si la persona ve el Co-Piloto.
-      const business = on("copiloto")
+      const business = (await sectionsP).enabled.includes("copiloto")
         ? await Promise.all([listProducts(tx, userId), listTests(tx, userId), routeProgress(tx, userId)]).then(([products, tests, done]) => ({
             summaries: products.map((p) => productSummary(p, tests)),
             route: routeStatus(done),
@@ -40,7 +40,9 @@ export default async function FinancePanel() {
       return { d, o, next, f, business };
     }),
     courseProgress(),
+    sectionsP,
   ]);
+  const on = (k: string) => sections.enabled.includes(k);
   const { d, o, next, f, business } = data;
   const activeProduct = business
     ? (business.summaries.find((x) => x.product.status === "ganador") ?? business.summaries.find((x) => x.product.status === "prueba") ?? business.summaries.find((x) => x.product.status !== "descartado") ?? null)

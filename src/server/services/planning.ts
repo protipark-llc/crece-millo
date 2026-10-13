@@ -58,6 +58,10 @@ export function debtMonthlyRate(d: Pick<DebtRow, "ratePercent" | "rateBasis">): 
 export async function listDebts(tx: Tx, userId: string) {
   const rows = await tx.select().from(debts).where(eq(debts.userId, userId)).orderBy(asc(debts.status), asc(debts.createdAt));
   const payments = await tx.select().from(debtPayments).where(eq(debtPayments.userId, userId)).orderBy(desc(debtPayments.paidOn));
+  return groupDebts(rows, payments);
+}
+
+export function groupDebts(rows: (typeof debts.$inferSelect)[], payments: (typeof debtPayments.$inferSelect)[]) {
   return rows.map((d) => ({ debt: d, payments: payments.filter((p) => p.debtId === d.id) }));
 }
 
@@ -238,6 +242,10 @@ export const ASSET_TYPE_LABELS: Record<(typeof assets.$inferSelect)["type"], str
 export async function listAssets(tx: Tx, userId: string) {
   const rows = await tx.select().from(assets).where(eq(assets.userId, userId)).orderBy(asc(assets.createdAt));
   const vals = await tx.select().from(assetValuations).where(eq(assetValuations.userId, userId)).orderBy(desc(assetValuations.valuedOn));
+  return groupAssets(rows, vals);
+}
+
+export function groupAssets(rows: (typeof assets.$inferSelect)[], vals: (typeof assetValuations.$inferSelect)[]) {
   return rows.map((a) => ({ asset: a, valuations: vals.filter((v) => v.assetId === a.id) }));
 }
 
@@ -289,6 +297,10 @@ export const GOAL_TYPE_LABELS: Record<(typeof goals.$inferSelect)["type"], strin
 export async function listGoals(tx: Tx, userId: string) {
   const rows = await tx.select().from(goals).where(eq(goals.userId, userId)).orderBy(asc(goals.priority), asc(goals.createdAt));
   const contribs = await tx.select().from(goalContributions).where(eq(goalContributions.userId, userId)).orderBy(desc(goalContributions.contributedOn));
+  return groupGoals(rows, contribs);
+}
+
+export function groupGoals(rows: (typeof goals.$inferSelect)[], contribs: (typeof goalContributions.$inferSelect)[]) {
   return rows.map((g) => {
     const list = contribs.filter((c) => c.goalId === g.id);
     return { goal: g, contributions: list, accumulated: list.reduce((s, c) => s + c.amount, 0) };

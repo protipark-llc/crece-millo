@@ -1,5 +1,4 @@
 import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
-import { sql } from "drizzle-orm";
 import { Pool } from "pg";
 import * as schema from "./schema";
 import { poolConfig } from "./ssl";
@@ -42,9 +41,25 @@ export async function closeDb(): Promise<void> {
  * siendo obligatorios (defensa en profundidad).
  */
 export async function withUser<T>(userId: string, fn: (tx: Tx) => Promise<T>): Promise<T> {
-  if (!/^[0-9a-f-]{36}$/i.test(userId)) throw new Error("Identificador de usuario inválido");
-  return getDb().transaction(async (tx) => {
-    await tx.execute(sql`select set_config('app.user_id', ${userId}, true)`);
-    return fn(tx);
-  });
+  // El uuid se valida antes de interpolarlo: así BEGIN y set_config viajan en un solo
+  // mensaje (protocolo simple) en vez de dos idas y vueltas a la base.
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) throw new Error("Identificador de usuario inválido");
+  getDb();
+  const client = await globalForDb.__crecePool!.connect();
+  let broken: Error | undefined;
+  try {
+    await client.query(`begin; select set_config('app.user_id', '${userId}', true)`);
+    // Instancia de Drizzle atada a esta conexión: todo lo que haga `fn` va en la transacción.
+    const tx = drizzle(client) as unknown as Tx;
+    const result = await fn(tx);
+    await client.query("commit");
+    return result;
+  } catch (err) {
+    await client.query("rollback").catch((e: Error) => {
+      broken = e;
+    });
+    throw err;
+  } finally {
+    client.release(broken);
+  }
 }

@@ -1,8 +1,10 @@
+import { Suspense } from "react";
 import { LogOut } from "lucide-react";
 import { requireUser } from "@/server/session";
 import { Sidebar } from "@/components/shell/sidebar";
 import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 import { currentSections } from "@/server/sections";
+import { NavProgress } from "@/components/shell/nav-progress";
 import { logoutAction } from "../auth-actions";
 
 export const dynamic = "force-dynamic";
@@ -38,6 +40,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const { enabled } = await currentSections();
   return (
     <div className="lg:flex">
+      <Suspense fallback={null}>
+        <NavProgress />
+      </Suspense>
       <Sidebar
         userName={user.name}
         enabled={enabled}

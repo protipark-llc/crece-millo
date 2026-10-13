@@ -138,6 +138,36 @@ export function connectionHint(err: unknown, s: SslSummary, rawCa: string | unde
 export type HostKind = "supabase-pooler" | "supabase-direct" | "placeholder" | "local" | "other";
 
 /** Clasifica el host sin exponerlo: suficiente para diagnosticar la configuración. */
+/** Región de AWS de un pooler de Supabase (aws-0-sa-east-1.pooler.supabase.com → sa-east-1). */
+export function supabaseRegion(host: string): string | null {
+  const m = /^aws-\d+-([a-z]{2}-[a-z]+-\d)\.pooler\.supabase\.com$/i.exec(host.trim());
+  return m ? m[1]!.toLowerCase() : null;
+}
+
+/** Región de AWS donde corre cada región de funciones de Vercel. */
+export const VERCEL_TO_AWS: Record<string, string> = {
+  iad1: "us-east-1",
+  cle1: "us-east-2",
+  pdx1: "us-west-2",
+  sfo1: "us-west-1",
+  yul1: "ca-central-1",
+  gru1: "sa-east-1",
+  dub1: "eu-west-1",
+  lhr1: "eu-west-2",
+  cdg1: "eu-west-3",
+  fra1: "eu-central-1",
+  arn1: "eu-north-1",
+  bom1: "ap-south-1",
+  sin1: "ap-southeast-1",
+  syd1: "ap-southeast-2",
+  hnd1: "ap-northeast-1",
+  icn1: "ap-northeast-2",
+  kix1: "ap-northeast-3",
+  hkg1: "ap-east-1",
+  cpt1: "af-south-1",
+  dxb1: "me-central-1",
+};
+
 export function hostKind(host: string): HostKind {
   const h = host.toLowerCase();
   if (h === "localhost" || h === "127.0.0.1" || h === "[::1]") return "local";

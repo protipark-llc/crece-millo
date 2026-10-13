@@ -167,7 +167,13 @@ export async function listCategories(tx: Tx, userId: string, opts: { includeArch
     .from(categories)
     .where(opts.includeArchived ? eq(categories.userId, userId) : and(eq(categories.userId, userId), isNull(categories.archivedAt)))
     .orderBy(asc(categories.sortOrder), asc(categories.name));
-  return rows.map((r) => ({
+  return rows.map(toCategoryRow);
+}
+
+export const CATEGORY_ORDER = [asc(categories.sortOrder), asc(categories.name)] as const;
+
+export function toCategoryRow(r: typeof categories.$inferSelect): CategoryRow {
+  return {
     id: r.id,
     name: r.name,
     kind: r.kind,
@@ -177,7 +183,7 @@ export async function listCategories(tx: Tx, userId: string, opts: { includeArch
     systemKey: r.systemKey,
     archived: r.archivedAt !== null,
     sortOrder: r.sortOrder,
-  }));
+  };
 }
 
 export function toEngineCategories(rows: CategoryRow[]): EngineCategory[] {
