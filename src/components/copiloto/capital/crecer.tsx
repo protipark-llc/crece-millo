@@ -303,7 +303,7 @@ export function Crecer() {
         <h3 id="es-t" className="mb-3 text-lg font-semibold text-ink">
           Escenarios
         </h3>
-        <div className="relative overflow-x-auto">
+        <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
           <table className="w-full min-w-[760px] text-sm">
             <thead>
               <tr className="text-left">
@@ -384,7 +384,7 @@ export function Crecer() {
             className="size-5 text-muted transition-transform group-open:rotate-180"
           />
         </summary>
-        <div className="relative mt-3 overflow-x-auto">
+        <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative mt-3 overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
           <table className="w-full min-w-[1100px] text-sm">
             <thead>
               <tr className="text-left">
@@ -481,7 +481,7 @@ function Sensitivity({ p }: { p: SimInput }) {
       <h3 id="se-t" className="mb-3 text-lg font-semibold text-ink">
         Sensibilidad · utilidad mensual según CPA y % de entrega
       </h3>
-      <div className="relative overflow-x-auto">
+      <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
         <table className="w-full min-w-[720px] text-sm">
           <thead>
             <tr>
@@ -520,7 +520,10 @@ function Sensitivity({ p }: { p: SimInput }) {
                           aria-hidden
                           className={cn("size-3", TONE_TEXT[t])}
                         />
-                        <span className="text-ink">{compact(v)}</span>
+                        <span aria-hidden className="text-ink">
+                          {compact(v)}
+                        </span>
+                        <span className="sr-only">{fmt.money(v)}</span>
                       </span>
                     </td>
                   );

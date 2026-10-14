@@ -465,6 +465,12 @@ function Breakdown({
           );
         })}
       </ul>
+      <p className="mt-3 flex items-baseline justify-between gap-2 border-t border-border pt-2 text-sm font-semibold text-ink">
+        <span>Ticket</span>
+        <span className="tabular">
+          {fmt.money(tot)} · {fmt.pct(1)}
+        </span>
+      </p>
     </section>
   );
 }
@@ -484,7 +490,7 @@ function SimTable({ q, R }: { q: Q; R: Pricing }) {
         · Crecer, y el CPA que corresponde a cada precio. Sin fase de testeo,
         porque es el mismo producto ya validado.
       </p>
-      <div className="relative overflow-x-auto">
+      <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
         <table className="w-full min-w-[860px] text-sm">
           <thead>
             <tr className="text-left">
@@ -585,7 +591,7 @@ function PriceTable({ q, R }: { q: Q; R: Pricing }) {
       <h3 id="pt-t" className="mb-3 text-base font-semibold text-ink">
         Tabla de precios
       </h3>
-      <div className="relative max-h-[480px] overflow-auto">
+      <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative max-h-[480px] overflow-auto focus-visible:outline-2 focus-visible:outline-focus">
         <table className="w-full min-w-[860px] text-sm">
           <thead className="sticky top-0 bg-surface">
             <tr className="text-left">

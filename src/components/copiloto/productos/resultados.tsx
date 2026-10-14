@@ -176,7 +176,7 @@ export function Resultados() {
         >
           Historial de este producto
         </h3>
-        <div className="relative overflow-x-auto">
+        <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
           <table className="w-full min-w-[1280px] text-sm">
             <thead>
               <tr className="text-left">

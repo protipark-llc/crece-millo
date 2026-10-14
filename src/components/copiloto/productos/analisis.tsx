@@ -181,7 +181,7 @@ export function Analisis() {
           <h3 id="vs-t" className="mb-3 text-base font-semibold text-ink">
             Esperado vs. real
           </h3>
-          <div className="relative overflow-x-auto">
+          <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-muted">

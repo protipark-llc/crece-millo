@@ -123,7 +123,7 @@ export function Ruta() {
                       {x.fi} · {x.f.t.replace(/ \(.*\)$/, "")}
                     </span>
                     <span className="text-muted tabular">
-                      {x.done}/{x.items.length}
+                      {x.done}/{x.items.length} · {fmt.pct(x.pc)}
                       <span className="sr-only">
                         {x.pc === 1 ? " · completa" : ""}
                       </span>
