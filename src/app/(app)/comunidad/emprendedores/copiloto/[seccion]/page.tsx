@@ -6,6 +6,8 @@ import { Detalle } from "@/components/copiloto/productos/detalle";
 import { Precio } from "@/components/copiloto/productos/precio";
 import { AnalizarTest } from "@/components/copiloto/test/analizar";
 import { Marketing } from "@/components/copiloto/marketing/marketing";
+import { PlanCapital } from "@/components/copiloto/capital/plan";
+import { Crecer } from "@/components/copiloto/capital/crecer";
 
 export default async function CopilotoSeccion({
   params,
@@ -24,5 +26,7 @@ export default async function CopilotoSeccion({
     );
   if (tab.slug === "test") return <AnalizarTest />;
   if (tab.slug === "marketing") return <Marketing />;
+  if (tab.slug === "capital") return <PlanCapital />;
+  if (tab.slug === "crecer") return <Crecer />;
   return <SeccionPendiente slug={tab.slug} />;
 }

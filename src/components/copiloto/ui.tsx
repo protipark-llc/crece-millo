@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState as useStateCompat, type ReactNode } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState as useStateCompat,
+  type ReactNode,
+} from "react";
 import { AlertTriangle, CheckCircle2, Info, XCircle } from "lucide-react";
 import type { Tone } from "@/lib/copiloto/engine";
 import { tipFor } from "@/lib/copiloto/glosario";
@@ -351,4 +357,71 @@ export function useToast() {
     </div>
   );
   return { show, node };
+}
+
+/** Número + control deslizante sincronizados (div.sl del original). */
+export function NumberSlider({
+  label,
+  hint,
+  value,
+  min,
+  max,
+  step,
+  display,
+  onChange,
+}: {
+  label: string;
+  hint?: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  display: string;
+  onChange: (v: number) => void;
+}) {
+  const id = useId();
+  const [text, setText] = useStateCompat(String(value));
+  const focused = useRef(false);
+  useEffect(() => {
+    if (!focused.current) setText(String(value));
+  }, [value]);
+  return (
+    <div className="min-w-0">
+      <div className="flex items-center justify-between gap-2">
+        <label htmlFor={id} className="min-w-0 text-sm font-medium text-ink">
+          {label}
+        </label>
+        <input
+          id={id}
+          type="number"
+          inputMode="decimal"
+          step={step}
+          value={text}
+          onFocus={() => (focused.current = true)}
+          onBlur={() => {
+            focused.current = false;
+            setText(String(value));
+          }}
+          onChange={(e) => {
+            setText(e.target.value);
+            const n = Number(e.target.value.replace(",", "."));
+            if (e.target.value !== "" && Number.isFinite(n)) onChange(n);
+          }}
+          className="h-10 w-28 shrink-0 rounded-md border border-control-border bg-surface px-2 text-right text-sm text-ink tabular focus:border-focus focus:ring-2 focus:ring-focus/30 focus:outline-none"
+        />
+      </div>
+      <input
+        type="range"
+        aria-label={label}
+        aria-valuetext={display}
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="mt-1 h-6 w-full accent-[var(--brand)]"
+      />
+      {hint && <p className="text-xs text-muted">{hint}</p>}
+    </div>
+  );
 }

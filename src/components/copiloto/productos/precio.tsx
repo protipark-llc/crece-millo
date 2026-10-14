@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   CheckCircle2,
   ChevronDown,
@@ -33,7 +33,14 @@ import { buttonClass } from "@/components/ui/primitives";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "../store";
 import { ToneBadge } from "../tone";
-import { Kpi, TONE_ICON, TONE_TEXT, ToneAlert, useToast } from "../ui";
+import {
+  Kpi,
+  NumberSlider,
+  TONE_ICON,
+  TONE_TEXT,
+  ToneAlert,
+  useToast,
+} from "../ui";
 
 type Q = PriceQ & { P: number };
 const card = "rounded-lg border border-border bg-surface p-4 sm:p-5";
@@ -152,7 +159,7 @@ export function Precio() {
         </div>
       </section>
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
         <Kpi
           t="Precio evaluado"
           v={fmt.money(q.P)}
@@ -246,7 +253,7 @@ export function Precio() {
               </summary>
               <div className="space-y-4 border-t border-border px-4 py-4">
                 {fs.map(([k, label, min, , step]) => (
-                  <Slider
+                  <NumberSlider
                     key={`${p.id}-${k}`}
                     label={label}
                     hint={PCH[k]}
@@ -358,73 +365,6 @@ function MiniStat({
         {Icon && <Icon aria-hidden className="mt-px size-3.5 shrink-0" />}
         {s}
       </p>
-    </div>
-  );
-}
-
-/** Número + control deslizante sincronizados (div.sl del original). */
-function Slider({
-  label,
-  hint,
-  value,
-  min,
-  max,
-  step,
-  display,
-  onChange,
-}: {
-  label: string;
-  hint?: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  display: string;
-  onChange: (v: number) => void;
-}) {
-  const id = useId();
-  const [text, setText] = useState(String(value));
-  const focused = useRef(false);
-  useEffect(() => {
-    if (!focused.current) setText(String(value));
-  }, [value]);
-  return (
-    <div className="min-w-0">
-      <div className="flex items-center justify-between gap-2">
-        <label htmlFor={id} className="min-w-0 text-sm font-medium text-ink">
-          {label}
-        </label>
-        <input
-          id={id}
-          type="number"
-          inputMode="decimal"
-          step={step}
-          value={text}
-          onFocus={() => (focused.current = true)}
-          onBlur={() => {
-            focused.current = false;
-            setText(String(value));
-          }}
-          onChange={(e) => {
-            setText(e.target.value);
-            const n = Number(e.target.value.replace(",", "."));
-            if (e.target.value !== "" && Number.isFinite(n)) onChange(n);
-          }}
-          className="h-10 w-28 shrink-0 rounded-md border border-control-border bg-surface px-2 text-right text-sm text-ink tabular focus:border-focus focus:ring-2 focus:ring-focus/30 focus:outline-none"
-        />
-      </div>
-      <input
-        type="range"
-        aria-label={label}
-        aria-valuetext={display}
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="mt-1 h-6 w-full accent-[var(--brand)]"
-      />
-      {hint && <p className="text-xs text-muted">{hint}</p>}
     </div>
   );
 }

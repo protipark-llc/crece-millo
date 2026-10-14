@@ -322,4 +322,48 @@ test.describe("Vistas y Co-Piloto", () => {
       page.getByRole("button", { name: "Regalo perfecto" }),
     ).toHaveAttribute("aria-pressed", "true");
   });
+  test("Co-Piloto · Planificar capital y Crecer: cálculo en vivo, guardar y CSV", async ({
+    page,
+  }) => {
+    await register(page);
+    await page.goto("/comunidad/emprendedores/copiloto/capital");
+    await expect(
+      page.getByText("ROAS objetivo", { exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Usar mis tests reales" }),
+    ).toBeDisabled();
+    await page.getByLabel("Intervalos (1–12)").fill("6");
+    await expect(page.getByRole("table").locator("tbody tr")).toHaveCount(6);
+    await page.getByRole("button", { name: "Guardar plan" }).click();
+    await expect(
+      page.getByRole("status").filter({ hasText: "Plan guardado" }),
+    ).toBeVisible();
+
+    await page.goto("/comunidad/emprendedores/copiloto/crecer");
+    await expect(
+      page.getByText(/Es una simulación con tus supuestos, no una promesa/),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Escenarios" }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", { name: "Aplicar mi perfil de riesgo" })
+      .click();
+    await page.getByRole("spinbutton", { name: "Meses" }).fill("12");
+    const download = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Exportar CSV" }).click();
+    expect((await download).suggestedFilename()).toBe(
+      "simulacion_copiloto.csv",
+    );
+    await page.getByRole("button", { name: "Guardar simulación" }).click();
+    await expect(
+      page.getByRole("status").filter({ hasText: "Simulación guardada" }),
+    ).toBeVisible();
+    await expect(page.getByText("Guardado en tu cuenta")).toBeVisible();
+    await page.reload();
+    await expect(page.getByRole("spinbutton", { name: "Meses" })).toHaveValue(
+      "12",
+    );
+  });
 });
