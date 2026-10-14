@@ -33,12 +33,15 @@ export const MKTABS = [
 ] as const;
 
 export const tabBySlug = (slug: string) => TABS.find((t) => t.slug === slug);
-export const tabByCode = (code: string) => TABS.find((t) => t.code === code) ?? TABS[0];
+export const tabByCode = (code: string) =>
+  TABS.find((t) => t.code === code) ?? TABS[0];
 
 /** URL de una sección; `vista` es la subpestaña (código del original o slug). */
 export function copilotoHref(tab: TabSlug | TabCode, vista?: string): string {
   const t = TABS.find((x) => x.slug === tab || x.code === tab) ?? TABS[0];
   if (!vista) return `${BASE}/${t.slug}`;
-  const sub = [...PTABS, ...MKTABS].find((x) => x.slug === vista || x.code === vista);
+  const sub = [...PTABS, ...MKTABS].find(
+    (x) => x.slug === vista || x.code === vista,
+  );
   return `${BASE}/${t.slug}?vista=${sub ? sub.slug : vista}`;
 }

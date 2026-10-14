@@ -11,7 +11,11 @@ if (existsSync(".env")) {
 const DB = process.env.E2E_DATABASE_URL;
 if (!DB) throw new Error("Define E2E_DATABASE_URL");
 const PORT = 3200;
-const executablePath = existsSync("/opt/pw-browsers/chromium-1194/chrome-linux/chrome") ? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" : undefined;
+const executablePath = existsSync(
+  "/opt/pw-browsers/chromium-1194/chrome-linux/chrome",
+)
+  ? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
+  : undefined;
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -20,17 +24,43 @@ export default defineConfig({
   workers: 1,
   reporter: [["list"]],
   globalSetup: "./tests/e2e/global-setup.ts",
-  use: { baseURL: `http://localhost:${PORT}`, locale: "es-CO", timezoneId: "America/Bogota", launchOptions: { executablePath } },
-  projects: [
-    { name: "escritorio", use: { ...devices["Desktop Chrome"], launchOptions: { executablePath } }, testIgnore: /responsive\.spec\.ts/ },
-    { name: "movil", use: { ...devices["Pixel 7"], launchOptions: { executablePath } }, testMatch: /responsive\.spec\.ts/ },
-  ],
-  webServer: {
-    // Requiere `npm run build` previo (el script test:e2e lo hace).
-    command: `npx next start -p ${PORT}`,
-    url: `http://localhost:${PORT}/ingresar`,
-    reuseExistingServer: false,
-    timeout: 120_000,
-    env: { DATABASE_URL: DB, SESSION_COOKIE_SECURE: "false" },
+  use: {
+    baseURL: `http://localhost:${PORT}`,
+    locale: "es-CO",
+    timezoneId: "America/Bogota",
+    launchOptions: { executablePath },
   },
+  projects: [
+    {
+      name: "escritorio",
+      use: { ...devices["Desktop Chrome"], launchOptions: { executablePath } },
+      testIgnore: /responsive\.spec\.ts/,
+    },
+    {
+      name: "movil",
+      use: { ...devices["Pixel 7"], launchOptions: { executablePath } },
+      testMatch: /responsive\.spec\.ts/,
+    },
+  ],
+  webServer: [
+    // API de Claude simulada para el mentor: sin red ni clave real.
+    {
+      command: "node tests/e2e/mock-anthropic.mjs",
+      port: 3299,
+      reuseExistingServer: false,
+    },
+    {
+      // Requiere `npm run build` previo (el script test:e2e lo hace).
+      command: `npx next start -p ${PORT}`,
+      url: `http://localhost:${PORT}/ingresar`,
+      reuseExistingServer: false,
+      timeout: 120_000,
+      env: {
+        DATABASE_URL: DB,
+        SESSION_COOKIE_SECURE: "false",
+        ANTHROPIC_API_KEY: "clave-de-prueba",
+        ANTHROPIC_BASE_URL: "http://localhost:3299",
+      },
+    },
+  ],
 });

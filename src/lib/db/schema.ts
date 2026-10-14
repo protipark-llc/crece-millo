@@ -820,6 +820,19 @@ export const copilotoSaved = pgTable(
   ],
 );
 
+/** Usos diarios del mentor con IA (límite por persona y día). */
+export const copilotoMentorUso = pgTable(
+  "copiloto_mentor_uso",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    dia: date("dia").notNull(),
+    usos: integer("usos").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.dia] }), check("copiloto_mentor_uso_values", sql`${t.usos} >= 0`)],
+);
+
 export const RLS_TABLES = [
   "user_settings",
   "accounts",
@@ -848,4 +861,5 @@ export const RLS_TABLES = [
   "copiloto_tests",
   "copiloto_product_state",
   "copiloto_saved",
+  "copiloto_mentor_uso",
 ] as const;

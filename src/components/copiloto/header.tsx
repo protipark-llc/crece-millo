@@ -6,10 +6,13 @@ import { useId, useState } from "react";
 import { AlertTriangle, Check, ChevronRight, Loader2 } from "lucide-react";
 import { E } from "@/lib/copiloto/engine";
 import { TABS, tabBySlug } from "@/lib/copiloto/nav";
+import { Glosario } from "./glosario";
+import { EjemploToggle } from "./ejemplo";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "./store";
 
-const SEGMENT_TONE = (i: number) => (i <= 3 ? "bg-pos" : i <= 7 ? "bg-warn" : "bg-neg");
+const SEGMENT_TONE = (i: number) =>
+  i <= 3 ? "bg-pos" : i <= 7 ? "bg-warn" : "bg-neg";
 
 /** Riesgo 1–10: 10 segmentos con «5 · Normal». Es un control deslizante nativo (teclado y lector de pantalla). */
 function RiskControl() {
@@ -23,7 +26,13 @@ function RiskControl() {
       </label>
       <span aria-hidden className="flex gap-0.5">
         {Array.from({ length: 10 }, (_, k) => k + 1).map((i) => (
-          <span key={i} className={cn("h-4 w-[7px] rounded-[2px]", i <= S.risk ? SEGMENT_TONE(i) : "bg-surface-3")} />
+          <span
+            key={i}
+            className={cn(
+              "h-4 w-[7px] rounded-[2px]",
+              i <= S.risk ? SEGMENT_TONE(i) : "bg-surface-3",
+            )}
+          />
         ))}
       </span>
       <span className="text-xs font-semibold text-ink tabular">
@@ -46,24 +55,39 @@ function RiskControl() {
 
 function SaveIndicator() {
   const { status, error, retry, demo } = useCopiloto();
-  if (demo) return <span className="text-xs font-medium text-info">Modo ejemplo · no se guarda</span>;
+  if (demo)
+    return (
+      <span className="text-xs font-medium text-info">
+        Modo ejemplo · no se guarda
+      </span>
+    );
   return (
-    <span role="status" aria-live="polite" className="inline-flex items-center gap-1.5 text-xs text-muted">
+    <span
+      role="status"
+      aria-live="polite"
+      className="inline-flex items-center gap-1.5 text-xs text-muted"
+    >
       {status === "saving" && (
         <>
-          <Loader2 aria-hidden className="size-3.5 motion-safe:animate-spin" /> Guardando…
+          <Loader2 aria-hidden className="size-3.5 motion-safe:animate-spin" />{" "}
+          Guardando…
         </>
       )}
       {status === "saved" && (
         <>
-          <Check aria-hidden className="size-3.5 text-pos" /> Guardado en tu cuenta
+          <Check aria-hidden className="size-3.5 text-pos" /> Guardado en tu
+          cuenta
         </>
       )}
       {status === "error" && (
         <>
           <AlertTriangle aria-hidden className="size-3.5 text-neg" />
           <span className="text-neg">{error ?? "No se pudo guardar"}</span>
-          <button type="button" onClick={retry} className="font-semibold text-ink underline">
+          <button
+            type="button"
+            onClick={retry}
+            className="font-semibold text-ink underline"
+          >
             Reintentar
           </button>
         </>
@@ -109,7 +133,10 @@ export function CopilotoHeader() {
     <header className="rounded-lg border border-border bg-surface px-4 pt-3 sm:px-5 lg:pt-4">
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
         <div className="min-w-0">
-          <nav aria-label="Ruta de navegación" className="flex items-center gap-1 text-xs text-muted">
+          <nav
+            aria-label="Ruta de navegación"
+            className="flex items-center gap-1 text-xs text-muted"
+          >
             <Link href="/comunidad" className="hover:text-ink">
               Comunidad
             </Link>
@@ -137,14 +164,23 @@ export function CopilotoHeader() {
             ))}
           </select>
           <RiskControl />
-          <div role="group" aria-label="Moneda" className="flex h-11 overflow-hidden rounded-md border border-control-border">
+          <div
+            role="group"
+            aria-label="Moneda"
+            className="flex h-11 overflow-hidden rounded-md border border-control-border"
+          >
             {(["COP", "USD"] as const).map((c) => (
               <button
                 key={c}
                 type="button"
                 aria-pressed={S.cur === c}
                 onClick={() => setSettings({ cur: c })}
-                className={cn("min-w-11 px-2.5 text-xs font-semibold", S.cur === c ? "bg-brand text-brand-ink" : "bg-surface text-muted hover:text-ink")}
+                className={cn(
+                  "min-w-11 px-2.5 text-xs font-semibold",
+                  S.cur === c
+                    ? "bg-brand text-brand-ink"
+                    : "bg-surface text-muted hover:text-ink",
+                )}
               >
                 {c}
               </button>
@@ -154,7 +190,10 @@ export function CopilotoHeader() {
         </div>
       </div>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-x-3">
-        <nav aria-label="Secciones del Co-Piloto" className="-mb-px flex min-w-0 basis-full gap-0.5 overflow-x-auto md:basis-auto">
+        <nav
+          aria-label="Secciones del Co-Piloto"
+          className="-mb-px flex min-w-0 basis-full gap-0.5 overflow-x-auto md:basis-auto"
+        >
           {TABS.map((t) => (
             <Link
               key={t.slug}
@@ -163,14 +202,18 @@ export function CopilotoHeader() {
               onClick={() => setSettings({ tab: t.code })}
               className={cn(
                 "inline-flex h-11 shrink-0 items-center border-b-[3px] px-3 text-sm whitespace-nowrap",
-                t.slug === current ? "border-brand font-semibold text-ink" : "border-transparent text-muted hover:text-ink",
+                t.slug === current
+                  ? "border-brand font-semibold text-ink"
+                  : "border-transparent text-muted hover:text-ink",
               )}
             >
               {t.label}
             </Link>
           ))}
         </nav>
-        <span className="pb-1.5 md:pb-3">
+        <span className="flex items-center gap-2 pb-1.5 md:pb-2">
+          <Glosario />
+          <EjemploToggle />
           <SaveIndicator />
         </span>
       </div>

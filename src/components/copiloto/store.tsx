@@ -1,7 +1,22 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { formatFecha, formatMeses, formatMoney, formatPct, formatX } from "@/lib/copiloto/format";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import {
+  formatFecha,
+  formatMeses,
+  formatMoney,
+  formatPct,
+  formatX,
+} from "@/lib/copiloto/format";
 import type { CopilotState, Product, Saved, Test } from "@/lib/copiloto/state";
 import type { SettingsPatch } from "@/server/services/copiloto";
 import {
@@ -31,9 +46,15 @@ export interface CopilotoApi {
   removeProduct: (id: string) => void;
   addTest: (t: Test) => void;
   removeTest: (id: string) => void;
-  setProductState: (productId: string, kind: "pc" | "mk", data: Record<string, unknown> | null) => void;
+  setProductState: (
+    productId: string,
+    kind: "pc" | "mk",
+    data: Record<string, unknown> | null,
+  ) => void;
   addSaved: (kind: "plan" | "sim", item: Saved) => void;
   removeSaved: (kind: "plan" | "sim", id: string) => void;
+  /** Guarda ya lo pendiente y espera a que termine (antes de pedir algo al servidor). */
+  flush: () => Promise<void>;
   fmt: {
     money: (n: number) => string;
     pct: (n: number) => string;
@@ -56,7 +77,15 @@ type Op = () => Promise<SaveResult>;
 /** Espera antes de guardar mientras la persona escribe (ms). */
 const TYPING_DELAY = 450;
 
-export function CopilotoProvider({ initial, demo = false, children }: { initial: CopilotState; demo?: boolean; children: ReactNode }) {
+export function CopilotoProvider({
+  initial,
+  demo = false,
+  children,
+}: {
+  initial: CopilotState;
+  demo?: boolean;
+  children: ReactNode;
+}) {
   const [S, setS] = useState<CopilotState>(initial);
   const [status, setStatus] = useState<SaveStatus>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +95,9 @@ export function CopilotoProvider({ initial, demo = false, children }: { initial:
   const chain = useRef<Promise<void>>(Promise.resolve());
   const inFlight = useRef(0);
   const failed = useRef<Op[]>([]);
-  const timers = useRef(new Map<string, { timer: ReturnType<typeof setTimeout>; op: Op }>());
+  const timers = useRef(
+    new Map<string, { timer: ReturnType<typeof setTimeout>; op: Op }>(),
+  );
   const pendingSettings = useRef<SettingsPatch>({});
 
   const enqueue = useCallback(
@@ -86,7 +117,11 @@ export function CopilotoProvider({ initial, demo = false, children }: { initial:
           failed.current.push(op);
           setError(r.error);
           setStatus("error");
-        } else if (inFlight.current === 0 && failed.current.length === 0) {
+        } else if (
+          inFlight.current === 0 &&
+          failed.current.length === 0 &&
+          timers.current.size === 0
+        ) {
           setError(null);
           setStatus("saved");
         }
@@ -142,10 +177,12 @@ export function CopilotoProvider({ initial, demo = false, children }: { initial:
 
   const api = useMemo<CopilotoApi>(() => {
     const ctx = { cur: S.cur, trm: S.trm };
-    const productOp = (id: string): Op => () => {
-      const p = latest.current.products.find((x) => x.id === id);
-      return p ? putProductAction(p) : Promise.resolve({ ok: true });
-    };
+    const productOp =
+      (id: string): Op =>
+      () => {
+        const p = latest.current.products.find((x) => x.id === id);
+        return p ? putProductAction(p) : Promise.resolve({ ok: true });
+      };
     return {
       S,
       demo,
@@ -162,7 +199,12 @@ export function CopilotoProvider({ initial, demo = false, children }: { initial:
         });
       },
       updateProduct(id, patch) {
-        setS((prev) => ({ ...prev, products: prev.products.map((p) => (p.id === id ? ({ ...p, ...patch } as Product) : p)) }));
+        setS((prev) => ({
+          ...prev,
+          products: prev.products.map((p) =>
+            p.id === id ? ({ ...p, ...patch } as Product) : p,
+          ),
+        }));
         later(`product:${id}`, productOp(id));
       },
       addProduct(p) {
@@ -180,7 +222,13 @@ export function CopilotoProvider({ initial, demo = false, children }: { initial:
           const products = prev.products.filter((p) => p.id !== id);
           const { [id]: _pc, ...pc } = prev.pc;
           const { [id]: _mk, ...mk } = prev.mk;
-          return { ...prev, products, pc, mk, active: prev.active === id ? products[0]!.id : prev.active };
+          return {
+            ...prev,
+            products,
+            pc,
+            mk,
+            active: prev.active === id ? products[0]!.id : prev.active,
+          };
         });
         enqueue(() => removeProductAction(id));
       },
@@ -190,7 +238,10 @@ export function CopilotoProvider({ initial, demo = false, children }: { initial:
         enqueue(() => putTestAction(t));
       },
       removeTest(id) {
-        setS((prev) => ({ ...prev, tests: prev.tests.filter((t) => t.id !== id) }));
+        setS((prev) => ({
+          ...prev,
+          tests: prev.tests.filter((t) => t.id !== id),
+        }));
         enqueue(() => removeTestAction(id));
       },
       setProductState(productId, kind, data) {
@@ -200,7 +251,9 @@ export function CopilotoProvider({ initial, demo = false, children }: { initial:
           else bag[productId] = data;
           return { ...prev, [kind]: bag };
         });
-        later(`${kind}:${productId}`, () => putProductStateAction(productId, kind, data));
+        later(`${kind}:${productId}`, () =>
+          putProductStateAction(productId, kind, data),
+        );
       },
       addSaved(kind, item) {
         const key = kind === "plan" ? "plans" : "sims";
@@ -209,8 +262,15 @@ export function CopilotoProvider({ initial, demo = false, children }: { initial:
       },
       removeSaved(kind, id) {
         const key = kind === "plan" ? "plans" : "sims";
-        setS((prev) => ({ ...prev, [key]: prev[key].filter((x) => x.id !== id) }));
+        setS((prev) => ({
+          ...prev,
+          [key]: prev[key].filter((x) => x.id !== id),
+        }));
         enqueue(() => removeSavedAction(id));
+      },
+      flush: async () => {
+        flush();
+        await chain.current;
       },
       fmt: {
         money: (n) => formatMoney(n, ctx),
@@ -220,7 +280,7 @@ export function CopilotoProvider({ initial, demo = false, children }: { initial:
         fecha: formatFecha,
       },
     };
-  }, [S, demo, status, error, retry, later, enqueue]);
+  }, [S, demo, status, error, retry, later, enqueue, flush]);
 
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
 }

@@ -20,6 +20,7 @@
     "copiloto:verificar": "tsx docs/copiloto/motor/verificar.mjs src/lib/copiloto/engine.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
     "drizzle-orm": "^0.45.4",
     "lucide-react": "^1.55.0",
     "next": "^15.5.27",
@@ -30,6 +31,7 @@
     "zod": "^4.6.6"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.64.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^22.20.5",
