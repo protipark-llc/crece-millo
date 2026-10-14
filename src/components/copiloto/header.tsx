@@ -6,6 +6,8 @@ import { useId, useState } from "react";
 import { AlertTriangle, Check, ChevronRight, Loader2 } from "lucide-react";
 import { E } from "@/lib/copiloto/engine";
 import { TABS, tabBySlug } from "@/lib/copiloto/nav";
+import { Glosario } from "./glosario";
+import { EjemploToggle } from "./ejemplo";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "./store";
 
@@ -209,7 +211,9 @@ export function CopilotoHeader() {
             </Link>
           ))}
         </nav>
-        <span className="pb-1.5 md:pb-3">
+        <span className="flex items-center gap-2 pb-1.5 md:pb-2">
+          <Glosario />
+          <EjemploToggle />
           <SaveIndicator />
         </span>
       </div>

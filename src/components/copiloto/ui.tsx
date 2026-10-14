@@ -425,3 +425,13 @@ export function NumberSlider({
     </div>
   );
 }
+
+/** Descarga un texto como archivo (con BOM para que Excel lea las tildes), como dl() del original. */
+export function downloadText(name: string, text: string, type = "text/csv") {
+  const blob = new Blob(["﻿" + text], { type: `${type};charset=utf-8` });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}

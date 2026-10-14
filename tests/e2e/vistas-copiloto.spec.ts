@@ -366,4 +366,121 @@ test.describe("Vistas y Co-Piloto", () => {
       "12",
     );
   });
+  test("Co-Piloto · Ruta, glosario y alta rápida (aceptación del paquete)", async ({
+    page,
+  }) => {
+    await register(page);
+    await page.goto("/comunidad/emprendedores/copiloto/ruta");
+    await expect(
+      page.getByRole("heading", { name: "El método en 6 fases" }),
+    ).toBeVisible();
+    await expect(page.getByText(/de 25 pasos/)).toBeVisible();
+    const f0a = page.getByRole("checkbox", {
+      name: "Elegí mi nivel de riesgo en la barra superior",
+    });
+    await f0a.check();
+    await expect(page.getByText("Guardado en tu cuenta")).toBeVisible();
+    await page.reload();
+    await expect(
+      page.getByRole("checkbox", {
+        name: "Elegí mi nivel de riesgo en la barra superior",
+      }),
+    ).toBeChecked();
+    // Las casillas automáticas no se marcan a mano.
+    await page.getByRole("button", { name: /1 · Validar producto/ }).click();
+    await expect(
+      page.getByRole("checkbox", {
+        name: "Tengo al menos 3 productos candidatos cargados",
+      }),
+    ).toBeDisabled();
+    await expect(
+      page.getByRole("checkbox", {
+        name: "Tengo al menos 3 productos candidatos cargados",
+      }),
+    ).toBeChecked();
+
+    // Glosario con búsqueda.
+    await page.getByRole("button", { name: "Glosario" }).click();
+    const glos = page.getByRole("dialog", {
+      name: "Glosario en lenguaje sencillo",
+    });
+    await glos
+      .getByRole("searchbox", { name: "Buscar un término" })
+      .fill("roas");
+    await expect(glos.getByText(/Retorno sobre la publicidad/)).toBeVisible();
+    await expect(glos.getByText(/Costo por adquisición/)).toHaveCount(0);
+    await page.keyboard.press("Escape");
+    await expect(glos).toBeHidden();
+
+    // Alta rápida: Masajeador de cuello eléctrico a $ 45.000.
+    await page.goto("/comunidad/emprendedores/copiloto/productos?alta=1");
+    const qa = page.getByRole("dialog", { name: "Alta rápida de producto" });
+    await qa
+      .getByLabel("Nombre del producto")
+      .fill("Masajeador de cuello eléctrico");
+    await expect(qa.getByText("detectada")).toBeVisible();
+    await qa.getByLabel("Costo proveedor (COP)").fill("45000");
+    await qa
+      .getByLabel(/Descripción o características/)
+      .fill("6 modos de masaje, calor, recargable USB");
+    await qa.getByRole("button", { name: "Calcular y completar" }).click();
+    await expect(qa.getByText("$\u00a0169.900", { exact: true })).toBeVisible();
+    await expect(qa.getByText("$\u00a0239.900", { exact: true })).toBeVisible();
+    await expect(qa.getByText("$\u00a076.502", { exact: true })).toBeVisible();
+    await expect(qa.getByText(/· Clase A$/)).toBeVisible();
+    await qa.getByRole("button", { name: "Guardar producto" }).click();
+    await expect(qa).toBeHidden();
+    await expect(page).toHaveURL(/vista=evaluacion/);
+    await expect(
+      page.getByRole("region", { name: "Masajeador de cuello eléctrico" }),
+    ).toBeVisible();
+    await expect(page.getByLabel("Producto activo")).toHaveValue(/^p\d+$/);
+  });
+
+  test("Co-Piloto · Bitácora y modo ejemplo", async ({ page }) => {
+    await register(page);
+    await page.goto("/comunidad/emprendedores/copiloto/bitacora");
+    await expect(page.getByText("Aún no hay tests")).toBeVisible();
+    await expect(
+      page.getByText("Aún no guardas planes ni simulaciones"),
+    ).toBeVisible();
+    await expect(
+      page.getByText("Tus datos se guardan en tu cuenta de Crece Millo.", {
+        exact: false,
+      }),
+    ).toBeVisible();
+
+    // Modo ejemplo: datos de la demostración, nada se guarda.
+    await page.getByRole("button", { name: "Ver ejemplo" }).click();
+    await expect(page.getByText(/Modo ejemplo\./)).toBeVisible();
+    await expect(
+      page.getByRole("cell", {
+        name: "Combo 2× en la confirmación",
+        exact: true,
+      }),
+    ).toBeVisible();
+    const download = page.waitForEvent("download");
+    await page
+      .getByRole("button", { name: "Tests a CSV (para Notion)" })
+      .click();
+    expect((await download).suggestedFilename()).toBe("tests_para_notion.csv");
+    await page
+      .getByRole("button", { name: "Salir del ejemplo" })
+      .first()
+      .click();
+    await expect(page.getByText("Aún no hay tests")).toBeVisible();
+
+    // Borrar todo pide escribir BORRAR.
+    await page.getByRole("button", { name: "Borrar todo" }).click();
+    const dlg = page.getByRole("dialog", {
+      name: "¿Borrar todos tus datos del Co-Piloto?",
+    });
+    await dlg.getByRole("button", { name: "Borrar todo" }).click();
+    await expect(dlg.getByText("Escribe BORRAR para confirmar.")).toBeVisible();
+    await dlg.getByLabel("Escribe BORRAR para confirmar").fill("BORRAR");
+    await dlg.getByRole("button", { name: "Borrar todo" }).click();
+    await expect(
+      page.getByText(/volvió a empezar con los productos de ejemplo/),
+    ).toBeVisible();
+  });
 });

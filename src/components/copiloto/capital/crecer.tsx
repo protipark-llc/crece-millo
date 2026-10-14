@@ -30,6 +30,7 @@ import {
   TONE_ICON,
   TONE_TEXT,
   ToneAlert,
+  downloadText,
   fieldClass,
   useToast,
 } from "../ui";
@@ -38,15 +39,6 @@ const card = "rounded-lg border border-border bg-surface p-4 sm:p-5";
 const th =
   "border-b border-border px-3 py-2 text-xs font-medium whitespace-nowrap text-muted";
 const td = "border-b border-border px-3 py-2 whitespace-nowrap tabular";
-
-function download(name: string, text: string) {
-  const blob = new Blob(["﻿" + text], { type: "text/csv;charset=utf-8" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = name;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-}
 
 /** Crecer: simulador de crecimiento compuesto (renderSim, L1105–1126). */
 export function Crecer() {
@@ -203,7 +195,7 @@ export function Crecer() {
             <button
               type="button"
               className={buttonClass("ghost", "md")}
-              onClick={() => download("simulacion_copiloto.csv", simCsv(r))}
+              onClick={() => downloadText("simulacion_copiloto.csv", simCsv(r))}
             >
               <Download aria-hidden className="size-4" /> Exportar CSV
             </button>

@@ -16,7 +16,8 @@ import { buttonClass } from "@/components/ui/primitives";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "../store";
 import { ToneBadge } from "../tone";
-import { Kpi, fieldClass } from "../ui";
+import { Kpi, downloadText, fieldClass } from "../ui";
+import { productsCsv } from "@/lib/copiloto/logic";
 
 const th =
   "border-b border-border px-3 py-2.5 text-xs font-medium whitespace-nowrap text-muted";
@@ -119,12 +120,15 @@ export function Portfolio() {
           >
             <Plus aria-hidden className="size-4" /> En blanco
           </button>
-          <a
-            href="/api/copiloto/exportar/productos"
+          <button
+            type="button"
+            onClick={() =>
+              downloadText("productos_para_notion.csv", productsCsv(S))
+            }
             className={buttonClass("ghost", "md")}
           >
             <Download aria-hidden className="size-4" /> CSV para Notion
-          </a>
+          </button>
         </div>
         <div className="relative overflow-x-auto">
           <table className="w-full min-w-[1180px] text-sm">
