@@ -16,8 +16,25 @@ import { todayLocal } from "@/lib/copiloto/today";
 import { buttonClass } from "@/components/ui/primitives";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "../store";
-import { ConfirmButton, Kpi, LabeledField, fieldClass, useToast } from "../ui";
+import {
+  ConfirmButton,
+  Kpi,
+  LabeledField,
+  fieldClass,
+  useToast,
+  NumInput,
+} from "../ui";
 
+const RES_STEP: Record<string, number> = {
+  dias: 1,
+  ads: 10000,
+  imp: 100,
+  clics: 1,
+  ped: 1,
+  conf: 1,
+  ent: 1,
+  aov: 1000,
+};
 type NumKey = Exclude<keyof ResForm, "fecha" | "canal" | "notas">;
 const COLS: [NumKey, string, string?][][] = [
   [
@@ -64,14 +81,13 @@ export function Resultados() {
   const numField = ([k, label, hint]: [NumKey, string, string?]) => (
     <LabeledField key={k} label={label} hint={hint}>
       {(id) => (
-        <input
+        <NumInput
           id={id}
-          type="number"
-          inputMode="decimal"
           min={0}
+          step={RES_STEP[k]}
+          allowEmpty
           value={v[k]}
-          onChange={(e) => set(k, e.target.value)}
-          className={cn(fieldClass, "text-right tabular")}
+          onChange={(n) => set(k, n === "" ? "" : String(n))}
         />
       )}
     </LabeledField>

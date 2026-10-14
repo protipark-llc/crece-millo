@@ -129,3 +129,15 @@ body {
     transform: scaleX(1);
   }
 }
+
+/* Co-Piloto: un valor que acaba de cambiar se ilumina un instante (se desactiva con movimiento reducido). */
+@keyframes cp-flash {
+  from {
+    background-color: var(--brand-soft);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cp-flash {
+    animation: cp-flash 700ms var(--ease-enter, ease-out);
+  }
+}

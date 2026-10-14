@@ -28,7 +28,14 @@ import { todayLocal } from "@/lib/copiloto/today";
 import { buttonClass } from "@/components/ui/primitives";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "../store";
-import { Kpi, LabeledField, ToneAlert, fieldClass, useToast } from "../ui";
+import {
+  Kpi,
+  LabeledField,
+  ToneAlert,
+  fieldClass,
+  useToast,
+  NumInput,
+} from "../ui";
 
 type Form = Omit<QaInput, "costo" | "sug" | "stock" | "tam"> & {
   costo: string;
@@ -228,32 +235,27 @@ export function AltaRapida() {
             <div className="grid grid-cols-2 gap-3">
               <LabeledField label="Costo proveedor (COP)">
                 {(id) => (
-                  <input
+                  <NumInput
                     id={id}
-                    type="number"
-                    inputMode="numeric"
                     min={0}
                     step={500}
+                    allowEmpty
+                    placeholder="45.000"
                     value={f.costo}
-                    placeholder="45000"
-                    onChange={(e) => set({ costo: e.target.value })}
-                    required
-                    className={cn(fieldClass, "text-right tabular")}
+                    onChange={(n) => set({ costo: n === "" ? "" : String(n) })}
                   />
                 )}
               </LabeledField>
               <LabeledField label="Precio sugerido en Dropi">
                 {(id) => (
-                  <input
+                  <NumInput
                     id={id}
-                    type="number"
-                    inputMode="numeric"
                     min={0}
                     step={1000}
-                    value={f.sug}
+                    allowEmpty
                     placeholder="opcional"
-                    onChange={(e) => set({ sug: e.target.value })}
-                    className={cn(fieldClass, "text-right tabular")}
+                    value={f.sug}
+                    onChange={(n) => set({ sug: n === "" ? "" : String(n) })}
                   />
                 )}
               </LabeledField>
@@ -329,13 +331,13 @@ export function AltaRapida() {
               </LabeledField>
               <LabeledField label="Stock del proveedor">
                 {(id) => (
-                  <input
+                  <NumInput
                     id={id}
-                    type="number"
                     min={0}
+                    step={1}
+                    allowEmpty
                     value={f.stock}
-                    onChange={(e) => set({ stock: e.target.value })}
-                    className={cn(fieldClass, "text-right tabular")}
+                    onChange={(n) => set({ stock: n === "" ? "" : String(n) })}
                   />
                 )}
               </LabeledField>

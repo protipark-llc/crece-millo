@@ -4,7 +4,6 @@ import { Mentor } from "../mentor";
 import { Save, Sigma, TestTube } from "lucide-react";
 import { E } from "@/lib/copiloto/engine";
 import { activeProduct } from "@/lib/copiloto/logic";
-import { num } from "@/lib/copiloto/productos";
 import type { PlanFormT } from "@/lib/copiloto/capital";
 import { buttonClass } from "@/components/ui/primitives";
 import { cn } from "@/components/ui/cn";
@@ -16,6 +15,7 @@ import {
   fieldClass,
   useToast,
   MobileSheet,
+  NumInput,
 } from "../ui";
 
 const card = "rounded-lg border border-border bg-surface p-4 sm:p-5";
@@ -37,22 +37,24 @@ export function PlanCapital() {
   const numField = (
     k: keyof PlanFormT,
     label: string,
-    opts: { hint?: string; step?: number; min?: number; max?: number } = {},
+    opts: {
+      hint?: string;
+      step?: number;
+      min?: number;
+      max?: number;
+      suffix?: string;
+    } = {},
   ) => (
     <LabeledField key={k} label={label} hint={opts.hint}>
       {(id) => (
-        <input
+        <NumInput
           id={id}
-          type="number"
-          inputMode="decimal"
           step={opts.step}
           min={opts.min}
           max={opts.max}
-          value={String(f[k] ?? "")}
-          onChange={(e) =>
-            set({ [k]: num(e.target.value) } as Partial<PlanFormT>)
-          }
-          className={cn(fieldClass, "text-right tabular")}
+          suffix={opts.suffix}
+          value={f[k] as number}
+          onChange={(n) => set({ [k]: n === "" ? 0 : n } as Partial<PlanFormT>)}
         />
       )}
     </LabeledField>
@@ -168,12 +170,14 @@ export function PlanCapital() {
 
             <h2 className="pt-2 text-lg font-semibold text-ink">Caja</h2>
             <div className="grid grid-cols-2 gap-3">
-              {numField("ret", "Dinero en tránsito %", {
+              {numField("ret", "Dinero en tránsito", {
+                suffix: "%",
                 step: 1,
                 min: 0,
                 hint: "Recaudo que Dropi aún no te liquida (o retenciones de pasarela).",
               })}
-              {numField("ree", "Devoluciones / reembolsos %", {
+              {numField("ree", "Devoluciones / reembolsos", {
+                suffix: "%",
                 step: 1,
                 min: 0,
               })}

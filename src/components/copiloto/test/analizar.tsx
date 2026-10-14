@@ -31,10 +31,22 @@ import {
   fieldClass,
   useToast,
   MobileSheet,
+  NumInput,
 } from "../ui";
 
 /** Campos del test (TF, L1058). El original no incluye «Otro» en el canal de este formulario. */
 const TEST_CANALES = CANALES.filter((c) => c !== "Otro");
+const TEST_STEP: Record<string, number> = {
+  dias: 1,
+  ads: 10000,
+  imp: 100,
+  clics: 1,
+  ped: 1,
+  conf: 1,
+  ent: 1,
+  aov: 1000,
+  meta: 1,
+};
 type TF = typeof DEF_FORMS.testForm;
 
 const RING: Record<Tone, string> = {
@@ -97,17 +109,27 @@ export function AnalizarTest() {
       hint={opts.hint}
       className={opts.className}
     >
-      {(id) => (
-        <input
-          id={id}
-          type={opts.type ?? "number"}
-          inputMode={opts.type ? undefined : "decimal"}
-          min={opts.type ? undefined : 0}
-          value={String(f[k] ?? "")}
-          onChange={(e) => set(k, e.target.value)}
-          className={cn(fieldClass, !opts.type && "text-right tabular")}
-        />
-      )}
+      {(id) =>
+        opts.type ? (
+          <input
+            id={id}
+            type={opts.type}
+            value={String(f[k] ?? "")}
+            onChange={(e) => set(k, e.target.value)}
+            className={fieldClass}
+          />
+        ) : (
+          <NumInput
+            id={id}
+            min={0}
+            step={TEST_STEP[k] ?? 1}
+            suffix={k === "meta" ? "%" : undefined}
+            allowEmpty
+            value={f[k] as string | number}
+            onChange={(n) => set(k, n === "" ? "" : String(n))}
+          />
+        )
+      }
     </LabeledField>
   );
 

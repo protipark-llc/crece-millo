@@ -7,7 +7,7 @@ import { todayLocal } from "@/lib/copiloto/today";
 import { buttonClass } from "@/components/ui/primitives";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "../store";
-import { ConfirmButton, LabeledField, fieldClass } from "../ui";
+import { ConfirmButton, LabeledField, fieldClass, NumInput } from "../ui";
 
 /**
  * Ficha (FICHA, L690): se guarda al escribir. Cambiar el costo marca costoReal = true.
@@ -54,26 +54,34 @@ export function Ficha() {
                       onChange={(e) => set(f.k, e.target.value)}
                       className={cn(fieldClass, "h-auto py-2")}
                     />
+                  ) : f.type === "number" ? (
+                    <NumInput
+                      id={id}
+                      min={0}
+                      step={
+                        /%/.test(f.label)
+                          ? 1
+                          : /stock|competidoras/i.test(f.label)
+                            ? 1
+                            : 500
+                      }
+                      value={p[f.k] as number}
+                      onChange={(n) => set(f.k, n === "" ? "0" : String(n))}
+                    />
                   ) : (
                     <input
                       id={id}
                       type={
-                        f.type === "number"
-                          ? "number"
-                          : f.type === "date"
-                            ? "date"
-                            : f.type === "url"
-                              ? "url"
-                              : "text"
+                        f.type === "date"
+                          ? "date"
+                          : f.type === "url"
+                            ? "url"
+                            : "text"
                       }
-                      inputMode={f.type === "number" ? "decimal" : undefined}
                       placeholder={f.type === "url" ? "https://" : undefined}
                       defaultValue={String(p[f.k] ?? "")}
                       onChange={(e) => set(f.k, e.target.value)}
-                      className={cn(
-                        fieldClass,
-                        f.type === "number" && "text-right tabular",
-                      )}
+                      className={fieldClass}
                     />
                   )
                 }

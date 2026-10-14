@@ -4,54 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
 import { AlertTriangle, Check, ChevronRight, Loader2 } from "lucide-react";
-import { E } from "@/lib/copiloto/engine";
 import { TABS, tabBySlug } from "@/lib/copiloto/nav";
 import { Glosario } from "./glosario";
+import { RiskControl } from "./riesgo";
 import { EjemploToggle } from "./ejemplo";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "./store";
-
-const SEGMENT_TONE = (i: number) =>
-  i <= 3 ? "bg-pos" : i <= 7 ? "bg-warn" : "bg-neg";
-
-/** Riesgo 1–10: 10 segmentos con «5 · Normal». Es un control deslizante nativo (teclado y lector de pantalla). */
-function RiskControl() {
-  const { S, setSettings } = useCopiloto();
-  const id = useId();
-  const rp = E.riskProfile(S.risk);
-  return (
-    <div className="relative flex h-11 items-center gap-2 rounded-md bg-surface-2 px-2.5 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus">
-      <label htmlFor={id} className="text-xs text-muted">
-        Riesgo
-      </label>
-      <span aria-hidden className="flex gap-0.5">
-        {Array.from({ length: 10 }, (_, k) => k + 1).map((i) => (
-          <span
-            key={i}
-            className={cn(
-              "h-4 w-[7px] rounded-[2px]",
-              i <= S.risk ? SEGMENT_TONE(i) : "bg-surface-3",
-            )}
-          />
-        ))}
-      </span>
-      <span className="text-xs font-semibold text-ink tabular">
-        {S.risk} · {rp.label}
-      </span>
-      <input
-        id={id}
-        type="range"
-        min={1}
-        max={10}
-        step={1}
-        value={S.risk}
-        aria-valuetext={`${S.risk} de 10, ${rp.label}`}
-        onChange={(e) => setSettings({ risk: Number(e.target.value) })}
-        className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-      />
-    </div>
-  );
-}
 
 function SaveIndicator() {
   const { status, error, retry, demo } = useCopiloto();

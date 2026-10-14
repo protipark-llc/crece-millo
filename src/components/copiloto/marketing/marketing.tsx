@@ -46,6 +46,7 @@ import {
   ToneAlert,
   fieldClass,
   useToast,
+  NumInput,
 } from "../ui";
 
 const card = "rounded-lg border border-border bg-surface p-4 sm:p-5";
@@ -309,18 +310,16 @@ function Ofertas({
                 ).map(([k, l]) => (
                   <LabeledField key={k} label={l}>
                     {(id) => (
-                      <input
+                      <NumInput
                         id={id}
-                        type="number"
-                        inputMode="decimal"
                         min={0}
                         step={k === "tasa" ? 1 : k === "costo" ? 500 : 1000}
+                        suffix={k === "tasa" ? "%" : undefined}
                         value={Math.round(o[k])}
-                        onChange={(e) => setOff(o.id, k, e.target.value)}
-                        className={cn(
-                          fieldClass,
-                          "px-2 text-right text-sm tabular [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none",
-                        )}
+                        onChange={(n) =>
+                          setOff(o.id, k, String(n === "" ? 0 : n))
+                        }
+                        className="[&_input]:px-2 [&_input]:text-sm"
                       />
                     )}
                   </LabeledField>

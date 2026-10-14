@@ -18,7 +18,11 @@ import { randomUUID } from "node:crypto";
 import { registerUser } from "@/server/services/users";
 
 export async function newUser(label = "u") {
-  return registerUser({ name: `Prueba ${label}`, email: `${label}-${randomUUID()}@ejemplo.test`, password: "clave-segura-123" });
+  return registerUser({
+    name: `Prueba ${label}`,
+    email: `${label}-${randomUUID()}@ejemplo.test`,
+    password: "clave-segura-123",
+  });
 }
 
 export const TODAY = "2026-10-12";

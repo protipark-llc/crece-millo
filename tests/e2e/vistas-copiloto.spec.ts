@@ -245,7 +245,7 @@ test.describe("Vistas y Co-Piloto", () => {
     await page.reload();
     await expect(
       page.getByRole("spinbutton", { name: "Gasto en ads" }),
-    ).toHaveValue("650000");
+    ).toHaveValue("650.000");
     await page.goto(
       "/comunidad/emprendedores/copiloto/productos?vista=resultados",
     );
@@ -523,5 +523,55 @@ test.describe("Vistas y Co-Piloto", () => {
     await expect(qa.getByLabel(/^Nombre\s*automático/)).toHaveValue(
       "Masajeador cervical",
     );
+  });
+  test("Co-Piloto · riesgo de manejo directo y campos con miles", async ({
+    page,
+  }) => {
+    await register(page);
+    await page.goto("/comunidad/emprendedores/copiloto/ruta");
+    const slider = page.getByRole("slider", { name: "Riesgo" });
+    await expect(slider).toHaveAttribute("aria-valuenow", "5");
+    // − / + y tocar la barra.
+    await page.getByRole("button", { name: "Subir el riesgo" }).click();
+    await expect(slider).toHaveAttribute("aria-valuenow", "6");
+    await page.getByRole("button", { name: "Bajar el riesgo" }).click();
+    await page.getByRole("button", { name: "Bajar el riesgo" }).click();
+    await expect(slider).toHaveAttribute("aria-valuenow", "4");
+    const box = (await slider.boundingBox())!;
+    await page.mouse.click(box.x + box.width * 0.95, box.y + box.height / 2);
+    await expect(slider).toHaveAttribute("aria-valuenow", "10");
+    // Panel «qué cambia» con perfiles rápidos.
+    await page
+      .getByRole("button", { name: /ver qué cambia con el riesgo/ })
+      .click();
+    const panel = page.getByRole("region", {
+      name: "Qué cambia con el riesgo",
+    });
+    await expect(panel.getByText("Presupuesto por test")).toBeVisible();
+    await panel.getByRole("button", { name: /Pasivo/ }).click();
+    await expect(slider).toHaveAttribute("aria-valuenow", "2");
+    await page.keyboard.press("Escape");
+    await expect(panel).toBeHidden();
+    await expect(page.getByText("Guardado en tu cuenta")).toBeVisible();
+    await page.reload();
+    await expect(page.getByRole("slider", { name: "Riesgo" })).toHaveAttribute(
+      "aria-valuenow",
+      "2",
+    );
+
+    // Campos con miles, flechas y − / + en los deslizadores.
+    await page.goto("/comunidad/emprendedores/copiloto/test");
+    const gasto = page.getByRole("spinbutton", { name: "Gasto en ads" });
+    await gasto.fill("1.500.000");
+    await gasto.blur();
+    await expect(gasto).toHaveValue("1.500.000");
+    await gasto.focus();
+    await page.keyboard.press("Shift+ArrowUp");
+    await expect(gasto).toHaveValue("1.600.000");
+    await page.goto("/comunidad/emprendedores/copiloto/productos?vista=precio");
+    const costo = page.getByRole("spinbutton", { name: "Costo proveedor" });
+    await expect(costo).toHaveValue("56.000");
+    await page.getByRole("button", { name: "Subir Costo proveedor" }).click();
+    await expect(costo).toHaveValue("56.500");
   });
 });

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { formatNum, parseNum, stepNum } from "@/lib/copiloto/numero";
 import {
   useEffect,
   useId,
@@ -13,6 +14,8 @@ import {
   CheckCircle2,
   ChevronRight,
   Info,
+  Minus,
+  Plus,
   XCircle,
 } from "lucide-react";
 import type { Tone } from "@/lib/copiloto/engine";
@@ -365,7 +368,112 @@ export function useToast() {
   return { show, node };
 }
 
-/** Número + control deslizante sincronizados (div.sl del original). */
+/**
+ * Campo numérico práctico (es-CO): muestra «56.000» con miles, acepta «56.000» o «56000» al
+ * escribir, y sube o baja con las flechas (Shift = ×10). Con `allowEmpty`, vaciarlo devuelve "".
+ */
+export function NumInput({
+  id,
+  value,
+  onChange,
+  step = 1,
+  min,
+  max,
+  allowEmpty,
+  suffix,
+  placeholder,
+  className,
+  "aria-label": ariaLabel,
+  "aria-describedby": describedBy,
+}: {
+  id?: string;
+  value: number | string | null | undefined;
+  onChange: (v: number | "") => void;
+  step?: number;
+  min?: number;
+  max?: number;
+  allowEmpty?: boolean;
+  suffix?: string;
+  placeholder?: string;
+  className?: string;
+  "aria-label"?: string;
+  "aria-describedby"?: string;
+}) {
+  const dec = step < 1 ? (String(step).split(".")[1] ?? "").length || 2 : 0;
+  const decimals = dec > 0;
+  const num =
+    value === "" || value === null || value === undefined
+      ? null
+      : typeof value === "number"
+        ? value
+        : parseNum(String(value), true);
+  const shown =
+    num === null ? "" : formatNum(num, Math.max(dec, decimals ? 2 : 0));
+  const [text, setText] = useStateCompat(shown);
+  const [focused, setFocused] = useStateCompat(false);
+  useEffect(() => {
+    if (!focused) setText(shown);
+  }, [shown, focused]);
+  const commit = (n: number | "") => onChange(n);
+  return (
+    <span className={cn("relative block", className)}>
+      <input
+        id={id}
+        type="text"
+        role="spinbutton"
+        inputMode={decimals ? "decimal" : "numeric"}
+        autoComplete="off"
+        aria-label={ariaLabel}
+        aria-describedby={describedBy}
+        aria-valuenow={num ?? undefined}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        placeholder={placeholder}
+        value={focused ? text : shown}
+        onFocus={(e) => {
+          setFocused(true);
+          setText(shown);
+          requestAnimationFrame(() => e.target.select());
+        }}
+        onBlur={() => setFocused(false)}
+        onChange={(e) => {
+          setText(e.target.value);
+          if (e.target.value.trim() === "") {
+            if (allowEmpty) commit("");
+            return;
+          }
+          const n = parseNum(e.target.value, decimals);
+          if (n !== null) commit(n);
+        }}
+        onKeyDown={(e) => {
+          if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+          e.preventDefault();
+          const n = stepNum(
+            num ?? 0,
+            step,
+            e.key === "ArrowUp" ? 1 : -1,
+            e.shiftKey,
+            min,
+            max,
+          );
+          setText(formatNum(n, dec));
+          commit(n);
+        }}
+        className={cn(fieldClass, "text-right tabular", suffix && "pr-8")}
+      />
+      {suffix && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-muted"
+        >
+          {suffix}
+        </span>
+      )}
+    </span>
+  );
+}
+
+/** Número + control deslizante sincronizados (div.sl del original), con − / + para ajustes finos. */
 export function NumberSlider({
   label,
   hint,
@@ -375,6 +483,7 @@ export function NumberSlider({
   step,
   display,
   onChange,
+  suffix,
 }: {
   label: string;
   hint?: string;
@@ -384,37 +493,50 @@ export function NumberSlider({
   step: number;
   display: string;
   onChange: (v: number) => void;
+  suffix?: string;
 }) {
   const id = useId();
-  const [text, setText] = useStateCompat(String(value));
-  const focused = useRef(false);
-  useEffect(() => {
-    if (!focused.current) setText(String(value));
-  }, [value]);
+  const bump = (dir: 1 | -1) => onChange(stepNum(value, step, dir, false, min));
+  const pct =
+    max > min
+      ? Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100))
+      : 0;
+  const btn =
+    "inline-flex size-9 shrink-0 items-center justify-center rounded-md border border-control-border bg-surface text-ink-2 hover:bg-surface-2 hover:text-ink disabled:opacity-40";
   return (
     <div className="min-w-0">
-      <div className="flex items-center justify-between gap-2">
-        <label htmlFor={id} className="min-w-0 text-sm font-medium text-ink">
-          {label}
-        </label>
-        <input
-          id={id}
-          type="number"
-          inputMode="decimal"
-          step={step}
-          value={text}
-          onFocus={() => (focused.current = true)}
-          onBlur={() => {
-            focused.current = false;
-            setText(String(value));
-          }}
-          onChange={(e) => {
-            setText(e.target.value);
-            const n = Number(e.target.value.replace(",", "."));
-            if (e.target.value !== "" && Number.isFinite(n)) onChange(n);
-          }}
-          className="h-10 w-28 shrink-0 rounded-md border border-control-border bg-surface px-2 text-right text-sm text-ink tabular focus:border-focus focus:ring-2 focus:ring-focus/30 focus:outline-none"
-        />
+      <label htmlFor={id} className="block text-sm font-medium text-ink">
+        {label}
+      </label>
+      <div className="mt-1">
+        <span className="flex items-center gap-1">
+          <button
+            type="button"
+            className={btn}
+            aria-label={`Bajar ${label}`}
+            disabled={value <= min}
+            onClick={() => bump(-1)}
+          >
+            <Minus aria-hidden className="size-3.5" />
+          </button>
+          <NumInput
+            id={id}
+            value={value}
+            step={step}
+            min={min}
+            suffix={suffix}
+            onChange={(v) => onChange(v === "" ? min : v)}
+            className="min-w-0 flex-1 [&_input]:h-9 [&_input]:px-2 [&_input]:text-sm"
+          />
+          <button
+            type="button"
+            className={btn}
+            aria-label={`Subir ${label}`}
+            onClick={() => bump(1)}
+          >
+            <Plus aria-hidden className="size-3.5" />
+          </button>
+        </span>
       </div>
       <input
         type="range"
@@ -425,9 +547,12 @@ export function NumberSlider({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="mt-1 h-6 w-full accent-[var(--brand)]"
+        style={{
+          background: `linear-gradient(to right, var(--brand) ${pct}%, var(--surface-3) ${pct}%)`,
+        }}
+        className="mt-2 h-1.5 w-full cursor-pointer appearance-none rounded-full accent-[var(--brand)] [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-surface [&::-moz-range-thumb]:bg-brand [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-surface [&::-webkit-slider-thumb]:bg-brand [&::-webkit-slider-thumb]:shadow"
       />
-      {hint && <p className="text-xs text-muted">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-muted">{hint}</p>}
     </div>
   );
 }

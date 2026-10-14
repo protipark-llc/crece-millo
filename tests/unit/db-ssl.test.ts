@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { connectionHint, hostKind, normalizePem, poolConfig } from "@/lib/db/ssl";
+import {
+  connectionHint,
+  hostKind,
+  normalizePem,
+  poolConfig,
+} from "@/lib/db/ssl";
 
-const BODY = "MIIBszCCAVmgAwIBAgIUaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa==";
+const BODY =
+  "MIIBszCCAVmgAwIBAgIUaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa==";
 const PEM = `-----BEGIN CERTIFICATE-----\n${BODY.match(/.{1,64}/g)!.join("\n")}\n-----END CERTIFICATE-----`;
 
 describe("certificado de la base de datos", () => {
@@ -16,15 +22,29 @@ describe("certificado de la base de datos", () => {
   });
 
   it("con certificado: TLS verificado y sin sslmode en la URL (la URL prevalece en node-postgres)", () => {
-    const { config, summary } = poolConfig("postgres://u:p@db.example.com:6543/postgres?sslmode=require", { DATABASE_CA_CERT: PEM });
-    expect(config.connectionString).toBe("postgres://u:p@db.example.com:6543/postgres");
+    const { config, summary } = poolConfig(
+      "postgres://u:p@db.example.com:6543/postgres?sslmode=require",
+      { DATABASE_CA_CERT: PEM },
+    );
+    expect(config.connectionString).toBe(
+      "postgres://u:p@db.example.com:6543/postgres",
+    );
     expect(config.ssl).toEqual({ ca: [PEM], rejectUnauthorized: true });
-    expect(summary).toMatchObject({ mode: "verify-ca", certificates: 1, host: "db.example.com", port: "6543" });
+    expect(summary).toMatchObject({
+      mode: "verify-ca",
+      certificates: 1,
+      host: "db.example.com",
+      port: "6543",
+    });
   });
 
   it("sin variables respeta la URL; el modo sin verificación es explícito", () => {
-    expect(poolConfig("postgres://u:p@h/db?sslmode=require", {}).config).toEqual({ connectionString: "postgres://u:p@h/db?sslmode=require" });
-    const nv = poolConfig("postgres://u:p@h/db?sslmode=require", { DATABASE_SSL_NO_VERIFY: "true" });
+    expect(
+      poolConfig("postgres://u:p@h/db?sslmode=require", {}).config,
+    ).toEqual({ connectionString: "postgres://u:p@h/db?sslmode=require" });
+    const nv = poolConfig("postgres://u:p@h/db?sslmode=require", {
+      DATABASE_SSL_NO_VERIFY: "true",
+    });
     expect(nv.config.ssl).toEqual({ rejectUnauthorized: false });
     expect(nv.summary.mode).toBe("no-verify");
   });
@@ -32,34 +52,82 @@ describe("certificado de la base de datos", () => {
   it("explica el error de certificado según la causa", () => {
     const err = { code: "SELF_SIGNED_CERT_IN_CHAIN" };
     const url = "postgres://u:p@h/db?sslmode=require";
-    expect(connectionHint(err, poolConfig(url, {}).summary, undefined)).toMatch(/Falta DATABASE_CA_CERT/);
-    expect(connectionHint(err, poolConfig(url, { DATABASE_CA_CERT: "basura" }).summary, "basura")).toMatch(/no contiene un certificado/);
-    expect(connectionHint(err, poolConfig(url, { DATABASE_CA_CERT: PEM }).summary, PEM)).toMatch(/no corresponde al servidor/);
-    expect(connectionHint({ code: "28P01" }, poolConfig(url, {}).summary, undefined)).toMatch(/contraseña/);
+    expect(connectionHint(err, poolConfig(url, {}).summary, undefined)).toMatch(
+      /Falta DATABASE_CA_CERT/,
+    );
+    expect(
+      connectionHint(
+        err,
+        poolConfig(url, { DATABASE_CA_CERT: "basura" }).summary,
+        "basura",
+      ),
+    ).toMatch(/no contiene un certificado/);
+    expect(
+      connectionHint(
+        err,
+        poolConfig(url, { DATABASE_CA_CERT: PEM }).summary,
+        PEM,
+      ),
+    ).toMatch(/no corresponde al servidor/);
+    expect(
+      connectionHint({ code: "28P01" }, poolConfig(url, {}).summary, undefined),
+    ).toMatch(/contraseña/);
   });
 
   it("distingue el tipo de host cuando no se alcanza el servidor", () => {
-    const hint = (url: string, code = "ENOTFOUND") => connectionHint({ code }, poolConfig(url, {}).summary, undefined);
+    const hint = (url: string, code = "ENOTFOUND") =>
+      connectionHint({ code }, poolConfig(url, {}).summary, undefined);
     expect(hostKind("db.abcdefgh.supabase.co")).toBe("supabase-direct");
-    expect(hostKind("aws-0-us-east-1.pooler.supabase.com")).toBe("supabase-pooler");
+    expect(hostKind("aws-0-us-east-1.pooler.supabase.com")).toBe(
+      "supabase-pooler",
+    );
     expect(hostKind("localhost")).toBe("local");
-    expect(hint("postgres://postgres:p@db.abcdefgh.supabase.co:5432/postgres")).toMatch(/solo funciona por IPv6/);
-    expect(hint("postgres://u.ref:p@aws-0-us-east-1.pooler.supabase.com:6543/postgres")).toMatch(/host del pooler no existe/);
-    expect(hint("postgres://u.ref:p@aws-0-us-east-1.pooler.supabase.com:6543/postgres", "ETIMEDOUT")).toMatch(/pausado/);
-    expect(hint("postgres://u:p@your-host:5432/postgres")).toMatch(/texto de ejemplo/);
-    expect(hint("postgres://u:p@10.0.0.5:5432/postgres", "ECONNREFUSED")).toMatch(/host y el puerto/);
+    expect(
+      hint("postgres://postgres:p@db.abcdefgh.supabase.co:5432/postgres"),
+    ).toMatch(/solo funciona por IPv6/);
+    expect(
+      hint(
+        "postgres://u.ref:p@aws-0-us-east-1.pooler.supabase.com:6543/postgres",
+      ),
+    ).toMatch(/host del pooler no existe/);
+    expect(
+      hint(
+        "postgres://u.ref:p@aws-0-us-east-1.pooler.supabase.com:6543/postgres",
+        "ETIMEDOUT",
+      ),
+    ).toMatch(/pausado/);
+    expect(hint("postgres://u:p@your-host:5432/postgres")).toMatch(
+      /texto de ejemplo/,
+    );
+    expect(
+      hint("postgres://u:p@10.0.0.5:5432/postgres", "ECONNREFUSED"),
+    ).toMatch(/host y el puerto/);
   });
 
   it("diagnostica la contraseña rechazada sin revelarla", () => {
     const summary = (url: string) => poolConfig(url, {}).summary;
-    const ok = summary("postgres://postgres.abc:Clave123@aws-1-us-west-2.pooler.supabase.com:5432/postgres");
+    const ok = summary(
+      "postgres://postgres.abc:Clave123@aws-1-us-west-2.pooler.supabase.com:5432/postgres",
+    );
     expect(ok.user).toBe("postgres.abc");
     expect(ok.credentialIssues).toEqual([]);
     const hint = connectionHint({ code: "28P01" }, ok, undefined)!;
     expect(hint).toMatch(/no es la vigente/);
     expect(hint).not.toContain("Clave123");
-    expect(summary("postgres://postgres.abc:[YOUR-PASSWORD]@aws-1-us-west-2.pooler.supabase.com:6543/postgres").credentialIssues.join()).toMatch(/texto de ejemplo/);
-    expect(summary("postgres://postgres:Clave123@aws-1-us-west-2.pooler.supabase.com:6543/postgres").credentialIssues.join()).toMatch(/postgres\.<project-ref>/);
-    expect(summary("postgres://postgres.abc:Clave%20123@aws-1-us-west-2.pooler.supabase.com:6543/postgres").credentialIssues.join()).toMatch(/espacios/);
+    expect(
+      summary(
+        "postgres://postgres.abc:[YOUR-PASSWORD]@aws-1-us-west-2.pooler.supabase.com:6543/postgres",
+      ).credentialIssues.join(),
+    ).toMatch(/texto de ejemplo/);
+    expect(
+      summary(
+        "postgres://postgres:Clave123@aws-1-us-west-2.pooler.supabase.com:6543/postgres",
+      ).credentialIssues.join(),
+    ).toMatch(/postgres\.<project-ref>/);
+    expect(
+      summary(
+        "postgres://postgres.abc:Clave%20123@aws-1-us-west-2.pooler.supabase.com:6543/postgres",
+      ).credentialIssues.join(),
+    ).toMatch(/espacios/);
   });
 });

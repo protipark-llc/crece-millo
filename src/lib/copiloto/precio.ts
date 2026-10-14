@@ -81,6 +81,17 @@ export const PC_MONEY = new Set([
   "fijosMes",
 ]);
 
+/** Campos que son porcentajes (se muestran con «%»). */
+export const PC_PCT = new Set([
+  "upTasa",
+  "conf",
+  "entrega",
+  "com",
+  "imp",
+  "margenMin",
+  "margenObj",
+]);
+
 export const PCH: Record<string, string> = {
   elast:
     "1,2 = si subes el precio 10%, el CPA sube cerca de 12%. Cuanto más alto, más castiga subir el precio.",

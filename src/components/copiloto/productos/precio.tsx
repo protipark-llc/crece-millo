@@ -18,6 +18,7 @@ import {
 } from "@/lib/copiloto/engine";
 import { activeProduct, pcQ } from "@/lib/copiloto/logic";
 import {
+  PC_PCT,
   PCF,
   PCH,
   PC_MONEY,
@@ -272,6 +273,9 @@ export function Precio() {
                           : String(q[k] ?? "").replace(".", ",")
                       }
                       onChange={(v) => setQ(k, v)}
+                      suffix={
+                        PC_PCT.has(k) ? "%" : k === "elast" ? "×" : undefined
+                      }
                     />
                   ))}
                 </div>

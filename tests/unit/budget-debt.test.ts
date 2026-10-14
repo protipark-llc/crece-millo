@@ -14,11 +14,46 @@ import type { EngineCategory, EngineTx } from "@/lib/finance/types";
 const COP = (p: number) => p * 100;
 
 const cats: EngineCategory[] = [
-  { id: "food", name: "Alimentación", kind: "expense", parentId: null, nature: "essential", behavior: "variable" },
-  { id: "market", name: "Mercado", kind: "expense", parentId: "food", nature: "essential", behavior: "variable" },
-  { id: "rest", name: "Restaurantes", kind: "expense", parentId: "food", nature: "discretionary", behavior: "variable" },
-  { id: "home", name: "Vivienda", kind: "expense", parentId: null, nature: "essential", behavior: "fixed" },
-  { id: "fun", name: "Ocio", kind: "expense", parentId: null, nature: "discretionary", behavior: "variable" },
+  {
+    id: "food",
+    name: "Alimentación",
+    kind: "expense",
+    parentId: null,
+    nature: "essential",
+    behavior: "variable",
+  },
+  {
+    id: "market",
+    name: "Mercado",
+    kind: "expense",
+    parentId: "food",
+    nature: "essential",
+    behavior: "variable",
+  },
+  {
+    id: "rest",
+    name: "Restaurantes",
+    kind: "expense",
+    parentId: "food",
+    nature: "discretionary",
+    behavior: "variable",
+  },
+  {
+    id: "home",
+    name: "Vivienda",
+    kind: "expense",
+    parentId: null,
+    nature: "essential",
+    behavior: "fixed",
+  },
+  {
+    id: "fun",
+    name: "Ocio",
+    kind: "expense",
+    parentId: null,
+    nature: "discretionary",
+    behavior: "variable",
+  },
 ];
 let n = 0;
 const tx = (o: Partial<EngineTx>): EngineTx => ({
@@ -39,9 +74,20 @@ describe("presupuesto vs ejecución", () => {
     tx({ categoryId: "rest", amount: COP(150_000) }), // sin línea propia → cae en Alimentación
     tx({ categoryId: "home", amount: COP(2_000_000) }),
     tx({ categoryId: "fun", amount: COP(50_000) }), // sin línea → sin presupuestar
-    tx({ categoryId: "home", amount: COP(100_000), status: "planned", postedOn: null, date: "2026-05-28" }),
+    tx({
+      categoryId: "home",
+      amount: COP(100_000),
+      status: "planned",
+      postedOn: null,
+      date: "2026-05-28",
+    }),
     tx({ kind: "income", amount: COP(5_000_000), categoryId: null }),
-    tx({ categoryId: "market", amount: COP(999_000), date: "2026-04-30", postedOn: "2026-04-30" }), // otro mes
+    tx({
+      categoryId: "market",
+      amount: COP(999_000),
+      date: "2026-04-30",
+      postedOn: "2026-04-30",
+    }), // otro mes
     tx({ kind: "transfer", amount: COP(1_000_000), toAccountId: "b" }),
   ];
   const s = computeBudget({
@@ -96,10 +142,30 @@ describe("presupuesto vs ejecución", () => {
 describe("proyección al cierre", () => {
   it("usa el promedio histórico de la categoría para los días restantes y suma compromisos externos", () => {
     const hist = [
-      tx({ categoryId: "market", amount: COP(800_000), date: "2026-03-05", postedOn: "2026-03-05" }),
-      tx({ categoryId: "market", amount: COP(800_000), date: "2026-04-05", postedOn: "2026-04-05" }),
-      tx({ categoryId: "market", amount: COP(600_000), date: "2026-05-03", postedOn: "2026-05-03" }),
-      tx({ categoryId: "home", amount: COP(1), date: "2026-02-05", postedOn: "2026-02-05" }),
+      tx({
+        categoryId: "market",
+        amount: COP(800_000),
+        date: "2026-03-05",
+        postedOn: "2026-03-05",
+      }),
+      tx({
+        categoryId: "market",
+        amount: COP(800_000),
+        date: "2026-04-05",
+        postedOn: "2026-04-05",
+      }),
+      tx({
+        categoryId: "market",
+        amount: COP(600_000),
+        date: "2026-05-03",
+        postedOn: "2026-05-03",
+      }),
+      tx({
+        categoryId: "home",
+        amount: COP(1),
+        date: "2026-02-05",
+        postedOn: "2026-02-05",
+      }),
     ];
     const s = computeBudget({
       month: "2026-05-01",
@@ -117,8 +183,12 @@ describe("proyección al cierre", () => {
     const m = s.lines.find((l) => l.lineId === "m")!;
     // Promedio de 3 meses con gasto (feb, mar, abr): 1.600.000 / 3 ≈ 533.333 por mes.
     // 600.000 + 533.333 × 20/31 ≈ 944.086 (no la extrapolación lineal de 1.690.909).
-    expect(m.projectedClose).toBe(COP(600_000) + Math.round((COP(1_600_000) / 3) * 20 / 31));
-    expect(s.lines.find((l) => l.lineId === "h")!.committed).toBe(COP(2_000_000));
+    expect(m.projectedClose).toBe(
+      COP(600_000) + Math.round(((COP(1_600_000) / 3) * 20) / 31),
+    );
+    expect(s.lines.find((l) => l.lineId === "h")!.committed).toBe(
+      COP(2_000_000),
+    );
   });
 });
 
@@ -149,9 +219,30 @@ describe("deudas", () => {
 
   it("compara avalancha y bola de nieve", () => {
     const debts: DebtForPlan[] = [
-      { id: "card", name: "Tarjeta", balance: COP(6_000_000), monthlyRate: monthlyRate(30, "EA"), minimumPayment: COP(300_000), monthlyFees: 0 },
-      { id: "car", name: "Carro", balance: COP(1_500_000), monthlyRate: monthlyRate(14, "EA"), minimumPayment: COP(150_000), monthlyFees: 0 },
-      { id: "fam", name: "Familiar", balance: COP(800_000), monthlyRate: 0, minimumPayment: COP(100_000), monthlyFees: 0 },
+      {
+        id: "card",
+        name: "Tarjeta",
+        balance: COP(6_000_000),
+        monthlyRate: monthlyRate(30, "EA"),
+        minimumPayment: COP(300_000),
+        monthlyFees: 0,
+      },
+      {
+        id: "car",
+        name: "Carro",
+        balance: COP(1_500_000),
+        monthlyRate: monthlyRate(14, "EA"),
+        minimumPayment: COP(150_000),
+        monthlyFees: 0,
+      },
+      {
+        id: "fam",
+        name: "Familiar",
+        balance: COP(800_000),
+        monthlyRate: 0,
+        minimumPayment: COP(100_000),
+        monthlyFees: 0,
+      },
     ];
     const min = simulatePayoff(debts, "minimum");
     const ava = simulatePayoff(debts, "avalanche", COP(400_000));
@@ -163,15 +254,31 @@ describe("deudas", () => {
     expect(ava.totalInterest).toBeLessThan(min.totalInterest);
     expect(ava.months!).toBeLessThan(min.months!);
     // Lo pagado = capital + intereses + cargos.
-    expect(ava.totalPaid).toBe(COP(8_300_000) + ava.totalInterest + ava.totalFees);
+    expect(ava.totalPaid).toBe(
+      COP(8_300_000) + ava.totalInterest + ava.totalFees,
+    );
     expect(ava.paymentSeries.reduce((a, b) => a + b, 0)).toBe(ava.totalPaid);
   });
 
   it("advierte datos faltantes en lugar de inventarlos", () => {
     const r = simulatePayoff(
       [
-        { id: "x", name: "Sin cuota", balance: 1000, monthlyRate: 0.01, minimumPayment: null, monthlyFees: 0 },
-        { id: "y", name: "Sin tasa", balance: 1000, monthlyRate: null, minimumPayment: 100, monthlyFees: 0 },
+        {
+          id: "x",
+          name: "Sin cuota",
+          balance: 1000,
+          monthlyRate: 0.01,
+          minimumPayment: null,
+          monthlyFees: 0,
+        },
+        {
+          id: "y",
+          name: "Sin tasa",
+          balance: 1000,
+          monthlyRate: null,
+          minimumPayment: 100,
+          monthlyFees: 0,
+        },
       ],
       "avalanche",
     );

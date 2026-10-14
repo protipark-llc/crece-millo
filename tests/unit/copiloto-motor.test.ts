@@ -1,21 +1,47 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { E, setFormatters } from "@/lib/copiloto/engine";
-import { diagnoseEsCO, formatFecha, formatMeses, formatMoney, formatPct, formatX } from "@/lib/copiloto/format";
+import {
+  diagnoseEsCO,
+  formatFecha,
+  formatMeses,
+  formatMoney,
+  formatPct,
+  formatX,
+} from "@/lib/copiloto/format";
 
 /** Misma comparación que docs/copiloto/motor/verificar.mjs, dentro de la suite de pruebas. */
 function compare(got: unknown, want: unknown, path: string, fails: string[]) {
   if (typeof want === "number" && typeof got === "number") {
-    if (Math.abs(got - want) > 1e-6 * Math.max(1, Math.abs(want))) fails.push(`${path}: esperado ${want}, obtenido ${got}`);
+    if (Math.abs(got - want) > 1e-6 * Math.max(1, Math.abs(want)))
+      fails.push(`${path}: esperado ${want}, obtenido ${got}`);
     return;
   }
   if (want && typeof want === "object") {
-    for (const k of Object.keys(want)) compare(got ? (got as Record<string, unknown>)[k] : undefined, (want as Record<string, unknown>)[k], `${path}.${k}`, fails);
+    for (const k of Object.keys(want))
+      compare(
+        got ? (got as Record<string, unknown>)[k] : undefined,
+        (want as Record<string, unknown>)[k],
+        `${path}.${k}`,
+        fails,
+      );
     return;
   }
-  if (got !== want) fails.push(`${path}: esperado ${JSON.stringify(want)}, obtenido ${JSON.stringify(got)}`);
+  if (got !== want)
+    fails.push(
+      `${path}: esperado ${JSON.stringify(want)}, obtenido ${JSON.stringify(got)}`,
+    );
 }
-const clean = (o: unknown) => JSON.parse(JSON.stringify(o, (_k, v) => (typeof v === "number" && !isFinite(v) ? (v > 0 ? "Infinity" : "-Infinity") : v)));
+const clean = (o: unknown) =>
+  JSON.parse(
+    JSON.stringify(o, (_k, v) =>
+      typeof v === "number" && !isFinite(v)
+        ? v > 0
+          ? "Infinity"
+          : "-Infinity"
+        : v,
+    ),
+  );
 
 describe("Co-Piloto · motor portado", () => {
   it("da exactamente los mismos resultados que el original (golden.json)", async () => {
@@ -23,7 +49,9 @@ describe("Co-Piloto · motor portado", () => {
     const { casos, fmt } = await import(/* @vite-ignore */ path);
     setFormatters(fmt);
     try {
-      const want = JSON.parse(readFileSync("docs/copiloto/motor/golden.json", "utf8"));
+      const want = JSON.parse(
+        readFileSync("docs/copiloto/motor/golden.json", "utf8"),
+      );
       const fails: string[] = [];
       compare(clean(casos(E)), want, "E", fails);
       expect(fails.slice(0, 10)).toEqual([]);
@@ -54,7 +82,9 @@ describe("Co-Piloto · formato es-CO", () => {
     expect(formatFecha("2026-10-08")).toBe("8 oct 2026");
   });
   it("el diagnóstico sale en es-CO y no deja formateadores globales cambiados", () => {
-    const demo = JSON.parse(readFileSync("docs/copiloto/motor/estado-demo.json", "utf8"));
+    const demo = JSON.parse(
+      readFileSync("docs/copiloto/motor/estado-demo.json", "utf8"),
+    );
     const ojos = demo.products.find((p: { id: string }) => p.id === "ojos");
     const out = diagnoseEsCO(E.agg(demo.tests), ojos, 5);
     const econ = out.find(([, t]) => t === "Unidad económica")!;
@@ -62,6 +92,8 @@ describe("Co-Piloto · formato es-CO", () => {
     expect(out.some(([, t]) => /CTR \d+,?\d* %/.test(t))).toBe(true);
     // Fuera de diagnoseEsCO el motor vuelve a sus formateadores neutros.
     const raw = E.diagnose(E.agg(demo.tests), ojos, 5);
-    expect(raw.find(([, t]) => t === "Unidad económica")![2]).not.toContain("$");
+    expect(raw.find(([, t]) => t === "Unidad económica")![2]).not.toContain(
+      "$",
+    );
   });
 });

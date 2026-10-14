@@ -54,7 +54,9 @@ describe("money", () => {
   });
 
   it("formatea COP sin centavos y USD con centavos", () => {
-    expect(formatMoney(180_000_000, "COP", "es-CO").replace(/\s/g, " ")).toMatch(/1\.800\.000/);
+    expect(
+      formatMoney(180_000_000, "COP", "es-CO").replace(/\s/g, " "),
+    ).toMatch(/1\.800\.000/);
     expect(formatMoney(1250, "USD", "en-US")).toBe("$12.50");
     expect(toInputString(120_000_050, "COP")).toBe("1200000,5");
   });

@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { analyzePrice, checkPrice, judgeTest, planCapital, priceForMargin, returnLossPerOrder, shelfPrice, type PricingInput } from "@/lib/copilot/engine";
+import {
+  analyzePrice,
+  checkPrice,
+  judgeTest,
+  planCapital,
+  priceForMargin,
+  returnLossPerOrder,
+  shelfPrice,
+  type PricingInput,
+} from "@/lib/copilot/engine";
 
 const cop = (pesos: number) => pesos * 100;
 const base: PricingInput = {
@@ -23,7 +32,9 @@ describe("Co-Piloto · precio", () => {
     // costos = 45.000 + 15.000 + 3.000 + 7.500 + 25.000 = 95.500; / (1 − 0,05 − 0,20) = 127.333
     expect(priceForMargin(base, 2_000)).toBe(cop(127_333.33));
     expect(priceForMargin(base, 0)).toBe(cop(100_526.32));
-    expect(priceForMargin({ ...base, platformFeeBps: 9_000 }, 2_000)).toBeNull();
+    expect(
+      priceForMargin({ ...base, platformFeeBps: 9_000 }, 2_000),
+    ).toBeNull();
   });
   it("precio de vitrina nunca baja y termina en 900", () => {
     expect(shelfPrice(cop(127_333.33), "COP")).toBe(cop(127_900));
@@ -51,27 +62,50 @@ describe("Co-Piloto · precio", () => {
 describe("Co-Piloto · veredicto del test", () => {
   const t = { breakEvenCpa: cop(18_000), targetCpa: cop(12_000) };
   it("sin ventas: falta información hasta gastar 2 × CPA de equilibrio, luego parar", () => {
-    expect(judgeTest({ ...t, adSpend: cop(30_000), orders: 0, days: 2 }).verdict).toBe("falta_info");
-    expect(judgeTest({ ...t, adSpend: cop(36_000), orders: 0, days: 2 }).verdict).toBe("parar");
+    expect(
+      judgeTest({ ...t, adSpend: cop(30_000), orders: 0, days: 2 }).verdict,
+    ).toBe("falta_info");
+    expect(
+      judgeTest({ ...t, adSpend: cop(36_000), orders: 0, days: 2 }).verdict,
+    ).toBe("parar");
   });
   it("con pocos datos no decide", () => {
-    expect(judgeTest({ ...t, adSpend: cop(20_000), orders: 1, days: 1 }).verdict).toBe("falta_info");
+    expect(
+      judgeTest({ ...t, adSpend: cop(20_000), orders: 1, days: 1 }).verdict,
+    ).toBe("falta_info");
   });
   it("CPA 21.400 con máximo 18.000 → optimizar; 10.000 → seguir; 30.000 → parar", () => {
     const r = judgeTest({ ...t, adSpend: cop(85_600), orders: 4, days: 4 });
     expect(r.cpa).toBe(cop(21_400));
     expect(r.verdict).toBe("optimizar");
-    expect(judgeTest({ ...t, adSpend: cop(40_000), orders: 4, days: 4 }).verdict).toBe("seguir");
-    expect(judgeTest({ ...t, adSpend: cop(120_000), orders: 4, days: 4 }).verdict).toBe("parar");
+    expect(
+      judgeTest({ ...t, adSpend: cop(40_000), orders: 4, days: 4 }).verdict,
+    ).toBe("seguir");
+    expect(
+      judgeTest({ ...t, adSpend: cop(120_000), orders: 4, days: 4 }).verdict,
+    ).toBe("parar");
   });
   it("si el producto no deja margen, parar", () => {
-    expect(judgeTest({ breakEvenCpa: 0, targetCpa: 0, adSpend: 0, orders: 0, days: 0 }).verdict).toBe("parar");
+    expect(
+      judgeTest({
+        breakEvenCpa: 0,
+        targetCpa: 0,
+        adSpend: 0,
+        orders: 0,
+        days: 0,
+      }).verdict,
+    ).toBe("parar");
   });
 });
 
 describe("Co-Piloto · plan de capital", () => {
   it("reserva 30 %, costos fijos y número de pruebas", () => {
-    const p = planCapital({ capital: cop(2_000_000), reserveBps: 3_000, monthlyFixed: cop(150_000), testBudget: cop(150_000) });
+    const p = planCapital({
+      capital: cop(2_000_000),
+      reserveBps: 3_000,
+      monthlyFixed: cop(150_000),
+      testBudget: cop(150_000),
+    });
     expect(p.reserve).toBe(cop(600_000));
     expect(p.available).toBe(cop(1_250_000));
     expect(p.productsTestable).toBe(8);
@@ -79,11 +113,23 @@ describe("Co-Piloto · plan de capital", () => {
     expect(p.warnings).toEqual([]);
   });
   it("avisa con poca reserva o pocas pruebas", () => {
-    expect(planCapital({ capital: cop(300_000), reserveBps: 1_000, monthlyFixed: 0, testBudget: cop(150_000) }).warnings).toHaveLength(2);
+    expect(
+      planCapital({
+        capital: cop(300_000),
+        reserveBps: 1_000,
+        monthlyFixed: 0,
+        testBudget: cop(150_000),
+      }).warnings,
+    ).toHaveLength(2);
   });
 });
 
-import { enabledSections, homeHref, normalizeSections, VIEW_PRESETS } from "@/lib/sections";
+import {
+  enabledSections,
+  homeHref,
+  normalizeSections,
+  VIEW_PRESETS,
+} from "@/lib/sections";
 
 describe("vistas y secciones", () => {
   it("esencial: flujo de caja mensual y dropshipping", () => {
@@ -95,11 +141,20 @@ describe("vistas y secciones", () => {
     expect(homeHref(e)).toBe("/universidad/finanzas");
   });
   it("personalizada: filtra claves desconocidas y siempre incluye Configuración", () => {
-    expect(normalizeSections(["copiloto", "inexistente"])).toEqual(["copiloto", "configuracion"]);
-    expect(homeHref(enabledSections({ viewMode: "personalizada", sections: ["copiloto"] }))).toBe("/comunidad/emprendedores/copiloto");
+    expect(normalizeSections(["copiloto", "inexistente"])).toEqual([
+      "copiloto",
+      "configuracion",
+    ]);
+    expect(
+      homeHref(
+        enabledSections({ viewMode: "personalizada", sections: ["copiloto"] }),
+      ),
+    ).toBe("/comunidad/emprendedores/copiloto");
   });
   it("pro (o sin valor) muestra todo", () => {
-    expect(enabledSections({ viewMode: "pro" })).toHaveLength(VIEW_PRESETS.pro.length);
+    expect(enabledSections({ viewMode: "pro" })).toHaveLength(
+      VIEW_PRESETS.pro.length,
+    );
     expect(enabledSections({})).toHaveLength(VIEW_PRESETS.pro.length);
   });
 });

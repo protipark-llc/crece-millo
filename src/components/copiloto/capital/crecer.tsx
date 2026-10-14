@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Download, Save, Shield, Sparkles } from "lucide-react";
 import { E, type SimInput, type SimResult } from "@/lib/copiloto/engine";
 import { activeProduct } from "@/lib/copiloto/logic";
-import { num } from "@/lib/copiloto/productos";
 import {
   SENS_ENTREGA,
   cpaHolgura,
@@ -31,9 +30,9 @@ import {
   TONE_TEXT,
   ToneAlert,
   downloadText,
-  fieldClass,
   useToast,
   MobileSheet,
+  NumInput,
 } from "../ui";
 
 const card = "rounded-lg border border-border bg-surface p-4 sm:p-5";
@@ -76,27 +75,30 @@ export function Crecer() {
       step={step}
       display={money ? fmt.money(Number(f[k]) || 0) : `${f[k]} %`}
       onChange={(v) => set({ [k]: v } as Partial<SimForm>)}
+      suffix={money ? undefined : "%"}
     />
   );
   const field = (
     k: keyof SimForm,
     label: string,
-    opts: { step?: number; min?: number; max?: number; hint?: string } = {},
+    opts: {
+      step?: number;
+      min?: number;
+      max?: number;
+      hint?: string;
+      suffix?: string;
+    } = {},
   ) => (
     <LabeledField key={k} label={label} hint={opts.hint}>
       {(id) => (
-        <input
+        <NumInput
           id={id}
-          type="number"
-          inputMode="decimal"
           step={opts.step}
           min={opts.min}
           max={opts.max}
-          value={String(f[k] ?? "")}
-          onChange={(e) =>
-            set({ [k]: num(e.target.value) } as Partial<SimForm>)
-          }
-          className={cn(fieldClass, "text-right tabular")}
+          suffix={opts.suffix}
+          value={f[k] as number}
+          onChange={(n) => set({ [k]: n === "" ? 0 : n } as Partial<SimForm>)}
         />
       )}
     </LabeledField>
@@ -182,7 +184,7 @@ export function Crecer() {
               })}
               {field("meses", "Meses", { step: 1, min: 1, max: 36 })}
             </div>
-            {field("cdt", "CDT % E.A.", { step: 0.5, min: 0 })}
+            {field("cdt", "CDT E.A.", { step: 0.5, min: 0, suffix: "%" })}
             <div className="flex flex-wrap gap-2 pt-1">
               <button
                 type="button"
