@@ -9,7 +9,14 @@ import type { PlanFormT } from "@/lib/copiloto/capital";
 import { buttonClass } from "@/components/ui/primitives";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "../store";
-import { Kpi, LabeledField, ToneAlert, fieldClass, useToast } from "../ui";
+import {
+  Kpi,
+  LabeledField,
+  ToneAlert,
+  fieldClass,
+  useToast,
+  MobileSheet,
+} from "../ui";
 
 const card = "rounded-lg border border-border bg-surface p-4 sm:p-5";
 const th =
@@ -57,112 +64,124 @@ export function PlanCapital() {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
-        <form
-          aria-label="Plan de capital"
-          className={cn(card, "h-fit space-y-4")}
-          onSubmit={(e) => e.preventDefault()}
+        <MobileSheet
+          title="Meta, recursos y caja"
+          summary={`Meta ${fmt.money(f.R)} por ${u} · margen ${fmt.pct(pl.m)} · capital ${fmt.money(f.cap)}`}
         >
-          <h2 className="text-lg font-semibold text-ink">Meta</h2>
-          <div className="grid grid-cols-2 gap-3">
-            <LabeledField label="Unidad">
-              {(id) => (
-                <select
-                  id={id}
-                  value={u}
-                  onChange={(e) => set({ unidad: e.target.value })}
-                  className={fieldClass}
-                >
-                  <option value="mes">Mes</option>
-                  <option value="semana">Semana</option>
-                </select>
+          <form
+            aria-label="Plan de capital"
+            className={cn(card, "h-fit space-y-4")}
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <h2 className="text-lg font-semibold text-ink">Meta</h2>
+            <div className="grid grid-cols-2 gap-3">
+              <LabeledField label="Unidad">
+                {(id) => (
+                  <select
+                    id={id}
+                    value={u}
+                    onChange={(e) => set({ unidad: e.target.value })}
+                    className={fieldClass}
+                  >
+                    <option value="mes">Mes</option>
+                    <option value="semana">Semana</option>
+                  </select>
+                )}
+              </LabeledField>
+              {numField("R", "Facturación objetivo / periodo", {
+                step: 100000,
+                min: 0,
+              })}
+              <LabeledField label="Margen bruto en">
+                {(id) => (
+                  <select
+                    id={id}
+                    value={f.modo}
+                    onChange={(e) => set({ modo: e.target.value })}
+                    className={fieldClass}
+                  >
+                    <option value="pct">%</option>
+                    <option value="monto">Monto</option>
+                  </select>
+                )}
+              </LabeledField>
+              {numField(
+                "m",
+                f.modo === "pct"
+                  ? "Margen bruto %"
+                  : "Utilidad bruta por periodo",
+                { step: f.modo === "pct" ? 1 : 10000, min: 0 },
               )}
-            </LabeledField>
-            {numField("R", "Facturación objetivo / periodo", {
-              step: 100000,
-              min: 0,
-            })}
-            <LabeledField label="Margen bruto en">
-              {(id) => (
-                <select
-                  id={id}
-                  value={f.modo}
-                  onChange={(e) => set({ modo: e.target.value })}
-                  className={fieldClass}
-                >
-                  <option value="pct">%</option>
-                  <option value="monto">Monto</option>
-                </select>
-              )}
-            </LabeledField>
-            {numField(
-              "m",
-              f.modo === "pct"
-                ? "Margen bruto %"
-                : "Utilidad bruta por periodo",
-              { step: f.modo === "pct" ? 1 : 10000, min: 0 },
-            )}
-          </div>
-          <p className="text-xs text-muted">
-            ≈ margen de {fmt.pct(pl.m)} · utilidad bruta {fmt.money(f.R * pl.m)}{" "}
-            por {u}. Es la contribución antes de ads (después de producto, flete
-            y devoluciones).
-          </p>
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              className={buttonClass("secondary", "md")}
-              onClick={() => {
-                const un = E.unit(activeProduct(S));
-                set({ modo: "pct", m: Math.round(un.cmRatio * 1000) / 10 });
-              }}
-            >
-              <Sigma aria-hidden className="size-4" /> Usar margen del producto
-            </button>
-            <button
-              type="button"
-              className={buttonClass("secondary", "md", "disabled:opacity-50")}
-              disabled={!real}
-              title={real ? undefined : "Guarda al menos un test"}
-              onClick={() => {
-                if (!real) return;
-                set({ modo: "pct", m: Math.round(real.cm * 1000) / 10 });
-                toast.show(`Margen real de ${real.n} test(s) aplicado`);
-              }}
-            >
-              <TestTube aria-hidden className="size-4" /> Usar mis tests reales
-            </button>
-          </div>
-          {!real && (
-            <p className="-mt-2 text-xs text-muted">
-              «Usar mis tests reales» se activa cuando guardes al menos un test.
+            </div>
+            <p className="text-xs text-muted">
+              ≈ margen de {fmt.pct(pl.m)} · utilidad bruta{" "}
+              {fmt.money(f.R * pl.m)} por {u}. Es la contribución antes de ads
+              (después de producto, flete y devoluciones).
             </p>
-          )}
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                className={buttonClass("secondary", "md")}
+                onClick={() => {
+                  const un = E.unit(activeProduct(S));
+                  set({ modo: "pct", m: Math.round(un.cmRatio * 1000) / 10 });
+                }}
+              >
+                <Sigma aria-hidden className="size-4" /> Usar margen del
+                producto
+              </button>
+              <button
+                type="button"
+                className={buttonClass(
+                  "secondary",
+                  "md",
+                  "disabled:opacity-50",
+                )}
+                disabled={!real}
+                title={real ? undefined : "Guarda al menos un test"}
+                onClick={() => {
+                  if (!real) return;
+                  set({ modo: "pct", m: Math.round(real.cm * 1000) / 10 });
+                  toast.show(`Margen real de ${real.n} test(s) aplicado`);
+                }}
+              >
+                <TestTube aria-hidden className="size-4" /> Usar mis tests
+                reales
+              </button>
+            </div>
+            {!real && (
+              <p className="-mt-2 text-xs text-muted">
+                «Usar mis tests reales» se activa cuando guardes al menos un
+                test.
+              </p>
+            )}
 
-          <h2 className="pt-2 text-lg font-semibold text-ink">Recursos</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {numField("fijos", "Costos fijos / periodo", {
-              step: 10000,
-              min: 0,
-            })}
-            {numField("cap", "Capital disponible", { step: 100000, min: 0 })}
-          </div>
-          {numField("N", "Intervalos (1–12)", { step: 1, min: 1, max: 12 })}
+            <h2 className="pt-2 text-lg font-semibold text-ink">Recursos</h2>
+            <div className="grid grid-cols-2 gap-3">
+              {numField("fijos", "Costos fijos / periodo", {
+                step: 10000,
+                min: 0,
+              })}
+              {numField("cap", "Capital disponible", { step: 100000, min: 0 })}
+            </div>
+            {numField("N", "Intervalos (1–12)", { step: 1, min: 1, max: 12 })}
 
-          <h2 className="pt-2 text-lg font-semibold text-ink">Caja</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {numField("ret", "Dinero en tránsito %", {
-              step: 1,
-              min: 0,
-              hint: "Recaudo que Dropi aún no te liquida (o retenciones de pasarela).",
-            })}
-            {numField("ree", "Devoluciones / reembolsos %", {
-              step: 1,
-              min: 0,
-            })}
-          </div>
-        </form>
+            <h2 className="pt-2 text-lg font-semibold text-ink">Caja</h2>
+            <div className="grid grid-cols-2 gap-3">
+              {numField("ret", "Dinero en tránsito %", {
+                step: 1,
+                min: 0,
+                hint: "Recaudo que Dropi aún no te liquida (o retenciones de pasarela).",
+              })}
+              {numField("ree", "Devoluciones / reembolsos %", {
+                step: 1,
+                min: 0,
+              })}
+            </div>
+          </form>
+        </MobileSheet>
 
-        <div className="min-w-0 space-y-4">
+        <div className="order-first min-w-0 space-y-4 lg:order-none">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
             <Kpi
               t="ROAS objetivo"
@@ -254,7 +273,12 @@ export function PlanCapital() {
         <h3 id="pt-t" className="mb-3 text-lg font-semibold text-ink">
           Plan por {u}
         </h3>
-        <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Tabla con desplazamiento"
+          className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+        >
           <table className="w-full min-w-[820px] text-sm">
             <thead>
               <tr className="text-left">

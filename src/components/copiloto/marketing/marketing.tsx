@@ -578,7 +578,12 @@ function Creativos({
               3 ganchos × 3 ángulos = 9 combinaciones. Empieza con la diagonal
               (3 videos) y luego prueba las demás con el ganador.
             </p>
-            <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
+            <div
+              tabIndex={0}
+              role="region"
+              aria-label="Tabla con desplazamiento"
+              className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+            >
               <table className="w-full min-w-[420px] text-sm">
                 <thead>
                   <tr className="text-left text-xs text-muted">
@@ -837,7 +842,12 @@ function Lanzamiento({ c }: { c: MkCtx }) {
         <h3 id="qm-t" className="mb-3 text-lg font-semibold text-ink">
           Qué mirar y qué significa
         </h3>
-        <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Tabla con desplazamiento"
+          className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+        >
           <table className="w-full min-w-[560px] text-sm">
             <thead>
               <tr className="text-left text-xs text-muted">

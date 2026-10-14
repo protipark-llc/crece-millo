@@ -169,7 +169,12 @@ export function CopLineChart({
         <summary className="inline-flex min-h-11 cursor-pointer items-center text-ink-2 hover:text-ink">
           Ver datos en tabla
         </summary>
-        <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="mt-2 max-h-72 overflow-auto focus-visible:outline-2 focus-visible:outline-focus">
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Tabla con desplazamiento"
+          className="mt-2 max-h-72 overflow-auto focus-visible:outline-2 focus-visible:outline-focus"
+        >
           <table className="w-full text-xs">
             <caption className="sr-only">{title}</caption>
             <thead>

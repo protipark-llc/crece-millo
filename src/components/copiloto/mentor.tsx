@@ -296,7 +296,9 @@ export function Mentor({
         >
           <Sparkles className="size-4 text-brand" />
         </span>
-        {intro && <p className="min-w-0 flex-1 text-sm text-ink-2">{intro}</p>}
+        {intro && (
+          <p className="min-w-0 flex-1 basis-56 text-sm text-ink-2">{intro}</p>
+        )}
         {btn}
       </div>
       {out}

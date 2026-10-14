@@ -8,7 +8,13 @@ import {
   useState as useStateCompat,
   type ReactNode,
 } from "react";
-import { AlertTriangle, CheckCircle2, Info, XCircle } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronRight,
+  Info,
+  XCircle,
+} from "lucide-react";
 import type { Tone } from "@/lib/copiloto/engine";
 import { tipFor } from "@/lib/copiloto/glosario";
 import { InfoTip } from "@/components/ui/primitives";
@@ -434,4 +440,97 @@ export function downloadText(name: string, text: string, type = "text/csv") {
   a.download = name;
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+/**
+ * En escritorio muestra el contenido tal cual. En móvil (menos de 1024 px) lo guarda detrás de un
+ * botón con resumen y lo abre como hoja inferior, para que el resultado principal vaya primero
+ * (especificación §7 · Móvil 390). Esc o «Cerrar» la cierran y el foco vuelve al botón.
+ */
+export function MobileSheet({
+  title,
+  summary,
+  children,
+  className,
+}: {
+  title: string;
+  summary?: ReactNode;
+  children: ReactNode;
+  className?: string;
+}) {
+  const [open, setOpen] = useStateCompat(false);
+  const id = useId();
+  const btn = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    panel.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        btn.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+  const close = () => {
+    setOpen(false);
+    btn.current?.focus();
+  };
+  return (
+    <>
+      <button
+        ref={btn}
+        type="button"
+        aria-expanded={open}
+        aria-controls={id}
+        onClick={() => setOpen(true)}
+        className="flex min-h-14 w-full items-center gap-3 rounded-lg border border-border bg-surface px-4 py-3 text-left lg:hidden"
+      >
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold text-ink">{title}</span>
+          {summary && (
+            <span className="block truncate text-xs text-muted">{summary}</span>
+          )}
+        </span>
+        <ChevronRight aria-hidden className="size-5 shrink-0 text-muted" />
+      </button>
+      {open && (
+        <div
+          aria-hidden
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          onClick={close}
+        />
+      )}
+      <div
+        id={id}
+        ref={panel}
+        tabIndex={-1}
+        role="group"
+        aria-label={title}
+        className={cn(
+          "lg:static lg:z-auto lg:block lg:max-h-none lg:overflow-visible lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none",
+          open
+            ? "fixed inset-x-0 bottom-0 z-50 block max-h-[88dvh] overflow-y-auto rounded-t-xl bg-bg p-3 pb-8 shadow-xl outline-none"
+            : "hidden",
+          className,
+        )}
+      >
+        {open && (
+          <div className="sticky -top-3 z-10 -mx-3 mb-2 flex items-center justify-between border-b border-border bg-bg px-4 py-2 lg:hidden">
+            <span className="font-semibold text-ink">{title}</span>
+            <button
+              type="button"
+              onClick={close}
+              className="inline-flex h-11 items-center rounded-md px-3 text-sm font-semibold text-ink hover:bg-surface-2"
+            >
+              Cerrar
+            </button>
+          </div>
+        )}
+        {children}
+      </div>
+    </>
+  );
 }

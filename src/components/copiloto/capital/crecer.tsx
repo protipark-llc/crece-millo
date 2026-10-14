@@ -33,6 +33,7 @@ import {
   downloadText,
   fieldClass,
   useToast,
+  MobileSheet,
 } from "../ui";
 
 const card = "rounded-lg border border-border bg-surface p-4 sm:p-5";
@@ -104,105 +105,122 @@ export function Crecer() {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
-        <form
-          aria-label="Supuestos del simulador"
-          className={cn(card, "h-fit space-y-4")}
-          onSubmit={(e) => e.preventDefault()}
+        <MobileSheet
+          title="Supuestos del simulador"
+          summary={`Capital ${fmt.money(p.cap)} · CPA ${fmt.money(p.cpa)} · ${p.meses} meses`}
         >
-          <p className="text-sm text-ink-2">
-            Usa la unidad económica del producto activo. El CPA sale de tus
-            tests si tienes; si no, del CPA objetivo según tu riesgo.
-          </p>
-          <h2 className="text-lg font-semibold text-ink">Publicidad</h2>
-          {slider(
-            "cpa",
-            "CPA por pedido",
-            0,
-            Math.max(u.cpaMax * 1.5, 50000),
-            500,
-          )}
-          <button
-            type="button"
-            className={buttonClass("secondary", "md")}
-            onClick={() => {
-              const s = cpaSuggest(S, p0);
-              set({ cpa: s.cpa });
-              toast.show(
-                s.real
-                  ? "CPA real de tus tests"
-                  : "CPA objetivo según tu riesgo",
-              );
-            }}
+          <form
+            aria-label="Supuestos del simulador"
+            className={cn(card, "h-fit space-y-4")}
+            onSubmit={(e) => e.preventDefault()}
           >
-            <Sparkles aria-hidden className="size-4" /> Sugerir CPA
-          </button>
-          {slider("deg", "Encarecimiento CPA al duplicar %", 0, 60, 1, false)}
-          {slider("tope", "Tope de pauta diaria", 0, 2000000, 10000)}
-          <h2 className="pt-2 text-lg font-semibold text-ink">
-            Capital y reinversión
-          </h2>
-          {slider("cap", "Capital inicial", 100000, 50000000, 100000)}
-          {slider("asig", "% del capital a pauta por ciclo", 0, 100, 5, false)}
-          {slider("reinv", "% de utilidad que reinviertes", 0, 100, 5, false)}
-          <button
-            type="button"
-            className={buttonClass("secondary", "md")}
-            onClick={() => set(riskSim(S.risk))}
-          >
-            <Shield aria-hidden className="size-4" /> Aplicar mi perfil de
-            riesgo
-          </button>
-          <div className="grid grid-cols-2 gap-3">
-            {field("fijos", "Costos fijos mensuales", { step: 10000, min: 0 })}
-            {field("ciclo", "Ciclo de caja (días)", { step: 1, min: 3 })}
-          </div>
-          <h2 className="pt-2 text-lg font-semibold text-ink">
-            Fase de testeo y horizonte
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            {field("ntest", "Productos a testear antes del ganador", {
-              step: 1,
-              min: 0,
-              hint: "Se descuenta del capital antes de escalar. 0 = ya tienes ganador.",
-            })}
-            {field("meses", "Meses", { step: 1, min: 1, max: 36 })}
-          </div>
-          {field("cdt", "CDT % E.A.", { step: 0.5, min: 0 })}
-          <div className="flex flex-wrap gap-2 pt-1">
+            <p className="text-sm text-ink-2">
+              Usa la unidad económica del producto activo. El CPA sale de tus
+              tests si tienes; si no, del CPA objetivo según tu riesgo.
+            </p>
+            <h2 className="text-lg font-semibold text-ink">Publicidad</h2>
+            {slider(
+              "cpa",
+              "CPA por pedido",
+              0,
+              Math.max(u.cpaMax * 1.5, 50000),
+              500,
+            )}
             <button
               type="button"
-              className={buttonClass("primary", "md")}
+              className={buttonClass("secondary", "md")}
               onClick={() => {
-                addSaved("sim", {
-                  id: `s${Date.now()}`,
-                  ts: Date.now(),
-                  tipo: "Simulación",
-                  risk: S.risk,
-                  producto: p0.nombre,
-                  form: { ...f },
-                  resumen: {
-                    patrimonio: r.patrimonio,
-                    roi: r.roi,
-                    tm: r.tm,
-                    quiebra: r.quiebra,
-                  },
-                });
-                toast.show("Simulación guardada");
+                const s = cpaSuggest(S, p0);
+                set({ cpa: s.cpa });
+                toast.show(
+                  s.real
+                    ? "CPA real de tus tests"
+                    : "CPA objetivo según tu riesgo",
+                );
               }}
             >
-              <Save aria-hidden className="size-4" /> Guardar simulación
+              <Sparkles aria-hidden className="size-4" /> Sugerir CPA
             </button>
+            {slider("deg", "Encarecimiento CPA al duplicar %", 0, 60, 1, false)}
+            {slider("tope", "Tope de pauta diaria", 0, 2000000, 10000)}
+            <h2 className="pt-2 text-lg font-semibold text-ink">
+              Capital y reinversión
+            </h2>
+            {slider("cap", "Capital inicial", 100000, 50000000, 100000)}
+            {slider(
+              "asig",
+              "% del capital a pauta por ciclo",
+              0,
+              100,
+              5,
+              false,
+            )}
+            {slider("reinv", "% de utilidad que reinviertes", 0, 100, 5, false)}
             <button
               type="button"
-              className={buttonClass("ghost", "md")}
-              onClick={() => downloadText("simulacion_copiloto.csv", simCsv(r))}
+              className={buttonClass("secondary", "md")}
+              onClick={() => set(riskSim(S.risk))}
             >
-              <Download aria-hidden className="size-4" /> Exportar CSV
+              <Shield aria-hidden className="size-4" /> Aplicar mi perfil de
+              riesgo
             </button>
-          </div>
-        </form>
+            <div className="grid grid-cols-2 gap-3">
+              {field("fijos", "Costos fijos mensuales", {
+                step: 10000,
+                min: 0,
+              })}
+              {field("ciclo", "Ciclo de caja (días)", { step: 1, min: 3 })}
+            </div>
+            <h2 className="pt-2 text-lg font-semibold text-ink">
+              Fase de testeo y horizonte
+            </h2>
+            <div className="grid grid-cols-2 gap-3">
+              {field("ntest", "Productos a testear antes del ganador", {
+                step: 1,
+                min: 0,
+                hint: "Se descuenta del capital antes de escalar. 0 = ya tienes ganador.",
+              })}
+              {field("meses", "Meses", { step: 1, min: 1, max: 36 })}
+            </div>
+            {field("cdt", "CDT % E.A.", { step: 0.5, min: 0 })}
+            <div className="flex flex-wrap gap-2 pt-1">
+              <button
+                type="button"
+                className={buttonClass("primary", "md")}
+                onClick={() => {
+                  addSaved("sim", {
+                    id: `s${Date.now()}`,
+                    ts: Date.now(),
+                    tipo: "Simulación",
+                    risk: S.risk,
+                    producto: p0.nombre,
+                    form: { ...f },
+                    resumen: {
+                      patrimonio: r.patrimonio,
+                      roi: r.roi,
+                      tm: r.tm,
+                      quiebra: r.quiebra,
+                    },
+                  });
+                  toast.show("Simulación guardada");
+                }}
+              >
+                <Save aria-hidden className="size-4" /> Guardar simulación
+              </button>
+              <button
+                type="button"
+                className={buttonClass("ghost", "md")}
+                onClick={() =>
+                  downloadText("simulacion_copiloto.csv", simCsv(r))
+                }
+              >
+                <Download aria-hidden className="size-4" /> Exportar CSV
+              </button>
+            </div>
+          </form>
+        </MobileSheet>
 
-        <div className="min-w-0 space-y-4">
+        <div className="order-first min-w-0 space-y-4 lg:order-none">
           <ToneAlert
             tone={rl.tone}
             title={rl.tone === "a" ? "Atención." : "Info."}
@@ -303,7 +321,12 @@ export function Crecer() {
         <h3 id="es-t" className="mb-3 text-lg font-semibold text-ink">
           Escenarios
         </h3>
-        <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Tabla con desplazamiento"
+          className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+        >
           <table className="w-full min-w-[760px] text-sm">
             <thead>
               <tr className="text-left">
@@ -384,7 +407,12 @@ export function Crecer() {
             className="size-5 text-muted transition-transform group-open:rotate-180"
           />
         </summary>
-        <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative mt-3 overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Tabla con desplazamiento"
+          className="relative mt-3 overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+        >
           <table className="w-full min-w-[1100px] text-sm">
             <thead>
               <tr className="text-left">
@@ -481,7 +509,12 @@ function Sensitivity({ p }: { p: SimInput }) {
       <h3 id="se-t" className="mb-3 text-lg font-semibold text-ink">
         Sensibilidad · utilidad mensual según CPA y % de entrega
       </h3>
-      <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
+      <div
+        tabIndex={0}
+        role="region"
+        aria-label="Tabla con desplazamiento"
+        className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+      >
         <table className="w-full min-w-[720px] text-sm">
           <thead>
             <tr>

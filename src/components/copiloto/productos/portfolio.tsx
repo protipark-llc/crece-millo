@@ -130,7 +130,12 @@ export function Portfolio() {
             <Download aria-hidden className="size-4" /> CSV para Notion
           </button>
         </div>
-        <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Tabla con desplazamiento"
+          className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+        >
           <table className="w-full min-w-[1180px] text-sm">
             <caption className="sr-only">
               Productos. Elige uno para abrir su ficha.

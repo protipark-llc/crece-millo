@@ -97,6 +97,10 @@ Las tablas anteriores no se borran: quedan como respaldo hasta confirmar la migr
 - axe (WCAG 2.2 A/AA) sin hallazgos en las 14 pantallas en escritorio claro y en 390 px oscuro, ni en Alta rápida y Glosario. Sin desplazamiento horizontal en 390 px.
 - 17 pruebas e2e (escritorio y móvil) con una API de Claude simulada para el mentor.
 
+## Móvil · resultado primero ✓
+
+- En menos de 1024 px, Analizar test, Precio y margen, Planificar capital y Crecer muestran primero el resultado (veredicto, precio recomendado, indicadores) y el formulario se abre en una hoja inferior con resumen («Datos del test · …»), como los diseños 20 y 22. Esc o «Cerrar» la cierran y el foco vuelve al botón. En escritorio no cambia nada.
+
 ## Diferencias encontradas en el paquete (manda el original)
 
 - Ruta: 25 casillas (no 23); la insignia dice «automático».

@@ -30,6 +30,7 @@ import {
   ToneAlert,
   fieldClass,
   useToast,
+  MobileSheet,
 } from "../ui";
 
 /** Campos del test (TF, L1058). El original no incluye «Otro» en el canal de este formulario. */
@@ -131,84 +132,7 @@ export function AnalizarTest() {
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
-      <form
-        aria-labelledby="tf-t"
-        className="h-fit space-y-3 rounded-lg border border-border bg-surface p-4 sm:p-5"
-        onSubmit={(e) => {
-          e.preventDefault();
-          save();
-        }}
-      >
-        <h2 id="tf-t" className="text-lg font-semibold text-ink">
-          Datos del test
-        </h2>
-        <LabeledField label="Nombre del test">
-          {(id) => (
-            <input
-              id={id}
-              value={String(f.nombre ?? "")}
-              placeholder="Ej: Ojos · TikTok · semana 1"
-              onChange={(e) => set("nombre", e.target.value)}
-              className={fieldClass}
-            />
-          )}
-        </LabeledField>
-        <div className="grid grid-cols-2 gap-3">
-          <LabeledField label="Canal">
-            {(id) => (
-              <select
-                id={id}
-                value={String(f.canal ?? "")}
-                onChange={(e) => set("canal", e.target.value)}
-                className={fieldClass}
-              >
-                {TEST_CANALES.map((o) => (
-                  <option key={o}>{o}</option>
-                ))}
-              </select>
-            )}
-          </LabeledField>
-          {field("fecha", "Fecha", { type: "date" })}
-          {field("dias", "Días del test")}
-          {field("ads", "Gasto en ads")}
-          {field("imp", "Impresiones")}
-          {field("clics", "Clics")}
-          {field("ped", "Pedidos generados")}
-          {field("conf", "Pedidos confirmados")}
-        </div>
-        {field("ent", "Pedidos entregados", {
-          hint: "Si aún no sabes cuántos se entregaron, deja vacío y se usa el % esperado del producto.",
-        })}
-        <div className="grid grid-cols-2 gap-3">
-          {field("aov", "Ticket promedio (AOV)", {
-            hint: "Vacío = precio del producto activo.",
-          })}
-          {field("meta", "Meta de rentabilidad %")}
-        </div>
-        <p className="text-xs text-muted">
-          Costo, flete y comisión se toman del producto activo. Este test
-          también queda en el historial del producto (Productos › Resultados de
-          venta).
-        </p>
-        <div className="flex flex-wrap gap-2 pt-1">
-          <button
-            type="submit"
-            disabled={!(c.ads > 0)}
-            className={buttonClass("primary", "md", "disabled:opacity-50")}
-          >
-            <Save aria-hidden className="size-4" /> Guardar test
-          </button>
-          <button
-            type="button"
-            className={buttonClass("ghost", "md")}
-            onClick={() => setSettings({ testForm: { ...DEF_FORMS.testForm } })}
-          >
-            <Eraser aria-hidden className="size-4" /> Limpiar
-          </button>
-        </div>
-      </form>
-
-      <div className="min-w-0 space-y-4">
+      <div className="min-w-0 space-y-4 lg:col-start-2 lg:row-start-1">
         <section
           aria-labelledby="vd-t"
           aria-live="polite"
@@ -316,7 +240,94 @@ export function AnalizarTest() {
             tone={c.ped >= R.pedidosDecidir ? "g" : "a"}
           />
         </div>
+      </div>
 
+      <MobileSheet
+        className="lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-start"
+        title="Datos del test"
+        summary={`${String(f.nombre || "Sin nombre")} · ${String(f.canal ?? "")} · ${String(f.dias ?? "")} días · ${fmt.money(num(f.ads))}`}
+      >
+        <form
+          aria-labelledby="tf-t"
+          className="h-fit space-y-3 rounded-lg border border-border bg-surface p-4 sm:p-5"
+          onSubmit={(e) => {
+            e.preventDefault();
+            save();
+          }}
+        >
+          <h2 id="tf-t" className="text-lg font-semibold text-ink">
+            Datos del test
+          </h2>
+          <LabeledField label="Nombre del test">
+            {(id) => (
+              <input
+                id={id}
+                value={String(f.nombre ?? "")}
+                placeholder="Ej: Ojos · TikTok · semana 1"
+                onChange={(e) => set("nombre", e.target.value)}
+                className={fieldClass}
+              />
+            )}
+          </LabeledField>
+          <div className="grid grid-cols-2 gap-3">
+            <LabeledField label="Canal">
+              {(id) => (
+                <select
+                  id={id}
+                  value={String(f.canal ?? "")}
+                  onChange={(e) => set("canal", e.target.value)}
+                  className={fieldClass}
+                >
+                  {TEST_CANALES.map((o) => (
+                    <option key={o}>{o}</option>
+                  ))}
+                </select>
+              )}
+            </LabeledField>
+            {field("fecha", "Fecha", { type: "date" })}
+            {field("dias", "Días del test")}
+            {field("ads", "Gasto en ads")}
+            {field("imp", "Impresiones")}
+            {field("clics", "Clics")}
+            {field("ped", "Pedidos generados")}
+            {field("conf", "Pedidos confirmados")}
+          </div>
+          {field("ent", "Pedidos entregados", {
+            hint: "Si aún no sabes cuántos se entregaron, deja vacío y se usa el % esperado del producto.",
+          })}
+          <div className="grid grid-cols-2 gap-3">
+            {field("aov", "Ticket promedio (AOV)", {
+              hint: "Vacío = precio del producto activo.",
+            })}
+            {field("meta", "Meta de rentabilidad %")}
+          </div>
+          <p className="text-xs text-muted">
+            Costo, flete y comisión se toman del producto activo. Este test
+            también queda en el historial del producto (Productos › Resultados
+            de venta).
+          </p>
+          <div className="flex flex-wrap gap-2 pt-1">
+            <button
+              type="submit"
+              disabled={!(c.ads > 0)}
+              className={buttonClass("primary", "md", "disabled:opacity-50")}
+            >
+              <Save aria-hidden className="size-4" /> Guardar test
+            </button>
+            <button
+              type="button"
+              className={buttonClass("ghost", "md")}
+              onClick={() =>
+                setSettings({ testForm: { ...DEF_FORMS.testForm } })
+              }
+            >
+              <Eraser aria-hidden className="size-4" /> Limpiar
+            </button>
+          </div>
+        </form>
+      </MobileSheet>
+
+      <div className="min-w-0 space-y-4 lg:col-start-2">
         <Mentor
           action="test"
           label="Pedir análisis al mentor"

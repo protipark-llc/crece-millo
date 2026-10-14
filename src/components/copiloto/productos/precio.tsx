@@ -40,6 +40,7 @@ import {
   TONE_TEXT,
   ToneAlert,
   useToast,
+  MobileSheet,
 } from "../ui";
 
 type Q = PriceQ & { P: number };
@@ -228,84 +229,89 @@ export function Precio() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
-        <form
-          aria-label="Supuestos de precio"
-          className="min-w-0 space-y-2"
-          onSubmit={(e) => e.preventDefault()}
+        <MobileSheet
+          title="Supuestos · 21 ajustes"
+          summary={`Precio a evaluar ${fmt.money(q.P)} · pauta ${fmt.money(q.presupuesto)}`}
         >
-          {PCF.map(([group, fs], gi) => (
-            <details
-              key={group}
-              open={gi === 0}
-              className="group rounded-lg border border-border bg-surface"
-            >
-              <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-ink">
-                <span>
-                  {group}{" "}
-                  <span className="font-normal text-muted">
-                    · {fs.length} ajustes
+          <form
+            aria-label="Supuestos de precio"
+            className="min-w-0 space-y-2"
+            onSubmit={(e) => e.preventDefault()}
+          >
+            {PCF.map(([group, fs], gi) => (
+              <details
+                key={group}
+                open={gi === 0}
+                className="group rounded-lg border border-border bg-surface"
+              >
+                <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-ink">
+                  <span>
+                    {group}{" "}
+                    <span className="font-normal text-muted">
+                      · {fs.length} ajustes
+                    </span>
                   </span>
-                </span>
-                <ChevronDown
-                  aria-hidden
-                  className="size-4 text-muted transition-transform group-open:rotate-180"
-                />
-              </summary>
-              <div className="space-y-4 border-t border-border px-4 py-4">
-                {fs.map(([k, label, min, , step]) => (
-                  <NumberSlider
-                    key={`${p.id}-${k}`}
-                    label={label}
-                    hint={PCH[k]}
-                    value={Number(q[k]) || 0}
-                    min={min}
-                    max={Math.max(maxes[k] ?? min, Number(q[k]) || 0)}
-                    step={step}
-                    display={
-                      PC_MONEY.has(k)
-                        ? fmt.money(Number(q[k]) || 0)
-                        : String(q[k] ?? "").replace(".", ",")
-                    }
-                    onChange={(v) => setQ(k, v)}
+                  <ChevronDown
+                    aria-hidden
+                    className="size-4 text-muted transition-transform group-open:rotate-180"
                   />
-                ))}
-              </div>
-            </details>
-          ))}
-          <div className="flex flex-wrap gap-2 pt-2">
-            <button
-              type="button"
-              className={buttonClass("primary", "md")}
-              onClick={() => applyPrice("rec")}
-              disabled={!R.rec}
-            >
-              <Target aria-hidden className="size-4" /> Aplicar precio
-              recomendado
-            </button>
-            <button
-              type="button"
-              className={buttonClass("secondary", "md")}
-              onClick={() => applyPrice("eval")}
-            >
-              <Tag aria-hidden className="size-4" /> Aplicar precio evaluado
-            </button>
-            <button
-              type="button"
-              className={buttonClass("ghost", "md")}
-              onClick={saveToFicha}
-            >
-              <ClipboardCheck aria-hidden className="size-4" /> Guardar
-              supuestos en la ficha
-            </button>
-            <button
-              type="button"
-              className={buttonClass("ghost", "md")}
-              onClick={resetQ}
-            >
-              <RotateCcw aria-hidden className="size-4" /> Restablecer
-            </button>
-          </div>
-        </form>
+                </summary>
+                <div className="space-y-4 border-t border-border px-4 py-4">
+                  {fs.map(([k, label, min, , step]) => (
+                    <NumberSlider
+                      key={`${p.id}-${k}`}
+                      label={label}
+                      hint={PCH[k]}
+                      value={Number(q[k]) || 0}
+                      min={min}
+                      max={Math.max(maxes[k] ?? min, Number(q[k]) || 0)}
+                      step={step}
+                      display={
+                        PC_MONEY.has(k)
+                          ? fmt.money(Number(q[k]) || 0)
+                          : String(q[k] ?? "").replace(".", ",")
+                      }
+                      onChange={(v) => setQ(k, v)}
+                    />
+                  ))}
+                </div>
+              </details>
+            ))}
+            <div className="flex flex-wrap gap-2 pt-2">
+              <button
+                type="button"
+                className={buttonClass("primary", "md")}
+                onClick={() => applyPrice("rec")}
+                disabled={!R.rec}
+              >
+                <Target aria-hidden className="size-4" /> Aplicar precio
+                recomendado
+              </button>
+              <button
+                type="button"
+                className={buttonClass("secondary", "md")}
+                onClick={() => applyPrice("eval")}
+              >
+                <Tag aria-hidden className="size-4" /> Aplicar precio evaluado
+              </button>
+              <button
+                type="button"
+                className={buttonClass("ghost", "md")}
+                onClick={saveToFicha}
+              >
+                <ClipboardCheck aria-hidden className="size-4" /> Guardar
+                supuestos en la ficha
+              </button>
+              <button
+                type="button"
+                className={buttonClass("ghost", "md")}
+                onClick={resetQ}
+              >
+                <RotateCcw aria-hidden className="size-4" /> Restablecer
+              </button>
+            </div>
+          </form>
+        </MobileSheet>
 
         <div className="min-w-0 space-y-4">
           <section aria-labelledby="pch-t" className={card}>
@@ -490,7 +496,12 @@ function SimTable({ q, R }: { q: Q; R: Pricing }) {
         · Crecer, y el CPA que corresponde a cada precio. Sin fase de testeo,
         porque es el mismo producto ya validado.
       </p>
-      <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus">
+      <div
+        tabIndex={0}
+        role="region"
+        aria-label="Tabla con desplazamiento"
+        className="relative overflow-x-auto focus-visible:outline-2 focus-visible:outline-focus"
+      >
         <table className="w-full min-w-[860px] text-sm">
           <thead>
             <tr className="text-left">
@@ -591,7 +602,12 @@ function PriceTable({ q, R }: { q: Q; R: Pricing }) {
       <h3 id="pt-t" className="mb-3 text-base font-semibold text-ink">
         Tabla de precios
       </h3>
-      <div tabIndex={0} role="region" aria-label="Tabla con desplazamiento" className="relative max-h-[480px] overflow-auto focus-visible:outline-2 focus-visible:outline-focus">
+      <div
+        tabIndex={0}
+        role="region"
+        aria-label="Tabla con desplazamiento"
+        className="relative max-h-[480px] overflow-auto focus-visible:outline-2 focus-visible:outline-focus"
+      >
         <table className="w-full min-w-[860px] text-sm">
           <thead className="sticky top-0 bg-surface">
             <tr className="text-left">
