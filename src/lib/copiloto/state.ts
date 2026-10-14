@@ -332,6 +332,15 @@ export interface Product extends CopProduct {
   fecha: string;
   score: Score;
   costoReal?: boolean;
+  /** Ficha dinámica (autoficha.ts): autocompletado encendido, campos fijados a mano y puestos por la IA. */
+  auto?: boolean;
+  manual?: string[];
+  ia?: string[];
+  precioVia?: string;
+  /** Últimas respuestas del mentor guardadas en la ficha (estrategia y creativos). */
+  estrategiaIA?: Partial<
+    Record<"producto" | "creativos", { data: unknown; ts: number }>
+  >;
   [k: string]: unknown;
 }
 

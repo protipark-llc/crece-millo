@@ -243,6 +243,11 @@ export function filterSort(rows: PortfolioRow[], pf: CopilotState["pf"]) {
 /* ───────────── Altas (newProduct y duplicateProduct, L766–767) ───────────── */
 
 export function blankProduct(today: string, now = Date.now()): Product {
+  // Ficha dinámica: lo que no llena la persona se autocompleta (ver autoficha.ts).
+  return { ...blank(today, now), auto: true, manual: [], ia: [] };
+}
+
+function blank(today: string, now: number): Product {
   return withDefaults(
     {
       id: `p${now}`,

@@ -2,6 +2,7 @@
 
 import { E } from "@/lib/copiloto/engine";
 import { activeProduct } from "@/lib/copiloto/logic";
+import { fijar } from "@/lib/copiloto/autoficha";
 import { claseText, claseTone } from "@/lib/copiloto/productos";
 import { cn } from "@/components/ui/cn";
 import { useCopiloto } from "../store";
@@ -40,7 +41,10 @@ export function Evaluacion() {
                 hint={`(${w} %)`}
                 value={Math.max(1, Math.min(5, Number(score[k]) || 3))}
                 onChange={(v) =>
-                  updateProduct(p.id, { score: { ...p.score, [k]: v } })
+                  updateProduct(p.id, {
+                    score: { ...p.score, [k]: v },
+                    ...fijar(p, ["score"]),
+                  })
                 }
               />
             ))}

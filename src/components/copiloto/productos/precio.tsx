@@ -17,6 +17,7 @@ import {
   type Pricing,
 } from "@/lib/copiloto/engine";
 import { activeProduct, pcQ } from "@/lib/copiloto/logic";
+import { fijar } from "@/lib/copiloto/autoficha";
 import {
   PC_PCT,
   PCF,
@@ -70,7 +71,7 @@ export function Precio() {
   const applyPrice = (which: "rec" | "eval") => {
     const P = which === "rec" ? R.rec : q.P;
     if (!P) return;
-    updateProduct(p.id, { precio: P });
+    updateProduct(p.id, { precio: P, ...fijar(p, ["precio"]) });
     setProductState(p.id, "pc", { ...q, P });
     setBuild((b) => b + 1);
     toast.show(`Precio de venta: ${fmt.money(P)}`);
@@ -83,7 +84,7 @@ export function Precio() {
   const saveToFicha = () => {
     const patch: Record<string, number> = {};
     for (const k of PC_TO_FICHA) patch[k] = Number(q[k]) || 0;
-    updateProduct(p.id, patch);
+    updateProduct(p.id, { ...patch, ...fijar(p, PC_TO_FICHA) });
     toast.show("Supuestos guardados en la ficha");
   };
   const evTone = ev.mn >= q.margenMin / 100 ? "g" : ev.pi > 0 ? "a" : "r";

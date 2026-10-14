@@ -383,6 +383,7 @@ export function NumInput({
   suffix,
   placeholder,
   className,
+  inputClassName,
   "aria-label": ariaLabel,
   "aria-describedby": describedBy,
 }: {
@@ -396,6 +397,8 @@ export function NumInput({
   suffix?: string;
   placeholder?: string;
   className?: string;
+  /** Clases del campo en sí (className va al contenedor). */
+  inputClassName?: string;
   "aria-label"?: string;
   "aria-describedby"?: string;
 }) {
@@ -459,7 +462,12 @@ export function NumInput({
           setText(formatNum(n, dec));
           commit(n);
         }}
-        className={cn(fieldClass, "text-right tabular", suffix && "pr-8")}
+        className={cn(
+          fieldClass,
+          "text-right tabular",
+          suffix && "pr-8",
+          inputClassName,
+        )}
       />
       {suffix && (
         <span

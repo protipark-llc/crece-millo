@@ -574,4 +574,69 @@ test.describe("Vistas y Co-Piloto", () => {
     await page.getByRole("button", { name: "Subir Costo proveedor" }).click();
     await expect(costo).toHaveValue("56.500");
   });
+
+  test("Co-Piloto · ficha dinámica: lo esencial, el resto automático y la IA (API simulada)", async ({
+    page,
+  }) => {
+    await register(page);
+    await page.goto("/comunidad/emprendedores/copiloto/productos");
+    await page.getByRole("button", { name: "En blanco" }).click();
+
+    // Lo esencial: nombre y costo; el resto se completa solo.
+    await page
+      .getByRole("textbox", { name: "Nombre del producto (obligatorio)" })
+      .fill("Masajeador de cuello eléctrico");
+    const costo = page.getByRole("spinbutton", {
+      name: /^Precio del proveedor/,
+    });
+    await costo.fill("45.000");
+    await costo.blur();
+    const precio = page.getByRole("spinbutton", {
+      name: "Precio de venta",
+      exact: true,
+    });
+    await expect(precio).toHaveValue(/^\d{3}\.\d00$/);
+    const auto = await precio.inputValue();
+    const solo = page.getByRole("region", { name: /Se completa solo$/ });
+    await expect(solo.getByLabel("Categoría", { exact: true })).toHaveValue(
+      "Bienestar",
+    );
+    await expect(
+      solo.getByRole("textbox", { name: "Público objetivo" }),
+    ).not.toHaveValue("");
+
+    // Editarlo lo deja fijo; «Automático» lo devuelve.
+    await precio.fill("150.000");
+    await precio.blur();
+    const volver = page.getByRole("button", {
+      name: "Volver a automático: Precio de venta",
+    });
+    await expect(volver).toBeVisible();
+    await costo.fill("50.000");
+    await costo.blur();
+    await expect(precio).toHaveValue("150.000");
+    await volver.click();
+    await expect(volver).toBeHidden();
+    await expect(precio).not.toHaveValue("150.000");
+    expect(await precio.inputValue()).not.toBe(auto);
+
+    // La IA completa textos y criterios sin tocar el nombre.
+    await page.getByRole("button", { name: "Completar con IA" }).click();
+    await expect(
+      solo.getByRole("textbox", { name: "Público objetivo" }),
+    ).toHaveValue("Público simulado");
+    await expect(
+      page.getByRole("textbox", { name: "Nombre del producto (obligatorio)" }),
+    ).toHaveValue("Masajeador de cuello eléctrico");
+
+    // Estrategia con IA: queda guardada en la ficha.
+    await page.getByRole("button", { name: "Armar la estrategia" }).click();
+    await expect(page.getByText("Diagnóstico simulado.")).toBeVisible();
+    await expect(page.getByText("Guardado en tu cuenta")).toBeVisible();
+    await page.reload();
+    await expect(page.getByText("Diagnóstico simulado.")).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Rehacer la estrategia" }),
+    ).toBeVisible();
+  });
 });

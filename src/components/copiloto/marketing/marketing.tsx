@@ -13,6 +13,7 @@ import {
   ReceiptText,
 } from "lucide-react";
 import { activeProduct, type Rich } from "@/lib/copiloto/logic";
+import { fijar } from "@/lib/copiloto/autoficha";
 import { MKTABS, copilotoHref } from "@/lib/copiloto/nav";
 import {
   CREATIVE_CHECK,
@@ -373,6 +374,7 @@ function Ofertas({
                       upPrecio: o.precio,
                       upCosto: o.costo,
                       upTasa: o.tasa,
+                      ...fijar(p, ["upPrecio", "upCosto", "upTasa"]),
                     });
                     setProductState(p.id, "pc", null);
                     toast.show("Oferta aplicada al producto");

@@ -2,6 +2,7 @@
 
 import { AltaAI } from "../mentor";
 import { applyAlta } from "@/lib/copiloto/mentor";
+import { IA_KEYS } from "@/lib/copiloto/autoficha";
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -125,7 +126,12 @@ export function AltaRapida() {
 
   const save = () => {
     if (!res) return;
-    const p = { ...res.p };
+    const p = {
+      ...res.p,
+      auto: true,
+      manual: [],
+      ia: res.p.ia ?? [],
+    } as Product;
     if (E.gate(p, S.risk).pass && p.etapa === "Investigando")
       p.etapa = "Validado";
     addProduct(p);
@@ -523,7 +529,11 @@ export function AltaRapida() {
                   <AltaAI
                     draft={res.p}
                     apply={(j) =>
-                      setRes((x) => (x ? { ...x, p: applyAlta(x.p, j) } : x))
+                      setRes((x) =>
+                        x
+                          ? { ...x, p: { ...applyAlta(x.p, j), ia: IA_KEYS } }
+                          : x,
+                      )
                     }
                   />
                   <button

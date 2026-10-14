@@ -205,6 +205,7 @@ export function Mentor({
   intro,
   extra,
   onResult,
+  doneMsg = "Textos mejorados con IA",
   compact,
 }: {
   action: MentorAction;
@@ -213,6 +214,8 @@ export function Mentor({
   extra?: () => Record<string, unknown>;
   /** Para acciones que aplican la respuesta (alta rápida) en vez de mostrarla. */
   onResult?: (data: unknown) => void;
+  /** Aviso cuando onResult aplica la respuesta. */
+  doneMsg?: string;
   compact?: boolean;
 }) {
   const { flush } = useCopiloto();
@@ -226,7 +229,7 @@ export function Mentor({
     const res = await askMentor(action, extra?.() ?? {}, flush);
     if (res.ok && onResult) {
       onResult(res.data);
-      toast.show("Textos mejorados con IA");
+      toast.show(doneMsg);
       setState({ loading: false, res: null });
       return;
     }
@@ -303,6 +306,32 @@ export function Mentor({
       </div>
       {out}
       {toast.node}
+    </div>
+  );
+}
+
+/** Respuesta del mentor guardada (p. ej. la estrategia de la ficha), con su fecha. */
+export function MentorView({
+  action,
+  data,
+  ts,
+}: {
+  action: MentorAction;
+  data: unknown;
+  ts: number;
+}) {
+  return (
+    <div className="space-y-3 rounded-lg border border-info bg-surface p-4">
+      {render(action, data)}
+      <p className="border-t border-border pt-2 text-xs text-muted">
+        Generada por IA el{" "}
+        {new Date(ts).toLocaleDateString("es-CO", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })}
+        . No es asesoría financiera.
+      </p>
     </div>
   );
 }

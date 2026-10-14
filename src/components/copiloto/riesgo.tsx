@@ -108,7 +108,7 @@ export function RiskControl() {
   const btn =
     "inline-flex size-9 shrink-0 items-center justify-center rounded-md text-ink-2 hover:bg-surface-3 hover:text-ink disabled:opacity-40";
   return (
-    <div ref={wrap} className="relative">
+    <div ref={wrap} className="relative w-full min-w-0 sm:w-auto">
       <div className="flex h-11 items-center gap-1 rounded-md bg-surface-2 pr-1 pl-2.5">
         <span id={labelId} className="mr-1 text-xs text-muted">
           Riesgo
@@ -135,14 +135,14 @@ export function RiskControl() {
           onPointerMove={onMove}
           onPointerLeave={() => setHover(null)}
           onKeyDown={onKey}
-          className="flex h-9 cursor-pointer touch-none items-center gap-[3px] rounded-sm px-1 outline-none select-none focus-visible:ring-2 focus-visible:ring-focus"
+          className="flex h-9 min-w-0 flex-1 cursor-pointer touch-none items-center gap-[3px] rounded-sm px-1 outline-none select-none focus-visible:ring-2 focus-visible:ring-focus sm:flex-none"
         >
           {Array.from({ length: 10 }, (_, k) => k + 1).map((i) => (
             <span
               key={i}
               aria-hidden
               className={cn(
-                "w-[9px] rounded-[2px] transition-all duration-150 sm:w-[11px]",
+                "min-w-[5px] flex-1 rounded-[2px] transition-all duration-150 sm:w-[11px] sm:flex-none",
                 i <= risk ? zone(i) : "bg-surface-3",
                 i === risk ? "h-6" : "h-4",
                 hover !== null &&
