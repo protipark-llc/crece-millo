@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  useActionState,
-  useEffect,
-  useId,
-  useRef,
-  type ReactNode,
-} from "react";
+import { Mentor } from "./mentor";
+import { useActionState, useEffect, useId, useRef } from "react";
 import Link from "next/link";
 import { Download, FileSpreadsheet, Trash2, Upload, X } from "lucide-react";
 import { E, type TestResult } from "@/lib/copiloto/engine";
@@ -31,7 +26,7 @@ const td = "border-b border-border px-3 py-2.5 whitespace-nowrap tabular";
 const isoDay = (ts: number) => new Date(ts).toISOString().slice(0, 10);
 
 /** Bitácora (renderBitacora, L1133–1146). */
-export function Bitacora({ mentor }: { mentor?: ReactNode }) {
+export function Bitacora() {
   const { S, fmt, demo, removeTest, removeSaved } = useCopiloto();
   const real = E.real(S.tests);
   const all = ([...S.plans, ...S.sims] as Saved[]).sort((a, b) => b.ts - a.ts);
@@ -265,7 +260,9 @@ export function Bitacora({ mentor }: { mentor?: ReactNode }) {
             Junta todo (productos, tests, plan, riesgo) y pide una revisión: qué
             escalar, qué matar y cuánto capital mover.
           </p>
-          <div className="mt-3">{mentor}</div>
+          <div className="mt-3">
+            <Mentor compact action="semanal" label="Hacer revisión semanal" />
+          </div>
         </section>
         <Respaldo demo={demo} />
       </div>

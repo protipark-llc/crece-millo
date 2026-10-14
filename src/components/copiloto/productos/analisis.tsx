@@ -1,5 +1,6 @@
 "use client";
 
+import { Mentor } from "../mentor";
 import Link from "next/link";
 import { Flag, Truck } from "lucide-react";
 import { E, type Tone } from "@/lib/copiloto/engine";
@@ -19,12 +20,11 @@ import { useCopiloto } from "../store";
 import { ToneBadge } from "../tone";
 import { CopLineChart } from "../chart";
 import { Kpi, TONE_ICON, TONE_TEXT, ToneAlert, useToast } from "../ui";
-import type { ReactNode } from "react";
 
 const card = "rounded-lg border border-border bg-surface p-4 sm:p-5";
 
 /** Análisis y estrategia (renderAnalysis, L741–763). */
-export function Analisis({ mentor }: { mentor?: ReactNode }) {
+export function Analisis() {
   const { S, fmt, updateProduct } = useCopiloto();
   const toast = useToast();
   const p = activeProduct(S);
@@ -303,7 +303,11 @@ export function Analisis({ mentor }: { mentor?: ReactNode }) {
           })}
         </ul>
         <div className="flex flex-wrap gap-2">
-          {mentor}
+          <Mentor
+            compact
+            action="producto"
+            label="Pedir estrategia al mentor"
+          />
           <button
             type="button"
             className={buttonClass("ghost", "md")}

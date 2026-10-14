@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { Mentor } from "../mentor";
 import { Save, Sigma, TestTube } from "lucide-react";
 import { E } from "@/lib/copiloto/engine";
 import { activeProduct } from "@/lib/copiloto/logic";
@@ -17,7 +17,7 @@ const th =
 const td = "border-b border-border px-3 py-2 whitespace-nowrap tabular";
 
 /** Planificar capital (renderPlan, L1081–1096). */
-export function PlanCapital({ mentor }: { mentor?: ReactNode }) {
+export function PlanCapital() {
   const { S, fmt, setSettings, addSaved } = useCopiloto();
   const toast = useToast();
   const f = S.planForm as PlanFormT;
@@ -241,7 +241,12 @@ export function PlanCapital({ mentor }: { mentor?: ReactNode }) {
               <Save aria-hidden className="size-4" /> Guardar plan
             </button>
           </div>
-          {mentor}
+          <Mentor
+            action="plan"
+            label="Generar propuesta y justificar el propósito"
+            intro="El mentor propone cómo desplegar el capital mes a mes y explica el porqué de cada recomendación."
+            extra={() => ({ planForm: f })}
+          />
         </div>
       </div>
 

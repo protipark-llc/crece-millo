@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { AltaAI } from "../mentor";
+import { applyAlta } from "@/lib/copiloto/mentor";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Calculator,
@@ -55,11 +57,7 @@ const Auto = () => (
 );
 
 /** Alta rápida de producto (modal #qa, L438–466; qaOpen…qaSave, L983–1040). Se abre con ?alta=1. */
-export function AltaRapida({
-  ai,
-}: {
-  ai?: (p: Product, apply: (p: Product) => void) => ReactNode;
-}) {
+export function AltaRapida() {
   const { S, fmt, addProduct, setSettings } = useCopiloto();
   const params = useSearchParams();
   const router = useRouter();
@@ -520,7 +518,12 @@ export function AltaRapida({
                   >
                     <Check aria-hidden className="size-4" /> Guardar producto
                   </button>
-                  {ai?.(res.p, (p) => setRes((x) => (x ? { ...x, p } : x)))}
+                  <AltaAI
+                    draft={res.p}
+                    apply={(j) =>
+                      setRes((x) => (x ? { ...x, p: applyAlta(x.p, j) } : x))
+                    }
+                  />
                   <button
                     type="button"
                     className={buttonClass("ghost", "md")}

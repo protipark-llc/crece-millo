@@ -36,6 +36,13 @@
       "when": 1791930889177,
       "tag": "0004_copiloto",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792000000000,
+      "tag": "0005_copiloto_mentor",
+      "breakpoints": true
     }
   ]
 }

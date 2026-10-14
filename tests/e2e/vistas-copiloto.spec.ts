@@ -483,4 +483,45 @@ test.describe("Vistas y Co-Piloto", () => {
       page.getByText(/volvió a empezar con los productos de ejemplo/),
     ).toBeVisible();
   });
+  test("Co-Piloto · Mentor con IA (API simulada): análisis del test, ofertas y alta rápida", async ({
+    page,
+  }) => {
+    await register(page);
+    await page.goto("/comunidad/emprendedores/copiloto/test");
+    await page.getByRole("spinbutton", { name: "Gasto en ads" }).fill("650000");
+    await page
+      .getByRole("spinbutton", { name: "Pedidos generados" })
+      .fill("18");
+    await page
+      .getByRole("button", { name: "Pedir análisis al mentor" })
+      .click();
+    await expect(
+      page.getByText("Diagnóstico simulado del test."),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/Respuesta generada por IA\. No es asesoría financiera\./),
+    ).toBeVisible();
+    await expect(page.getByText(/Te quedan 24 consultas hoy/)).toBeVisible();
+
+    await page.goto(
+      "/comunidad/emprendedores/copiloto/marketing?vista=ofertas",
+    );
+    await page.getByRole("button", { name: "Generar ofertas con IA" }).click();
+    await expect(page.getByText("Upsell simulado")).toBeVisible();
+
+    await page.goto("/comunidad/emprendedores/copiloto/productos?alta=1");
+    const qa = page.getByRole("dialog", { name: "Alta rápida de producto" });
+    await qa
+      .getByLabel("Nombre del producto")
+      .fill("Masajeador de cuello eléctrico");
+    await qa.getByLabel("Costo proveedor (COP)").fill("45000");
+    await qa.getByRole("button", { name: "Calcular y completar" }).click();
+    await qa.getByRole("button", { name: "Mejorar textos con IA" }).click();
+    await expect(qa.getByLabel(/^Público objetivo/)).toHaveValue(
+      "Público simulado",
+    );
+    await expect(qa.getByLabel(/^Nombre\s*automático/)).toHaveValue(
+      "Masajeador cervical",
+    );
+  });
 });

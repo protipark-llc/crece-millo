@@ -27,13 +27,7 @@ export function usePtab(): string {
 }
 
 /** Detalle del producto activo (pDetail, L228–268): encabezado, insignias y 5 subpestañas. */
-export function Detalle({
-  precio,
-  mentor,
-}: {
-  precio?: ReactNode;
-  mentor?: ReactNode;
-}) {
+export function Detalle({ precio }: { precio?: ReactNode }) {
   const { S, setSettings } = useCopiloto();
   const ptab = usePtab();
   useEffect(() => {
@@ -83,7 +77,7 @@ export function Detalle({
         {ptab === "ficha" && <Ficha />}
         {ptab === "eval" && <Evaluacion />}
         {ptab === "res" && <Resultados />}
-        {ptab === "ana" && <Analisis mentor={mentor} />}
+        {ptab === "ana" && <Analisis />}
         {ptab === "precio" && precio}
       </div>
     </section>

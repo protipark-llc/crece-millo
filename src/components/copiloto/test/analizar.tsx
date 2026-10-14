@@ -1,5 +1,6 @@
 "use client";
 
+import { Mentor } from "../mentor";
 import type { ReactNode } from "react";
 import {
   CheckCircle2,
@@ -71,7 +72,7 @@ export function testInput(f: Record<string, unknown>) {
 }
 
 /** Analizar test (renderTest, L1062–1074). */
-export function AnalizarTest({ mentor }: { mentor?: ReactNode }) {
+export function AnalizarTest() {
   const { S, fmt, setSettings, addTest, updateProduct } = useCopiloto();
   const toast = useToast();
   const p = activeProduct(S);
@@ -316,7 +317,12 @@ export function AnalizarTest({ mentor }: { mentor?: ReactNode }) {
           />
         </div>
 
-        {mentor}
+        <Mentor
+          action="test"
+          label="Pedir análisis al mentor"
+          intro="El mentor explica el resultado en lenguaje sencillo y propone los siguientes pasos con tus números."
+          extra={() => ({ testForm: f })}
+        />
 
         <section
           aria-labelledby="cd-t"

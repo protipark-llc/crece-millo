@@ -1,5 +1,6 @@
 "use client";
 
+import { Mentor } from "../mentor";
 import { useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -142,13 +143,7 @@ function useMkTab(st: MkState) {
 }
 
 /** Marketing (t-marketing, L291–326; renderMarketing, L957). */
-export function Marketing({
-  mentorOffers,
-  mentorCreatives,
-}: {
-  mentorOffers?: ReactNode;
-  mentorCreatives?: ReactNode;
-}) {
+export function Marketing() {
   const { S, fmt, setSettings, setProductState } = useCopiloto();
   const toast = useToast();
   const p = activeProduct(S);
@@ -211,7 +206,13 @@ export function Marketing({
           st={st}
           setMk={setMk}
           toast={toast}
-          mentor={mentorOffers}
+          mentor={
+            <Mentor
+              action="ofertas"
+              label="Generar ofertas con IA"
+              intro="El mentor propone ofertas personalizadas para tu producto y tu público, con precio, guion y cuándo usarlas."
+            />
+          }
         />
       )}
       {tab === "creativos" && (
@@ -220,7 +221,13 @@ export function Marketing({
           st={st}
           setMk={setMk}
           toast={toast}
-          mentor={mentorCreatives}
+          mentor={
+            <Mentor
+              action="creativos"
+              label="Generar más creativos con IA"
+              intro="Pide ganchos, guiones y textos nuevos para el ángulo elegido."
+            />
+          }
         />
       )}
       {tab === "pagina" && <Pagina c={c} toast={toast} />}

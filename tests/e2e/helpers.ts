@@ -12,9 +12,16 @@ export async function register(page: Page, name = "Persona Prueba") {
   return email;
 }
 
-export async function createAccount(page: Page, name: string, opening: string, type = "Cuenta de ahorros") {
+export async function createAccount(
+  page: Page,
+  name: string,
+  opening: string,
+  type = "Cuenta de ahorros",
+) {
   await page.goto("/universidad/finanzas/cuentas");
-  const form = page.locator("form").filter({ has: page.getByRole("button", { name: "Crear cuenta" }) });
+  const form = page
+    .locator("form")
+    .filter({ has: page.getByRole("button", { name: "Crear cuenta" }) });
   await form.getByLabel("Nombre").fill(name);
   await form.getByLabel("Tipo").selectOption({ label: type });
   await form.getByLabel("Fecha de apertura del registro").fill("2026-01-01");
@@ -23,18 +30,40 @@ export async function createAccount(page: Page, name: string, opening: string, t
   await expect(page.getByText("Cuenta creada.")).toBeVisible();
 }
 
-export async function newMovement(page: Page, kind: "Gasto" | "Ingreso" | "Transferencia", data: { description: string; amount: string; date?: string; from?: string; to?: string; status?: string }) {
+export async function newMovement(
+  page: Page,
+  kind: "Gasto" | "Ingreso" | "Transferencia",
+  data: {
+    description: string;
+    amount: string;
+    date?: string;
+    from?: string;
+    to?: string;
+    status?: string;
+  },
+) {
   await page.goto("/universidad/finanzas/movimientos/nuevo");
   await page.getByRole("radio", { name: kind }).click();
   await page.getByLabel("Descripción").fill(data.description);
   await page.getByLabel("Importe", { exact: true }).fill(data.amount);
-  if (data.from) await page.getByLabel(/Desde la cuenta|Cuenta de destino|Pagado desde/).selectOption({ label: `${data.from} (COP)` });
-  if (data.to) await page.getByLabel("Hacia la cuenta").selectOption({ label: `${data.to} (COP)` });
+  if (data.from)
+    await page
+      .getByLabel(/Desde la cuenta|Cuenta de destino|Pagado desde/)
+      .selectOption({ label: `${data.from} (COP)` });
+  if (data.to)
+    await page
+      .getByLabel("Hacia la cuenta")
+      .selectOption({ label: `${data.to} (COP)` });
   if (data.status) {
     await page.getByText("Más opciones").click();
     await page.getByLabel("Estado").selectOption({ label: data.status });
   }
-  await page.getByLabel(/^Fecha/).first().fill(data.date ?? "2026-02-10");
-  await page.getByRole("button", { name: new RegExp(`^Guardar ${kind.toLowerCase()}`) }).click();
+  await page
+    .getByLabel(/^Fecha/)
+    .first()
+    .fill(data.date ?? "2026-02-10");
+  await page
+    .getByRole("button", { name: new RegExp(`^Guardar ${kind.toLowerCase()}`) })
+    .click();
   await expect(page.getByText(/registrad[oa]/)).toBeVisible();
 }

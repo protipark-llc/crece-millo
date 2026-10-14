@@ -53,6 +53,8 @@ export interface CopilotoApi {
   ) => void;
   addSaved: (kind: "plan" | "sim", item: Saved) => void;
   removeSaved: (kind: "plan" | "sim", id: string) => void;
+  /** Guarda ya lo pendiente y espera a que termine (antes de pedir algo al servidor). */
+  flush: () => Promise<void>;
   fmt: {
     money: (n: number) => string;
     pct: (n: number) => string;
@@ -266,6 +268,10 @@ export function CopilotoProvider({
         }));
         enqueue(() => removeSavedAction(id));
       },
+      flush: async () => {
+        flush();
+        await chain.current;
+      },
       fmt: {
         money: (n) => formatMoney(n, ctx),
         pct: formatPct,
@@ -274,7 +280,7 @@ export function CopilotoProvider({
         fecha: formatFecha,
       },
     };
-  }, [S, demo, status, error, retry, later, enqueue]);
+  }, [S, demo, status, error, retry, later, enqueue, flush]);
 
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
 }

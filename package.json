@@ -20,6 +20,7 @@
     "copiloto:verificar": "tsx docs/copiloto/motor/verificar.mjs src/lib/copiloto/engine.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
     "drizzle-orm": "^0.45.4",
     "lucide-react": "^1.55.0",
     "next": "^15.5.27",
